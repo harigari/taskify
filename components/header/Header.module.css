@@ -1,0 +1,50 @@
+.header {
+  display: grid;
+  grid-template-columns: min-content auto min-content min-content;
+  grid-template-areas: "logo . login signup";
+  align-content: center;
+  gap: 4rem;
+  align-items: center;
+  padding: 0 8rem 0 2.4rem;
+  width: 100vw;
+  height: 7rem;
+  background-color: var(--white);
+  font-size: 1.6rem;
+  border-bottom: 0.1rem solid var(--gray30);
+}
+
+.header__black {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.logo__link {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  position: relative;
+  width: 11.5rem;
+  height: 3.5rem;
+  grid-area: logo;
+}
+
+.login__link {
+  grid-area: login;
+}
+
+.signup__link {
+  grid-area: signup;
+}
+
+@media screen and (max-width: 375px) {
+  .header {
+    gap: 2rem;
+    padding: 0 2.4rem 0 2.4rem;
+  }
+  .logo__link {
+    width: 3rem;
+  }
+  .logo__textlogo {
+    display: none;
+  }
+}
