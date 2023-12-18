@@ -1,0 +1,36 @@
+html {
+  font-size: 62.5%;
+}
+
+html,
+body,
+button,
+input,
+h1,
+h2 {
+  font-family: Pretendard;
+  line-height: normal;
+  font-style: normal;
+  font-weight: 400;
+  word-break: keep-all;
+}
+
+:root {
+  --black: #171717;
+  --black1: #333236;
+  --black2: #4b4b4b;
+  --gray50: #787486;
+  --gray40: #9fa6b2;
+  --gray30: #d9d9d9;
+  --gray20: #eeeeee;
+  --gray10: #fafafa;
+  --white: #ffffff;
+  --violet: #5534da;
+  --violet8: #f1effd;
+  --red: #d6173a;
+  --green: #7ac555;
+  --purple: #760dde;
+  --orange: #ffa500;
+  --blue: #76a5ea;
+  --pink: #e876ea;
+}
