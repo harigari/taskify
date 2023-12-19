@@ -1,0 +1,18 @@
+.button {
+  width: 52rem;
+  height: 5rem;
+
+  color: var(--white);
+  font-size: 1.8rem;
+  background-color: var(--violet);
+  border-radius: 0.8rem;
+  font-weight: 500;
+}
+@media (max-width: 767px) {
+  .button {
+    width: 35rem;
+  }
+}
+.disabled {
+  background: var(--gray40);
+}
