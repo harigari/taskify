@@ -1,4 +1,4 @@
-import styles from "@/components/header/IndexHeader.module.css";
+import styles from "@/components/header/index/IndexHeader.module.css";
 import { IndexHeaderProps } from "@/components/header/header.type";
 import clsx from "clsx";
 import Image from "next/image";

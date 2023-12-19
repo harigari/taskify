@@ -14,10 +14,14 @@
   z-index: 1;
   width: 4rem;
   height: 4rem;
-  background-color: black;
   color: var(--white);
   border-radius: 10rem;
   margin-left: -1rem;
+}
+
+.count {
+  font-weight: 600;
+  background-color: var(--gray50);
 }
 
 .count::after {
@@ -28,14 +32,20 @@
   position: absolute;
 }
 
+.member__defaultimage {
+  position: absolute;
+  width: 4rem;
+  height: 4rem;
+}
+
 .member__name {
   z-index: 1;
   font-weight: 600;
 }
 
 @media screen and (max-width: 767px) {
-  .member[data-index="0"],
-  .member[data-index="1"] {
+  .member[data-index="2"],
+  .member[data-index="3"] {
     display: none;
   }
 

@@ -1,26 +1,26 @@
-import styles from "@/components/header/BoardHeader.module.css";
-import HeaderProfile from "@/components/header/HeaderProfile";
-import Members from "@/components/header/Members";
+import styles from "@/components/header/board/BoardHeader.module.css";
+import HeaderProfile from "@/components/header/board/HeaderProfile";
+import Members from "@/components/header/board/Members";
 import { Member, User } from "@/components/header/header.type";
 import clsx from "clsx";
 import Image from "next/image";
 
 const MOCKUP: Member[] = [
-  { id: 1, nickname: "김하늘", profileImageUrl: "/images/logo-purple.svg" },
-  { id: 2, nickname: "조유담", profileImageUrl: "/images/logo-white.svg" },
-  { id: 3, nickname: "안지수", profileImageUrl: "/images/logo-purple.svg" },
-  { id: 4, nickname: "정진호", profileImageUrl: "/images/logo-white.svg" },
-  { id: 1, nickname: "김하늘", profileImageUrl: "/images/logo-purple.svg" },
-  { id: 2, nickname: "조유담", profileImageUrl: "/images/logo-white.svg" },
-  { id: 3, nickname: "안지수", profileImageUrl: "/images/logo-purple.svg" },
-  { id: 4, nickname: "정진호", profileImageUrl: "/images/logo-white.svg" },
+  { id: 1, nickname: "haneul", profileImageUrl: "" },
+  { id: 2, nickname: "Youdame", profileImageUrl: "" },
+  { id: 3, nickname: "Jaden", profileImageUrl: "" },
+  { id: 4, nickname: "정진호", profileImageUrl: "" },
+  { id: 1, nickname: "김하늘", profileImageUrl: "" },
+  { id: 2, nickname: "조유담", profileImageUrl: "" },
+  { id: 3, nickname: "안지수", profileImageUrl: "" },
+  { id: 4, nickname: "정진호", profileImageUrl: "" },
 ];
 
 const USER: User = {
   id: 1,
   email: "codeit@codeit.kr",
-  nickname: "헉스바리따쉬",
-  profileImageUrl: "/images/icon-addbox.svg",
+  nickname: "자궁맛사탕",
+  profileImageUrl: "",
 };
 
 const Boardheader = () => {

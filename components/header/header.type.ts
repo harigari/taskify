@@ -20,3 +20,7 @@ export interface IndexHeaderProps {
 export interface HeaderProfileProps {
   user: User;
 }
+
+export interface MembersProps {
+  members: Member[];
+}

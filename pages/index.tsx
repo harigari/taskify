@@ -1,5 +1,5 @@
-import Boardheader from "@/components/header/BoardHeader";
-import IndexHeader from "@/components/header/IndexHeader";
+import Boardheader from "@/components/header/board/BoardHeader";
+import IndexHeader from "@/components/header/index/IndexHeader";
 
 export default function Home() {
   return (

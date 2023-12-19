@@ -14,12 +14,16 @@
   height: 4rem;
   border-radius: 10rem;
   border: 0.2rem solid var(--white);
-  background-color: black;
   margin-right: 1.2rem;
 }
 
 .image {
   position: absolute;
+}
+
+.defaultimage {
+  width: 4rem;
+  height: 4rem;
 }
 
 @media screen and (max-width: 767px) {
