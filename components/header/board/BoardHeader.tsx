@@ -1,6 +1,6 @@
 import styles from "@/components/header/board/BoardHeader.module.css";
 import HeaderProfile from "@/components/header/board/HeaderProfile";
-import Members from "@/components/header/board/Members";
+import Members from "@/components/header/board/members/Members";
 import { Member, User } from "@/components/header/header.type";
 import clsx from "clsx";
 import Image from "next/image";
@@ -10,10 +10,10 @@ const MOCKUP: Member[] = [
   { id: 2, nickname: "Youdame", profileImageUrl: "" },
   { id: 3, nickname: "Jaden", profileImageUrl: "" },
   { id: 4, nickname: "정진호", profileImageUrl: "" },
-  { id: 1, nickname: "김하늘", profileImageUrl: "" },
-  { id: 2, nickname: "조유담", profileImageUrl: "" },
-  { id: 3, nickname: "안지수", profileImageUrl: "" },
-  { id: 4, nickname: "정진호", profileImageUrl: "" },
+  { id: 5, nickname: "김하늘", profileImageUrl: "" },
+  { id: 6, nickname: "조유담", profileImageUrl: "" },
+  { id: 7, nickname: "안지수", profileImageUrl: "" },
+  { id: 8, nickname: "정진호", profileImageUrl: "" },
 ];
 
 const USER: User = {

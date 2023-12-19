@@ -24,3 +24,7 @@ export interface HeaderProfileProps {
 export interface MembersProps {
   members: Member[];
 }
+
+export interface MembersProfileProps {
+  member: Member;
+}

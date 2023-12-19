@@ -2,6 +2,7 @@
   display: flex;
   grid-area: members;
   margin-left: 2rem;
+  position: relative;
 }
 
 .member {
@@ -33,23 +34,57 @@
 }
 
 .member__defaultimage {
-  position: absolute;
   width: 4rem;
   height: 4rem;
+  overflow: hidden;
+  border-radius: 10rem;
 }
 
 .member__name {
-  z-index: 1;
+  position: absolute;
   font-weight: 600;
 }
 
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: absolute;
+  right: 0;
+  top: 5rem;
+  background-color: var(--white);
+  padding: 0.4rem 1.6rem;
+  border: 0.1rem solid var(--gray40);
+  border-radius: 0.8rem;
+}
+
+.dropdown__list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dropdown__list[data-index="0"],
+.dropdown__list[data-index="1"] {
+  display: none;
+}
+
+.dropdown__name {
+  margin-left: 0.4rem;
+}
+
 @media screen and (max-width: 767px) {
-  .member[data-index="2"],
-  .member[data-index="3"] {
+  .wrapper[data-index="2"],
+  .wrapper[data-index="3"] {
     display: none;
   }
 
   .count::after {
     content: "+" attr(data-mobile-count);
+  }
+
+  .dropdown__list[data-index="0"],
+  .dropdown__list[data-index="1"] {
+    display: flex;
   }
 }
