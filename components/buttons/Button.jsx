@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Button.module.css";
 import clsx from "clsx";
 
-const Button = ({ buttonType, children, disabled, onClick, size, withoutSize }) => {
+const Button = ({ buttonType, children, disabled, onClick, size }) => {
   return (
     <button
       onClick={onClick}

@@ -14,9 +14,9 @@ export default function Home() {
       <PrimaryButton size="sm">확인</PrimaryButton>
       <div style={{ "margin-bottom": "30px" }}></div>
       <div style={{ width: "50rem", height: "20rem" }}>
-        <DefaultButton style={{ "border-radius": "30rem", "font-size": "20rem" }} size="custom" disabled>
+        <PrimaryButton style={{ "border-radius": "30rem", "font-size": "2rem" }} size="custom" disabled>
           로그인
-        </DefaultButton>
+        </PrimaryButton>
       </div>
       <PrimaryButton size="sm">확인</PrimaryButton>
       <div style={{ "margin-bottom": "30px" }}></div>
