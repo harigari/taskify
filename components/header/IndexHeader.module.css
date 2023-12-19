@@ -2,7 +2,6 @@
   display: grid;
   grid-template-columns: min-content auto min-content min-content;
   grid-template-areas: "logo . login signup";
-  align-content: center;
   gap: 4rem;
   align-items: center;
   padding: 0 8rem 0 2.4rem;
@@ -19,13 +18,11 @@
 }
 
 .logo__link {
-  display: flex;
-  align-content: center;
-  align-items: center;
-  position: relative;
-  width: 11.5rem;
-  height: 3.5rem;
   grid-area: logo;
+}
+
+.logo__picture {
+  width: 11rem;
 }
 
 .login__link {
@@ -36,12 +33,18 @@
   grid-area: signup;
 }
 
+@media screen and (max-width: 744px) {
+  .header {
+    padding: 0 4rem 0 2.4rem;
+  }
+}
+
 @media screen and (max-width: 375px) {
   .header {
     gap: 2rem;
     padding: 0 2.4rem 0 2.4rem;
   }
-  .logo__link {
+  .logo__picture {
     width: 3rem;
   }
   .logo__textlogo {

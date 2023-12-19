@@ -1,4 +1,4 @@
-import styles from "@/components/header/Header.module.css";
+import styles from "@/components/header/IndexHeader.module.css";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +7,7 @@ interface Props {
   color: "white" | "black";
 }
 
-const Header = ({ color = "white" }: Props) => {
+const IndexHeader = ({ color = "white" }: Props) => {
   return (
     <>
       <header
@@ -16,10 +16,12 @@ const Header = ({ color = "white" }: Props) => {
         })}
       >
         <Link className={styles.logo__link} href="/mydashboard">
-          <picture>
+          <picture className={styles.logo__picture}>
             <source media="(max-width: 375px)" srcSet={`/images/logo-${color === "white" ? "purple" : "white"}.svg`} />
             <Image
-              fill
+              width={110}
+              height={35}
+              priority
               src={`/images/logo-${color === "white" ? "purple" : "white"}-horizontal.png`}
               alt="홈페이지로 바로가기"
             />
@@ -36,4 +38,4 @@ const Header = ({ color = "white" }: Props) => {
   );
 };
 
-export default Header;
+export default IndexHeader;
