@@ -1,6 +1,7 @@
 .container {
   display: flex;
   grid-area: members;
+  margin-left: 2rem;
 }
 
 .member {
@@ -32,7 +33,7 @@
   font-weight: 600;
 }
 
-@media screen and (max-width: 744px) {
+@media screen and (max-width: 767px) {
   .member[data-index="0"],
   .member[data-index="1"] {
     display: none;

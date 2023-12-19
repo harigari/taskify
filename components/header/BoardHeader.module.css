@@ -1,8 +1,8 @@
 .header {
   display: grid;
-  grid-template-columns: max-content auto repeat(4, max-content);
-  grid-template-areas: ". title settings invite members split";
-  gap: 4rem;
+  grid-template-columns: max-content auto repeat(5, max-content);
+  grid-template-areas: ". title settings invite members split profile";
+  gap: 1.6rem;
   align-items: center;
   padding-left: calc(50vw - 60rem);
   padding-right: 8rem;
@@ -16,6 +16,8 @@
 .boardname {
   font-size: 2rem;
   font-weight: 600;
+  white-space: nowrap;
+  padding-left: 2rem;
 }
 
 .button {
@@ -47,8 +49,26 @@
   grid-area: invite;
 }
 
-@media screen and (max-width: 744px) {
+@media screen and (max-width: 1200px) {
+  .header {
+    gap: 2rem;
+    padding-right: 4rem;
+  }
   .boardname {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .header {
+    gap: 0.8rem;
+    padding-right: 0;
+  }
+  .button {
+    font-size: 1.4rem;
+    padding: 0.8rem 1.2rem;
+  }
+  .button__image {
     display: none;
   }
 }

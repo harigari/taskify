@@ -33,13 +33,13 @@
   grid-area: signup;
 }
 
-@media screen and (max-width: 744px) {
+@media screen and (max-width: 1200px) {
   .header {
     padding: 0 4rem 0 2.4rem;
   }
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 767px) {
   .header {
     gap: 2rem;
     padding: 0 2.4rem 0 2.4rem;

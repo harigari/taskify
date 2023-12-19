@@ -1,13 +1,10 @@
 import styles from "@/components/header/IndexHeader.module.css";
+import { IndexHeaderProps } from "@/components/header/header.type";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 
-interface Props {
-  color: "white" | "black";
-}
-
-const IndexHeader = ({ color = "white" }: Props) => {
+const IndexHeader = ({ color = "white" }: IndexHeaderProps) => {
   return (
     <>
       <header
@@ -17,7 +14,7 @@ const IndexHeader = ({ color = "white" }: Props) => {
       >
         <Link className={styles.logo__link} href="/mydashboard">
           <picture className={styles.logo__picture}>
-            <source media="(max-width: 375px)" srcSet={`/images/logo-${color === "white" ? "purple" : "white"}.svg`} />
+            <source media="(max-width: 767px)" srcSet={`/images/logo-${color === "white" ? "purple" : "white"}.svg`} />
             <Image
               width={110}
               height={35}
