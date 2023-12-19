@@ -2,13 +2,13 @@ import React from "react";
 import styles from "./Button.module.css";
 import Button from "@/components/buttons/Button";
 
-const PrimaryButton = ({ children, disabled, onClick, buttonType, withoutSize }) => {
+const PrimaryButton = ({ children, disabled, onClick, size, withoutSize }) => {
   return (
     <Button
-      className={styles.primary}
+      buttonType={styles.primary}
       disabled={disabled}
       onClick={onClick}
-      buttonType={buttonType}
+      size={size}
       withoutSize={withoutSize}
     >
       {children}
