@@ -1,3 +1,11 @@
+.common {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  color: var(--violet);
+  border: 1px solid var(--gray30);
+}
 .large {
   display: flex;
   align-items: center;
@@ -21,11 +29,6 @@
   font-size: 1.4rem;
   font-weight: 500;
   border-radius: 0.4rem;
-}
-
-.violet {
-  background: var(--violet);
-  color: white;
 }
 
 .white {

@@ -17,6 +17,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/buttons/LoginButton.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/buttons/LoginButton.jsx", "pages/index.jsx"],
   "exclude": ["node_modules"]
 }

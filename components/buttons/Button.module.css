@@ -2,9 +2,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--violet);
   font-weight: 500;
+}
+
+.default {
+  background-color: var(--white);
+  color: var(--violet);
+  border: 1px solid var(--gray30);
+}
+
+.primary {
+  background-color: var(--violet);
   color: var(--white);
+}
+
+.custom {
+  width: 100%;
+  height: 100%;
 }
 
 .full {
@@ -16,6 +30,7 @@
 
 .disabled {
   background: var(--gray40);
+  color: var(--white);
 }
 
 .large {
@@ -48,8 +63,10 @@
   }
 }
 
-.white {
+@media (min-width: 768px) and (max-width: 1200px) {
+}
+/* .white {
   border: 1px solid var(--gray30);
   background: var(--white);
   color: var(--violet);
-}
+} */

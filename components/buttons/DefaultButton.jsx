@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./Button.module.css";
+import clsx from "clsx";
 import Button from "@/components/buttons/Button";
 
-const PrimaryButton = ({ children, disabled, onClick, buttonType, withoutSize }) => {
+const DefaultButton = ({ children, disabled, onClick, buttonType, withoutSize }) => {
   return (
     <Button
-      className={styles.primary}
+      className={clsx(styles.default)}
       disabled={disabled}
       onClick={onClick}
       buttonType={buttonType}
@@ -16,4 +17,4 @@ const PrimaryButton = ({ children, disabled, onClick, buttonType, withoutSize })
   );
 };
 
-export default PrimaryButton;
+export default DefaultButton;
