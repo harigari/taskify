@@ -10,7 +10,7 @@ const colorMapping = (str: string) => {
     case (idx >= "s" && idx <= "z") || (idx >= "차" && idx < "힣"):
       return "var(--pink)";
     default:
-      return "var(--gray30)";
+      return "var(--gray50)";
   }
 };
 

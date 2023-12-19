@@ -1,5 +1,6 @@
 import styles from "@/components/header/board/members/Members.module.css";
-import MembersProfile from "@/components/header/board/members/MembersProfile";
+import Profile from "@/components/header/board/members/Profile";
+import ProfilePopup from "@/components/header/board/members/ProfilePopup";
 import { MembersProps } from "@/components/header/header.type";
 import clsx from "clsx";
 import { useState } from "react";
@@ -16,12 +17,13 @@ const Members = ({ members }: MembersProps) => {
   return (
     <div className={styles.container}>
       {members.slice(0, 4).map((member, idx) => (
-        <div className={styles.wrapper} key={member.id} data-index={idx}>
-          <MembersProfile member={member} />
-        </div>
+        <Profile key={member.id} member={member} idx={idx} />
       ))}
-      <button
-        className={clsx(styles.member, styles.count)}
+      <Profile
+        member={{ id: 0, nickname: "", profileImageUrl: "" }}
+        className={clsx(styles.button, {
+          [styles.hidebutton]: members.length < 5,
+        })}
         data-desktop-count={members.length - 4}
         data-mobile-count={members.length - 2}
         onTouchStart={() => (isOpen ? handleClose() : handleOpen())}
@@ -30,16 +32,7 @@ const Members = ({ members }: MembersProps) => {
         onMouseOver={handleOpen}
         onMouseOut={handleClose}
       />
-      {isOpen ? (
-        <ul className={styles.dropdown}>
-          {members.slice(2).map((member, idx) => (
-            <li className={styles.dropdown__list} key={idx} data-index={idx}>
-              <MembersProfile member={member} />
-              <span className={styles.dropdown__name}>{member.nickname}</span>
-            </li>
-          ))}
-        </ul>
-      ) : null}
+      {isOpen && <ProfilePopup member={members.slice(2)} />}
     </div>
   );
 };

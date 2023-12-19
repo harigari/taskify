@@ -1,10 +1,4 @@
-.container {
-  display: flex;
-  margin-left: 2rem;
-  position: relative;
-}
-
-.button {
+.member {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,22 +13,26 @@
   border-radius: 10rem;
 }
 
-.hidebutton {
-  display: none;
+.member__image {
+  position: absolute;
 }
 
-.button::after {
-  z-index: 1;
+.member__defaultimage {
+  overflow: hidden;
+  position: absolute;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 10rem;
+}
+
+.member__name {
+  position: absolute;
   font-weight: 600;
-  content: "+" attr(data-desktop-count);
 }
 
 @media screen and (max-width: 767px) {
-  .button::after {
-    content: "+" attr(data-mobile-count);
-  }
-
-  .hidebutton {
-    display: flex;
+  .member[data-index="2"],
+  .member[data-index="3"] {
+    display: none;
   }
 }

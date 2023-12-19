@@ -4,8 +4,8 @@
   grid-template-areas: ". title settings invite members split profile";
   gap: 1.6rem;
   align-items: center;
-  padding-left: calc(50vw - 60rem);
   padding-right: 8rem;
+  padding-left: calc(50vw - 60rem);
   border-bottom: 0.1rem solid var(--gray30);
   width: 100vw;
   height: 7rem;
@@ -14,22 +14,10 @@
 }
 
 .boardname {
+  padding-left: 2rem;
   font-size: 2rem;
   font-weight: 600;
   white-space: nowrap;
-  padding-left: 2rem;
-}
-
-.button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  gap: 0.8rem;
-  padding: 1.2rem 1.6rem;
-  border-radius: 0.8rem;
-  border: 0.1rem solid var(--gray30);
-  color: var(--gray50);
 }
 
 .splitline {
@@ -37,6 +25,15 @@
   height: 4rem;
   background-color: var(--gray30);
   grid-area: split;
+}
+
+.profile {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin-right: 2rem;
+  margin-left: 1.2rem;
+  grid-area: profile;
 }
 
 .grid__title {
@@ -48,14 +45,14 @@
 .grid__invite {
   grid-area: invite;
 }
+.grid__members {
+  grid-area: members;
+}
 
 @media screen and (max-width: 1200px) {
   .header {
     gap: 2rem;
     padding-right: 4rem;
-  }
-  .boardname {
-    display: none;
   }
 }
 
@@ -64,11 +61,8 @@
     gap: 0.8rem;
     padding-right: 0;
   }
-  .button {
-    font-size: 1.4rem;
-    padding: 0.8rem 1.2rem;
-  }
-  .button__image {
+
+  .profile__name {
     display: none;
   }
 }
