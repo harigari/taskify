@@ -1,0 +1,61 @@
+/* prop에 따라 font-size, width, height 변경 */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.6rem;
+  width: fit-content;
+  height: 2rem;
+  background: var(--tag1);
+  border-radius: 0.4rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--tag1Font);
+  text-align: center;
+}
+
+/* 크기 */
+.large {
+  width: fit-content;
+  height: 2.2rem;
+  font-size: 1.2rem;
+}
+
+/* 색상 */
+.tag1 {
+  background: var(--tag1);
+  color: var(--tag1Font);
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+}
+
+.tag2 {
+  background: var(--tag2);
+  color: var(--tag2Font);
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+}
+.tag3 {
+  background: var(--tag3);
+  color: var(--tag3Font);
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+}
+.tag3 {
+  background: var(--tag4);
+  color: var(--tag4Font);
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+}
+.default {
+  background: var(--gray40);
+  color: var(--black);
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+}
