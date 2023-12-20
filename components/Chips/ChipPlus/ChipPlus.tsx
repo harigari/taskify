@@ -3,7 +3,7 @@ const ChipPlus = () => {
   return (
     <>
       <div className={`${style.imageWrapper}`}>
-        <img src="/add.svg" />
+        <img src="/images/icons/add.svg" />
       </div>
     </>
   );
