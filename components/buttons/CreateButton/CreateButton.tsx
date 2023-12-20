@@ -2,7 +2,15 @@ import React from "react";
 import styles from "./CreateButton.module.css";
 import clsx from "clsx";
 
-const CreateButton = ({ buttonType, children, disabled, onClick, purpose }) => {
+interface Props {
+  buttonType: string;
+  children: React.ReactNode;
+  disabled?: boolean;
+  onClick: () => void;
+  purpose: string;
+}
+
+const CreateButton = ({ buttonType, children, disabled, onClick, purpose }: Props) => {
   return (
     <button
       onClick={onClick}

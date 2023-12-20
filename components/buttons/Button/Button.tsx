@@ -6,7 +6,15 @@ import clsx from "clsx";
 // lg: pc,tablet : w-12 h-4.8 mobile : w-13.8 h-4.2 // 모달 버튼
 // full: 로그인 버튼
 
-const Button = ({ buttonType, children, disabled, onClick, size }) => {
+interface Props {
+  buttonType: string;
+  children: React.ReactNode;
+  disabled?: boolean;
+  onClick: () => void;
+  size: string;
+}
+
+const Button = ({ buttonType, children, disabled, onClick, size }: Props) => {
   return (
     <button
       onClick={onClick}
