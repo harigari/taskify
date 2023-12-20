@@ -26,8 +26,9 @@ export default function Home() {
       <div style={{ "margin-bottom": "30px" }}></div>
 
       <ArrowButton />
-
-      <CreateDefaultButton>새로운 컬럼 추가하기</CreateDefaultButton>
+      <CreateDefaultButton purpose={"plus"}>+</CreateDefaultButton>
+      <CreateDefaultButton purpose={"column"}>새로운 컬럼 추가하기</CreateDefaultButton>
+      <CreateDefaultButton purpose={"dashboard"}>새로운 대시보드</CreateDefaultButton>
     </>
   );
 }
