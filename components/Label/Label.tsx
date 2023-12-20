@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import styles from "./ModalLabel.module.css";
+import styles from "./Label.module.css";
 import clsx from "clsx";
 
 interface ModalLabelProp {
