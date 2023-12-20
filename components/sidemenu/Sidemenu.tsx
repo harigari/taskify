@@ -50,19 +50,19 @@ const Sidemenu = () => {
           />
         </picture>
       </Link>
+      <button className={styles.addbutton}>
+        <p className={styles.addbutton__text}>Dash Boards</p>
+        <Image width={20} height={20} src="/images/icon-addbox.svg" alt="대시보드 추가하기" />
+      </button>
       <ul className={styles.list}>
-        <button className={styles.list__addbutton}>
-          <p className={styles.list__addbutton__text}>Dash Boards</p>
-          <Image width={20} height={20} src="/images/icon-addbox.svg" alt="대시보드 추가하기" />
-        </button>
         {MOCKUP.map((board) => (
           <li key={board.id}>
-            <Link className={styles.list__item__link} href={`/dashboard/${board.id}`}>
-              <div className={styles.list__item__icon} style={{ backgroundColor: `var(--${board.color})` }} />
-              <p className={styles.list__item__text}>{board.title}</p>
+            <Link className={styles.item__link} href={`/dashboard/${board.id}`}>
+              <div className={styles.item__icon} style={{ backgroundColor: `var(--${board.color})` }} />
+              <p className={styles.item__text}>{board.title}</p>
               {board.createdByMe && (
                 <Image
-                  className={styles.list__item__img}
+                  className={styles.item__img}
                   width={18}
                   height={14}
                   src="/images/icon-crown.svg"
