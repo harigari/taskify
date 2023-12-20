@@ -1,11 +1,5 @@
-import Boardheader from "@/components/header/board/BoardHeader";
-import IndexHeader from "@/components/header/index/IndexHeader";
+import Header from "@/components/header/Header";
 
 export default function Home() {
-  return (
-    <>
-      <IndexHeader color="black" />
-      <Boardheader />
-    </>
-  );
+  return <Header></Header>;
 }

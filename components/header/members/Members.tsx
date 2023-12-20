@@ -1,6 +1,6 @@
-import styles from "@/components/header/board/members/Members.module.css";
-import Profile from "@/components/header/board/members/Profile";
-import ProfilePopup from "@/components/header/board/members/ProfilePopup";
+import styles from "./Members.module.css";
+import Profile from "./Profile";
+import ProfilePopup from "./ProfilePopup";
 import { MembersProps } from "@/components/header/header.type";
 import clsx from "clsx";
 import { useState } from "react";
@@ -22,7 +22,8 @@ const Members = ({ members }: MembersProps) => {
       <Profile
         member={{ id: 0, nickname: "", profileImageUrl: "" }}
         className={clsx(styles.button, {
-          [styles.hidebutton]: members.length < 5,
+          [styles.hidebutton__desktop]: members.length <= 4,
+          [styles.hidebutton__mobile]: members.length <= 2,
         })}
         data-desktop-count={members.length - 4}
         data-mobile-count={members.length - 2}

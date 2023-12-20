@@ -1,6 +1,6 @@
 import styles from "./Profile.module.css";
-import ProfileIcon from "@/components/header/board/members/ProfileIcon";
-import ProfilePopup from "@/components/header/board/members/ProfilePopup";
+import ProfileIcon from "@/components/header/members/ProfileIcon";
+import ProfilePopup from "@/components/header/members/ProfilePopup";
 import { ProfileProps } from "@/components/header/header.type";
 import { useState } from "react";
 

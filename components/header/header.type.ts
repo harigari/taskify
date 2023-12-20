@@ -15,14 +15,6 @@ export interface Member {
   profileImageUrl: string;
 }
 
-export interface IndexHeaderProps {
-  color: "white" | "black";
-}
-
-export interface HeaderProfileProps {
-  user: User;
-}
-
 export interface MembersProps {
   members: Member[];
 }
@@ -45,7 +37,7 @@ export interface ProfilePopupProps {
   member: Member | Member[];
 }
 
-export interface BoardButtonProps {
+export interface HeaderButtonProps {
   src: string;
   alt: string;
   children: ReactNode;

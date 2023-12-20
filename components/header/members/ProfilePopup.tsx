@@ -1,4 +1,4 @@
-import ProfileIcon from "@/components/header/board/members/ProfileIcon";
+import ProfileIcon from "@/components/header/members/ProfileIcon";
 import { ProfilePopupProps } from "@/components/header/header.type";
 import styles from "./ProfilePopup.module.css";
 

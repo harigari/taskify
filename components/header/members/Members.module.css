@@ -19,7 +19,7 @@
   border-radius: 10rem;
 }
 
-.hidebutton {
+.hidebutton__desktop {
   display: none;
 }
 
@@ -34,7 +34,11 @@
     content: "+" attr(data-mobile-count);
   }
 
-  .hidebutton {
+  .hidebutton__desktop {
     display: flex;
+  }
+
+  .hidebutton__mobile {
+    display: none;
   }
 }

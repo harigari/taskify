@@ -1,5 +1,5 @@
-import styles from "@/components/header/index/IndexHeader.module.css";
-import { IndexHeaderProps } from "@/components/header/header.type";
+import styles from "./IndexHeader.module.css";
+import { IndexHeaderProps } from "./IndexHeader.type";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";

@@ -1,9 +1,8 @@
-import styles from "@/components/header/board/BoardHeader.module.css";
-import BoardButton from "@/components/header/board/boardbutton/BoardButton";
-import Members from "@/components/header/board/members/Members";
-import Profile from "@/components/header/board/members/Profile";
+import styles from "./Header.module.css";
+import HeaderButton from "./headerbutton/HeaderButton";
+import Members from "./members/Members";
+import Profile from "./members/Profile";
 import { Member, User } from "@/components/header/header.type";
-import clsx from "clsx";
 
 const MOCKUP: Member[] = [
   { id: 1, nickname: "haneul", profileImageUrl: "" },
@@ -11,9 +10,9 @@ const MOCKUP: Member[] = [
   { id: 3, nickname: "Jaden", profileImageUrl: "" },
   { id: 4, nickname: "정진호", profileImageUrl: "" },
   { id: 5, nickname: "김하늘", profileImageUrl: "" },
-  // { id: 6, nickname: "조유담", profileImageUrl: "" },
-  // { id: 7, nickname: "안지수", profileImageUrl: "" },
-  // { id: 8, nickname: "정진호", profileImageUrl: "" },
+  { id: 6, nickname: "조유담", profileImageUrl: "" },
+  { id: 7, nickname: "안지수", profileImageUrl: "" },
+  { id: 8, nickname: "Youdame", profileImageUrl: "" },
 ];
 
 const USER: User = {
@@ -23,23 +22,23 @@ const USER: User = {
   profileImageUrl: "",
 };
 
-const Boardheader = () => {
+const Header = () => {
   const title = "내 대시보드";
 
   return (
     <header className={styles.header}>
       <div className={styles.grid__title}>
-        <p className={styles.boardname}>{title}</p>
+        <h1 className={styles.boardname}>{title}</h1>
       </div>
       <div className={styles.grid__settings}>
-        <BoardButton src="/images/icon-settings.svg" alt="대시보드 설정하기">
+        <HeaderButton src="/images/icon-settings.svg" alt="대시보드 설정하기">
           관리
-        </BoardButton>
+        </HeaderButton>
       </div>
       <div className={styles.grid__invite}>
-        <BoardButton src="/images/icon-addbox.svg" alt="대시보드로 초대하기">
+        <HeaderButton src="/images/icon-addbox.svg" alt="대시보드로 초대하기">
           초대하기
-        </BoardButton>
+        </HeaderButton>
       </div>
       <div className={styles.grid__members}>
         <Members members={MOCKUP} />
@@ -53,4 +52,4 @@ const Boardheader = () => {
   );
 };
 
-export default Boardheader;
+export default Header;

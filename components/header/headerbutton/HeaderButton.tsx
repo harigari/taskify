@@ -1,8 +1,8 @@
 import Image from "next/image";
-import styles from "./BoardButton.module.css";
-import { BoardButtonProps } from "@/components/header/header.type";
+import styles from "./HeaderButton.module.css";
+import { HeaderButtonProps } from "@/components/header/header.type";
 
-const BoardButton = ({ src, alt, children, ...props }: BoardButtonProps) => {
+const HeaderButton = ({ src, alt, children, ...props }: HeaderButtonProps) => {
   return (
     <button className={styles.button} {...props}>
       <Image className={styles.button__image} width={20} height={20} src={src} alt={alt} />
@@ -11,4 +11,4 @@ const BoardButton = ({ src, alt, children, ...props }: BoardButtonProps) => {
   );
 };
 
-export default BoardButton;
+export default HeaderButton;
