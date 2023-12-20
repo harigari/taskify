@@ -1,0 +1,17 @@
+.label {
+  display: block;
+  position: relative;
+  width: 7.2rem;
+  height: 7.2rem;
+  background: #f5f5f5;
+  border-radius: 0.6rem;
+  user-select: none;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.input {
+  display: none;
+}
