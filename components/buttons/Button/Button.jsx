@@ -2,6 +2,10 @@ import React from "react";
 import styles from "./Button.module.css";
 import clsx from "clsx";
 
+// sm: pc : w-8.4 h-3.2 tablet : w-7.2 h-3 mobile : w-10.9 h-2.8 // 모달 버튼
+// lg: pc,tablet : w-12 h-4.8 mobile : w-13.8 h-4.2 // 모달 버튼
+// full: 로그인 버튼
+
 const Button = ({ buttonType, children, disabled, onClick, size }) => {
   return (
     <button

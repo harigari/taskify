@@ -8,29 +8,26 @@ import DeleteDashBoardButton from "@/components/buttons/DeleteDashBoardButton/De
 export default function Home() {
   return (
     <>
-      <PrimaryButton size="full" disabled>
-        로그인
-      </PrimaryButton>
-      <div style={{ "margin-bottom": "30px" }}></div>
-      <DefaultButton size="lg">확인</DefaultButton>
-      <div style={{ "margin-bottom": "30px" }}></div>
-      <PrimaryButton size="sm">확인</PrimaryButton>
-      <div style={{ "margin-bottom": "30px" }}></div>
-      <div style={{ width: "50rem", height: "20rem" }}>
-        <PrimaryButton style={{ "border-radius": "30rem", "font-size": "2rem" }} size="custom" disabled>
-          로그인
-        </PrimaryButton>
-      </div>
-      <PrimaryButton size="sm">확인</PrimaryButton>
-      <div style={{ "margin-bottom": "30px" }}></div>
-      <DefaultButton size="sm">확인</DefaultButton>
-      <div style={{ "margin-bottom": "30px" }}></div>
+      <div style={{ display: "flex", padding: "90px", flexDirection: "column", gap: "30px" }}>
+        <ArrowButton />
+        <ArrowButton leftDisabled />
+        <ArrowButton rightDisabled />
+        <ArrowButton leftDisabled rightDisabled />
 
-      <ArrowButton leftDisabled rightDisabled />
-      <CreateDefaultButton purpose={"plus"}>+</CreateDefaultButton>
-      <CreateDefaultButton purpose={"column"}>새로운 컬럼 추가하기</CreateDefaultButton>
-      <CreateDefaultButton purpose={"dashboard"}>새로운 대시보드</CreateDefaultButton>
-      <DeleteDashBoardButton>대시보드 삭제하기</DeleteDashBoardButton>
+        <DeleteDashBoardButton>대시보드 삭제하기</DeleteDashBoardButton>
+
+        <PrimaryButton size="full">로그인</PrimaryButton>
+        <DefaultButton size="lg">확인</DefaultButton>
+        <PrimaryButton size="sm">수락</PrimaryButton>
+
+        <div style={{ width: "10rem", height: "5rem" }}>
+          <PrimaryButton size="custom">확인</PrimaryButton>
+        </div>
+
+        <CreateDefaultButton purpose={"plus"}>+</CreateDefaultButton>
+        <CreateDefaultButton purpose={"column"}>새로운 컬럼 추가하기</CreateDefaultButton>
+        <CreateDefaultButton purpose={"dashboard"}>새로운 대시보드</CreateDefaultButton>
+      </div>
     </>
   );
 }
