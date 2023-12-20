@@ -1,0 +1,28 @@
+/* prop에 따라 font-size, width, height 변경 */
+.container {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  width: fit-content;
+  height: 2rem;
+  background: var(--violet8);
+  border-radius: 1.1rem;
+}
+
+.wrapper {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--violet);
+  text-align: center;
+}
+
+/* 큰 사이즈일 때의 스타일 */
+.large {
+  height: 2.2rem;
+}
+
+.largeText {
+  font-size: 1.2rem;
+}

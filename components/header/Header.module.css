@@ -1,0 +1,68 @@
+.header {
+  display: grid;
+  grid-template-columns: max-content auto repeat(5, max-content);
+  grid-template-areas: ". title settings invite members split profile";
+  gap: 1.6rem;
+  align-items: center;
+  padding-right: 8rem;
+  padding-left: calc(50vw - 60rem);
+  border-bottom: 0.1rem solid var(--gray30);
+  width: 100vw;
+  height: 7rem;
+  background-color: var(--white);
+  font-size: 1.6rem;
+}
+
+.boardname {
+  padding-left: 2rem;
+  font-size: 2rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.splitline {
+  width: 0.1rem;
+  height: 4rem;
+  background-color: var(--gray30);
+  grid-area: split;
+}
+
+.profile {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin-right: 2rem;
+  margin-left: 1.2rem;
+  grid-area: profile;
+}
+
+.grid__title {
+  grid-area: title;
+}
+.grid__settings {
+  grid-area: settings;
+}
+.grid__invite {
+  grid-area: invite;
+}
+.grid__members {
+  grid-area: members;
+}
+
+@media screen and (max-width: 1200px) {
+  .header {
+    gap: 2rem;
+    padding-right: 4rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .header {
+    gap: 0.8rem;
+    padding-right: 0;
+  }
+
+  .profile__name {
+    display: none;
+  }
+}
