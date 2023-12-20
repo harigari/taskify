@@ -9,7 +9,7 @@ interface ModalLabelProp {
   essential?: boolean;
 }
 
-function ModalLabel({ htmlFor, children, mobile = false, essential = false }: ModalLabelProp) {
+function Label({ htmlFor, children, mobile = false, essential = false }: ModalLabelProp) {
   const labelStyle = clsx(styles.root, mobile && styles.mobile);
   const starStyle = clsx(styles.essential, essential && styles.star);
 
@@ -20,4 +20,4 @@ function ModalLabel({ htmlFor, children, mobile = false, essential = false }: Mo
   );
 }
 
-export default ModalLabel;
+export default Label;
