@@ -1,0 +1,91 @@
+.container {
+  display: flex;
+  gap: 6rem;
+  flex-direction: column;
+  padding: 2.4rem;
+  border-right: 0.1rem solid var(--gray30);
+  width: 30rem;
+  height: 100vh;
+}
+
+.container img {
+  width: auto;
+  height: auto;
+}
+
+.list {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.list__addbutton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 4rem;
+  padding: 1rem;
+}
+
+.list__addbutton__text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--gray50);
+}
+
+.list__item__link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 4rem;
+  padding: 1rem;
+}
+
+.list__item__icon {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 10rem;
+}
+
+.list__item__text {
+  margin-left: 1.6rem;
+  margin-right: 0.8rem;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--gray50);
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    align-items: center;
+    padding: 2.4rem 1.2rem 0 1.2rem;
+    width: 16rem;
+  }
+
+  .list__item__text {
+    font-size: 1.6rem;
+    margin-left: 0.8rem;
+    margin-right: 0.4rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .container {
+    gap: 4rem;
+    width: 7.2rem;
+  }
+
+  .list__addbutton,
+  .list__item__link {
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .list__item__text,
+  .list__item__img,
+  .list__addbutton__text {
+    display: none;
+  }
+}

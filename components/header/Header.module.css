@@ -7,7 +7,7 @@
   padding-right: 8rem;
   padding-left: calc(50vw - 60rem);
   border-bottom: 0.1rem solid var(--gray30);
-  width: 100vw;
+  width: calc(100vw - 30rem);
   height: 7rem;
   background-color: var(--white);
   font-size: 1.6rem;
@@ -53,6 +53,13 @@
   .header {
     gap: 2rem;
     padding-right: 4rem;
+    width: calc(100vw - 16rem);
+    grid-template-columns: auto repeat(5, max-content);
+    grid-template-areas: "title settings invite members split profile";
+  }
+
+  .boardname {
+    display: none;
   }
 }
 
@@ -60,6 +67,7 @@
   .header {
     gap: 0.8rem;
     padding-right: 0;
+    width: calc(100vw - 7.2rem);
   }
 
   .profile__name {
