@@ -1,8 +1,14 @@
 import React from "react";
 import styles from "./Button.module.css";
 import Button from "@/components/buttons/Button/Button";
+interface Props {
+  children: React.ReactNode;
+  disabled?: boolean;
+  onClick: () => void;
+  size: string;
+}
 
-const DefaultButton = ({ children, disabled, onClick, size }) => {
+const DefaultButton = ({ children, disabled, onClick, size }: Props) => {
   return (
     <Button buttonType={styles.default} disabled={disabled} onClick={onClick} size={size}>
       {children}

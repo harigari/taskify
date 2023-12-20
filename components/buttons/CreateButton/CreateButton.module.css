@@ -35,7 +35,10 @@
   height: 7rem;
   font-size: 1.6rem;
 }
-
+.disabled {
+  background: var(--gray40);
+  color: var(--white);
+}
 @media (min-width: 768px) and (max-width: 1200px) {
   .column {
     width: 54.4rem;
