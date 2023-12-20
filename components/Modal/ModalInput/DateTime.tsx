@@ -18,7 +18,7 @@ function DateTime({ date, setDate }: DateTime) {
   return (
     <div className={styles.root}>
       <div>
-        <Image className={imageStyle} src="/images/calendar.svg" width={20} height={20} alt="" />
+        <Image className={imageStyle} src="/images/icons/calendar.svg" width={20} height={20} alt="" />
       </div>
       <DatePicker
         className={styles.datepick}
