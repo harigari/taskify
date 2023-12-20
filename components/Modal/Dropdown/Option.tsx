@@ -21,10 +21,6 @@ function Option({ value, setValue, setIsOpen, option }: OptionProp) {
     setHover(false);
   };
 
-  if (value === option) {
-    console.log(option);
-  }
-
   const imageStyle = clsx(
     hover ? styles.MouseOverImage : styles.MouseOutImage,
     value === option && styles.selectedImage

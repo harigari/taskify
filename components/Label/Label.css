@@ -1,0 +1,22 @@
+.root {
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--black1, #333236);
+}
+
+.essential {
+  display: hidden;
+}
+
+.star {
+  display: inline;
+  color: var(--violet);
+}
+
+@media (max-width: 767px) {
+  .mobile {
+    font-size: 1.4rem;
+  }
+}

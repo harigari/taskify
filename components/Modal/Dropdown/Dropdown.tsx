@@ -1,8 +1,9 @@
 import clsx from "clsx";
 import styles from "./Dropdown.module.css";
 import { Dispatch, MouseEvent, ReactNode, SetStateAction, useState } from "react";
-import Option from "./option";
+import Option from "./Option";
 import Image from "next/image";
+import Label from "@/components/Label/Label";
 
 interface DropdownProp {
   children: ReactNode;
@@ -23,7 +24,7 @@ const Dropdown = ({ options, value, setValue, children }: DropdownProp) => {
 
   return (
     <>
-      <div className={styles.label}>{children}</div>
+      <Label>{children}</Label>
       <div className={styles.root}>
         <div className={selectedStyle} onClick={handleClick}>
           {value}
