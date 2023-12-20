@@ -1,0 +1,20 @@
+.delete_button {
+  display: flex;
+  width: 32rem;
+  height: 6.2rem;
+  border-radius: 0.8rem;
+  border: 1px solid var(--gray30);
+  background: var(--gray10);
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  font-size: 1.8rem;
+}
+
+@media (max-width: 768px) {
+  .delete_button {
+    width: 28.4rem;
+    height: 5.2rem;
+    font-size: 1.6rem;
+  }
+}
