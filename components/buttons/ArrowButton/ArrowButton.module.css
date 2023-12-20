@@ -1,0 +1,28 @@
+.button_container {
+  display: flex;
+}
+
+.button {
+  width: 4rem;
+  height: 4rem;
+
+  border: 1px solid var(--gray30);
+  background: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.left {
+  border-radius: 0.4rem 0rem 0rem 0.4rem;
+}
+
+.right {
+  border-radius: 0rem 0.4rem 0.4rem 0rem;
+}
+
+.icon_wrapper {
+  width: 1.6rem;
+  height: 1.6rem;
+  position: relative;
+}

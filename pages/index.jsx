@@ -1,7 +1,9 @@
-import Button from "@/components/buttons/Button";
-import PrimaryButton from "@/components/buttons/PrimaryButton";
-import DefaultButton from "@/components/buttons/DefaultButton";
-import styles from "../components/buttons/Button.module.css";
+import PrimaryButton from "@/components/buttons/Button/PrimaryButton";
+import DefaultButton from "@/components/buttons/Button/DefaultButton";
+
+import ArrowButton from "@/components/buttons/ArrowButton/ArrowButton";
+import CreateDefaultButton from "@/components/buttons/CreateButton/DefaultCreateButton";
+
 export default function Home() {
   return (
     <>
@@ -22,6 +24,10 @@ export default function Home() {
       <div style={{ "margin-bottom": "30px" }}></div>
       <DefaultButton size="sm">확인</DefaultButton>
       <div style={{ "margin-bottom": "30px" }}></div>
+
+      <ArrowButton />
+
+      <CreateDefaultButton>새로운 컬럼 추가하기</CreateDefaultButton>
     </>
   );
 }
