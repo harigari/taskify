@@ -32,7 +32,7 @@ const Dropdown = ({ options, value, setValue, children }: DropdownProp) => {
         </div>
         {isOpen && (
           <div className={styles.options}>
-            {options.map((option: string, index: number) => {
+            {options.map((option, index) => {
               return <Option value={value} setValue={setValue} setIsOpen={setIsOpen} option={option} key={index} />;
             })}
           </div>

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import styles from "./ImageInput.module.css";
+import clsx from "clsx";
 
 interface ImageInputProp {
   setImageFile: Dispatch<SetStateAction<File | null>>;
@@ -10,6 +11,16 @@ interface ImageInputProp {
 function ImageInput({ setImageFile, imageFile }: ImageInputProp) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string>("");
+  const [hover, setHover] = useState(false);
+
+  const handleMouseOver = () => {
+    console.log("a");
+    setHover(true);
+  };
+
+  const handleMouseOut = () => {
+    setHover(false);
+  };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -17,13 +28,6 @@ function ImageInput({ setImageFile, imageFile }: ImageInputProp) {
       const imageFile = e.target.files[0];
       setImageFile(imageFile);
     }
-  };
-
-  const handleClearClick = () => {
-    const inputNode = inputRef.current; // useRef로 노드를 잡아오기
-    if (!inputNode) return; // 잡아온 노드가 없으면 함수 바로 종료
-    inputNode.value = ""; // 인풋 value를 초기화
-    setImageFile(null); // fileValue state도 초기화
   };
 
   useEffect(() => {
@@ -38,9 +42,14 @@ function ImageInput({ setImageFile, imageFile }: ImageInputProp) {
   }, [imageFile]);
 
   return (
-    <div>
+    <div className={styles.root} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
       <label htmlFor="file" className={styles.label}>
         <Image className={styles.image} src={preview ? preview : "/images/add_file.svg"} fill alt="" />
+        {hover && preview && (
+          <div className={styles.hoverBox}>
+            <Image width={30} height={30} src="/images/edit_input_file.svg" alt="" />
+          </div>
+        )}
       </label>
       <input
         id="file"

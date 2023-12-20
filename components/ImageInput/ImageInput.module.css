@@ -1,3 +1,11 @@
+.root {
+  margin: 100px;
+  position: relative;
+  width: 7.2rem;
+  height: 7.2rem;
+  border-radius: 0.6rem;
+}
+
 .label {
   display: block;
   position: relative;
@@ -5,6 +13,7 @@
   height: 7.2rem;
   background: #f5f5f5;
   border-radius: 0.6rem;
+  overflow: hidden;
   user-select: none;
 }
 
@@ -14,4 +23,14 @@
 
 .input {
   display: none;
+}
+
+.hoverBox {
+  padding: 2.3rem;
+  position: absolute;
+  top: 0;
+  width: 7.2rem;
+  height: 7.2rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 0.6rem;
 }
