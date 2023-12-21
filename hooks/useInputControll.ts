@@ -45,6 +45,15 @@ function useInputController({ func, valueToCompare, inputConfig, labelConfig }: 
     }
   };
 
+  const onEyesClick = () => {
+    setEyesValue((current) => !current);
+  };
+
+  const typeChanger = () => {
+    if (!eyesValue) return "password";
+    return "text";
+  };
+
   return {
     wrapper: {
       errorText,
@@ -57,7 +66,8 @@ function useInputController({ func, valueToCompare, inputConfig, labelConfig }: 
       value,
       onChange,
       eyesValue,
-      setEyesValue,
+      onEyesClick,
+      typeChanger,
       ...inputConfig,
     },
     etc: {
