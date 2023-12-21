@@ -1,6 +1,8 @@
 import Image from "next/image";
 import styles from "./Sidemenu.module.css";
 import Link from "next/link";
+import { useState } from "react";
+import clsx from "clsx";
 
 const MOCKUP = [
   {
@@ -36,9 +38,11 @@ const MOCKUP = [
 ];
 
 const Sidemenu = () => {
+  const [selected, setSelected] = useState(0);
+
   return (
     <aside className={styles.container}>
-      <Link href="/mydashboard">
+      <Link href="/mydashboard" className={styles.logo}>
         <picture>
           <source media="(max-width:767px)" srcSet="/images/logo-purple.svg" />
           <Image
@@ -50,14 +54,21 @@ const Sidemenu = () => {
           />
         </picture>
       </Link>
-      <button className={styles.addbutton}>
-        <p className={styles.addbutton__text}>Dash Boards</p>
-        <Image width={20} height={20} src="/images/icon-addbox.svg" alt="대시보드 추가하기" />
-      </button>
+      <div className={styles.title}>
+        <Link className={styles.title__link} href="/mydashboard">
+          <p className={styles.title__text}>Dash Boards</p>
+        </Link>
+        <button className={styles.title__button}>
+          <Image width={20} height={20} src="/images/icon-addbox.svg" alt="대시보드 추가하기" />
+        </button>
+      </div>
       <ul className={styles.list}>
         {MOCKUP.map((board) => (
           <li key={board.id}>
-            <Link className={styles.item__link} href={`/dashboard/${board.id}`}>
+            <button
+              className={clsx(styles.item__button, { [styles.selected]: board.id === selected })}
+              onClick={() => setSelected(board.id)}
+            >
               <div className={styles.item__icon} style={{ backgroundColor: `var(--${board.color})` }} />
               <p className={styles.item__text}>{board.title}</p>
               {board.createdByMe && (
@@ -69,7 +80,7 @@ const Sidemenu = () => {
                   alt="내가 생성한 대시보드"
                 />
               )}
-            </Link>
+            </button>
           </li>
         ))}
       </ul>
