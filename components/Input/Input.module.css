@@ -1,0 +1,29 @@
+.root {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid var(--gray-gray_D9D9D9, #d9d9d9);
+  position: relative;
+  width: 45rem;
+  height: 4.8rem;
+  background: var(--white-white_FFFFFF, #fff);
+  border-radius: 0.6rem;
+}
+
+.wrapper:focus-within {
+  border: 0.1rem solid var(--violet);
+}
+
+.wrapper input {
+  border: none;
+}
+
+.wrapper input:focus {
+  outline: none;
+}
