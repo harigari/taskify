@@ -8,7 +8,7 @@ button,
 input,
 h1,
 h2 {
-  font-family: Pretendard;
+  font-family: "Pretendard Variable", Pretendard;
   line-height: normal;
   font-style: normal;
   font-weight: 400;
@@ -33,4 +33,12 @@ h2 {
   --orange: #ffa500;
   --blue: #76a5ea;
   --pink: #e876ea;
+  --tag1: #f9eee3;
+  --tag1Font: #d58d49;
+  --tag2: #e7f7db;
+  --tag2Font: #86d549;
+  --tag3: #f7dbf0;
+  --tag3Font: #d549b6;
+  --tag4: #dbe6f7;
+  --tag4Font: #4981d5;
 }

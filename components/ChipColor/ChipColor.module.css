@@ -1,0 +1,33 @@
+/* prop에 따라 width, height, background 변경 */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.8rem;
+  height: 2.8rem;
+  background: var(--green);
+  border-radius: 50%;
+}
+
+.large {
+  width: 3rem;
+  height: 3rem;
+}
+
+/*색상*/
+.green {
+  background: var(--green);
+}
+.purple {
+  background: var(--purple);
+}
+.orange {
+  background: var(--orange);
+}
+.blue {
+  background: var(--blue);
+}
+.pink {
+  background: var(--pink);
+}
