@@ -15,28 +15,6 @@ export interface Member {
   profileImageUrl: string;
 }
 
-export interface MembersProps {
-  members: Member[];
-}
-
-export interface ProfileProps extends ProfileIconProps {
-  idx?: number;
-  className?: string;
-}
-
-export interface ProfileIconProps {
-  member: Member;
-  onMouseOver?: () => void;
-  onMouseOut?: () => void;
-  onTouchStart?: () => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
-}
-
-export interface ProfilePopupProps {
-  member: Member | Member[];
-}
-
 export interface HeaderButtonProps {
   src: string;
   alt: string;

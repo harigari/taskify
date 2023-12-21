@@ -1,8 +1,8 @@
+import clsx from "clsx";
 import Image from "next/image";
-import styles from "./Sidemenu.module.css";
 import Link from "next/link";
 import { useState } from "react";
-import clsx from "clsx";
+import styles from "./Sidemenu.module.css";
 
 const MOCKUP = [
   {

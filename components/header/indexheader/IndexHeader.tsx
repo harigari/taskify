@@ -1,8 +1,11 @@
-import styles from "./IndexHeader.module.css";
-import { IndexHeaderProps } from "./IndexHeader.type";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+import styles from "./IndexHeader.module.css";
+
+interface IndexHeaderProps {
+  color: "white" | "black";
+}
 
 const IndexHeader = ({ color = "white" }: IndexHeaderProps) => {
   return (

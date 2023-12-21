@@ -1,6 +1,10 @@
-import ProfileIcon from "@/components/header/members/ProfileIcon";
-import { ProfilePopupProps } from "@/components/header/header.type";
+import { Member } from "@/components/Header/Header.type";
+import ProfileIcon from "./ProfileIcon";
 import styles from "./ProfilePopup.module.css";
+
+interface ProfilePopupProps {
+  member: Member | Member[];
+}
 
 const ProfilePopup = ({ member }: ProfilePopupProps) => {
   const arr = member instanceof Array ? member : [member];

@@ -1,8 +1,19 @@
-import styles from "./Profile.module.css";
-import ProfileIcon from "@/components/header/members/ProfileIcon";
-import ProfilePopup from "@/components/header/members/ProfilePopup";
-import { ProfileProps } from "@/components/header/header.type";
+import { Member } from "@/components/Header/Header.type";
 import { useState } from "react";
+import styles from "./Profile.module.css";
+import ProfileIcon from "./ProfileIcon";
+import ProfilePopup from "./ProfilePopup";
+
+interface ProfileProps {
+  idx?: number;
+  className?: string;
+  member: Member;
+  onMouseOver?: () => void;
+  onMouseOut?: () => void;
+  onTouchStart?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
+}
 
 const Profile = ({ member, idx, ...props }: ProfileProps) => {
   const [isOpen, setIsOpen] = useState(false);
