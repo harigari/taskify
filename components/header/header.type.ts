@@ -25,7 +25,8 @@ export interface ProfileProps extends ProfileIconProps {
 }
 
 export interface ProfileIconProps {
-  member: Member;
+  member: Member | { nickname: string; id: number; profileImageUrl?: string };
+  size: "sm" | "lg";
   onMouseOver?: () => void;
   onMouseOut?: () => void;
   onTouchStart?: () => void;

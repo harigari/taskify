@@ -30,6 +30,12 @@
   font-weight: 600;
 }
 
+/* 카드 컴포넌트의 프로필 */
+.card {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
 @media screen and (max-width: 767px) {
   .member[data-index="2"],
   .member[data-index="3"] {
