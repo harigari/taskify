@@ -1,10 +1,12 @@
 import { useState } from "react";
 import style from "./ChipColors.module.css";
 import ChipColor from "../ChipColor/ChipColor";
+import { ChipColorsProps } from "@/components/Chips/chips.type";
+import { ChipColorProps } from "@/components/Chips/chips.type";
 
-const ChipColors = ({ size }) => {
+const ChipColors = ({ size }: ChipColorsProps) => {
   const [selectedColor, setSelectedColor] = useState("green");
-  const handleColorClick = (color) => {
+  const handleColorClick = (color: ChipColorProps["color"]) => {
     setSelectedColor(color);
   };
 
