@@ -2,28 +2,23 @@ import React from "react";
 import styles from "./Button.module.css";
 import clsx from "clsx";
 
-// sm: pc : w-8.4 h-3.2 tablet : w-7.2 h-3 mobile : w-10.9 h-2.8 // 모달 버튼
-// lg: pc,tablet : w-12 h-4.8 mobile : w-13.8 h-4.2 // 모달 버튼
-// full: 로그인 버튼
+type Box = "box1" | "box2" | "box3" | "box4" | "box5" | "box6";
+type Color = "violet" | "white" | "gray";
 
 interface Props {
-  buttonType: string;
   children: React.ReactNode;
   disabled?: boolean;
-  onClick: () => void;
-  size: "sm" | "lg" | "full" | "custom";
+  onClick?: () => void;
+  box?: Box;
+  color?: Color;
 }
 
-const Button = ({ buttonType, children, disabled, onClick, size }: Props) => {
+const Button = ({ children, disabled, onClick, box, color }: Props) => {
   return (
     <button
+      disabled={disabled}
       onClick={onClick}
-      className={clsx(buttonType, styles.common, disabled && styles.disabled, {
-        [styles.small]: size === "sm",
-        [styles.large]: size === "lg",
-        [styles.full]: size === "full",
-        [styles.custom]: size === "custom",
-      })}
+      className={clsx(styles.common, box && styles[box], color && styles[color])}
     >
       {children}
     </button>

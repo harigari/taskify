@@ -2,38 +2,28 @@ import Image from "next/image";
 import React from "react";
 import styles from "./ArrowButton.module.css";
 import { clsx } from "clsx";
+
 interface Props {
-  onLeftButtonClick: () => void;
-  onRightButtonClick: () => void;
-  leftDisabled?: boolean;
-  rightDisabled?: boolean;
+  disabled?: boolean;
+  onClick?: () => void;
+  isLeft?: boolean;
 }
 
-const ArrowButton = ({ onLeftButtonClick, onRightButtonClick, leftDisabled, rightDisabled }: Props) => {
-  return (
-    <div className={styles.button_container}>
-      <button className={clsx(styles.button, styles.left)} onClick={onLeftButtonClick}>
-        <div className={styles.icon_wrapper}>
-          <Image
-            className={clsx(leftDisabled && styles.disabled)}
-            alt="왼쪽 화살표"
-            fill
-            src="/images/icons/left_arrow.svg"
-          />
-        </div>
-      </button>
+const ArrowButton = ({ disabled, isLeft = true, onClick }: Props) => {
+  const buttonStyle = clsx(styles.button, isLeft || styles.rotate);
 
-      <button className={clsx(styles.button, styles.right)} onClick={onRightButtonClick}>
-        <div className={styles.icon_wrapper}>
-          <Image
-            className={clsx(rightDisabled && styles.disabled)}
-            alt="오른쪽 화살표"
-            fill
-            src="/images/icons/right_arrow.svg"
-          />
-        </div>
-      </button>
-    </div>
+  return (
+    <button className={clsx(buttonStyle)} onClick={onClick}>
+      <div className={styles.icon_wrapper}>
+        {/* 이미지 컴포넌트라 :disabled 사용을 못해서 이렇게 했습니당 */}
+        <Image
+          className={clsx(disabled && styles.disabled)}
+          alt={`${isLeft ? "왼쪽" : "오른쪽"} 화살표`}
+          fill
+          src="/images/icons/arrow.svg"
+        />
+      </div>
+    </button>
   );
 };
 

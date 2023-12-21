@@ -1,46 +1,47 @@
-import PrimaryButton from "@/components/buttons/Button/PrimaryButton";
-import DefaultButton from "@/components/buttons/Button/DefaultButton";
-
 import ArrowButton from "@/components/buttons/ArrowButton/ArrowButton";
-import CreateDefaultButton from "@/components/buttons/CreateButton/DefaultCreateButton";
-import DeleteDashBoardButton from "@/components/buttons/DeleteDashBoardButton/DeleteDashBoardButton";
+import Button from "@/components/buttons/Button/Button";
 
 export default function Home() {
   return (
     <>
       <div style={{ display: "flex", padding: "90px", flexDirection: "column", gap: "30px" }}>
-        <ArrowButton onLeftButtonClick={() => {}} onRightButtonClick={() => {}} />
-        <ArrowButton onLeftButtonClick={() => {}} onRightButtonClick={() => {}} leftDisabled />
-        <ArrowButton onLeftButtonClick={() => {}} onRightButtonClick={() => {}} rightDisabled />
-        <ArrowButton onLeftButtonClick={() => {}} onRightButtonClick={() => {}} leftDisabled rightDisabled />
+        <Button color="gray">대시보드 삭제하기</Button>
 
-        <DeleteDashBoardButton onClick={() => {}}>대시보드 삭제하기</DeleteDashBoardButton>
+        {/* 질문 isLeft는 필수 속성을 타입 지정을 하는 게 좋을까요? */}
+        <ArrowButton isLeft />
+        <ArrowButton disabled />
 
-        <PrimaryButton onClick={() => {}} size="full">
+        <Button color="violet" box="box1">
           로그인
-        </PrimaryButton>
-        <DefaultButton onClick={() => {}} size="lg">
-          확인
-        </DefaultButton>
-        <PrimaryButton onClick={() => {}} size="sm">
-          수락
-        </PrimaryButton>
+        </Button>
 
-        <div style={{ width: "10rem", height: "5rem" }}>
-          <PrimaryButton onClick={() => {}} size="custom">
-            확인
-          </PrimaryButton>
-        </div>
+        <Button disabled box="box1">
+          로그인
+        </Button>
 
-        <CreateDefaultButton onClick={() => {}} purpose={"plus"}>
+        <Button box="box2" color="white">
+          삭제
+        </Button>
+
+        <Button box="box3" color="white">
+          <span>새로운 컬럼 추가하기</span>
+        </Button>
+
+        <Button box="box4" color="white">
           +
-        </CreateDefaultButton>
-        <CreateDefaultButton onClick={() => {}} purpose={"column"}>
-          새로운 컬럼 추가하기
-        </CreateDefaultButton>
-        <CreateDefaultButton onClick={() => {}} purpose={"dashboard"}>
+        </Button>
+
+        <Button box="box5" color="white">
           새로운 대시보드
-        </CreateDefaultButton>
+        </Button>
+
+        <Button box="box6" color="violet">
+          수락
+        </Button>
+
+        <Button box="box6" color="white">
+          거절
+        </Button>
       </div>
     </>
   );
