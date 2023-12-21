@@ -1,0 +1,93 @@
+.totalContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  width: 35.4rem;
+  height: auto;
+  border: 1px solid red;
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  width: 100%;
+  height: fit-content;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.todoWrapper {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.contentContainer {
+  display: flex;
+  gap: 1.5rem;
+  flex-direction: column;
+}
+
+.buttonWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--gray30);
+  width: 31.4rem;
+  height: 4rem;
+  background: var(--white);
+  border-radius: 0.6rem;
+}
+
+.cardContainer {
+  display: flex;
+  gap: 1.2rem;
+  flex-direction: column;
+  padding: 2rem;
+  border: 1px solid var(--gray30);
+  width: 100%;
+  height: fit-content;
+  background: var(--white);
+  border-radius: 0.6rem;
+}
+
+.cardContentContainer {
+  display: flex;
+  flex-direction: column;
+}
+.cardTitleWrapper {
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--black1);
+}
+
+.cardTagsWrapper {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.cardInfoWrapper {
+  display: flex;
+  margin-top: 1.6rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dateWrapper {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.date {
+  color: var(--gray50);
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}

@@ -9,12 +9,11 @@ import ChipTodo from "@/components/Chips/ChipTodo/ChipTodo";
 export default function Home() {
   return (
     <>
-      <ChipNum>1</ChipNum>
+      {/* <ChipNum>1</ChipNum>
       <ChipPlus />
       <ChipTodo size="sm">On Progress</ChipTodo>
-      {/* <ChipTag name="백엔드" /> */}
       <ChipTag size="sm">차차차</ChipTag>
-      <ChipColors size="sm" />
+      <ChipColors size="sm" /> */}
       <Card />
     </>
   );
