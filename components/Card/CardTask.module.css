@@ -13,6 +13,7 @@
 .cardContentContainer {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .cardTitleWrapper {
   margin-bottom: 1rem;
@@ -23,10 +24,15 @@
   color: var(--black1);
 }
 
+.allContentContainer {
+  display: flex;
+  flex-direction: column;
+}
+
 .cardTagCotainer {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .cardTagsWrapper {
@@ -41,12 +47,12 @@
   width: fit-content;
   height: 2rem;
   background: var(--black2);
-  border-radius: 0.8rem;
   font-size: 1rem;
   font-weight: 400;
   line-height: normal;
   color: var(--gray20);
   text-align: center;
+  border-radius: 0.8rem;
 }
 
 .cardInfoWrapper {
@@ -54,6 +60,7 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 1.6rem;
+  width: 100%;
 }
 
 .dateWrapper {
@@ -68,4 +75,70 @@
   font-weight: 500;
   line-height: normal;
   color: var(--gray50);
+}
+
+@media screen and (max-width: 1200px) {
+  .cardContainer {
+    flex-direction: row;
+    align-items: center;
+  }
+  .imageContent {
+    width: 11rem;
+    height: auto;
+  }
+  .allContentContainer {
+    align-items: center;
+    flex-direction: row;
+  }
+  .cardTagsWrapper {
+    justify-content: start;
+    max-width: 20rem;
+  }
+  .cardTagCotainer {
+    margin-right: 1.6rem;
+  }
+  .cardCountWrapper {
+    display: none;
+  }
+  .cardInfoWrapper {
+    justify-content: space-between;
+    margin-top: 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .cardContainer {
+    flex-direction: column;
+  }
+  .imageContent {
+    width: 26rem;
+    height: 15.2rem;
+  }
+  .allContentContainer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cardTitleWrapper {
+    font-size: 1.4rem;
+  }
+  .cardTagCotainer {
+    margin: 0;
+    width: 100%;
+  }
+  .dateIcon {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+  .date {
+    font-size: 1rem;
+  }
+  .cardInfoWrapper {
+    width: 100%;
+  }
+  .cardTagsWrapper {
+    max-width: 100%;
+  }
+  .cardCountWrapper {
+    display: flex;
+  }
 }
