@@ -9,11 +9,24 @@ interface func {
 interface Props {
   func?: ({ value, setErrorText }: func) => void;
   valueToCompare?: string;
+  inputConfig: {
+    id: string;
+    type: string;
+    name?: string;
+    eyeButton?: boolean;
+    placeholder?: string | undefined;
+  };
+  labelConfig: {
+    labelName: string;
+    mobile?: boolean;
+    star?: boolean;
+  };
 }
 
-function useInputController({ func, valueToCompare }: Props) {
+function useInputController({ func, valueToCompare, inputConfig, labelConfig }: Props) {
   const [value, setValue] = useState("");
   const [errorText, setErrorText] = useState("");
+  const [eyesValue, setEyesValue] = useState(false);
 
   function onChange(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
@@ -33,13 +46,24 @@ function useInputController({ func, valueToCompare }: Props) {
   };
 
   return {
-    setValue,
-    setErrorText,
-    value,
-    errorText,
-    onChange,
-    onBlur,
-    onFocus,
+    wrapper: {
+      errorText,
+      onBlur,
+      onFocus,
+      htmlFor: inputConfig.id,
+      ...labelConfig,
+    },
+    input: {
+      value,
+      onChange,
+      eyesValue,
+      setEyesValue,
+      ...inputConfig,
+    },
+    etc: {
+      setErrorText,
+      setValue,
+    },
   };
 }
 
