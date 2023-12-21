@@ -8,12 +8,12 @@
 
 .label {
   display: block;
+  overflow: hidden;
   position: relative;
   width: 7.2rem;
   height: 7.2rem;
   background: #f5f5f5;
   border-radius: 0.6rem;
-  overflow: hidden;
   user-select: none;
 }
 

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import styles from "./ImageInput.module.css";
-import clsx from "clsx";
 
 interface ImageInputProp {
   setImageFile: Dispatch<SetStateAction<File | null>>;
