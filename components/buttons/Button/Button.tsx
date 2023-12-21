@@ -11,7 +11,7 @@ interface Props {
   children: React.ReactNode;
   disabled?: boolean;
   onClick: () => void;
-  size: string;
+  size: "sm" | "lg" | "full" | "custom";
 }
 
 const Button = ({ buttonType, children, disabled, onClick, size }: Props) => {
