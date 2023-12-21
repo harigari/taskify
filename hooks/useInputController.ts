@@ -28,15 +28,11 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
   };
 
   const onBlur = () => {
-    console.log("블러데숭");
-    if (errorConfig) {
-      console.log("if문 안에 있숭");
-      errorConfig.find((error) => {
-        if (error[0]) {
-          setErrorText(error[1]);
-        }
-      });
-    }
+    errorConfig?.find((error) => {
+      if (error[0]) {
+        setErrorText(error[1]);
+      }
+    });
   };
 
   const onFocus = () => {

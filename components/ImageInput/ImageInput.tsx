@@ -13,7 +13,6 @@ function ImageInput({ setImageFile, imageFile }: ImageInputProp) {
   const [hover, setHover] = useState(false);
 
   const handleMouseOver = () => {
-    console.log("a");
     setHover(true);
   };
 
