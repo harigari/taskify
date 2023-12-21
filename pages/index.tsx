@@ -5,17 +5,23 @@ import ChipNum from "@/components/Chips/ChipNum/ChipNum";
 import ChipPlus from "@/components/Chips/ChipPlus/ChipPlus";
 import ChipTag from "@/components/Chips/ChipTag/ChipTag";
 import ChipTodo from "@/components/Chips/ChipTodo/ChipTodo";
+import TagInput from "@/components/Modal/ModalInput/TagInput";
+import { useState } from "react";
+import InputWrapper from "@/components/Input/InputWrapper";
+import Comment from "@/components/Modal/ModalInput/Comment";
 
 export default function Home() {
+  const [value, setValue] = useState("");
+  const [tagList, setTagList] = useState<string[]>([]);
+
+  const config = { value, setValue, tagList, setTagList, id: "sex" };
+
   return (
     <>
-      <ChipNum>1</ChipNum>
-      <ChipPlus />
-      <ChipTodo size="sm">On Progress</ChipTodo>
-      {/* <ChipTag name="백엔드" /> */}
-      <ChipTag size="sm">차차차</ChipTag>
-      <ChipColors size="sm" />
-      <Card />
+      <TagInput {...config}></TagInput>
+      <InputWrapper label="댓글" htmlFor="comment">
+        <Comment value={value} setValue={setValue} id="comment" />
+      </InputWrapper>
     </>
   );
 }

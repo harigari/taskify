@@ -42,7 +42,7 @@ function ImageInput({ setImageFile, imageFile }: ImageInputProp) {
 
   return (
     <div className={styles.root} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-      <label htmlFor="file" className={styles.label}>
+      <label htmlFor="imageFile" className={styles.label}>
         <Image className={styles.image} src={preview ? preview : "/images/icons/add_file.svg"} fill alt="" />
         {hover && preview && (
           <div className={styles.hoverBox}>
@@ -51,7 +51,7 @@ function ImageInput({ setImageFile, imageFile }: ImageInputProp) {
         )}
       </label>
       <input
-        id="file"
+        id="imageFile"
         className={styles.input}
         type="file"
         onChange={handleChange}
