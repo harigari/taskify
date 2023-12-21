@@ -14,7 +14,11 @@ interface InputWrapperProp extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 function InputWrapper({ labelName, htmlFor, star, mobile, errorText, children, onBlur, onFocus }: InputWrapperProp) {
-  const wrapperStyle = clsx(styles.wrapper, htmlFor === "comment" && styles.commentWrapper);
+  const wrapperStyle = clsx(
+    styles.wrapper,
+    htmlFor === "comment" && styles.commentWrapper,
+    errorText && styles.errorBorder
+  );
 
   return (
     <div className={styles.root}>

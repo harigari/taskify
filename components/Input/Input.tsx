@@ -9,7 +9,7 @@ interface InputProp {
   placeholder?: string | undefined;
   eyeButton?: boolean;
   eyesValue?: boolean;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: ChangeEvent) => void;
   onEyesClick: (e: MouseEvent<HTMLButtonElement>) => void;
   typeChanger: (type: string) => string;
 }

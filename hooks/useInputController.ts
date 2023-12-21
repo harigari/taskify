@@ -1,17 +1,10 @@
 import { ChangeEvent, useState } from "react";
 
-interface func {
-  value: string;
-  setErrorText: React.Dispatch<React.SetStateAction<string>>;
-  valueToCompare?: string;
-}
-
 interface Props {
-  func?: ({ value, setErrorText }: func) => void;
-  valueToCompare?: string;
+  errorConfig?: [boolean, string][];
   inputConfig: {
     id: string;
-    type: string;
+    type?: string;
     name?: string;
     eyeButton?: boolean;
     placeholder?: string | undefined;
@@ -23,19 +16,26 @@ interface Props {
   };
 }
 
-function useInputController({ func, valueToCompare, inputConfig, labelConfig }: Props) {
+function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
   const [value, setValue] = useState("");
+  const [date, setDate] = useState<Date | null>(null);
   const [errorText, setErrorText] = useState("");
   const [eyesValue, setEyesValue] = useState(false);
 
-  function onChange(e: ChangeEvent<HTMLInputElement>) {
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = e.target.value;
     setValue(value);
-  }
+  };
 
   const onBlur = () => {
-    if (func) {
-      func({ value, setErrorText, valueToCompare });
+    console.log("블러데숭");
+    if (errorConfig) {
+      console.log("if문 안에 있숭");
+      errorConfig.find((error) => {
+        if (error[0]) {
+          setErrorText(error[1]);
+        }
+      });
     }
   };
 
@@ -49,7 +49,7 @@ function useInputController({ func, valueToCompare, inputConfig, labelConfig }: 
     setEyesValue((current) => !current);
   };
 
-  const typeChanger = (type: string) => {
+  const typeChanger = (type: string | undefined) => {
     if (!eyesValue) return type;
     return "text";
   };
@@ -66,6 +66,7 @@ function useInputController({ func, valueToCompare, inputConfig, labelConfig }: 
     },
     input: {
       value,
+      setValue,
       onChange,
       eyesValue,
       onEyesClick,
@@ -73,6 +74,7 @@ function useInputController({ func, valueToCompare, inputConfig, labelConfig }: 
       ...inputConfig,
       type: changedType,
     },
+    dateTime: { date, setDate, id: inputConfig.id },
     etc: {
       setErrorText,
       setValue,

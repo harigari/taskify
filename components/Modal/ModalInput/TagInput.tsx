@@ -8,9 +8,10 @@ interface TagInputProp {
   value: string;
   id: string;
   setValue: Dispatch<SetStateAction<string>>;
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
-function TagInput({ tagList, setTagList, value, setValue, id }: TagInputProp) {
+function TagInput({ tagList, setTagList, value, setValue, onChange, id }: TagInputProp) {
   const handleEnter = (event: KeyboardEvent<HTMLInputElement>) => {
     const trimmedValue = value.trim(); // 문자열의 앞뒤 공백만 제거
     const replacedValue = value.replace(/\s/g, ""); // 문자열 사이사이의 공백 제거
@@ -37,11 +38,6 @@ function TagInput({ tagList, setTagList, value, setValue, id }: TagInputProp) {
     }
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setValue(e.target.value);
-  };
-
   const placeholder = tagList.length !== 0 ? "" : "입력 후 Enter";
 
   return (
@@ -61,7 +57,7 @@ function TagInput({ tagList, setTagList, value, setValue, id }: TagInputProp) {
           className={styles.input}
           value={value}
           onKeyDown={handleEnter}
-          onChange={handleChange}
+          onChange={onChange}
           placeholder={placeholder}
         ></input>
       </div>
