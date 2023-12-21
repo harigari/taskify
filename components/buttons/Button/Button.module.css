@@ -25,14 +25,10 @@
   width: 32rem;
   height: 6.2rem;
   background: var(--gray10);
-  font-size: 1.8rem;
-  font-weight: 500;
-  color: var(--black1);
-  border-radius: 0.8rem;
 }
 
 /* 로그인 */
-.box1 {
+.login {
   width: 52rem;
   height: 5rem;
   font-size: 1.8rem;
@@ -40,7 +36,7 @@
 }
 
 /* 삭제 */
-.box2 {
+.delete {
   width: 8.4rem;
   height: 3.2rem;
   font-size: 1.4rem;
@@ -48,7 +44,7 @@
   border-radius: 0.4rem;
 }
 /* 새로운 컬럼 추가하기 */
-.box3 {
+.add_column {
   width: 35rem;
   height: 7rem;
   font-size: 1.8rem;
@@ -56,86 +52,94 @@
   border-radius: 0.8rem;
 }
 /* 플러스 아이콘 */
-.box4 {
+.plus_icon {
   width: 31.4rem;
   height: 4rem;
   border-radius: 0.6rem;
 }
 
-/* 새로운 대시보드 */
-.box5 {
+/* 대시보드 */
+.dashboard {
   width: 33.2rem;
   height: 7rem;
   font-size: 1.6rem;
+  font-weight: 600;
   border-radius: 0.8rem;
 }
 /* 수락 거절 */
-.box6 {
+.accept_reject {
   width: 8.4rem;
   height: 3.2rem;
   font-size: 1.4rem;
   border-radius: 0.4rem;
 }
 
-.white.box6 {
+.white.accept_reject {
   color: var(--violet);
 }
-
+/* 대시보드 삭제하기 */
+.dashboard_delete {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--black1);
+  border-radius: 0.8rem;
+}
 @media (min-width: 768px) and (max-width: 1200px) {
-  .box3 {
+  .add_column {
     width: 54.4rem;
     height: 7rem;
   }
 
-  .box4 {
+  .plus_icon {
     width: 54.4rem;
     height: 4rem;
   }
 
-  .box5 {
+  .dashboard {
     width: 24.7rem;
     height: 6.8rem;
   }
-  .box6 {
+
+  .accept_reject {
     width: 7.2rem;
     height: 3rem;
   }
 }
 
 @media (max-width: 767px) {
-  .box1 {
+  .login {
     width: 35rem;
   }
 
-  .box2 {
+  .delete {
     width: 5.2rem;
     height: 2.8rem;
     font-size: 1.2rem;
   }
 
-  .box3 {
+  .add_column {
     width: 28.4rem;
     height: 6rem;
   }
 
-  .box4 {
+  .plus_icon {
     width: 28.4rem;
     height: 3.2rem;
   }
 
-  .box5 {
+  .dashboard {
     width: 26rem;
     height: 5.8rem;
     font-size: 1.4rem;
   }
 
-  .box6 {
+  .accept_reject {
     width: 10.9rem;
     height: 2.8rem;
     font-size: 1.2rem;
   }
 
-  .gray {
+  .dashboard_delete {
     width: 32rem;
     height: 6.2rem;
     font-size: 1.6rem;

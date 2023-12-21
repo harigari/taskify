@@ -6,19 +6,18 @@ import { clsx } from "clsx";
 interface Props {
   disabled?: boolean;
   onClick?: () => void;
-  isLeft?: boolean;
+  right?: boolean;
 }
 
-const ArrowButton = ({ disabled, isLeft = true, onClick }: Props) => {
-  const buttonStyle = clsx(styles.button, isLeft || styles.rotate);
+const ArrowButton = ({ disabled = false, right = false, onClick }: Props) => {
+  const buttonStyle = clsx(styles.button, right && styles.rotate);
 
   return (
     <button className={clsx(buttonStyle)} onClick={onClick}>
       <div className={styles.icon_wrapper}>
-        {/* 이미지 컴포넌트라 :disabled 사용을 못해서 이렇게 했습니당 */}
         <Image
           className={clsx(disabled && styles.disabled)}
-          alt={`${isLeft ? "왼쪽" : "오른쪽"} 화살표`}
+          alt={`${right ? "오른쪽" : "왼쪽"} 화살표`}
           fill
           src="/images/icons/arrow.svg"
         />

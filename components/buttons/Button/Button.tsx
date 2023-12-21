@@ -1,24 +1,25 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styles from "./Button.module.css";
 import clsx from "clsx";
 
-type Box = "box1" | "box2" | "box3" | "box4" | "box5" | "box6";
+type ButtonType = "login" | "delete" | "add_column" | "plus_icon" | "dashboard" | "accept_reject" | "dashboard_delete";
+
 type Color = "violet" | "white" | "gray";
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
   disabled?: boolean;
   onClick?: () => void;
-  box?: Box;
-  color?: Color;
+  buttonType: ButtonType;
+  color: Color;
 }
 
-const Button = ({ children, disabled, onClick, box, color }: Props) => {
+const Button = ({ children, disabled, onClick, buttonType, color }: Props) => {
   return (
     <button
       disabled={disabled}
       onClick={onClick}
-      className={clsx(styles.common, box && styles[box], color && styles[color])}
+      className={clsx(styles.common, buttonType && styles[buttonType], color && styles[color])}
     >
       {children}
     </button>
