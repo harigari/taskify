@@ -1,13 +1,13 @@
+import ProfileIcon from "@/components/Header/Members/ProfileIcon";
+import { colorMapping } from "@/utils/colorMapping";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import styles from "./Table.module.css";
-import ProfileIcon from "@/components/Header/Members/ProfileIcon";
-import { colorMapping } from "@/utils/colorMapping";
 
 interface Member {
   nickname: string;
   id: number;
-  profileImageUrl: string;
+  profileImageUrl?: string;
 }
 
 interface InviteBoard {
@@ -29,9 +29,10 @@ interface TableProps {
   data: (Member | InviteBoard)[];
   row?: number;
   tableindex: { [a: string]: string };
+  invite?: boolean;
 }
 
-const Table = ({ title, data, row = Infinity, tableindex }: TableProps) => {
+const Table = ({ title, data, row = Infinity, tableindex, invite = false }: TableProps) => {
   const column = Object.keys(tableindex).length;
   const entirePageNum = Math.ceil(data.length / row);
   const [pageCount, setPageCount] = useState(1);
@@ -67,6 +68,12 @@ const Table = ({ title, data, row = Infinity, tableindex }: TableProps) => {
               </button>
             </>
           )}
+          {invite && (
+            <button className={styles.invitebutton}>
+              <Image width={16} height={16} src="/images/icons/icon-addbox-white.svg" alt="새로운 구성원 초대하기" />
+              <span>초대하기</span>
+            </button>
+          )}
         </div>
       </div>
       {isOpen && (
@@ -77,7 +84,7 @@ const Table = ({ title, data, row = Infinity, tableindex }: TableProps) => {
           >
             {Object.keys(tableindex).map((index) => (
               <p className={styles.tableindex__item} key={index}>
-                {index || " "}
+                {index}
               </p>
             ))}
           </div>
@@ -119,6 +126,16 @@ const Table = ({ title, data, row = Infinity, tableindex }: TableProps) => {
                       </p>
                     );
                     continue;
+                  case "email":
+                    if ("invitee" in data) {
+                      arr.push(
+                        <div className={styles.row__item} key={data.invitee[v]}>
+                          <ProfileIcon member={data.invitee} />
+                          <p className={styles.row__item}>{data.invitee[v]}</p>
+                        </div>
+                      );
+                    }
+                    continue;
                   default:
                     arr.push(null);
                 }
@@ -127,7 +144,7 @@ const Table = ({ title, data, row = Infinity, tableindex }: TableProps) => {
               return (
                 <li
                   className={styles.row}
-                  style={{ gridTemplateColumns: `repeat(${column - 1}, minmax(0, 1fr)) minmax(1rem, 8rem)` }}
+                  style={{ gridTemplateColumns: `repeat(${column - 1}, minmax(max-content, 1fr)) minmax(1rem, 8rem)` }}
                   key={idx}
                 >
                   {arr}

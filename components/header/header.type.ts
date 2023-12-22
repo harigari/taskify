@@ -12,5 +12,5 @@ export interface User {
 export interface Member {
   nickname: string;
   id: number;
-  profileImageUrl: string;
+  profileImageUrl?: string;
 }
