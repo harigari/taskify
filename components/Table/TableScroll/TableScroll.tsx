@@ -1,7 +1,8 @@
 import { INVITE } from "@/pages/dashboard";
-import styles from "../TablePagenation/TablePagenation.module.css";
 import TableList from "@/components/Table/TableList/TableList";
 import TableIndex from "@/components/Table/TableIndex/TableIndex";
+import styles from "./TableScroll.module.css";
+import { useEffect } from "react";
 
 export interface Member {
   nickname: string;
