@@ -1,0 +1,30 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--gray30);
+  width: 4rem;
+  height: 4rem;
+  background: var(--white);
+  border-radius: 0.4rem 0rem 0rem 0.4rem;
+}
+
+.button:disabled img {
+  filter: invert(100%) sepia(2%) saturate(1968%) hue-rotate(339deg) brightness(124%) contrast(70%);
+}
+
+.rotate {
+  transform: rotate(0.5turn);
+}
+
+.icon_wrapper {
+  position: relative;
+  width: 1.6rem;
+  height: 1.6rem;
+}
+@media (max-width: 767px) {
+  .button {
+    width: 3.6rem;
+    height: 3.6rem;
+  }
+}
