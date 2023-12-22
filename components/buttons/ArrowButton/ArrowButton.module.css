@@ -9,9 +9,10 @@
   border-radius: 0.4rem 0rem 0rem 0.4rem;
 }
 
-.disabled {
+.button:disabled img {
   filter: invert(100%) sepia(2%) saturate(1968%) hue-rotate(339deg) brightness(124%) contrast(70%);
 }
+
 .rotate {
   transform: rotate(0.5turn);
 }
