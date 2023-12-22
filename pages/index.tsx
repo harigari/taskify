@@ -2,6 +2,11 @@ import ArrowButton from "@/components/buttons/ArrowButton/ArrowButton";
 import Button from "@/components/buttons/Button/Button";
 
 export default function Home() {
+  const [value, setValue] = useState("");
+  const [tagList, setTagList] = useState<string[]>([]);
+
+  const config = { value, setValue, tagList, setTagList, id: "sex" };
+
   return (
     <>
       <div style={{ display: "flex", padding: "90px", flexDirection: "column", gap: "30px" }}>
