@@ -1,5 +1,6 @@
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
-import Table from "@/components/Table/Table";
+import TablePagenation from "@/components/Table/TablePagenation/TablePagenation";
+import TableScroll from "@/components/Table/TableScroll/TableScroll";
 
 const MEMBER = [
   { id: 1, nickname: "haneul", profileImageUrl: "" },
@@ -12,7 +13,7 @@ const MEMBER = [
   { id: 8, nickname: "Youdame", profileImageUrl: "" },
 ];
 
-const INVITE = [
+export const INVITE = [
   {
     id: 1,
     dashboard: {
@@ -70,14 +71,22 @@ const INVITE = [
 export default function DashBoard() {
   return (
     <MenuLayout>
-      <Table title="초대 내역" data={INVITE} row={3} tableindex={{ 이메일: "email", "": "button" }} invite />
-      <Table
-        title="초대받은 대시보드"
-        data={INVITE}
-        row={4}
-        tableindex={{ 이름: "dashboard", 초대자: "invitee", "": "button" }}
-      />
-      <Table title="구성원" data={MEMBER} row={3} tableindex={{ 웃음: "nickname", "": "button" }} />
+      <div style={{ padding: "4rem" }}>
+        <TablePagenation
+          title="초대 내역"
+          data={INVITE}
+          row={3}
+          tableindex={{ 이메일: "email", "": "button" }}
+          invite
+        />
+        {/* <TablePagenation title="구성원" data={MEMBER} row={6} tableindex={{ 웃음: "nickname", 라벨: "button" }} /> */}
+        <TablePagenation
+          title="초대받은 대시보드"
+          data={INVITE}
+          tableindex={{ 이름: "dashboard", 초대자: "invitee", "": "button" }}
+        />
+        <TableScroll title="초대받은 대시보드" tableindex={{ 이름: "dashboard" }} />
+      </div>
     </MenuLayout>
   );
 }

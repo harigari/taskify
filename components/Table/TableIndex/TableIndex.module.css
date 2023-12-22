@@ -1,0 +1,10 @@
+.tableindex {
+  display: grid;
+  align-items: center;
+  margin: 2.8rem 0 0.8rem;
+}
+
+.tableindex__item {
+  font-size: 1.6rem;
+  color: var(--gray50);
+}

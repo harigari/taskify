@@ -1,0 +1,56 @@
+.container {
+  display: grid;
+  padding: 2.8rem;
+  position: relative;
+  background-color: var(--white);
+  border-radius: 1.2rem;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title__text {
+  display: flex;
+  align-items: center;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--black1);
+}
+
+.pagecount {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.pagecount__text {
+  padding: 0.4rem;
+  width: 10rem;
+  font-size: 1.4rem;
+  color: var(--gray50);
+}
+
+.arrowbutton {
+  padding: 1rem;
+  border: 0.1rem solid var(--gray30);
+  border-radius: 1rem;
+}
+.arrowbutton:hover {
+  background-color: var(--gray30);
+}
+
+@media screen and (max-width: 767px) {
+  .title__text {
+    font-size: 2rem;
+  }
+
+  .pagecount__text {
+    font-size: 1.2rem;
+  }
+
+  .tableindex__item {
+    font-size: 1.4rem;
+  }
+}
