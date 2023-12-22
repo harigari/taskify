@@ -1,0 +1,26 @@
+.root {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.5rem 0.8rem;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 0.4rem;
+}
+
+.root:hover {
+  background: var(--gray20);
+}
+
+.MouseOutImage {
+  opacity: 0;
+}
+
+.MouseOverImage {
+  opacity: 0.5;
+}
+
+.selectedImage {
+  opacity: 1;
+  filter: invert(18%) sepia(85%) saturate(3659%) hue-rotate(250deg) brightness(87%) contrast(95%);
+}
