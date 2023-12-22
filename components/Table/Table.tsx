@@ -4,9 +4,29 @@ import styles from "./Table.module.css";
 import ProfileIcon from "@/components/Header/Members/ProfileIcon";
 import { colorMapping } from "@/utils/colorMapping";
 
+interface Member {
+  nickname: string;
+  id: number;
+  profileImageUrl: string;
+}
+
+interface InviteBoard {
+  id: number;
+  dashboard: {
+    title: string;
+    id: number;
+  };
+  invitee: {
+    nickname: string;
+    email: string;
+    id: number;
+  };
+  inviteAccepted: boolean;
+}
+
 interface TableProps {
   title: string;
-  data: {}[];
+  data: (Member | InviteBoard)[];
   row?: number;
   tableindex: { [a: string]: string };
 }
@@ -57,7 +77,7 @@ const Table = ({ title, data, row = Infinity, tableindex }: TableProps) => {
           >
             {Object.keys(tableindex).map((index) => (
               <p className={styles.tableindex__item} key={index}>
-                {index}
+                {index || " "}
               </p>
             ))}
           </div>
@@ -74,6 +94,7 @@ const Table = ({ title, data, row = Infinity, tableindex }: TableProps) => {
                     );
                     continue;
                   case "nickname":
+                    if (!(v in data)) continue;
                     arr.push(
                       <div className={styles.row__item} key={data[v]}>
                         <ProfileIcon member={data} />
@@ -82,7 +103,7 @@ const Table = ({ title, data, row = Infinity, tableindex }: TableProps) => {
                     );
                     continue;
                   case "dashboard":
-                    if (!data[v]) continue;
+                    if (!(v in data)) continue;
                     arr.push(
                       <div className={styles.row__item} key={data[v].title}>
                         <div className={styles.row__icon} style={{ backgroundColor: colorMapping(data[v].title) }} />
@@ -91,7 +112,7 @@ const Table = ({ title, data, row = Infinity, tableindex }: TableProps) => {
                     );
                     continue;
                   case "invitee":
-                    if (!data[v]) continue;
+                    if (!(v in data)) continue;
                     arr.push(
                       <p className={styles.row__item} key={data[v].nickname}>
                         {data[v].nickname}
@@ -99,11 +120,7 @@ const Table = ({ title, data, row = Infinity, tableindex }: TableProps) => {
                     );
                     continue;
                   default:
-                    arr.push(
-                      <p className={styles.row__item} key={v}>
-                        {data[v]}
-                      </p>
-                    );
+                    arr.push(null);
                 }
               }
 

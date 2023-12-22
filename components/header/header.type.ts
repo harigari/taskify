@@ -14,9 +14,3 @@ export interface Member {
   id: number;
   profileImageUrl: string;
 }
-
-export interface HeaderButtonProps {
-  src: string;
-  alt: string;
-  children: ReactNode;
-}
