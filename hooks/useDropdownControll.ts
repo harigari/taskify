@@ -5,7 +5,7 @@ interface Prop {
 }
 
 function useDropdownController({ options }: Prop) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(options[0]);
 
   return { options, value, setValue };
 }

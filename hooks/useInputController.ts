@@ -66,7 +66,6 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
       onChange,
       eyesValue,
       onEyesClick,
-      typeChanger,
       ...inputConfig,
       type: changedType,
     },
