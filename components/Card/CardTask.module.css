@@ -13,7 +13,7 @@
 .cardContentContainer {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  flex-grow: 1;
 }
 .cardTitleWrapper {
   margin-bottom: 1rem;
@@ -60,7 +60,7 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 1.6rem;
-  width: 100%;
+  flex-grow: 1;
 }
 
 .dateWrapper {
@@ -109,6 +109,11 @@
 @media screen and (max-width: 767px) {
   .cardContainer {
     flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+  .cardContentContainer {
+    width: 100%;
   }
   .imageContent {
     width: 26rem;
@@ -124,6 +129,7 @@
   .cardTagCotainer {
     margin: 0;
     width: 100%;
+    gap: 0.8rem;
   }
   .dateIcon {
     width: 1.4rem;

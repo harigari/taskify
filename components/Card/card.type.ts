@@ -3,6 +3,7 @@ export interface CardProps {
 }
 
 export interface CardTaskProps {
+  id?: number;
   imageUrl: string | null;
   title: string;
   tags: string[];
@@ -11,5 +12,5 @@ export interface CardTaskProps {
     nickname: string;
     id: number;
   };
-  // profileImageUrl: string;
+  // profileImageUrl: string;g
 }
