@@ -11,6 +11,7 @@
   font-weight: 700;
   color: var(--white);
 }
+
 /* hero_section  */
 .hero_section {
   display: flex;
@@ -34,6 +35,7 @@
 .hero_section .heading .violet {
   color: var(--violet);
   font-size: 9rem;
+  text-align: center;
 }
 
 .hero_section .button {
@@ -63,6 +65,10 @@
 }
 
 @media screen and (max-width: 767px) {
+  .hero_section .heading .violet {
+    display: block;
+  }
+
   .hero_section .image_wrapper {
     width: 28.7rem;
     height: 16.8rem;
@@ -85,6 +91,7 @@
   display: flex;
   gap: 9rem;
   flex-direction: column;
+  align-items: center;
 }
 
 .feature_section .feature_article {
@@ -111,17 +118,7 @@
   }
   .feature_section .feature_article.reverse {
     flex-direction: column;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .feature_section .feature_article {
-    width: 34.3rem;
-    height: 68.6rem;
-  }
-  .feature_section .feature_article.reverse {
-    width: 34.3rem;
-    height: 68.6rem;
+    padding: 6.3rem 0 0 6rem;
   }
 }
 
@@ -131,6 +128,23 @@
   flex-direction: column;
   margin-top: 2rem;
 }
+@media screen and (max-width: 767px) {
+  .feature_section .feature_article {
+    width: 34.3rem;
+    height: 68.6rem;
+    padding: 0;
+  }
+  .feature_section .feature_article.reverse {
+    width: 34.3rem;
+    height: 68.6rem;
+    padding: 0;
+  }
+  .feature_article .feature_intro {
+    align-items: center;
+    padding: 6rem 5.8rem;
+  }
+}
+
 .feature_intro .feature_number {
   font-size: 2.2rem;
   font-weight: 500;
@@ -183,6 +197,10 @@
     width: 21.7rem;
     height: 25rem;
   }
+  .feature_intro .feature_h2 {
+    font-size: 3.6rem;
+    text-align: center;
+  }
 }
 
 /* setting_section  */
@@ -203,11 +221,21 @@
 }
 
 @media screen and (max-width: 1200px) {
+  .setting_section .setting_container {
+    flex-direction: column;
+  }
   .setting_section {
     width: 37.8rem;
   }
-  .setting_section .setting_container {
-    flex-direction: column;
+}
+
+@media screen and (max-width: 767px) {
+  .setting_section {
+    width: 34.3rem;
+  }
+
+  .setting_section .setting_h2 {
+    font-size: 2.2rem;
   }
 }
 .setting_container .setting_article {

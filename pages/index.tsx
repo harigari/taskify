@@ -13,7 +13,7 @@ export default function Home() {
             <Image fill src="/images/photos/landing_hero.png" alt="taskify 히어로 이미지" />
           </div>
           <h1 className={styles.heading}>
-            새로운 일정 관리 <span className={styles.violet}>Taskify</span>
+            새로운 일정 관리<span className={styles.violet}>Taskify</span>
           </h1>
           <button className={styles.button}>로그인하기</button>
         </section>
