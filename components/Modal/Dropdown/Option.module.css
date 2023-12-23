@@ -12,6 +12,12 @@
   background: var(--gray20);
 }
 
+.profileWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
 .MouseOutImage {
   opacity: 0;
 }

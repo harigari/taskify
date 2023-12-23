@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import styles from "@/components/Modal/Dropdown/Option.module.css";
 import Image from "next/image";
 import { Member } from "@/hooks/useInputDropdownControll";
+import ProfileIcon from "@/components/header/members/ProfileIcon";
 
 interface OptionProp {
   value: any;
@@ -39,7 +40,10 @@ function Option({ value, setValue, setIsOpen, option }: OptionProp) {
     >
       <Image className={imageStyle} src="/images/icons/check.svg" width={22} height={22} alt="" />
 
-      <div>{option.nickname}</div>
+      <div className={styles.profileWrapper}>
+        <ProfileIcon size="sm" member={option} />
+        {option.nickname}
+      </div>
     </div>
   );
 }

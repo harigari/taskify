@@ -14,7 +14,7 @@ import Option from "./Option";
 import Label from "@/components/Label/Label";
 import Image from "next/image";
 import { Member } from "@/hooks/useInputDropdownControll";
-import Profile from "@/components/header/members/Profile";
+import ProfileIcon from "@/components/header/members/ProfileIcon";
 
 interface DropdownProp {
   children: ReactNode;
@@ -74,7 +74,10 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
             ></input>
           ) : (
             <div className={styles.selectedNickname}>
-              <Profile member={value} idx={1} />
+              <div className={styles.profileWrapper}>
+                <ProfileIcon size="sm" member={value} />
+                {value.nickname}
+              </div>
               <button
                 type="button"
                 className={styles.button}

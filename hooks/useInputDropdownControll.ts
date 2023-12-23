@@ -5,7 +5,7 @@ export type Member = {
   userId: number;
   email: string;
   nickname: string;
-  profileImageUrl: string | null;
+  profileImageUrl: string;
   createdAt: string;
   updatedAt: string;
   isOwner: boolean;
