@@ -4,10 +4,10 @@ interface Prop {
   options: string[];
 }
 
-function useDropdownControll({ options }: Prop) {
-  const [value, setValue] = useState("");
+function useDropdownController({ options }: Prop) {
+  const [value, setValue] = useState(options[0]);
 
   return { options, value, setValue };
 }
 
-export default useDropdownControll;
+export default useDropdownController;

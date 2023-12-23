@@ -6,12 +6,12 @@ interface ModalLabelProp {
   htmlFor?: string;
   children: ReactNode;
   mobile?: boolean;
-  essential?: boolean;
+  star?: boolean;
 }
 
-function Label({ htmlFor, children, mobile = false, essential = false }: ModalLabelProp) {
+function Label({ htmlFor, children, mobile = false, star = false }: ModalLabelProp) {
   const labelStyle = clsx(styles.root, mobile && styles.mobile);
-  const starStyle = clsx(styles.essential, essential && styles.star);
+  const starStyle = clsx(styles.essential, star && styles.star);
 
   return (
     <label htmlFor={htmlFor} className={labelStyle}>
