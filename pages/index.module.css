@@ -177,6 +177,7 @@
   .feature_article .flex_box2 {
     display: flex;
     justify-content: center;
+    margin-right: 6rem;
   }
   .feature_article .feature_image_wrapper1 {
     width: 51.9rem;
@@ -200,6 +201,9 @@
   .feature_intro .feature_h2 {
     font-size: 3.6rem;
     text-align: center;
+  }
+  .feature_article .flex_box2 {
+    margin-right: 0rem;
   }
 }
 
