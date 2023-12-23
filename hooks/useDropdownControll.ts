@@ -1,22 +1,11 @@
 import { useState } from "react";
 
-type Member = {
-  id: number;
-  userId: number;
-  email: string;
-  nickname: string;
-  profileImageUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  isOwner: boolean;
-};
-
 interface Prop {
-  options: Member[];
+  options: string[];
 }
 
 function useDropdownController({ options }: Prop) {
-  const [value, setValue] = useState<Member | null>(null);
+  const [value, setValue] = useState<string>("");
 
   return { options, value, setValue };
 }

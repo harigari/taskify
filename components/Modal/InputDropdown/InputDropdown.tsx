@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import styles from "./InputDropdown.module.css";
+import styles from "@/components/Modal/Dropdown/Dropdown.module.css";
 import {
   ChangeEvent,
   Dispatch,
@@ -13,17 +13,8 @@ import {
 import Option from "./Option";
 import Label from "@/components/Label/Label";
 import Image from "next/image";
-
-type Member = {
-  id: number;
-  userId: number;
-  email: string;
-  nickname: string;
-  profileImageUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  isOwner: boolean;
-};
+import { Member } from "@/hooks/useInputDropdownControll";
+import Profile from "@/components/header/members/Profile";
 
 interface DropdownProp {
   children: ReactNode;
@@ -83,7 +74,7 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
             ></input>
           ) : (
             <div className={styles.selectedNickname}>
-              {value?.nickname}
+              <Profile member={value} idx={1} />
               <button
                 type="button"
                 className={styles.button}

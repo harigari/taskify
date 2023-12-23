@@ -1,18 +1,8 @@
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useState } from "react";
-import styles from "./Option.module.css";
+import styles from "@/components/Modal/Dropdown/Option.module.css";
 import Image from "next/image";
-
-type Member = {
-  id: number;
-  userId: number;
-  email: string;
-  nickname: string;
-  profileImageUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  isOwner: boolean;
-};
+import { Member } from "@/hooks/useInputDropdownControll";
 
 interface OptionProp {
   value: any;

@@ -19,6 +19,12 @@
   border-radius: 0.6rem;
 }
 
+.selectedNickname {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
 .selectedBorder {
   border: 1px solid var(--violet, #d9d9d9);
 }
@@ -30,6 +36,19 @@
   font-weight: 500;
   line-height: normal;
   color: var(--black1, #333236);
+}
+
+/* Input 컴포넌트 연결하면 제거해도 될 듯? */
+.input {
+  flex: 1;
+  border: none;
+  width: 100%;
+  font-size: 1.4rem;
+  color: var(--black1, #333236);
+}
+
+.input:focus {
+  outline: none;
 }
 
 .options {
