@@ -13,13 +13,13 @@ import {
 import Option from "./Option";
 import Label from "@/components/Label/Label";
 import Image from "next/image";
-import { Member } from "@/hooks/useInputDropdownControll";
 import ProfileIcon from "@/components/header/members/ProfileIcon";
+import { Member } from "@/hooks/useDropdownControll";
 
 interface DropdownProp {
   children: ReactNode;
-  value: Member | null;
-  setValue: Dispatch<SetStateAction<Member | null>>;
+  value: Member | undefined;
+  setValue: Dispatch<SetStateAction<Member | undefined>>;
   options: Member[];
 }
 
@@ -33,7 +33,7 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
   const [inputValue, setInputValue] = useState("");
   const [filtedOptions, setFiltedOptions] = useState<any[]>(options);
 
-  const selectedStyle = clsx(styles.selected, isOpen && styles.selectedBorder);
+  const selectedStyle = clsx(styles.selected, (isOpen || inputValue) && styles.selectedBorder);
 
   const handleClick = (e: MouseEvent) => {
     e.preventDefault();
@@ -82,7 +82,7 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
                 type="button"
                 className={styles.button}
                 onClick={() => {
-                  setValue(null);
+                  setValue(undefined);
                 }}
               >
                 <Image src="/images/icons/close.svg" alt="닫기 버튼" width={20} height={20} />
@@ -91,7 +91,7 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
           )}
         </div>
 
-        {isOpen && (
+        {(isOpen || inputValue) && (
           <div className={styles.options}>
             {filtedOptions?.map((option) => {
               return (
