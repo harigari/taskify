@@ -3,11 +3,13 @@ import styles from "@/components/Modal/Dropdown/Dropdown.module.css";
 import {
   ChangeEvent,
   Dispatch,
+  FocusEvent,
   KeyboardEvent,
   MouseEvent,
   ReactNode,
   SetStateAction,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import Option from "./Option";
@@ -35,8 +37,19 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
 
   const selectedStyle = clsx(styles.selected, (isOpen || inputValue) && styles.selectedBorder);
 
-  const handleClick = (e: MouseEvent) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleFocus = (e: FocusEvent) => {
     e.preventDefault();
+    inputRef.current?.focus();
+    if (!value) {
+      setIsOpen((prevValue) => !prevValue);
+    }
+  };
+
+  const handleBlur = (e: FocusEvent) => {
+    e.preventDefault();
+    inputRef.current?.blur();
     if (!value) {
       setIsOpen((prevValue) => !prevValue);
     }
@@ -47,11 +60,6 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
     setInputValue(e.target.value);
   };
 
-  useEffect(() => {
-    const filtedOptions = optionFilter(options, inputValue);
-    setFiltedOptions(filtedOptions);
-  }, [inputValue, options]);
-
   const handleEnter = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && filtedOptions.length > 0) {
       setValue(filtedOptions[0]);
@@ -59,13 +67,19 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
     }
   };
 
+  useEffect(() => {
+    const filtedOptions = optionFilter(options, inputValue);
+    setFiltedOptions(filtedOptions);
+  }, [inputValue, options]);
+
   return (
     <>
       <Label>{children}</Label>
       <div className={styles.root}>
-        <div className={selectedStyle} onClick={handleClick}>
+        <div className={selectedStyle} onFocus={handleFocus} onBlur={handleBlur}>
           {!value ? (
             <input
+              ref={inputRef}
               className={styles.input}
               value={inputValue}
               onChange={handleChange}
