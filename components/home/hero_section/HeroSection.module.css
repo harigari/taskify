@@ -1,0 +1,78 @@
+.heading {
+  font-weight: 700;
+  color: var(--white);
+}
+
+/* hero_section  */
+.hero_section {
+  display: flex;
+  gap: 5rem;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 9.4rem;
+}
+
+.hero_section .image_wrapper {
+  position: relative;
+  width: 72.2rem;
+  height: 42.2rem;
+  border-radius: 0.8rem;
+}
+
+.hero_section .heading {
+  font-size: 7.6rem;
+}
+
+.hero_section .heading .violet {
+  color: var(--violet);
+  font-size: 9rem;
+  text-align: center;
+}
+
+.hero_section .button {
+  margin-top: 7rem;
+  width: 28rem;
+  height: 5rem;
+  background: var(--violet);
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--white);
+  border-radius: 0.8rem;
+}
+
+@media screen and (max-width: 1200px) {
+  .hero_section .image_wrapper {
+    width: 53.7rem;
+    height: 31.4rem;
+  }
+
+  .hero_section .heading {
+    font-size: 5.6rem;
+  }
+
+  .hero_section .heading .violet {
+    font-size: 7rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .hero_section .heading .violet {
+    display: block;
+  }
+
+  .hero_section .image_wrapper {
+    width: 28.7rem;
+    height: 16.8rem;
+  }
+  .hero_section .heading {
+    font-size: 4rem;
+  }
+  .hero_section .heading .violet {
+    font-size: 4.2rem;
+  }
+
+  .hero_section .button {
+    width: 23.52rem;
+    font-size: 1.4rem;
+  }
+}
