@@ -3,6 +3,11 @@ import Image from "next/image";
 import styles from "./index.module.css";
 import clsx from "clsx";
 export default function Home() {
+  const [value, setValue] = useState("");
+  const [tagList, setTagList] = useState<string[]>([]);
+
+  const config = { value, setValue, tagList, setTagList, id: "sex" };
+
   return (
     <>
       <IndexHeader color="black" />

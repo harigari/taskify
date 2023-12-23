@@ -42,3 +42,7 @@ h2 {
   --tag4: #dbe6f7;
   --tag4Font: #4981d5;
 }
+
+.react-datepicker__triangle {
+  margin-left: -50% !important;
+}
