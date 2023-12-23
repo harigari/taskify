@@ -28,8 +28,10 @@ export default function Home() {
                 관리하세요
               </h2>
             </div>
-            <div className={styles.feature_image_wrapper1}>
-              <Image fill alt="우선순위 관리 기능 예시 이미지" src="/images/photos/landing_feature1.png" />
+            <div className={styles.flex_box1}>
+              <div className={styles.feature_image_wrapper1}>
+                <Image fill alt="우선순위 관리 기능 예시 이미지" src="/images/photos/landing_feature1.png" />
+              </div>
             </div>
           </article>
 
@@ -41,8 +43,10 @@ export default function Home() {
                 등록하세요
               </h2>
             </div>
-            <div className={styles.feature_image_wrapper2}>
-              <Image fill alt="할 일 생성 기능 예시 이미지" src="/images/photos/landing_feature2.png" />
+            <div className={styles.flex_box2}>
+              <div className={styles.feature_image_wrapper2}>
+                <Image fill alt="할 일 생성 기능 예시 이미지" src="/images/photos/landing_feature2.png" />
+              </div>
             </div>
           </article>
         </section>
