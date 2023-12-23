@@ -5,10 +5,10 @@
   font-weight: 500;
 }
 
-/* .common:disabled {
+.common:disabled {
   background: var(--gray40);
   color: var(--white);
-} */
+}
 
 .violet {
   background-color: var(--violet);
