@@ -4,7 +4,7 @@ interface Props {
   errorConfig?: [boolean, string][];
   inputConfig: {
     id: string;
-    type?: string;
+    type: string;
     name?: string;
     eyeButton?: boolean;
     placeholder?: string | undefined;
@@ -28,6 +28,7 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
   };
 
   const onBlur = () => {
+    // 에러 핸들링 로직에 거대한 수정이 필요하다
     errorConfig?.find((error) => {
       if (error[0]) {
         setErrorText(error[1]);
@@ -45,7 +46,7 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
     setEyesValue((current) => !current);
   };
 
-  const typeChanger = (type: string | undefined) => {
+  const typeChanger = (type: string) => {
     if (!eyesValue) return type;
     return "text";
   };

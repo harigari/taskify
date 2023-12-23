@@ -30,8 +30,8 @@ function Option({ value, setValue, setIsOpen, option }: OptionProp) {
 
   return (
     <div
-      className={styles.root}
-      onClick={() => {
+      className={`${styles.root} option`}
+      onMouseDown={() => {
         setValue(option);
         setIsOpen((value) => !value);
       }}

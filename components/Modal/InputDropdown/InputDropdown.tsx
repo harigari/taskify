@@ -5,7 +5,6 @@ import {
   Dispatch,
   FocusEvent,
   KeyboardEvent,
-  MouseEvent,
   ReactNode,
   SetStateAction,
   useEffect,
@@ -41,16 +40,18 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
 
   const handleFocus = (e: FocusEvent) => {
     e.preventDefault();
+
     inputRef.current?.focus();
-    if (!value) {
+    if (!inputValue) {
       setIsOpen((prevValue) => !prevValue);
     }
   };
 
   const handleBlur = (e: FocusEvent) => {
     e.preventDefault();
+
     inputRef.current?.blur();
-    if (!value) {
+    if (!inputValue) {
       setIsOpen((prevValue) => !prevValue);
     }
   };
@@ -63,8 +64,13 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
   const handleEnter = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && filtedOptions.length > 0) {
       setValue(filtedOptions[0]);
-      setIsOpen(false);
+      setInputValue("");
+      setIsOpen((prevValue) => !prevValue);
     }
+  };
+
+  const handleDeleteClick = () => {
+    setValue(undefined);
   };
 
   useEffect(() => {
@@ -92,13 +98,7 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
                 <ProfileIcon size="sm" member={value} />
                 {value.nickname}
               </div>
-              <button
-                type="button"
-                className={styles.button}
-                onClick={() => {
-                  setValue(undefined);
-                }}
-              >
+              <button type="button" className={styles.button} onMouseDown={handleDeleteClick}>
                 <Image src="/images/icons/close.svg" alt="닫기 버튼" width={20} height={20} />
               </button>
             </div>
