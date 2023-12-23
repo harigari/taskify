@@ -1,8 +1,8 @@
-import { INVITE } from "@/pages/dashboard";
-import TableList from "@/components/Table/TableList/TableList";
 import TableIndex from "@/components/Table/TableIndex/TableIndex";
+import TableList from "@/components/Table/TableList/TableList";
+import { ButtonType } from "@/components/buttons/Button/Button";
+import { INVITE } from "@/pages/dashboard";
 import styles from "./TableScroll.module.css";
-import { useEffect } from "react";
 
 export interface Member {
   nickname: string;
@@ -24,7 +24,9 @@ export interface InviteBoard {
   inviteAccepted: boolean;
 }
 
-export type Tableindex = { [a: string]: string };
+export type Tableindex = {
+  [a: string]: "nickname" | "dashboard" | "invitee" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
+};
 
 interface TableProps {
   title: string;

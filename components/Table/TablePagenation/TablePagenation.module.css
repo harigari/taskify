@@ -8,12 +8,14 @@
 
 .title {
   display: flex;
-  justify-content: space-between;
+  gap: 1.6rem;
+  align-items: center;
 }
 
 .title__text {
   display: flex;
   align-items: center;
+  flex-grow: 1;
   font-size: 2.4rem;
   font-weight: 700;
   color: var(--black1);
@@ -21,12 +23,13 @@
 
 .pagecount {
   display: flex;
-  gap: 2rem;
   align-items: center;
 }
 
 .pagecount__text {
-  padding: 0.4rem;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 1.6rem;
   width: 10rem;
   font-size: 1.4rem;
   color: var(--gray50);

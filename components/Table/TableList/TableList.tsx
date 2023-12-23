@@ -1,8 +1,9 @@
-import { Member } from "@/components/Header/Header.type";
-import styles from "./TableList.module.css";
-import { InviteBoard, Tableindex } from "@/components/Table/TableScroll/TableScroll";
 import ProfileIcon from "@/components/Header/Members/ProfileIcon";
+import { Member } from "@/components/Header/header.type";
+import { InviteBoard, Tableindex } from "@/components/Table/TableScroll/TableScroll";
+import Button from "@/components/buttons/Button/Button";
 import { colorMapping } from "@/utils/colorMapping";
+import styles from "./TableList.module.css";
 
 interface TableListProps {
   data: Member[] | InviteBoard[];
@@ -12,22 +13,16 @@ interface TableListProps {
 
 const TableList = ({ data, tableindex, row }: TableListProps) => {
   const column = Object.keys(tableindex).length;
+  const isAccept = Object.values(tableindex).includes("acceptButton");
 
   return (
-    <ul>
+    <ul className={isAccept ? styles.list__mobile : ""}>
       {data.map((data, idx) => {
         const arr = [];
         for (const key of Object.keys(tableindex)) {
           const v = tableindex[key];
-          switch (v) {
-            case "button":
-              arr.push(
-                <button className={styles.button} key={v}>
-                  버튼
-                </button>
-              );
-              continue;
-            case "nickname":
+          switch (true) {
+            case v === "nickname":
               if (!(v in data)) continue;
               arr.push(
                 <div className={styles.row__item} key={data[v]}>
@@ -36,24 +31,26 @@ const TableList = ({ data, tableindex, row }: TableListProps) => {
                 </div>
               );
               continue;
-            case "dashboard":
+            case v === "dashboard":
               if (!(v in data)) continue;
               arr.push(
                 <div className={styles.row__item} key={data[v].title}>
+                  {isAccept && <span className={styles.row__text__mobile}>{key}</span>}
                   <div className={styles.row__icon} style={{ backgroundColor: colorMapping(data[v].title) }} />
                   <p>{data[v].title}</p>
                 </div>
               );
               continue;
-            case "invitee":
+            case v === "invitee":
               if (!(v in data)) continue;
               arr.push(
                 <p className={styles.row__item} key={data[v].nickname}>
+                  {isAccept && <span className={styles.row__text__mobile}>{key}</span>}
                   {data[v].nickname}
                 </p>
               );
               continue;
-            case "email":
+            case v === "email":
               if ("invitee" in data) {
                 arr.push(
                   <div className={styles.row__item} key={data.invitee[v]}>
@@ -63,6 +60,36 @@ const TableList = ({ data, tableindex, row }: TableListProps) => {
                 );
               }
               continue;
+            case v === "deleteButton":
+              {
+                arr.push(
+                  <Button buttonType="delete" color="white" key={v}>
+                    삭제
+                  </Button>
+                );
+              }
+              continue;
+            case v === "acceptButton":
+              {
+                arr.push(
+                  <div className={styles.acceptbutton__wrapper} key={v}>
+                    <Button buttonType="accept_reject" color="violet">
+                      수락
+                    </Button>
+                    <Button buttonType="accept_reject" color="white">
+                      거절
+                    </Button>
+                  </div>
+                );
+              }
+              continue;
+            case v === "cancelButton":
+              arr.push(
+                <Button buttonType="delete" color="white" key={v}>
+                  취소
+                </Button>
+              );
+              continue;
             default:
               arr.push(null);
           }
@@ -71,7 +98,9 @@ const TableList = ({ data, tableindex, row }: TableListProps) => {
         return (
           <li
             className={styles.row}
-            style={{ gridTemplateColumns: `repeat(${column - 1}, minmax(max-content, 1fr)) minmax(1rem, 8rem)` }}
+            style={{
+              gridTemplateColumns: `repeat(${column - 1}, minmax(max-content, 1fr)) minmax(1rem, 8rem)`,
+            }}
             key={idx}
           >
             {arr}

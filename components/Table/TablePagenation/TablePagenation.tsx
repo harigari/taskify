@@ -1,12 +1,12 @@
-import ProfileIcon from "@/components/Header/Members/ProfileIcon";
-import { colorMapping } from "@/utils/colorMapping";
-import Image from "next/image";
+import TableIndex from "@/components/Table/TableIndex/TableIndex";
+import TableList from "@/components/Table/TableList/TableList";
+import HideButton from "@/components/Table/TablePagenation/HideButton";
+import InviteButton from "@/components/Table/TablePagenation/InviteButton";
+import ArrowButton from "@/components/buttons/ArrowButton/ArrowButton";
 import { useMemo, useState } from "react";
 import styles from "./TablePagenation.module.css";
-import TableList from "@/components/Table/TableList/TableList";
-import InviteButton from "@/components/Table/TablePagenation/InviteButton";
-import TableIndex from "@/components/Table/TableIndex/TableIndex";
-import HideButton from "@/components/Table/TablePagenation/HideButton";
+import { ButtonType } from "@/components/buttons/Button/Button";
+import { Tableindex } from "@/components/Table/TableScroll/TableScroll";
 
 interface Member {
   nickname: string;
@@ -32,12 +32,11 @@ interface TableProps {
   title: string;
   data: Member[] | InviteBoard[];
   row?: number;
-  tableindex: { [a: string]: string };
+  tableindex: Tableindex;
   invite?: boolean;
 }
 
 const TablePagenation = ({ title, data, row = Infinity, tableindex, invite = false }: TableProps) => {
-  const column = Object.keys(tableindex).length;
   const entirePageNum = Math.ceil(data.length / row);
   const [pageCount, setPageCount] = useState(1);
   const [rowNum, setRowNum] = useState(row);
@@ -48,32 +47,27 @@ const TablePagenation = ({ title, data, row = Infinity, tableindex, invite = fal
     <article className={styles.container}>
       <div className={styles.title}>
         <h2 className={styles.title__text}>{title}</h2>
-        <div className={styles.pagecount}>
-          {entirePageNum > 1 && (
-            <>
-              <span className={styles.pagecount__text}>{`${pageCount} 페이지 중 ${entirePageNum}`}</span>
-              <button
-                className={styles.arrowbutton}
-                onClick={() => {
-                  setPageCount((prev) => (prev > 1 ? prev - 1 : 1));
-                  setRowNum((prev) => (prev - row > 0 ? prev - row : prev));
-                }}
-              >
-                {"<"}
-              </button>
-              <button
-                className={styles.arrowbutton}
-                onClick={() => {
-                  setPageCount((prev) => (prev < entirePageNum ? prev + 1 : prev));
-                  setRowNum((prev) => (prev < data.length ? prev + row : prev));
-                }}
-              >
-                {">"}
-              </button>
-            </>
-          )}
-          {invite && <InviteButton />}
-        </div>
+        {entirePageNum > 1 && (
+          <div className={styles.pagecount}>
+            <span className={styles.pagecount__text}>{`${pageCount} 페이지 중 ${entirePageNum}`}</span>
+            <ArrowButton
+              disabled={pageCount === 1}
+              onClick={() => {
+                setPageCount((prev) => (prev > 1 ? prev - 1 : 1));
+                setRowNum((prev) => (prev - row > 0 ? prev - row : prev));
+              }}
+            />
+            <ArrowButton
+              right
+              disabled={pageCount === entirePageNum}
+              onClick={() => {
+                setPageCount((prev) => (prev < entirePageNum ? prev + 1 : prev));
+                setRowNum((prev) => (prev < data.length ? prev + row : prev));
+              }}
+            />
+          </div>
+        )}
+        {invite && <InviteButton />}
       </div>
       {isOpen && (
         <>

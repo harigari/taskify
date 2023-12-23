@@ -1,5 +1,6 @@
 import ArrowButton from "@/components/buttons/ArrowButton/ArrowButton";
 import Button from "@/components/buttons/Button/Button";
+import { useState } from "react";
 
 export default function Home() {
   const [value, setValue] = useState("");

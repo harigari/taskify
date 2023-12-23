@@ -8,3 +8,20 @@
   font-size: 1.6rem;
   color: var(--gray50);
 }
+
+.tableindex__acceptbutton {
+  width: 17.8rem;
+  justify-self: end;
+}
+
+@media screen and (max-width: 1200px) {
+  .tableindex__acceptbutton {
+    width: 15.4rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .tableindex__mobile {
+    display: none;
+  }
+}

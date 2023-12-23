@@ -1,6 +1,7 @@
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
 import TablePagenation from "@/components/Table/TablePagenation/TablePagenation";
 import TableScroll from "@/components/Table/TableScroll/TableScroll";
+import styles from "./index.module.css";
 
 const MEMBER = [
   { id: 1, nickname: "haneul", profileImageUrl: "" },
@@ -71,19 +72,19 @@ export const INVITE = [
 export default function DashBoard() {
   return (
     <MenuLayout>
-      <div style={{ padding: "4rem" }}>
+      <div className={styles.container}>
         <TablePagenation
           title="초대 내역"
           data={INVITE}
           row={3}
-          tableindex={{ 이메일: "email", "": "button" }}
+          tableindex={{ 이메일: "email", "": "deleteButton" }}
           invite
         />
         {/* <TablePagenation title="구성원" data={MEMBER} row={6} tableindex={{ 웃음: "nickname", 라벨: "button" }} /> */}
         <TablePagenation
           title="초대받은 대시보드"
           data={INVITE}
-          tableindex={{ 이름: "dashboard", 초대자: "invitee", "": "button" }}
+          tableindex={{ 이름: "dashboard", 초대자: "invitee", "수락 여부": "acceptButton" }}
         />
         <TableScroll title="초대받은 대시보드" tableindex={{ 이름: "dashboard" }} />
       </div>
