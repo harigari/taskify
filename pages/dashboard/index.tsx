@@ -74,17 +74,20 @@ export default function DashBoard() {
     <MenuLayout>
       <div className={styles.container}>
         <TablePagenation
-          title="초대 내역"
-          data={INVITE}
+          title="구성원"
+          data={MEMBER}
           row={3}
-          tableindex={{ 이메일: "email", "": "deleteButton" }}
+          tableindex={{ 이름: "nickname", "": "deleteButton" }}
           invite
+          search
         />
         {/* <TablePagenation title="구성원" data={MEMBER} row={6} tableindex={{ 웃음: "nickname", 라벨: "button" }} /> */}
         <TablePagenation
           title="초대받은 대시보드"
           data={INVITE}
+          row={3}
           tableindex={{ 이름: "dashboard", 초대자: "invitee", "수락 여부": "acceptButton" }}
+          search
         />
         <TableScroll title="초대받은 대시보드" tableindex={{ 이름: "dashboard" }} />
       </div>

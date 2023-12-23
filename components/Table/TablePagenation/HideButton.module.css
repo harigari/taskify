@@ -9,8 +9,8 @@
   height: 2rem;
   font-weight: 600;
 }
-.hidebutton:hover {
+.hidebutton:hover,
+.hidebutton:focus-within {
   border-bottom-right-radius: 0.4rem;
   border-bottom-left-radius: 0.4rem;
-  background-color: var(--gray30);
 }

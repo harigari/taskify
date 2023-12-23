@@ -5,6 +5,7 @@ import styles from "./ProfileIcon.module.css";
 
 interface ProfileIconProps {
   member: Member;
+  tabIndex?: number;
   onMouseOver?: () => void;
   onMouseOut?: () => void;
   onTouchStart?: () => void;

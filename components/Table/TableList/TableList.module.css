@@ -28,10 +28,10 @@
 }
 
 .row__item {
-  color: var(--black1);
   display: flex;
-  align-items: center;
   gap: 1.2rem;
+  align-items: center;
+  color: var(--black1);
 }
 
 .row__icon {
@@ -52,8 +52,12 @@
   .list__mobile .row {
     grid-template-columns: none !important;
     gap: 0.8rem;
-    height: fit-content;
     padding: 1.6rem 0;
+    height: 12rem;
+  }
+
+  .list__mobile .row:first-child {
+    margin-top: 2rem;
   }
 
   .list__mobile .row__icon {
@@ -71,8 +75,8 @@
   }
 
   .acceptbutton__wrapper {
-    width: 100%;
     gap: 3rem;
+    width: 100%;
   }
 
   .acceptbutton__wrapper button {

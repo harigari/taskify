@@ -1,12 +1,11 @@
 import ProfileIcon from "@/components/Header/Members/ProfileIcon";
-import { Member } from "@/components/Header/header.type";
-import { InviteBoard, Tableindex } from "@/components/Table/TableScroll/TableScroll";
+import { InviteBoard, Member, Tableindex } from "@/components/Table/Table.type";
 import Button from "@/components/buttons/Button/Button";
 import { colorMapping } from "@/utils/colorMapping";
 import styles from "./TableList.module.css";
 
 interface TableListProps {
-  data: Member[] | InviteBoard[];
+  data: (Member | InviteBoard)[];
   tableindex: Tableindex;
   row: number;
 }
@@ -26,7 +25,7 @@ const TableList = ({ data, tableindex, row }: TableListProps) => {
               if (!(v in data)) continue;
               arr.push(
                 <div className={styles.row__item} key={data[v]}>
-                  <ProfileIcon member={data} />
+                  <ProfileIcon member={data} tabIndex={-1} />
                   <p className={styles.row__item}>{data[v]}</p>
                 </div>
               );
@@ -54,7 +53,7 @@ const TableList = ({ data, tableindex, row }: TableListProps) => {
               if ("invitee" in data) {
                 arr.push(
                   <div className={styles.row__item} key={data.invitee[v]}>
-                    <ProfileIcon member={data.invitee} />
+                    <ProfileIcon member={data.invitee} tabIndex={-1} />
                     <p className={styles.row__item}>{data.invitee[v]}</p>
                   </div>
                 );

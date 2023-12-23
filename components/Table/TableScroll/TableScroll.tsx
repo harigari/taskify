@@ -1,32 +1,8 @@
 import TableIndex from "@/components/Table/TableIndex/TableIndex";
 import TableList from "@/components/Table/TableList/TableList";
-import { ButtonType } from "@/components/buttons/Button/Button";
 import { INVITE } from "@/pages/dashboard";
 import styles from "./TableScroll.module.css";
-
-export interface Member {
-  nickname: string;
-  id: number;
-  profileImageUrl?: string;
-}
-
-export interface InviteBoard {
-  id: number;
-  dashboard: {
-    title: string;
-    id: number;
-  };
-  invitee: {
-    nickname: string;
-    email: string;
-    id: number;
-  };
-  inviteAccepted: boolean;
-}
-
-export type Tableindex = {
-  [a: string]: "nickname" | "dashboard" | "invitee" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
-};
+import { InviteBoard, Tableindex } from "@/components/Table/Table.type";
 
 interface TableProps {
   title: string;

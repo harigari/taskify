@@ -24,13 +24,13 @@
 .pagecount {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .pagecount__text {
   display: flex;
   justify-content: flex-end;
   margin-right: 1.6rem;
-  width: 10rem;
   font-size: 1.4rem;
   color: var(--gray50);
 }
@@ -55,5 +55,12 @@
 
   .tableindex__item {
     font-size: 1.4rem;
+  }
+
+  .pagecount__mobile .pagecount__text {
+    margin: 0;
+    position: absolute;
+    right: 0;
+    bottom: -2rem;
   }
 }

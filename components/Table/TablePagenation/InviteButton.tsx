@@ -1,6 +1,6 @@
+import { clsx } from "clsx";
 import Image from "next/image";
 import styles from "./InivteButton.module.css";
-import { clsx } from "clsx";
 
 interface InviteButtonProps {
   className?: string;
