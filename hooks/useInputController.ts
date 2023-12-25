@@ -4,7 +4,8 @@ interface Props {
   errorConfig?: [boolean, string][];
   inputConfig: {
     id: string;
-    type?: string;
+    initialValue?: string;
+    type: string;
     name?: string;
     eyeButton?: boolean;
     placeholder?: string | undefined;
@@ -17,7 +18,7 @@ interface Props {
 }
 
 function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(inputConfig.initialValue || "");
   const [date, setDate] = useState<Date | null>(null);
   const [errorText, setErrorText] = useState("");
   const [eyesValue, setEyesValue] = useState(false);
@@ -45,7 +46,7 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
     setEyesValue((current) => !current);
   };
 
-  const typeChanger = (type: string | undefined) => {
+  const typeChanger = (type: string) => {
     if (!eyesValue) return type;
     return "text";
   };
@@ -67,6 +68,7 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
       eyesValue,
       onEyesClick,
       ...inputConfig,
+      autocomplete: "off",
       type: changedType,
     },
     dateTime: { date, setDate, id: inputConfig.id },
