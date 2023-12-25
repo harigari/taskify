@@ -39,6 +39,10 @@
 }
 
 @media (max-width: 767px) {
+  .buttonContainer {
+    margin: 0 auto;
+  }
+
   .single {
     padding: 0.7rem 3.1rem;
   }
