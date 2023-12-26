@@ -20,7 +20,7 @@ function Input({ placeholder, id, value, onChange, eyeButton, eyesValue, type = 
       <input className={styles.input} type={type} id={id} value={value} onChange={onChange} placeholder={placeholder} />
       {eyeButton && (
         <button className={styles.eyes} onClick={onEyesClick} type="button">
-          <Image src={`/images/icons/eyes${eyesValue ? "On" : "Off"}.svg`} width={18} height={18} alt="" />
+          <Image src={`/icons/eyes${eyesValue ? "On" : "Off"}.svg`} width={18} height={18} alt="" />
         </button>
       )}
     </>
