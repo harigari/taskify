@@ -20,10 +20,10 @@ const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) =
 
   //날짜 변환
   const convertToUTC = (dueDate: string): string => {
-    const utcDate = new Date(dueDate);
-    const year = utcDate.getUTCFullYear();
-    const month = String(utcDate.getUTCMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 1을 더하고, 두 자리로 패딩
-    const day = String(utcDate.getUTCDate()).padStart(2, "0"); // 날짜를 두 자리로 패딩
+    const date = new Date(dueDate);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
 
     return `${year}.${month}.${day}`;
   };
@@ -33,7 +33,7 @@ const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) =
       {/* 카드 이미지 */}
       {imageUrl && (
         <div className={style.imageWrapper}>
-          <Image width={274} height={160} className={style.imageContent} src={imageUrl} />
+          <Image width={274} height={160} className={style.imageContent} src={imageUrl} alt="카드" />
         </div>
       )}
       {/* 카드 내용 */}
@@ -42,7 +42,7 @@ const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) =
         <span className={style.cardTitleWrapper}>{title}</span>
         <div className={style.allContentContainer}>
           {/* 카드 태그들 */}
-          <div className={style.cardTagCotainer}>
+          <div className={style.cardTagContainer}>
             <div className={style.cardTagsWrapper}>
               {slicedTagList.map((tag: string) => (
                 <ChipTag size="sm" key={tag}>
@@ -59,7 +59,13 @@ const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) =
           {/* 카드 하단 날짜, 지정자 */}
           <div className={style.cardInfoWrapper}>
             <div className={style.dateWrapper}>
-              <img className={style.dateIcon} src="/images/icons/calendar.svg" />
+              <Image
+                className={style.dateIcon}
+                src="/images/icons/calendar.svg"
+                alt="Calendar Icon"
+                width={20}
+                height={20}
+              />
               <span className={style.date}>{convertToUTC(dueDate)}</span>
             </div>
             <ProfileIcon member={assignee} size="sm" />

@@ -12,5 +12,4 @@ export interface CardTaskProps {
     nickname: string;
     id: number;
   };
-  // profileImageUrl: string;g
 }
