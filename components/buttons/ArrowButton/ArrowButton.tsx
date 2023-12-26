@@ -15,7 +15,7 @@ const ArrowButton = ({ disabled = false, right = false, onClick }: Props) => {
   return (
     <button disabled={disabled} className={clsx(buttonStyle)} onClick={onClick}>
       <div className={styles.icon_wrapper}>
-        <Image alt={`${right ? "오른쪽" : "왼쪽"} 화살표`} fill src="/images/icons/arrow.svg" />
+        <Image alt={`${right ? "오른쪽" : "왼쪽"} 화살표`} fill src="/icons/arrow.svg" />
       </div>
     </button>
   );

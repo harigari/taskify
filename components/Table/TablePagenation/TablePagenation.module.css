@@ -44,6 +44,16 @@
   background-color: var(--gray30);
 }
 
+.empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10rem 0;
+  font-size: 1.8rem;
+  color: var(--gray40);
+}
+
 @media screen and (max-width: 767px) {
   .title__text {
     font-size: 2rem;
@@ -62,5 +72,9 @@
     position: absolute;
     right: 0;
     bottom: -2rem;
+  }
+
+  .empty {
+    font-size: 1.4rem;
   }
 }

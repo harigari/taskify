@@ -1,6 +1,7 @@
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
 import TablePagenation from "@/components/Table/TablePagenation/TablePagenation";
-import TableScroll from "@/components/Table/TableScroll/TableScroll";
+import Button from "@/components/buttons/Button/Button";
+import Image from "next/image";
 import styles from "./index.module.css";
 
 const MEMBER = [
@@ -14,7 +15,40 @@ const MEMBER = [
   { id: 8, nickname: "Youdame", profileImageUrl: "" },
 ];
 
-export const INVITE = [
+const DASHBOARD = [
+  {
+    id: 1,
+    title: "행복해서",
+    color: "green",
+    createdByMe: true,
+  },
+  {
+    id: 2,
+    title: "웃는게 아니라",
+    color: "purple",
+    createdByMe: true,
+  },
+  {
+    id: 3,
+    title: "웃어서",
+    color: "orange",
+    createdByMe: false,
+  },
+  {
+    id: 4,
+    title: "행복한거다",
+    color: "blue",
+    createdByMe: false,
+  },
+  {
+    id: 5,
+    title: "중요!",
+    color: "pink",
+    createdByMe: true,
+  },
+];
+
+const INVITE = [
   {
     id: 1,
     dashboard: {
@@ -73,23 +107,33 @@ export default function DashBoard() {
   return (
     <MenuLayout>
       <div className={styles.container}>
-        <TablePagenation
-          title="구성원"
-          data={MEMBER}
-          row={3}
-          tableindex={{ 이름: "nickname", "": "deleteButton" }}
-          invite
-          search
-        />
-        {/* <TablePagenation title="구성원" data={MEMBER} row={6} tableindex={{ 웃음: "nickname", 라벨: "button" }} /> */}
+        <div className={styles.dashboard}>
+          <Button buttonType="dashboard" color="white">
+            <span>새로운 대시보드</span>
+            <Image width={22} height={22} src="/images/image-addbox-purple.png" alt="대시보드 추가하기" />
+          </Button>
+          {DASHBOARD.map((dashboard) => (
+            <Button key={dashboard.id} buttonType="dashboard" color="white">
+              <div className={styles.dashboard__title}>
+                <div className={styles.dashboard__icon} style={{ backgroundColor: `var(--${dashboard.color})` }} />
+                <span>{dashboard.title}</span>
+              </div>
+              <Image
+                width={18}
+                height={18}
+                src="/icons/icon-arrowright.svg"
+                alt={`${dashboard.title} 대시보드로 바로가기`}
+              />
+            </Button>
+          ))}
+        </div>
         <TablePagenation
           title="초대받은 대시보드"
-          data={INVITE}
-          row={3}
-          tableindex={{ 이름: "dashboard", 초대자: "invitee", "수락 여부": "acceptButton" }}
+          row={6}
+          data={[]}
+          tableindex={{ 이름: "dashboard", 초대자: "invitee", "수락 여부": "deleteButton" }}
           search
         />
-        <TableScroll title="초대받은 대시보드" tableindex={{ 이름: "dashboard" }} />
       </div>
     </MenuLayout>
   );

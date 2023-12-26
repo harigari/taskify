@@ -10,12 +10,7 @@ interface HideButtonProps {
 const HideButton = ({ isOpen, setIsOpen }: HideButtonProps) => {
   return (
     <button className={styles.hidebutton} onClick={() => setIsOpen((prev) => !prev)} tabIndex={-1}>
-      <Image
-        width={14}
-        height={7}
-        src={`/images/icons/icon-arrow${isOpen ? "up" : "down"}.svg`}
-        alt={`테이블 숨기기 버튼`}
-      />
+      <Image width={14} height={7} src={`/icons/icon-arrow${isOpen ? "up" : "down"}.svg`} alt={`테이블 숨기기 버튼`} />
       {isOpen ? "접어두기" : "펼치기"}
     </button>
   );

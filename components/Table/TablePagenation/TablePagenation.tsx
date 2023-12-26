@@ -8,6 +8,7 @@ import ArrowButton from "@/components/buttons/ArrowButton/ArrowButton";
 import { clsx } from "clsx";
 import { useMemo, useState } from "react";
 import styles from "./TablePagenation.module.css";
+import Image from "next/image";
 
 interface TableProps {
   title: string;
@@ -18,7 +19,14 @@ interface TableProps {
   search?: boolean;
 }
 
-const TablePagenation = ({ title, data, row = Infinity, tableindex, invite = false, search = false }: TableProps) => {
+const TablePagenation = ({
+  title,
+  data = [],
+  row = Infinity,
+  tableindex,
+  invite = false,
+  search = false,
+}: TableProps) => {
   const entirePageNum = Math.ceil(data.length / row);
   const [pageCount, setPageCount] = useState(1);
   const [rowNum, setRowNum] = useState(row);
@@ -66,14 +74,28 @@ const TablePagenation = ({ title, data, row = Infinity, tableindex, invite = fal
         )}
         {invite && <InviteButton />}
       </div>
-      {isOpen && (
+      {data.length > 0 ? (
         <>
-          {search && <SearchInput keyword={keyword} setKeyword={setKeyword} />}
-          <TableIndex data={rowData} tableindex={tableindex} invite={invite} />
-          <TableList data={rowData} tableindex={tableindex} row={row} />
+          {isOpen && (
+            <>
+              {search && <SearchInput keyword={keyword} setKeyword={setKeyword} />}
+              <TableIndex data={rowData} tableindex={tableindex} invite={invite} />
+              <TableList data={rowData} tableindex={tableindex} row={row} />
+            </>
+          )}
+          <HideButton isOpen={isOpen} setIsOpen={setIsOpen} />
         </>
+      ) : (
+        <div className={styles.empty}>
+          <Image
+            width={100}
+            height={100}
+            src="/icons/icon-noinvite-dashboard.svg"
+            alt="초대받은 대시보드가 없습니다."
+          />
+          <p>아직 초대받은 대시보드가 없어요</p>
+        </div>
       )}
-      <HideButton isOpen={isOpen} setIsOpen={setIsOpen} />
     </article>
   );
 };
