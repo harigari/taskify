@@ -17,7 +17,7 @@ const MenuLayout = ({ children }: Props) => {
       <div className={styles.grid__header}>
         <Header />
       </div>
-      <div className={clsx(styles.grid__main, styles.main)}>
+      <div className={styles.grid__main}>
         <main>{children}</main>
       </div>
     </div>

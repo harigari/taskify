@@ -8,6 +8,7 @@
   width: 35.4rem;
   height: auto;
   border-right: 1px solid var(--gray20);
+  background-color: var(--gray10);
 }
 
 .headerContainer {
@@ -65,5 +66,6 @@
     margin-bottom: 1.2rem;
     stroke-width: 1px;
     stroke: var(--gray-gray_EEEEEE, #eee);
+    padding: 1.2rem;
   }
 }

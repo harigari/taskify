@@ -12,11 +12,5 @@
 }
 .grid__main {
   grid-area: main;
-}
-
-.main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 6rem;
+  background-color: var(--gray10);
 }

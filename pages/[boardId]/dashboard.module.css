@@ -1,0 +1,39 @@
+.layoutContainer {
+  display: flex;
+  gap: 2rem;
+}
+
+.columnContainer {
+  display: flex;
+}
+
+.buttonWrapper {
+  margin-top: 6.8rem;
+  padding: 0 2rem;
+}
+
+@media screen and (max-width: 1200px) {
+  .layoutContainer {
+    flex-direction: column;
+  }
+  .columnContainer {
+    flex-direction: column;
+  }
+  .buttonWrapper {
+    margin-top: 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .layoutContainer {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .columnContainer {
+    flex-direction: column;
+  }
+  .buttonWrapper {
+    margin-top: 0;
+    padding: 0 1.2rem;
+  }
+}

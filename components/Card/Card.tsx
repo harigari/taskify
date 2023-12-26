@@ -4,14 +4,14 @@ import ChipTodo from "../Chips/ChipTodo/ChipTodo";
 import ChipNum from "../Chips/ChipNum/ChipNum";
 import ChipPlus from "../Chips/ChipPlus/ChipPlus";
 import CardTask from "./CardTask";
-const Card = ({ cardList }: CardProps) => {
+const Card = ({ cardList, columnName }: CardProps) => {
   return (
     <div className={style.totalContainer}>
       {/* 칼럼 상단 */}
       <div className={style.headerContainer}>
         <div className={style.todoWrapper}>
           <ChipTodo size="sm" color="white">
-            On Progress
+            {columnName}
           </ChipTodo>
           <ChipNum>{cardList.length}</ChipNum>
         </div>

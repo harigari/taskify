@@ -1,5 +1,6 @@
 export interface CardProps {
   cardList: CardTaskProps[];
+  columnName: string;
 }
 
 export interface CardTaskProps {
