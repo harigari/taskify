@@ -30,3 +30,12 @@
   color: var(--violet);
   text-decoration: underline;
 }
+
+@media screen and (max-width: 767px) {
+  .form,
+  .form > button {
+    max-width: 52rem;
+    width: 100%;
+    padding: 0 1.2rem;
+  }
+}
