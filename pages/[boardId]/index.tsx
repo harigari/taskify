@@ -1,9 +1,16 @@
+// Dashboard 컴포넌트에서 변경
+import { useEffect, useState } from "react";
+// import { useInView } from "react-intersection-observer";
 import Button from "@/components/buttons/Button/Button";
 import Card from "@/components/Card/Card";
 import MenuLayout from "@/components/menulayout/MenuLayout";
 import style from "./dashboard.module.css";
 
 const Dashboard = () => {
+  // const [page, setPage] = useState(1);
+  // const [allCards, setAllCards] = useState([]);
+  // const [ref, inView] = useInView();
+  // const maxColumns = 5; // 최대 컬럼 수
   const mock = [
     {
       id: 0,
@@ -42,6 +49,14 @@ const Dashboard = () => {
       imageUrl: "/images/photos/card-image3.svg",
     },
   ];
+
+  // useEffect(() => {
+  //   if (inView && allCards.length / 2 < maxColumns) {
+  //     console.log(inView, "무한 스크롤 요청 🎃");
+  //     mockDataFetch();
+  //   }
+  // }, [inView, allCards]);
+
   return (
     <>
       {/* 대시보드에 맞는 레이아웃으로 설정 */}
