@@ -1,7 +1,8 @@
+import { ValidateFunc } from "@/utils/vaildate";
 import { ChangeEvent, useState } from "react";
 
 interface Props {
-  errorConfig?: [boolean, string][];
+  errorConfig?: [boolean | ValidateFunc, string][];
   inputConfig: {
     id: string;
     type?: string;
@@ -29,6 +30,13 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
 
   const onBlur = () => {
     errorConfig?.find((error) => {
+      if (error[0] instanceof Function) {
+        const res = error[0]({ id: inputConfig.id, value });
+        if (!(res instanceof Object)) {
+          setErrorText(res);
+        }
+        return;
+      }
       if (error[0]) {
         setErrorText(error[1]);
       }
