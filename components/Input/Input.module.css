@@ -28,12 +28,16 @@
 .wrapper input {
   flex: 1;
   border: none;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   color: var(--black1, #333236);
 }
 
 .wrapper input:focus {
   outline: none;
+}
+
+.wrapper input::placeholder {
+  color: var(--gray40, #9fa6b2);
 }
 
 .errorMessage {
@@ -58,5 +62,13 @@
   .wrapper {
     padding: 1.25rem 1.6rem;
     height: 4.2em;
+  }
+
+  .wrapper input {
+    font-size: 1.4rem;
+  }
+
+  .commentWrapper {
+    height: 8em;
   }
 }

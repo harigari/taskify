@@ -11,7 +11,7 @@ interface Props {
     placeholder?: string | undefined;
   };
   labelConfig: {
-    labelName: string;
+    labelName?: string;
     mobile?: boolean;
     star?: boolean;
   };
