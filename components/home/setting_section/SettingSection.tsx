@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./SettingSection.module.css";
-import clsx from "clsx";
 import Image from "next/image";
+import clsx from "clsx";
 
 interface SettingData {
   id: number;
@@ -36,23 +36,21 @@ const settingData: SettingData[] = [
 ];
 
 const SettingArticle = ({ alt, imageSrc, heading, description }: SettingData) => (
-  <>
-    <article className={clsx(styles.setting_article)}>
-      <div className={styles.setting_image_wrapper}>
-        <Image fill alt={alt} src={imageSrc} />
-      </div>
-      <div className={styles.setting_description}>
-        <h3 className={clsx(styles.heading, styles.setting_h3)}>{heading}</h3>
-        <span>{description}</span>
-      </div>
-    </article>
-  </>
+  <article className={styles.setting_article}>
+    <div className={styles.setting_image_wrapper}>
+      <Image fill alt={alt} src={imageSrc} />
+    </div>
+    <div className={styles.setting_description}>
+      <h3 className={clsx(styles.heading, styles.setting_h3)}>{heading}</h3>
+      <span>{description}</span>
+    </div>
+  </article>
 );
 
 const SettingSection = () => (
-  <section className={clsx(styles.setting_section)}>
+  <section className={styles.setting_section}>
     <h2 className={clsx(styles.heading, styles.setting_h2)}>생산성을 높이는 다양한 설정 ⚡️</h2>
-    <div className={clsx(styles.setting_container)}>
+    <div className={styles.setting_container}>
       {settingData.map((data) => (
         <SettingArticle key={data.id} {...data} />
       ))}
