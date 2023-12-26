@@ -1,44 +1,38 @@
 import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
 import Button from "@/components/buttons/Button/Button";
+import { signinEmail, signinPassword } from "@/constants/inputConfig";
 import useInputController from "@/hooks/useInputController";
-import { isReg, isValue } from "@/utils/vaildate";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./signin.module.css";
 
 const Signin = () => {
-  const { wrapper: emailWrapper, input: emailInput } = useInputController({
-    errorConfig: [
-      [isReg, ""],
-      [isValue, ""],
-    ],
-    inputConfig: { id: "email", type: "email", placeholder: "이메일을 입력해 주세요." },
-    labelConfig: { labelName: "이메일" },
-  });
-  const { wrapper: passwordWrapper, input: passwordInput } = useInputController({
-    errorConfig: [[isValue, ""]],
-    inputConfig: { id: "password", type: "password", placeholder: "비밀번호를 입력해 주세요.", eyeButton: true },
-    labelConfig: { labelName: "비밀번호" },
-  });
+  const { wrapper: emailWrapper, input: emailInput } = useInputController(signinEmail);
+  const { wrapper: passwordWrapper, input: passwordInput } = useInputController(signinPassword);
+  const inputs: Array<[typeof emailWrapper, typeof emailInput]> = [
+    [emailWrapper, emailInput],
+    [passwordWrapper, passwordInput],
+  ];
 
   return (
     <div className={styles.container}>
       <Image priority width={200} height={279} src="/images/logo-purple-vertical.png" alt="이전 페이지로 돌아갑니다." />
       <p className={styles.title}>오늘도 만나서 반가워요!</p>
       <form className={styles.form}>
-        <InputWrapper {...emailWrapper}>
-          <Input {...emailInput} />
-        </InputWrapper>
-        <InputWrapper {...passwordWrapper}>
-          <Input {...passwordInput} />
-        </InputWrapper>
+        {inputs.map(([wrapper, input], index) => {
+          return (
+            <InputWrapper {...wrapper} key={index}>
+              <Input {...input} />
+            </InputWrapper>
+          );
+        })}
         <Button
           buttonType="login"
           color="violet"
-          disabled={
-            !emailInput.value || !passwordInput.value || !!emailWrapper.errorText || !!passwordWrapper.errorText
-          }
+          disabled={inputs.some(([wrapper, input]) => {
+            return !!wrapper.errorText || !input.value;
+          })}
         >
           로그인
         </Button>

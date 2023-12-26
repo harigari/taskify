@@ -1,10 +1,11 @@
-interface Obj {
-  id: "email" | "password" | "passwordCheck";
+export interface Obj {
+  name: "email" | "password" | "passwordCheck" | "nickname";
   value: string;
 }
 
 export interface ValidateFunc {
   (obj: Obj): Obj | string;
+  type: "validate";
 }
 
 const TEXT = {
@@ -26,27 +27,27 @@ const emailReg = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 const pwReg = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
 
 export const isValue: ValidateFunc = (obj) => {
-  if (!obj.value) return TEXT.value[obj.id];
+  if (!obj.value) return TEXT.value[obj.name];
   return obj;
 };
+isValue.type = "validate";
 
 export const isReg: ValidateFunc = (obj) => {
-  if (obj.id === "email") return emailReg.test(obj.value) ? obj : TEXT.reg[obj.id];
-  if (obj.id === "password") return pwReg.test(obj.value) ? obj : TEXT.reg[obj.id];
+  if (obj.name === "email") return emailReg.test(obj.value) ? obj : TEXT.reg[obj.name];
+  if (obj.name === "password") return pwReg.test(obj.value) ? obj : TEXT.reg[obj.name];
   return obj;
 };
+isReg.type = "validate";
 
-export const isSamePassword = (() => {
-  let temp = "";
-  return (obj: Obj) => {
-    if (obj.id === "password") {
-      temp = obj.value;
-      return obj;
-    }
-    console.log(temp);
-    if (obj.id === "passwordCheck") {
-      return temp === obj.value ? "" : TEXT.same;
-    }
+let temp = "";
+export const isSamePassword: ValidateFunc = (obj: Obj) => {
+  if (obj.name === "password") {
+    temp = obj.value;
     return obj;
-  };
-})();
+  }
+  if (obj.name === "passwordCheck") {
+    return temp === obj.value ? "" : TEXT.same;
+  }
+  return obj;
+};
+isSamePassword.type = "validate";

@@ -1,17 +1,17 @@
-import { ChangeEvent, Dispatch, HTMLInputTypeAttribute, InputHTMLAttributes, MouseEvent, SetStateAction } from "react";
-import styles from "./Input.module.css";
 import Image from "next/image";
+import { ChangeEvent, MouseEvent } from "react";
+import styles from "./Input.module.css";
 
 interface InputProp {
   id: string;
   value: string;
   type: string;
+  name?: string;
   placeholder?: string | undefined;
   eyeButton?: boolean;
   eyesValue?: boolean;
-  onChange: (e: ChangeEvent) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onEyesClick: (e: MouseEvent<HTMLButtonElement>) => void;
-  typeChanger: (type: string) => string;
 }
 
 function Input({ placeholder, id, value, onChange, eyeButton, eyesValue, type = "text", onEyesClick }: InputProp) {
