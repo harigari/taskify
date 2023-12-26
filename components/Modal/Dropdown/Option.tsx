@@ -5,8 +5,8 @@ import Image from "next/image";
 import ChipTodo from "@/components/Chips/ChipTodo/ChipTodo";
 
 interface OptionProp {
-  value: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  value: string | undefined;
+  setValue: Dispatch<SetStateAction<string | undefined>>;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   option: string;
 }
