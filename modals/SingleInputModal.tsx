@@ -3,7 +3,7 @@ import InputWrapper from "@/components/Input/InputWrapper";
 import useInputController from "@/hooks/useInputController";
 import ModalWrapper from "./ModalWrapper";
 import ModalButton from "@/components/Modal/ModalButton/ModalButton";
-import styles from "./SingleInputModal.module.css";
+import styles from "./Modal.module.css";
 import { FormEvent } from "react";
 import ChipColors from "@/components/Chips/ChipColors/ChipColors";
 import clsx from "clsx";
