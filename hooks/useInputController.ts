@@ -1,22 +1,7 @@
+import { Configs } from "@/constants/inputConfig";
 import { ChangeEvent, useState } from "react";
 
-interface Props {
-  errorConfig?: [boolean, string][];
-  inputConfig: {
-    id: string;
-    type: string;
-    name?: string;
-    eyeButton?: boolean;
-    placeholder?: string | undefined;
-  };
-  labelConfig: {
-    labelName: string;
-    mobile?: boolean;
-    star?: boolean;
-  };
-}
-
-function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
+function useInputController({ errorConfig, inputConfig, labelConfig }: Configs) {
   const [value, setValue] = useState("");
   const [date, setDate] = useState<Date | null>(null);
   const [errorText, setErrorText] = useState("");
@@ -30,7 +15,17 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
   const onBlur = () => {
     // 에러 핸들링 로직에 거대한 수정이 필요하다
     errorConfig?.find((error) => {
-      if (error[0]) {
+      const callback = error[0];
+      if ("type" in callback) {
+        if (!inputConfig.name) return;
+        const res = callback({ name: inputConfig.name, value });
+
+        if (typeof res === "string") {
+          setErrorText(res);
+        }
+        return;
+      }
+      if (callback(value) && error[1]) {
         setErrorText(error[1]);
       }
     });
@@ -46,7 +41,8 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
     setEyesValue((current) => !current);
   };
 
-  const typeChanger = (type: string) => {
+  const typeChanger = (type: string | undefined) => {
+    if (!type) return "text";
     if (!eyesValue) return type;
     return "text";
   };
