@@ -1,14 +1,15 @@
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useState } from "react";
-import styles from "./Option.module.css";
+import styles from "@/components/Modal/Dropdown/Option.module.css";
 import Image from "next/image";
-import ChipTodo from "@/components/Chips/ChipTodo/ChipTodo";
+import ProfileIcon from "@/components/header/members/ProfileIcon";
+import { Member } from "@/hooks/useDropdownControll";
 
 interface OptionProp {
-  value: string | undefined;
-  setValue: Dispatch<SetStateAction<string | undefined>>;
+  value: any;
+  setValue: Dispatch<SetStateAction<any>>;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  option: string;
+  option: Member;
 }
 
 function Option({ value, setValue, setIsOpen, option }: OptionProp) {
@@ -24,13 +25,13 @@ function Option({ value, setValue, setIsOpen, option }: OptionProp) {
 
   const imageStyle = clsx(
     hover ? styles.MouseOverImage : styles.MouseOutImage,
-    value === option && styles.selectedImage
+    value?.userId === option.userId && styles.selectedImage
   );
 
   return (
     <div
-      className={styles.root}
-      onClick={() => {
+      className={`${styles.root} option`}
+      onMouseDown={() => {
         setValue(option);
         setIsOpen((value) => !value);
       }}
@@ -39,8 +40,9 @@ function Option({ value, setValue, setIsOpen, option }: OptionProp) {
     >
       <Image className={imageStyle} src="/images/icons/check.svg" width={22} height={22} alt="" />
 
-      <div>
-        <ChipTodo size="lg">{option}</ChipTodo>{" "}
+      <div className={styles.profileWrapper}>
+        <ProfileIcon size="sm" member={option} />
+        {option.nickname}
       </div>
     </div>
   );

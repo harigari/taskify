@@ -6,6 +6,9 @@ export interface ChipColorProps {
   isSelected: boolean;
 }
 
+export interface ChipPlusProps {
+  size: "sm" | "lg";
+}
 export interface ChipColorsProps {
   size: "sm" | "lg";
 }
@@ -21,5 +24,6 @@ export interface ChipTagProps {
 
 export interface ChipTodoProps {
   size: "sm" | "lg";
+  color: "purple" | "white";
   children: ReactNode;
 }

@@ -13,6 +13,7 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Configs) 
   };
 
   const onBlur = () => {
+    // 에러 핸들링 로직에 거대한 수정이 필요하다
     errorConfig?.find((error) => {
       const callback = error[0];
       if ("type" in callback) {

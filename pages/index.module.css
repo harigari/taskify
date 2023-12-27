@@ -1,0 +1,9 @@
+.main {
+  display: flex;
+  gap: 9rem;
+  align-items: center;
+  flex-direction: column;
+  padding: 9.4rem 0 16rem 0;
+  background-color: black;
+}
+

@@ -1,8 +1,10 @@
 import style from "./ChipPlus.module.css";
-const ChipPlus = () => {
+import clsx from "clsx";
+import { ChipPlusProps } from "@/components/Chips/chips.type";
+const ChipPlus = ({ size }: ChipPlusProps) => {
   return (
     <>
-      <div className={`${style.imageWrapper}`}>
+      <div className={clsx(style.imageWrapper, { [style.large]: size === "lg" })}>
         <img src="/images/icons/add.svg" />
       </div>
     </>

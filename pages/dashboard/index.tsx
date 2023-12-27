@@ -1,5 +1,5 @@
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
-import TablePagenation from "@/components/Table/TablePagenation/TablePagenation";
+import TablePagenation from "@/components/Table/TablePagination/TablePagination";
 import Button from "@/components/buttons/Button/Button";
 import Image from "next/image";
 import styles from "./index.module.css";
@@ -131,7 +131,7 @@ export default function DashBoard() {
           title="초대받은 대시보드"
           row={6}
           data={[]}
-          tableindex={{ 이름: "dashboard", 초대자: "invitee", "수락 여부": "deleteButton" }}
+          tableIndex={{ 이름: "dashboard", 초대자: "invitee", "수락 여부": "deleteButton" }}
           search
         />
       </div>
