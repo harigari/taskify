@@ -1,0 +1,39 @@
+.wrapper {
+  display: flex;
+  gap: 1rem;
+}
+.header {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.author {
+  color: var(--black1);
+
+  font-size: 1.4rem;
+
+  font-weight: 600;
+}
+.createdAt {
+  color: var(--gray40);
+
+  font-size: 1.2rem;
+}
+.comment {
+  color: var(--black1);
+  font-size: 1.4rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 1.2rem;
+}
+.button {
+  color: var(--gray40);
+  text-decoration-line: underline;
+}

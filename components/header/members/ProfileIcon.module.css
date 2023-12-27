@@ -28,6 +28,7 @@
 .member__name {
   position: absolute;
   font-weight: 600;
+  font-size: 1.6rem;
 }
 
 /* 카드 컴포넌트의 프로필 */

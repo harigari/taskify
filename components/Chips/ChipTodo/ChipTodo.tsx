@@ -6,7 +6,7 @@ const ChipTodo = ({ size, color, children }: ChipTodoProps) => {
   return (
     <>
       <div className={clsx(style.container, { [style.large]: size === "lg" }, { [style.white]: color === "white" })}>
-        <img src="/images/icons/todo_dot.svg" />
+        <img src="/icons/todo_dot.svg" />
         {/* prop에 따라 글자 내용 변경 */}
         <div
           className={clsx(
