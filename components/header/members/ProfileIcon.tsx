@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 import { Member } from "@/components/Header/Header.type";
-=======
-import styles from "./ProfileIcon.module.css";
-import clsx from "clsx";
-import { ProfileIconProps } from "@/components/header/header.type";
->>>>>>> upstream/develop
 import { colorMapping } from "@/utils/colorMapping";
 import Image from "next/image";
 import styles from "./ProfileIcon.module.css";
