@@ -18,6 +18,6 @@ export interface InviteBoard {
   inviteAccepted: boolean;
 }
 
-export type Tableindex = {
+export type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "invitee" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
 };

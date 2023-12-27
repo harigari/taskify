@@ -1,20 +1,20 @@
-import { InviteBoard, Member, Tableindex } from "@/components/Table/Table.type";
+import { InviteBoard, Member, TableIndexType } from "@/components/Table/Table.type";
 import TableIndex from "@/components/Table/TableIndex/TableIndex";
 import TableList from "@/components/Table/TableList/TableList";
-import HideButton from "@/components/Table/TablePagenation/HideButton";
-import InviteButton from "@/components/Table/TablePagenation/InviteButton";
-import SearchInput from "@/components/Table/TablePagenation/SerachInput";
+import HideButton from "@/components/Table/TablePagination/HideButton";
+import InviteButton from "@/components/Table/TablePagination/InviteButton";
+import SearchInput from "@/components/Table/TablePagination/SearchInput";
 import ArrowButton from "@/components/buttons/ArrowButton/ArrowButton";
 import { clsx } from "clsx";
 import { useMemo, useState } from "react";
-import styles from "./TablePagenation.module.css";
+import styles from "./TablePagination.module.css";
 import Image from "next/image";
 
 interface TableProps {
   title: string;
   data: Member[] | InviteBoard[];
   row?: number;
-  tableindex: Tableindex;
+  tableIndex: TableIndexType;
   invite?: boolean;
   search?: boolean;
 }
@@ -23,7 +23,7 @@ const TablePagenation = ({
   title,
   data = [],
   row = Infinity,
-  tableindex,
+  tableIndex,
   invite = false,
   search = false,
 }: TableProps) => {
@@ -46,7 +46,7 @@ const TablePagenation = ({
     [data, row, rowNum, keyword]
   );
   const [isOpen, setIsOpen] = useState(true);
-  const isAccept = Object.values(tableindex).includes("acceptButton");
+  const isAccept = Object.values(tableIndex).includes("acceptButton");
 
   return (
     <article className={styles.container}>
@@ -79,8 +79,8 @@ const TablePagenation = ({
           {isOpen && (
             <>
               {search && <SearchInput keyword={keyword} setKeyword={setKeyword} />}
-              <TableIndex data={rowData} tableindex={tableindex} invite={invite} />
-              <TableList data={rowData} tableindex={tableindex} row={row} />
+              <TableIndex data={rowData} tableIndex={tableIndex} invite={invite} />
+              <TableList data={rowData} tableIndex={tableIndex} row={row} />
             </>
           )}
           <HideButton isOpen={isOpen} setIsOpen={setIsOpen} />

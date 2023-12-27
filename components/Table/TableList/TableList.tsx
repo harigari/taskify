@@ -1,25 +1,25 @@
 import ProfileIcon from "@/components/Header/Members/ProfileIcon";
-import { InviteBoard, Member, Tableindex } from "@/components/Table/Table.type";
+import { InviteBoard, Member, TableIndexType } from "@/components/Table/Table.type";
 import Button from "@/components/buttons/Button/Button";
 import { colorMapping } from "@/utils/colorMapping";
 import styles from "./TableList.module.css";
 
 interface TableListProps {
   data: (Member | InviteBoard)[];
-  tableindex: Tableindex;
+  tableIndex: TableIndexType;
   row: number;
 }
 
-const TableList = ({ data, tableindex, row }: TableListProps) => {
-  const column = Object.keys(tableindex).length;
-  const isAccept = Object.values(tableindex).includes("acceptButton");
+const TableList = ({ data, tableIndex, row }: TableListProps) => {
+  const column = Object.keys(tableIndex).length;
+  const isAccept = Object.values(tableIndex).includes("acceptButton");
 
   return (
     <ul className={isAccept ? styles.list__mobile : ""}>
       {data.map((data, idx) => {
         const arr = [];
-        for (const key of Object.keys(tableindex)) {
-          const v = tableindex[key];
+        for (const key of Object.keys(tableIndex)) {
+          const v = tableIndex[key];
           switch (true) {
             case v === "nickname":
               if (!(v in data)) continue;
