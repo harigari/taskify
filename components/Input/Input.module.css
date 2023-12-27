@@ -28,6 +28,7 @@
 .wrapper input {
   flex: 1;
   border: none;
+  width: 100%;
   font-size: 1.6rem;
   color: var(--black1, #333236);
 }

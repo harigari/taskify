@@ -74,15 +74,14 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
       eyesValue,
       onEyesClick,
       ...inputConfig,
-      autocomplete: "off",
+      autoComplete: "off",
       type: changedType,
     },
     textarea: {
       value,
-      setValue,
       onChange: onTextAreaChange,
       ...inputConfig,
-      autocomplete: "off",
+      autoComplete: "off",
     },
     dateTime: { date, setDate, id: inputConfig.id },
     etc: {
