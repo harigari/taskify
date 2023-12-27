@@ -1,0 +1,30 @@
+.invitebutton {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  width: 10rem;
+  height: 3.2rem;
+  background-color: var(--violet);
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--white);
+  border-radius: 0.4rem;
+}
+
+@media screen and (max-width: 767px) {
+  .invitebutton {
+    display: none;
+  }
+}
+
+.tableindex.invitebutton {
+  display: none;
+}
+
+@media screen and (max-width: 767px) {
+  .tableindex.invitebutton {
+    display: flex;
+    font-size: 1.2rem;
+  }
+}

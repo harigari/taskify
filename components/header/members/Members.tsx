@@ -1,9 +1,13 @@
+import { Member } from "@/components/Header/Header.type";
+import clsx from "clsx";
+import { useState } from "react";
 import styles from "./Members.module.css";
 import Profile from "./Profile";
 import ProfilePopup from "./ProfilePopup";
-import { MembersProps } from "@/components/header/header.type";
-import clsx from "clsx";
-import { useState } from "react";
+
+interface MembersProps {
+  members: Member[];
+}
 
 const Members = ({ members }: MembersProps) => {
   const [isOpen, setIsOpen] = useState(false);

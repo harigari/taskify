@@ -9,6 +9,7 @@
   right: 0;
   background-color: var(--white);
   border-radius: 0.8rem;
+  z-index: 1;
 }
 
 .popup__list {

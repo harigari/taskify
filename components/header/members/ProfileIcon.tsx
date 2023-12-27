@@ -1,8 +1,25 @@
+<<<<<<< HEAD
+import { Member } from "@/components/Header/Header.type";
+=======
 import styles from "./ProfileIcon.module.css";
 import clsx from "clsx";
 import { ProfileIconProps } from "@/components/header/header.type";
+>>>>>>> upstream/develop
 import { colorMapping } from "@/utils/colorMapping";
 import Image from "next/image";
+import styles from "./ProfileIcon.module.css";
+import clsx from "clsx";
+
+interface ProfileIconProps {
+  member: Member;
+  size: "sm" | "lg";
+  tabIndex?: number;
+  onMouseOver?: () => void;
+  onMouseOut?: () => void;
+  onTouchStart?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
+}
 
 const ProfileIcon = ({ member, size, ...props }: ProfileIconProps) => {
   return (
