@@ -59,13 +59,7 @@ const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) =
           {/* 카드 하단 날짜, 지정자 */}
           <div className={style.cardInfoWrapper}>
             <div className={style.dateWrapper}>
-              <Image
-                className={style.dateIcon}
-                src="/images/icons/calendar.svg"
-                alt="Calendar Icon"
-                width={20}
-                height={20}
-              />
+              <Image className={style.dateIcon} src="/icons/calendar.svg" alt="Calendar Icon" width={20} height={20} />
               <span className={style.date}>{convertToUTC(dueDate)}</span>
             </div>
             <ProfileIcon member={assignee} size="sm" />

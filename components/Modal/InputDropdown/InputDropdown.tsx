@@ -79,9 +79,9 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
   }, [inputValue, options]);
 
   return (
-    <>
+    <div className={styles.root}>
       <Label>{children}</Label>
-      <div className={styles.root}>
+      <div className={styles.container}>
         <div className={selectedStyle} onFocus={handleFocus} onBlur={handleBlur}>
           {!value ? (
             <input
@@ -99,7 +99,7 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
                 {value.nickname}
               </div>
               <button type="button" className={styles.button} onMouseDown={handleDeleteClick}>
-                <Image src="/images/icons/close.svg" alt="닫기 버튼" width={20} height={20} />
+                <Image src="/icons/close.svg" alt="닫기 버튼" width={20} height={20} />
               </button>
             </div>
           )}
@@ -115,7 +115,7 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

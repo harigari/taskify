@@ -38,7 +38,7 @@ function Option({ value, setValue, setIsOpen, option }: OptionProp) {
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
     >
-      <Image className={imageStyle} src="/images/icons/check.svg" width={22} height={22} alt="" />
+      <Image className={imageStyle} src="/icons/check.svg" width={22} height={22} alt="" />
 
       <div className={styles.profileWrapper}>
         <ProfileIcon size="sm" member={option} />
