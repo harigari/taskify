@@ -1,7 +1,7 @@
 import ModalWrapper from "./ModalWrapper";
 import ModalButton from "@/components/Modal/ModalButton/ModalButton";
-import styles from "./CreateNewColumn.module.css";
-import { FormEvent, ReactNode } from "react";
+import styles from "./Modal.module.css";
+import { FormEvent } from "react";
 
 interface AlartModalProp {
   isDoubleButton?: boolean;

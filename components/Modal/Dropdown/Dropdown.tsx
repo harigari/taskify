@@ -28,7 +28,9 @@ const Dropdown = ({ options, value, setValue, children }: DropdownProp) => {
       <Label>{children}</Label>
       <div className={styles.root}>
         <div className={selectedStyle} onClick={handleClick}>
-          <ChipTodo size="lg">{value}</ChipTodo>
+          <ChipTodo color="purple" size="lg">
+            {value}
+          </ChipTodo>
           <Image src="/images/icons/arrow_drop_down.svg" alt="" width={26} height={26} />
         </div>
         {isOpen && (
