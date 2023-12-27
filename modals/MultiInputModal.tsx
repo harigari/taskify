@@ -119,8 +119,6 @@ const MultiInputModal = ({
     imageUrl: imageFile,
   };
 
-  console.log(data);
-
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
@@ -140,7 +138,7 @@ const MultiInputModal = ({
           </InputWrapper>
 
           <InputWrapper {...modalExplain.wrapper}>
-            <textarea className={styles.textArea} {...modalExplain.input} />
+            <textarea className={styles.textArea} {...modalExplain.textarea} />
           </InputWrapper>
 
           <InputWrapper {...modalDate.wrapper}>

@@ -23,7 +23,12 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
   const [errorText, setErrorText] = useState("");
   const [eyesValue, setEyesValue] = useState(false);
 
-  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setValue(value);
+  };
+
+  const onTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setValue(value);
   };
@@ -71,6 +76,13 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
       ...inputConfig,
       autocomplete: "off",
       type: changedType,
+    },
+    textarea: {
+      value,
+      setValue,
+      onChange: onTextAreaChange,
+      ...inputConfig,
+      autocomplete: "off",
     },
     dateTime: { date, setDate, id: inputConfig.id },
     etc: {

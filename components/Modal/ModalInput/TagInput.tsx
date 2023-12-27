@@ -8,7 +8,7 @@ interface TagInputProp {
   value: string;
   id: string;
   setValue: Dispatch<SetStateAction<string>>;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 function TagInput({ tagList, setTagList, value, setValue, onChange, id }: TagInputProp) {
