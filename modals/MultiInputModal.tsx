@@ -18,9 +18,17 @@ interface MultiInputModalProp {
   chip?: boolean;
   columnId: number;
   dashboardId: number;
+  handleModalClose: () => void;
 }
 
-const MultiInputModal = ({ type = "text", title, buttonText, columnId, dashboardId }: MultiInputModalProp) => {
+const MultiInputModal = ({
+  type = "text",
+  title,
+  buttonText,
+  handleModalClose,
+  columnId,
+  dashboardId,
+}: MultiInputModalProp) => {
   const modalTitle = useInputController({
     inputConfig: { id: "title", type, placeholder: "제목을 입력해 주세요" },
     labelConfig: { labelName: "제목", star: true, mobile: true },
@@ -111,8 +119,11 @@ const MultiInputModal = ({ type = "text", title, buttonText, columnId, dashboard
     imageUrl: imageFile,
   };
 
+  console.log(data);
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
     // 페치 하게 될 듯
   };
 
@@ -146,7 +157,7 @@ const MultiInputModal = ({ type = "text", title, buttonText, columnId, dashboard
           </div>
         </div>
 
-        <ModalButton.DoubleButton>{buttonText}</ModalButton.DoubleButton>
+        <ModalButton.DoubleButton onClick={handleModalClose}>{buttonText}</ModalButton.DoubleButton>
       </form>
     </ModalWrapper>
   );

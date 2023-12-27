@@ -2,16 +2,10 @@ import clsx from "clsx";
 import styles from "./ModalButton.module.css";
 import { ReactNode } from "react";
 
-function ModalSubmit({ className }: { className?: string }) {
+function ModalSubmit({ children, className }: { children: string; className?: string }) {
   const singleButtonStyle = clsx(styles.root, styles.single, className);
 
-  return <button className={singleButtonStyle}>입력</button>;
-}
-
-interface Config {
-  type: "button" | "submit" | "reset" | undefined;
-  className: "cancel" | "accept";
-  children: ReactNode;
+  return <button className={singleButtonStyle}>{children}</button>;
 }
 
 function SingleButton({ children }: { children: string }) {
@@ -24,25 +18,13 @@ function SingleButton({ children }: { children: string }) {
   );
 }
 
-function DoubleButton({ children }: { children: ReactNode }) {
-  const configs: Config[] = [
-    { type: "button", className: "cancel", children: "취소" },
-    { type: "submit", className: "accept", children },
-  ];
-
+function DoubleButton({ children, onClick }: { children: ReactNode; onClick: () => void }) {
   return (
     <div className={styles.buttonContainer}>
-      {configs.map((config) => {
-        return (
-          <button
-            type={config.type}
-            className={`${styles.root} ${styles.double} ${styles[config.className]}`}
-            key={config.type}
-          >
-            {config.children}
-          </button>
-        );
-      })}
+      <button onClick={onClick} type="button" className={`${styles.root} ${styles.double} ${styles.cancel}`}>
+        취소
+      </button>
+      <button className={`${styles.root} ${styles.double} ${styles.accept}`}>{children}</button>
     </div>
   );
 }

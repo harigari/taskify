@@ -17,6 +17,7 @@ interface SingleInputModalProp {
   initialValue?: string;
   chip?: boolean;
   deleteButton?: boolean;
+  handleModalClose: () => void;
 }
 
 const SingleInputModal = ({
@@ -26,6 +27,7 @@ const SingleInputModal = ({
   title,
   chip = false,
   buttonText,
+  handleModalClose,
   initialValue = "",
   deleteButton = false,
 }: SingleInputModalProp) => {
@@ -56,7 +58,7 @@ const SingleInputModal = ({
           <button className={clsx(styles.button, deleteButton && styles.deleteButton)} type="button">
             삭제하기
           </button>
-          <ModalButton.DoubleButton>{buttonText}</ModalButton.DoubleButton>
+          <ModalButton.DoubleButton onClick={handleModalClose}>{buttonText}</ModalButton.DoubleButton>
         </div>
       </form>
     </ModalWrapper>
