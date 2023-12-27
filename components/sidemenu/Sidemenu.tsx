@@ -1,8 +1,8 @@
+import clsx from "clsx";
 import Image from "next/image";
-import styles from "./Sidemenu.module.css";
 import Link from "next/link";
 import { useState } from "react";
-import clsx from "clsx";
+import styles from "./Sidemenu.module.css";
 
 const MOCKUP = [
   {
@@ -59,7 +59,7 @@ const Sidemenu = () => {
           <p className={styles.title__text}>Dash Boards</p>
         </Link>
         <button className={styles.title__button}>
-          <Image width={20} height={20} src="/images/icon-addbox.svg" alt="대시보드 추가하기" />
+          <Image width={20} height={20} src="/icons/icon-addbox.svg" alt="대시보드 추가하기" />
         </button>
       </div>
       <ul className={styles.list}>
@@ -76,7 +76,7 @@ const Sidemenu = () => {
                   className={styles.item__img}
                   width={18}
                   height={14}
-                  src="/images/icon-crown.svg"
+                  src="/icons/icon-crown.svg"
                   alt="내가 생성한 대시보드"
                 />
               )}

@@ -8,8 +8,8 @@ import ChipTodo from "@/components/Chips/ChipTodo/ChipTodo";
 
 interface DropdownProp {
   children: ReactNode;
-  value: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  value: string | undefined;
+  setValue: Dispatch<SetStateAction<string | undefined>>;
   options: string[];
 }
 

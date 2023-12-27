@@ -29,6 +29,7 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
   };
 
   const onBlur = () => {
+    // 에러 핸들링 로직에 거대한 수정이 필요하다
     errorConfig?.find((error) => {
       if (error[0]) {
         setErrorText(error[1]);

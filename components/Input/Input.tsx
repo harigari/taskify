@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, HTMLInputTypeAttribute, InputHTMLAttributes, MouseEvent, SetStateAction } from "react";
+import { ChangeEvent, MouseEvent, RefObject } from "react";
 import styles from "./Input.module.css";
 import Image from "next/image";
 

@@ -10,7 +10,7 @@
 }
 
 .button:disabled img {
-  filter: invert(100%) sepia(2%) saturate(1968%) hue-rotate(339deg) brightness(124%) contrast(70%);
+  filter: invert(100%);
 }
 
 .rotate {

@@ -26,3 +26,16 @@
 .largeText {
   font-size: 1.2rem;
 }
+
+/* 화이트 버전일 때 */
+.white {
+  background-color: white;
+}
+
+.whiteText {
+  font-size: 1.8rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--black3);
+}
