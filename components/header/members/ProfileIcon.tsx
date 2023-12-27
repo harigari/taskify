@@ -1,4 +1,4 @@
-import { Member } from "@/components/Header/Header.type";
+import { Member } from "@/components/header/header.type";
 import { colorMapping } from "@/utils/colorMapping";
 import Image from "next/image";
 import styles from "./ProfileIcon.module.css";
@@ -17,7 +17,7 @@ interface ProfileIconProps {
 
 const ProfileIcon = ({ member, size, ...props }: ProfileIconProps) => {
   return (
-    <button className={styles.member} {...props}>
+    <button className={clsx(styles.member, { [styles.card]: size === "sm" })} {...props}>
       {member.profileImageUrl ? (
         <Image
           className={clsx(styles.member__image, { [styles.card]: size === "sm" })}

@@ -94,7 +94,8 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
             ></input>
           ) : (
             <div className={styles.selectedNickname}>
-              <div className={styles.profileWrapper}>
+              {/* ProfileIcon에 marginLeft -1rem이 달려있어서, 부득이 인라인 스타일로 이 부분을 조절함 */}
+              <div className={styles.profileWrapper} style={{ marginLeft: "1rem" }}>
                 <ProfileIcon size="sm" member={value} />
                 {value.nickname}
               </div>

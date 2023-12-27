@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import styles from "./ModalButton.module.css";
-import { ReactNode } from "react";
+import { MouseEvent, ReactNode } from "react";
 
 function ModalSubmit({ children, className }: { children: string; className?: string }) {
   const singleButtonStyle = clsx(styles.root, styles.single, className);
@@ -18,7 +18,7 @@ function SingleButton({ children }: { children: string }) {
   );
 }
 
-function DoubleButton({ children, onClick }: { children: ReactNode; onClick: () => void }) {
+function DoubleButton({ children, onClick }: { children: ReactNode; onClick: (e: MouseEvent) => void }) {
   return (
     <div className={styles.buttonContainer}>
       <button onClick={onClick} type="button" className={`${styles.root} ${styles.double} ${styles.cancel}`}>

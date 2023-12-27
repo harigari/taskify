@@ -4,7 +4,7 @@ import useInputController from "@/hooks/useInputController";
 import ModalWrapper from "./ModalWrapper";
 import ModalButton from "@/components/Modal/ModalButton/ModalButton";
 import styles from "./Modal.module.css";
-import { FormEvent } from "react";
+import { FormEvent, MouseEvent } from "react";
 import ChipColors from "@/components/Chips/ChipColors/ChipColors";
 import clsx from "clsx";
 
@@ -17,7 +17,7 @@ interface SingleInputModalProp {
   initialValue?: string;
   chip?: boolean;
   deleteButton?: boolean;
-  handleModalClose: () => void;
+  handleModalClose: (e: MouseEvent) => void;
 }
 
 const SingleInputModal = ({
@@ -54,8 +54,8 @@ const SingleInputModal = ({
 
         {chip && <ChipColors size="lg" />}
 
-        <div className={clsx(styles.buttonContainer, deleteButton || styles.deleteButton)}>
-          <button className={clsx(styles.button, deleteButton && styles.deleteButton)} type="button">
+        <div className={clsx(styles.buttonContainer, deleteButton && styles.deleteButton)}>
+          <button className={clsx(styles.button, deleteButton || styles.deleteButton)} type="button">
             삭제하기
           </button>
           <ModalButton.DoubleButton onClick={handleModalClose}>{buttonText}</ModalButton.DoubleButton>

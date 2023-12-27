@@ -4,7 +4,7 @@ import useInputController from "@/hooks/useInputController";
 import ModalWrapper from "./ModalWrapper";
 import ModalButton from "@/components/Modal/ModalButton/ModalButton";
 import styles from "./Modal.module.css";
-import { FormEvent, useState } from "react";
+import { FormEvent, MouseEvent, useState } from "react";
 import DateTime from "@/components/Modal/ModalInput/DateTime";
 import TagInput from "@/components/Modal/ModalInput/TagInput";
 import ImageInput from "@/components/ImageInput/ImageInput";
@@ -18,7 +18,7 @@ interface MultiInputModalProp {
   chip?: boolean;
   columnId: number;
   dashboardId: number;
-  handleModalClose: () => void;
+  handleModalClose: (e: MouseEvent) => void;
 }
 
 const MultiInputModal = ({
