@@ -15,7 +15,6 @@ interface MultiInputModalProp {
   title: string;
   buttonText: string;
   type?: string;
-  chip?: boolean;
   columnId: number;
   dashboardId: number;
   handleModalClose: (e: MouseEvent) => void;
