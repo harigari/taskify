@@ -15,7 +15,14 @@ const Profile = ({ member, idx, ...props }: ProfileProps) => {
 
   return (
     <div className={styles.container}>
-      <ProfileIcon member={member} onMouseOver={handleOpen} onMouseOut={handleClose} data-index={idx} {...props} />
+      <ProfileIcon
+        member={member}
+        size="lg"
+        onMouseOver={handleOpen}
+        onMouseOut={handleClose}
+        data-index={idx}
+        {...props}
+      />
       {isOpen && <ProfilePopup member={member} />}
     </div>
   );
