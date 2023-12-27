@@ -42,10 +42,10 @@ function ImageInput({ setImageFile, imageFile }: ImageInputProp) {
   return (
     <div className={styles.root} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
       <label htmlFor="imageFile" className={styles.label}>
-        <Image className={styles.image} src={preview ? preview : "/images/icons/add_file.svg"} fill alt="" />
+        <Image className={styles.image} src={preview ? preview : "/icons/add_file.svg"} fill alt="" />
         {hover && preview && (
           <div className={styles.hoverBox}>
-            <Image width={30} height={30} src="/images/icons/edit_input_file.svg" alt="" />
+            <Image width={30} height={30} src="/icons/edit_input_file.svg" alt="" />
           </div>
         )}
       </label>

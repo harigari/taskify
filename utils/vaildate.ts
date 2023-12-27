@@ -20,6 +20,7 @@ const TEXT = {
     email: "올바른 이메일 주소가 아닙니다.",
     password: "비밀번호는 영문, 숫자 조합 8자 이상 입력해주세요.",
   },
+  current: "현재 비밀번호와 일치하지 않아요.",
   same: "비밀번호가 일치하지 않아요.",
 };
 
@@ -51,3 +52,15 @@ export const isSamePassword: ValidateFunc = (obj: Obj) => {
   return obj;
 };
 isSamePassword.type = "validate";
+
+export const isCurrentPassword = (current: string) => {
+  const returnFunc: ValidateFunc = (obj: Obj) => {
+    if (obj.value === current) {
+      return obj;
+    }
+    return TEXT.current;
+  };
+  returnFunc.type = "validate";
+
+  return returnFunc;
+};

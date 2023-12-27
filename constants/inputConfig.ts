@@ -1,4 +1,4 @@
-import { Obj, ValidateFunc, isReg, isSamePassword, isValue } from "@/utils/vaildate";
+import { Obj, ValidateFunc, isCurrentPassword, isReg, isSamePassword, isValue } from "@/utils/vaildate";
 
 export interface Configs {
   errorConfig?: Array<[(value: string) => boolean, string] | [ValidateFunc]>;
@@ -73,4 +73,40 @@ export const signupPasswordCheck: Configs = {
     eyeButton: true,
   },
   labelConfig: { labelName: "비밀번호 확인" },
+};
+
+export const mypageCurrentPassword: Configs = {
+  errorConfig: [],
+  inputConfig: {
+    id: "current__password",
+    type: "password",
+    name: "password",
+    placeholder: "현재 비밀번호를 입력해 주세요.",
+    eyeButton: true,
+  },
+  labelConfig: { labelName: "현재 비밀번호" },
+};
+
+export const mypageNewPassword: Configs = {
+  errorConfig: [[isReg], [isValue]],
+  inputConfig: {
+    id: "new__password",
+    type: "password",
+    name: "password",
+    placeholder: "새로운 비밀번호를 입력해 주세요.",
+    eyeButton: true,
+  },
+  labelConfig: { labelName: "새로운 비밀번호" },
+};
+
+export const mypageNewPasswordCheck: Configs = {
+  errorConfig: [[isSamePassword], [isReg], [isValue]],
+  inputConfig: {
+    id: "new__passwordCheck",
+    type: "password",
+    name: "passwordCheck",
+    placeholder: "새로운 비밀번호를 입력해 주세요.",
+    eyeButton: true,
+  },
+  labelConfig: { labelName: "새로운 비밀번호 확인" },
 };
