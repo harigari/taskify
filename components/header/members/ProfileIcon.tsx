@@ -1,10 +1,18 @@
+<<<<<<< HEAD
 import { Member } from "@/components/Header/Header.type";
+=======
+import styles from "./ProfileIcon.module.css";
+import clsx from "clsx";
+import { ProfileIconProps } from "@/components/header/header.type";
+>>>>>>> upstream/develop
 import { colorMapping } from "@/utils/colorMapping";
 import Image from "next/image";
 import styles from "./ProfileIcon.module.css";
+import clsx from "clsx";
 
 interface ProfileIconProps {
   member: Member;
+  size: "sm" | "lg";
   tabIndex?: number;
   onMouseOver?: () => void;
   onMouseOut?: () => void;
@@ -13,19 +21,22 @@ interface ProfileIconProps {
   onBlur?: () => void;
 }
 
-const ProfileIcon = ({ member, ...props }: ProfileIconProps) => {
+const ProfileIcon = ({ member, size, ...props }: ProfileIconProps) => {
   return (
     <button className={styles.member} {...props}>
       {member.profileImageUrl ? (
         <Image
-          className={styles.member__image}
+          className={clsx(styles.member__image, { [styles.card]: size === "sm" })}
           width={40}
           height={40}
           src={member.profileImageUrl}
           alt={member.nickname}
         />
       ) : (
-        <div className={styles.member__defaultimage} style={{ backgroundColor: colorMapping(member.nickname) }} />
+        <div
+          className={clsx(styles.member__defaultimage, { [styles.card]: size === "sm" })}
+          style={{ backgroundColor: colorMapping(member.nickname) }}
+        />
       )}
       <span className={styles.member__name}>{member.nickname.slice(0, 1)}</span>
     </button>

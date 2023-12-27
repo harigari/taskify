@@ -28,10 +28,9 @@ const Profile = ({ member, idx, ...props }: ProfileProps) => {
     <div className={styles.container}>
       <ProfileIcon
         member={member}
+        size="lg"
         onMouseOver={handleOpen}
         onMouseOut={handleClose}
-        onFocus={handleOpen}
-        onBlur={handleClose}
         data-index={idx}
         {...props}
       />
