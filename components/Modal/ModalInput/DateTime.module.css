@@ -22,10 +22,9 @@
 
 .datepick {
   border: 0;
-  font-family: Pretendard;
   font-size: 1.6rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  color: var(--black-black_171717, #171717);
+}
+
+.datepick::placeholder {
+  color: var(--gray-gray_9FA6B2, #9fa6b2);
 }
