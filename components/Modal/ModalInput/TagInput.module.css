@@ -39,7 +39,7 @@
   width: 1.5rem;
   height: 1.5rem;
   background-color: gray;
-  background-image: url("/images/icons/close.svg");
+  background-image: url("/icons/close.svg");
   background-size: 1.5rem;
   transform: translate(-50%, -50%);
   border-radius: 9rem;

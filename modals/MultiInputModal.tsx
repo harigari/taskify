@@ -8,6 +8,8 @@ import { FormEvent, useState } from "react";
 import DateTime from "@/components/Modal/ModalInput/DateTime";
 import TagInput from "@/components/Modal/ModalInput/TagInput";
 import ImageInput from "@/components/ImageInput/ImageInput";
+import InputDropdown from "@/components/Modal/InputDropdown/InputDropdown";
+import useDropdownController, { Member } from "@/hooks/useDropdownController";
 
 interface MultiInputModalProp {
   title: string;
@@ -39,14 +41,69 @@ const MultiInputModal = ({ type = "text", title, buttonText, columnId, dashboard
     labelConfig: { labelName: "태그", mobile: true },
   });
 
+  const testOp = [
+    {
+      id: 1,
+      userId: 101,
+      email: "user1@example.com",
+      nickname: "나란히",
+      profileImageUrl: "/icon-addbox.svg",
+      createdAt: "2023-01-01T00:00:00",
+      updatedAt: "2023-01-01T12:34:56",
+      isOwner: true,
+    },
+    {
+      id: 2,
+      userId: 102,
+      email: "user2@example.com",
+      nickname: "가요",
+      profileImageUrl: "/icon-addbox.svg",
+      createdAt: "2023-01-02T00:00:00",
+      updatedAt: "2023-01-02T12:34:56",
+      isOwner: false,
+    },
+    {
+      id: 3,
+      userId: 103,
+      email: "user3@example.com",
+      nickname: "룰루",
+      profileImageUrl: "/icon-addbox.svg",
+      createdAt: "2023-01-03T00:00:00",
+      updatedAt: "2023-01-03T12:34:56",
+      isOwner: false,
+    },
+    {
+      id: 4,
+      userId: 104,
+      email: "user4@example.com",
+      nickname: "ㅎㅎㅎㅎㄴ",
+      profileImageUrl: "/icon-addbox.svg",
+      createdAt: "2023-01-04T00:00:00",
+      updatedAt: "2023-01-04T12:34:56",
+      isOwner: false,
+    },
+    {
+      id: 5,
+      userId: 1099,
+      email: "user4@example.com",
+      nickname: "나민지",
+      profileImageUrl: "/icon-addbox.svg",
+      createdAt: "2023-01-04T00:00:00",
+      updatedAt: "2023-01-04T12:34:56",
+      isOwner: false,
+    },
+  ];
+
+  const modalDropdown = useDropdownController<Member>({ options: testOp });
+
   const [tagList, setTagList] = useState<string[]>([]);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const data = {
-    assigneeUserId: 0,
     columnId,
     dashboardId,
+    assigneeUserId: modalDropdown.value,
     title: modalTitle.input.value,
     description: modalExplain.input.value,
     dueDate: modalTag.input.value,
@@ -64,6 +121,8 @@ const MultiInputModal = ({ type = "text", title, buttonText, columnId, dashboard
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <div className={styles.modal}>
           <div className={styles.modalTitle}>{title}</div>
+
+          <InputDropdown {...modalDropdown}>담당자</InputDropdown>
 
           <InputWrapper {...modalTitle.wrapper}>
             <Input {...modalTitle.input} />
