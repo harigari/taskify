@@ -1,16 +1,11 @@
 import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
+import Button from "@/components/buttons/Button/Button";
+import { mypageCurrentPassword, mypageNewPasswordCheck } from "@/constants/inputConfig";
 import useInputController from "@/hooks/useInputController";
 import { isCurrentPassword, isValue } from "@/utils/vaildate";
+import { mypageNewPassword } from "../../constants/inputConfig";
 import styles from "./SettingPassword.module.css";
-import {
-  mypageCurrentPassword,
-  mypageNewPasswordCheck,
-  signupPassword,
-  signupPasswordCheck,
-} from "@/constants/inputConfig";
-import { mypageNewPassword } from "./../../../constants/inputConfig";
-import Button from "@/components/buttons/Button/Button";
 
 const SettingPassword = () => {
   const currentPassword = "codeit101!";
@@ -39,7 +34,13 @@ const SettingPassword = () => {
         );
       })}
       <div className={styles.savebutton}>
-        <Button buttonType="accept_reject" color="violet">
+        <Button
+          buttonType="accept_reject"
+          color="violet"
+          disabled={inputs.some(([wrapper, input]) => {
+            return !!wrapper.errorText || !input.value;
+          })}
+        >
           변경
         </Button>
       </div>

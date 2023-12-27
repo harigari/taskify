@@ -1,8 +1,8 @@
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
-import SettingProfile from "@/pages/mypage/components/SettingProfile";
+import SettingPassword from "@/components/Settings/SettingPassword";
+import SettingProfile from "@/components/Settings/SettingProfile";
 import Image from "next/image";
 import styles from "./mypage.module.css";
-import SettingPassword from "@/pages/mypage/components/SettingPassword";
 
 const MyPage = () => {
   return (

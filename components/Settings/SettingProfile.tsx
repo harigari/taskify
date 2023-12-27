@@ -29,7 +29,7 @@ const SettingProfile = () => {
         </div>
       </div>
       <div className={styles.savebutton}>
-        <Button buttonType="accept_reject" color="violet">
+        <Button buttonType="accept_reject" color="violet" disabled={!!wrapper.errorText || !input.value}>
           저장
         </Button>
       </div>
