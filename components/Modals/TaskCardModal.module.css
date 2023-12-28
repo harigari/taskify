@@ -114,7 +114,7 @@
 
 .comments {
   display: flex;
-  gap: 1.6rem;
+
   flex-direction: column;
   overflow: auto;
   width: 45rem;
