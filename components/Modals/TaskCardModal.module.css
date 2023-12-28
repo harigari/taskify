@@ -122,3 +122,6 @@
   width: 45rem;
   height: 26rem;
 }
+.image_wrapper img {
+  border-radius: 0.6rem;
+}

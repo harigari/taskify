@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import ModalButton from "../ModalButton/ModalButton";
-import styles from "./Comment.module.css";
+import styles from "./CommentInput.module.css";
 
 interface CommentProps {
   value: string;
@@ -9,7 +9,7 @@ interface CommentProps {
   placeholder?: string | undefined;
 }
 
-function Comment({ value, onChange, id, placeholder }: CommentProps) {
+function CommentInput({ value, onChange, id, placeholder }: CommentProps) {
   return (
     <>
       <textarea
@@ -24,4 +24,4 @@ function Comment({ value, onChange, id, placeholder }: CommentProps) {
   );
 }
 
-export default Comment;
+export default CommentInput;

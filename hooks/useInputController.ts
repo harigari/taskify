@@ -4,25 +4,31 @@ interface Props {
   errorConfig?: [boolean, string][];
   inputConfig: {
     id: string;
+    initialValue?: string;
     type: string;
     name?: string;
     eyeButton?: boolean;
     placeholder?: string | undefined;
   };
   labelConfig: {
-    labelName: string;
+    labelName?: string;
     mobile?: boolean;
     star?: boolean;
   };
 }
 
 function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(inputConfig.initialValue || "");
   const [date, setDate] = useState<Date | null>(null);
   const [errorText, setErrorText] = useState("");
   const [eyesValue, setEyesValue] = useState(false);
 
-  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setValue(value);
+  };
+
+  const onTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setValue(value);
   };
@@ -68,7 +74,14 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
       eyesValue,
       onEyesClick,
       ...inputConfig,
+      autoComplete: "off",
       type: changedType,
+    },
+    textarea: {
+      value,
+      onChange: onTextAreaChange,
+      ...inputConfig,
+      autoComplete: "off",
     },
     dateTime: { date, setDate, id: inputConfig.id },
     etc: {
