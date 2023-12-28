@@ -78,7 +78,7 @@ const TablePagenation = ({
         <>
           {isOpen && (
             <>
-              {search && <SearchInput keyword={keyword} setKeyword={setKeyword} />}
+              {search && <SearchInput setKeyword={setKeyword} />}
               <TableIndex data={rowData} tableIndex={tableIndex} invite={invite} />
               <TableList data={rowData} tableIndex={tableIndex} row={row} />
             </>

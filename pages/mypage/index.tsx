@@ -1,6 +1,6 @@
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
-import SettingPassword from "@/components/Settings/SettingPassword";
-import SettingProfile from "@/components/Settings/SettingProfile";
+import SettingPassword from "@/pages/mypage/components/SettingPassword";
+import SettingProfile from "@/pages/mypage/components/SettingProfile";
 import Image from "next/image";
 import styles from "./mypage.module.css";
 

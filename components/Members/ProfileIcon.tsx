@@ -4,28 +4,28 @@ import Image from "next/image";
 import styles from "./ProfileIcon.module.css";
 import clsx from "clsx";
 
-interface ProfileIconProps {
+type Handler = () => void;
+
+type HandlerName = "onMouseOver" | "onMouseOut" | "onTouchStart" | "onFocus" | "onBlur";
+
+type HandlerFunc = {
+  [k in HandlerName]?: Handler;
+};
+
+interface ProfileIconProps extends HandlerFunc {
   member: Member;
-  size: "sm" | "lg";
+  size?: "sm" | "lg";
   tabIndex?: number;
-  onMouseOver?: () => void;
-  onMouseOut?: () => void;
-  onTouchStart?: () => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
+  className?: string;
 }
 
-const ProfileIcon = ({ member, size, ...props }: ProfileIconProps) => {
+const ProfileIcon = ({ member, size = "lg", ...props }: ProfileIconProps) => {
   return (
     <button className={styles.member} {...props}>
       {member.profileImageUrl ? (
-        <Image
-          className={clsx(styles.member__image, { [styles.card]: size === "sm" })}
-          width={40}
-          height={40}
-          src={member.profileImageUrl}
-          alt={member.nickname}
-        />
+        <div className={clsx(styles.member__image, { [styles.member_image__small]: size === "sm" })}>
+          <Image fill src={member.profileImageUrl} alt={member.nickname} />
+        </div>
       ) : (
         <div
           className={clsx(styles.member__defaultimage, { [styles.card]: size === "sm" })}

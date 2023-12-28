@@ -1,8 +1,8 @@
-import IndexHeader from "@/components/Header/IndexHeader/IndexHeader";
+import IndexHeader from "@/pages/components/IndexHeader";
 import styles from "./index.module.css";
-import SettingSection from "@/components/home/setting_section/SettingSection";
-import FeatureSection from "@/components/home/feature_section/FeatureSection";
-import HeroSection from "@/components/home/hero_section/HeroSection";
+import HeroSection from "@/pages/components/HeroSection";
+import FeatureSection from "@/pages/components/FeatureSection";
+import SettingSection from "@/pages/components/SettingSection";
 
 export default function Home() {
   return (

@@ -4,7 +4,7 @@ import Button from "@/components/buttons/Button/Button";
 import { mypageCurrentPassword, mypageNewPasswordCheck } from "@/constants/inputConfig";
 import useInputController from "@/hooks/useInputController";
 import { isCurrentPassword, isValue } from "@/utils/vaildate";
-import { mypageNewPassword } from "../../constants/inputConfig";
+import { mypageNewPassword } from "../../../constants/inputConfig";
 import styles from "./SettingPassword.module.css";
 
 const SettingPassword = () => {

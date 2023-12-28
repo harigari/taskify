@@ -1,8 +1,8 @@
-import ProfileIcon from "@/components/Header/Members/ProfileIcon";
 import { InviteBoard, Member, TableIndexType } from "@/components/Table/Table.type";
 import Button from "@/components/buttons/Button/Button";
 import { colorMapping } from "@/utils/colorMapping";
 import styles from "./TableList.module.css";
+import ProfileIcon from "@/components/Members/ProfileIcon";
 
 interface TableListProps {
   data: (Member | InviteBoard)[];

@@ -1,8 +1,8 @@
 import { Member, User } from "@/components/Header/Header.type";
 import styles from "./Header.module.css";
 import HeaderButton from "./HeaderButton/HeaderButton";
-import Members from "./Members/Members";
-import Profile from "./Members/Profile";
+import Members from "../Members/Members";
+import Profile from "../Members/Profile";
 
 const MOCKUP: Member[] = [
   { id: 1, nickname: "haneul", profileImageUrl: "" },
