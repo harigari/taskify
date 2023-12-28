@@ -16,7 +16,7 @@ interface Props {
   color: Color;
 }
 
-const Button = ({ children, icon, disabled, onClick, buttonType, color }: Props) => {
+const Button = ({ children, disabled, onClick, buttonType, color }: Props) => {
   return (
     <button
       disabled={disabled}
@@ -24,11 +24,6 @@ const Button = ({ children, icon, disabled, onClick, buttonType, color }: Props)
       className={clsx(styles.common, buttonType && styles[buttonType], color && styles[color])}
     >
       {children}
-      {icon && (
-        <button>
-          <ChipPlus size="lg"></ChipPlus>
-        </button>
-      )}
     </button>
   );
 };

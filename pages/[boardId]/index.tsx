@@ -5,6 +5,7 @@ import Button from "@/components/buttons/Button/Button";
 import Card from "@/components/Card/Card";
 import MenuLayout from "@/components/menulayout/MenuLayout";
 import style from "./dashboard.module.css";
+import ChipPlus from "@/components/Chips/ChipPlus/ChipPlus";
 
 const Dashboard = () => {
   // const [page, setPage] = useState(1);
@@ -68,8 +69,13 @@ const Dashboard = () => {
             <Card cardList={mock} columnName="Done" />
           </div>
           <div className={style.buttonWrapper}>
-            <Button buttonType="add_column" color="white" icon>
-              <span>새로운 컬럼 추가하기</span>
+            <Button buttonType="add_column" color="white">
+              <div className={style.buttonContentWrapper}>
+                <span>새로운 컬럼 추가하기</span>
+                <button>
+                  <ChipPlus size="lg"></ChipPlus>
+                </button>
+              </div>
             </Button>
           </div>
         </div>
