@@ -55,7 +55,7 @@ const INVITE = [
       title: "나의 대시보드",
       id: 1,
     },
-    invitee: {
+    inviter: {
       nickname: "유다미",
       email: "youdame@codeit.kr",
       id: 22,
@@ -68,7 +68,7 @@ const INVITE = [
       title: "리액트 탐험",
       id: 15,
     },
-    invitee: {
+    inviter: {
       nickname: "김하늘",
       email: "haneulkim@codeit.kr",
       id: 82,
@@ -81,7 +81,7 @@ const INVITE = [
       title: "제 생각에는요",
       id: 14,
     },
-    invitee: {
+    inviter: {
       nickname: "정진호",
       email: "jjh@codeit.kr",
       id: 56,
@@ -94,7 +94,7 @@ const INVITE = [
       title: "좋은것같아요",
       id: 3,
     },
-    invitee: {
+    inviter: {
       nickname: "안지수",
       email: "ahn@codeit.kr",
       id: 34,
@@ -131,8 +131,8 @@ export default function DashBoard() {
           <TablePagenation
             title="초대받은 대시보드"
             row={6}
-            data={[]}
-            tableIndex={{ 이름: "dashboard", 초대자: "invitee", "수락 여부": "deleteButton" }}
+            data={INVITE}
+            tableIndex={{ 이름: "dashboard", 초대자: "inviter", "수락 여부": "deleteButton" }}
             search
           />
         </section>

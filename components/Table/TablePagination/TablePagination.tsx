@@ -4,7 +4,7 @@ import TableList from "@/components/Table/TableList/TableList";
 import HideButton from "@/components/Table/TablePagination/HideButton";
 import InviteButton from "@/components/Table/TablePagination/InviteButton";
 import SearchInput from "@/components/Table/TablePagination/SearchInput";
-import ArrowButton from "@/components/buttons/ArrowButton/ArrowButton";
+import ArrowButton from "@/components/Buttons/ArrowButton/ArrowButton";
 import { clsx } from "clsx";
 import { useMemo, useState } from "react";
 import styles from "./TablePagination.module.css";
@@ -36,7 +36,7 @@ const TablePagenation = ({
       keyword
         ? data.filter((v) => {
             if ("dashboard" in v) {
-              return [v.dashboard.title, v.invitee.nickname, v.invitee.email].some((v) => v.includes(keyword));
+              return [v.dashboard.title, v.inviter.nickname, v.inviter.email].some((v) => v.includes(keyword));
             }
             if ("nickname" in v) {
               return v.nickname.includes(keyword);

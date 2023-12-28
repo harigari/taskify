@@ -10,7 +10,7 @@ export interface InviteBoard {
     title: string;
     id: number;
   };
-  invitee: {
+  inviter: {
     nickname: string;
     email: string;
     id: number;
@@ -19,5 +19,5 @@ export interface InviteBoard {
 }
 
 export type TableIndexType = {
-  [a: string]: "nickname" | "dashboard" | "invitee" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
+  [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
 };
