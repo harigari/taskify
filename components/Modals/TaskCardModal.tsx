@@ -24,11 +24,11 @@ const TaskCardModal = ({ data }: TaskCardInfoProps) => {
 
   // useRef 초기값은 뭐?
   const kebabRef = useRef(null);
-  // const handleBackDropClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-  //   if (kebabRef.current !== e.target) {
-  //     setIsKebabOpen(false);
-  //   }
-  // };
+  const handleBackDropClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (kebabRef.current !== e.target) {
+      setIsKebabOpen(false);
+    }
+  };
   const comment = useInputController({
     inputConfig: { id: "comment", type: "text" },
     labelConfig: { labelName: "댓글" },
@@ -62,12 +62,12 @@ const TaskCardModal = ({ data }: TaskCardInfoProps) => {
 
   return (
     <>
-      <div className={styles.modal_wrapper}>
+      <div className={styles.modal_wrapper} onClick={handleBackDropClick}>
         <div className={styles.header}>
           <h1>{data.title}</h1>
           <div className={styles.icons}>
-            <button ref={kebabRef} onClick={handleKebab}>
-              <Image src="/icons/kebab.svg" alt="케밥 아이콘" width={28} height={28} />
+            <button onClick={handleKebab}>
+              <Image ref={kebabRef} src="/icons/kebab.svg" alt="케밥 아이콘" width={28} height={28} />
             </button>
             {isKebabOpen && (
               <div className={styles.options}>
