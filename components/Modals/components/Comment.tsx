@@ -1,5 +1,5 @@
-import ProfileIcon from "../header/members/ProfileIcon";
-import { Comment } from "./Modal.type";
+import ProfileIcon from "../../header/members/ProfileIcon";
+import { Comment } from "../Modal.type";
 import styles from "./Comment.module.css";
 import formatDate, { DateFormat } from "@/utils/formatDate";
 interface CommentProps {

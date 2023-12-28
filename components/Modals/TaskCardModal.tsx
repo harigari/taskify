@@ -5,12 +5,13 @@ import Image from "next/image";
 import ChipTodo from "../Chips/ChipTodo/ChipTodo";
 import TaskCardModalHeader from "./TaskCardModalHeader";
 import ChipTag from "../Chips/ChipTag/ChipTag";
-import Comment from "./Comment";
+import Comment from "./components/Comment";
 import ProfileIcon from "../header/members/ProfileIcon";
 import useInputController from "@/hooks/useInputController";
 import InputWrapper from "../Input/InputWrapper";
 import CommentInput from "../Modal/ModalInput/CommentInput";
 import formatDate, { DateFormat } from "@/utils/formatDate";
+import AssigneeAndDueDateInfo from "./components/AssigneeAndDueDateInfo";
 
 interface TaskCardInfoProps {
   data: TaskInfo;
@@ -95,19 +96,7 @@ const TaskCardModal = ({ data }: TaskCardInfoProps) => {
             ))}
           </div>
         </div>
-        <div className={styles.assignee_and_dueDate}>
-          <div className={styles.dueDate}>
-            <span className={styles.label}>담당자</span>
-            <div className={styles.assignee}>
-              <ProfileIcon size="lg" member={data.assignee} />
-              <span className={styles.detail}>{data.assignee.nickname}</span>
-            </div>
-          </div>
-          <div className={styles.dueDate}>
-            <span className={styles.label}>마감일</span>
-            <span className={styles.detail}>{formatDate(data.dueDate, DateFormat.Full)}</span>
-          </div>
-        </div>
+        <AssigneeAndDueDateInfo data={data} />
         <div className={styles.description}>{data.description}</div>
         <div className={styles.image_wrapper}>
           <Image fill src={data.imageUrl} alt="할 일 카드 이미지" />
