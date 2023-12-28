@@ -1,17 +1,14 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, MouseEvent, FocusEvent } from "react";
 import { TaskInfo } from "./Modal.type";
 import styles from "./TaskCardModal.module.css";
 import Image from "next/image";
 import ChipTodo from "../Chips/ChipTodo/ChipTodo";
-import TaskCardModalHeader from "./TaskCardModalHeader";
 import ChipTag from "../Chips/ChipTag/ChipTag";
 import Comment from "./components/Comment";
-import ProfileIcon from "../header/members/ProfileIcon";
 import useInputController from "@/hooks/useInputController";
+import AssigneeAndDueDateInfo from "./components/AssigneeAndDueDateInfo";
 import InputWrapper from "../Input/InputWrapper";
 import CommentInput from "../Modal/ModalInput/CommentInput";
-import formatDate, { DateFormat } from "@/utils/formatDate";
-import AssigneeAndDueDateInfo from "./components/AssigneeAndDueDateInfo";
 
 interface TaskCardInfoProps {
   data: TaskInfo;
@@ -23,17 +20,19 @@ const TaskCardModal = ({ data }: TaskCardInfoProps) => {
     isKebabOpen ? setIsKebabOpen(false) : setIsKebabOpen(true);
   };
 
-  // useRef 초기값은 뭐?
-  const kebabRef = useRef(null);
-  const handleBackDropClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (kebabRef.current !== e.target) {
+  const optionsRef = useRef<HTMLDivElement>(null);
+
+  const handleKebabClose = (e: FocusEvent) => {
+    if (!optionsRef.current?.contains(e.relatedTarget)) {
       setIsKebabOpen(false);
     }
   };
+
   const comment = useInputController({
     inputConfig: { id: "comment", type: "text" },
-    labelConfig: { labelName: "댓글" },
+    labelConfig: { labelName: "댓글", mobile: true },
   });
+
   const comments = [
     {
       id: 114,
@@ -63,17 +62,17 @@ const TaskCardModal = ({ data }: TaskCardInfoProps) => {
 
   return (
     <>
-      <div className={styles.modal_wrapper} onClick={handleBackDropClick}>
+      <div className={styles.modal_wrapper}>
         <div className={styles.header}>
           <h1>{data.title}</h1>
           <div className={styles.icons}>
-            <button onClick={handleKebab}>
-              <Image ref={kebabRef} src="/icons/kebab.svg" alt="케밥 아이콘" width={28} height={28} />
+            <button onClick={handleKebab} onBlur={handleKebabClose}>
+              <Image src="/icons/kebab.svg" alt="케밥 아이콘" width={28} height={28} />
             </button>
             {isKebabOpen && (
-              <div className={styles.options}>
-                <div className={styles.option}>수정하기</div>
-                <div className={styles.option}>삭제하기</div>
+              <div className={styles.options} ref={optionsRef}>
+                <button className={styles.option}>수정하기</button>
+                <button className={styles.option}>삭제하기</button>
               </div>
             )}
             <button>
@@ -101,9 +100,9 @@ const TaskCardModal = ({ data }: TaskCardInfoProps) => {
         <div className={styles.image_wrapper}>
           <Image fill src={data.imageUrl} alt="할 일 카드 이미지" />
         </div>
-        {/* <InputWrapper labelName="댓글">
-          <CommentInput {...comment.textarea} />
-        </InputWrapper> */}
+        <InputWrapper {...comment.wrapper}>
+          <CommentInput disabled={!comment.input.value} {...comment.textarea} />
+        </InputWrapper>
 
         {comments.map((comment) => (
           <Comment key={comment.id} data={comment} />

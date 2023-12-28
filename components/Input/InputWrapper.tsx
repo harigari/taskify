@@ -4,7 +4,7 @@ import Label from "../Label/Label";
 import clsx from "clsx";
 
 interface InputWrapperProp extends InputHTMLAttributes<HTMLInputElement> {
-  labelName: string;
+  labelName?: string;
   children: ReactNode;
   star?: boolean;
   errorText?: string;

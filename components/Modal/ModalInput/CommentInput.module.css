@@ -5,6 +5,7 @@
   width: 80%;
   font-size: 1.4rem;
   resize: none;
+  height: 100%;
 }
 
 .textarea::placeholder {
@@ -28,6 +29,6 @@
 
   .textarea {
     width: 65%;
-    height: 7rem;
+    height: 4.5rem;
   }
 }

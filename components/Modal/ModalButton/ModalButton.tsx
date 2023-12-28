@@ -1,10 +1,14 @@
 import clsx from "clsx";
 import styles from "./ModalButton.module.css";
 
-function ModalSubmit({ className }: { className?: string }) {
+function ModalSubmit({ className, disabled }: { className?: string; disabled?: boolean }) {
   const singleButtonStyle = clsx(styles.root, styles.single, className);
 
-  return <button className={singleButtonStyle}>입력</button>;
+  return (
+    <button disabled={disabled} className={singleButtonStyle}>
+      입력
+    </button>
+  );
 }
 
 function DoubleButton({ children }: { children: string }) {

@@ -64,8 +64,8 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Props) {
       errorText,
       onBlur,
       onFocus,
-      htmlFor: inputConfig.id,
       ...labelConfig,
+      htmlFor: inputConfig.id,
     },
     input: {
       value,

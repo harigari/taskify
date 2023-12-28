@@ -5,11 +5,12 @@ import styles from "./CommentInput.module.css";
 interface CommentProps {
   value: string;
   id: string;
-  onChange: (e: ChangeEvent) => void;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string | undefined;
+  disabled?: boolean;
 }
 
-function CommentInput({ value, onChange, id, placeholder }: CommentProps) {
+function CommentInput({ value, onChange, id, placeholder, disabled = false }: CommentProps) {
   return (
     <>
       <textarea
@@ -19,7 +20,7 @@ function CommentInput({ value, onChange, id, placeholder }: CommentProps) {
         className={styles.textarea}
         placeholder={placeholder}
       ></textarea>
-      <ModalButton.ModalSubmit className={styles.button} />
+      <ModalButton.ModalSubmit disabled={disabled} className={styles.button} />
     </>
   );
 }
