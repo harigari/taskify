@@ -1,15 +1,12 @@
 import { TaskInfo } from "@/components/Modals/Modal.type";
 import TaskCardModal from "@/components/Modals/TaskCardModal";
 
-import TablePagenation from "@/components/Table/TablePagination/TablePagination";
-import ProfileIcon from "@/components/header/members/ProfileIcon";
-
 export default function Home() {
   const cardInfo: TaskInfo = {
     id: 81,
     title: "숙소 예약",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum finibus nibh arcu, quis consequat ante cursus eget. Cras mattis, nulla non laoreet porttitor, diam justo laoreet eros, vel aliquet diam elit at leo.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum finibus nibh arcu, quis consequat ante cursus eget. Cras mattis, nulla non ldolor sit amet, consectetur adipiscing elit. Vestibulum finibus nibh arcu, quis consequat ante cursus eget. Cras mattis, nulla non ldolor sit amet, consectetur adipiscing elit. Vestibulum finibus nibh arcu, quis consequat ante cursus eget. Cras mattis, nulla non laoreet porttitor, diam justo laoreet eros, vel aliquet diam elit at leo.",
     tags: ["재밌겠다", "호호호"],
     dueDate: "2024-12-12 03:12",
     assignee: {
@@ -23,8 +20,8 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div style={{ display: "flex", justifyContent: "center" }}>
       <TaskCardModal data={cardInfo} />
-    </>
+    </div>
   );
 }

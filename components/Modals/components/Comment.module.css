@@ -1,6 +1,7 @@
 .wrapper {
   display: flex;
   gap: 1rem;
+  height: 8rem;
 }
 .header {
   display: flex;
@@ -9,24 +10,22 @@
 
 .detail {
   display: flex;
-  flex-direction: column;
   gap: 0.8rem;
+  flex-direction: column;
 }
 .author {
-  color: var(--black1);
-
   font-size: 1.4rem;
 
   font-weight: 600;
+  color: var(--black1);
 }
 .createdAt {
-  color: var(--gray40);
-
   font-size: 1.2rem;
+  color: var(--gray40);
 }
 .comment {
-  color: var(--black1);
   font-size: 1.4rem;
+  color: var(--black1);
 }
 
 .buttons {
@@ -34,6 +33,33 @@
   gap: 1.2rem;
 }
 .button {
+  font-size: 1.2rem;
   color: var(--gray40);
   text-decoration-line: underline;
+}
+@media (max-width: 768px) {
+  .author {
+    font-size: 1.2rem;
+  }
+  .createdAt {
+    font-size: 1rem;
+  }
+  .comment {
+    font-size: 1.2rem;
+  }
+
+  .profile_icon button {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+  .profile_icon button div {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+  .profile_icon button span {
+    font-size: 1.2rem;
+  }
+  .dueDate {
+    gap: 1rem;
+  }
 }

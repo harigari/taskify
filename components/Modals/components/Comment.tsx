@@ -8,7 +8,9 @@ interface CommentProps {
 const Comment = ({ data }: CommentProps) => {
   return (
     <div className={styles.wrapper}>
-      <ProfileIcon size="lg" member={data.author} />
+      <div className={styles.profile_icon}>
+        <ProfileIcon size="lg" member={data.author} />
+      </div>
       <div className={styles.detail}>
         <div className={styles.header}>
           <span className={styles.author}>{data.author.nickname}</span>
