@@ -5,7 +5,7 @@ const SENDER_CONFIG = {
     // 특정한 칼럼에 있는 전체 카드 목록 가져오기
     card: (id: number) => `/cards/${id}`,
     // 특정한 카드 1개 정보 가져오기
-    columns: (id: number) => `/columns?dashbaordId=${id}`,
+    columns: (id: number) => `/columns?dashboardId=${id}`,
     // 특정한 대시보드에 있는 전체 칼럼 목록 가져오기
     comments: (id: number) => `/comments?cardId=${id}`,
     // 특정한 카드에 있는 전체 댓글 목록 가져오기

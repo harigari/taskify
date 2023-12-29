@@ -46,7 +46,11 @@ class Api {
 
   post: HTTP<"post"> = async (obj) => {
     const url = this.#makeUrl("post", obj);
-    const res = await fetch(this.#BASE_URL + url, { method: "POST", body: obj.data });
+    const res = await fetch(this.#BASE_URL + url, {
+      method: "POST",
+      body: obj.data,
+      headers: { "Content-Type": obj.path.includes("image") ? "multipart/form-data" : "application/json" },
+    });
     const data = await res.json();
     return { status: res.status, data };
   };
