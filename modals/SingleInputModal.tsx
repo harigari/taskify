@@ -58,6 +58,7 @@ const SingleInputModal = ({
           <button className={clsx(styles.button, deleteButton || styles.deleteButton)} type="button">
             삭제하기
           </button>
+
           <ModalButton.DoubleButton onClick={handleModalClose}>{buttonText}</ModalButton.DoubleButton>
         </div>
       </form>
