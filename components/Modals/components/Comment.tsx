@@ -1,4 +1,4 @@
-import ProfileIcon from "../../header/members/ProfileIcon";
+import ProfileIcon from "@/components/Members/ProfileIcon";
 import { Comment } from "../Modal.type";
 import styles from "./Comment.module.css";
 import formatDate, { DateFormat } from "@/utils/formatDate";

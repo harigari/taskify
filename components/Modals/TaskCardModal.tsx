@@ -17,7 +17,7 @@ interface TaskCardInfoProps {
 const TaskCardModal = ({ data }: TaskCardInfoProps) => {
   const [isKebabOpen, setIsKebabOpen] = useState(false);
   const handleKebab = () => {
-    isKebabOpen ? setIsKebabOpen(false) : setIsKebabOpen(true);
+    setIsKebabOpen((prevValue) => !prevValue);
   };
 
   const optionsRef = useRef<HTMLDivElement>(null);

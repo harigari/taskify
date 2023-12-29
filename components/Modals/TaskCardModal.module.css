@@ -3,7 +3,6 @@
   gap: 2.4rem;
   flex-direction: column;
   padding: 3.2rem 2.8rem;
-  border: solid 1px black;
   position: relative;
   width: 73rem;
   height: 76.3rem;
@@ -98,6 +97,7 @@
 
 .image_wrapper {
   margin-bottom: 0.9rem;
+  overflow: hidden;
   position: relative;
   width: 45rem;
   height: 26rem;
@@ -105,6 +105,7 @@
 
 .image_wrapper img {
   border-radius: 0.6rem;
+  object-fit: cover;
 }
 
 .form {
@@ -168,7 +169,7 @@
 
   .image_wrapper {
     width: 28.7rem;
-    height: 16.7591rem;
+    height: 16.8rem;
   }
   .form {
     width: 28.7rem;
