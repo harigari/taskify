@@ -1,7 +1,7 @@
 import InputWrapper from "@/components/Input/InputWrapper";
 
-import { TaskInfo } from "@/components/Modals/Modal.type";
-import TaskCardModal from "@/components/Modals/TaskCardModal";
+import { TaskInfo } from "@/modals/Modal.type";
+import TaskCardModal from "@/modals/TaskCardModal";
 import useInputController from "@/hooks/useInputController";
 
 export default function Home() {

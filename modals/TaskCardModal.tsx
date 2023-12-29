@@ -2,12 +2,12 @@ import React, { useRef, useState, FocusEvent, FormEvent } from "react";
 import { TaskInfo } from "./Modal.type";
 import styles from "./TaskCardModal.module.css";
 import Image from "next/image";
-import ChipTodo from "../Chips/ChipTodo/ChipTodo";
-import ChipTag from "../Chips/ChipTag/ChipTag";
-import Comment from "./components/Comment";
+import ChipTodo from "../components/Chips/ChipTodo/ChipTodo";
+import ChipTag from "../components/Chips/ChipTag/ChipTag";
+import Comment from "./components/Comment/Comment";
 import useInputController from "@/hooks/useInputController";
-import AssigneeAndDueDateInfo from "./components/AssigneeAndDueDateInfo";
-import InputWrapper from "../Input/InputWrapper";
+import AssigneeAndDueDateInfo from "./components/AssigneeAndDueDateInfo/AssigneeAndDueDateInfo";
+import InputWrapper from "../components/Input/InputWrapper";
 import CommentInput from "@/modals/components/ModalInput/CommentInput";
 
 interface TaskCardInfoProps {
