@@ -8,6 +8,8 @@ type RequireId<T extends Method, U extends PathProps<T>> = Path<T>[U] extends st
   ? { path: U; data?: any }
   : Path<T>[U] extends (id: number) => string
   ? { path: U; id: number; data?: any }
+  : Path<T>[U] extends (method: "infiniteScroll" | "pagination") => string
+  ? { path: U; method: "infiniteScroll" | "pagination"; data?: any }
   : { path: U; dashboardId: number; invitationId: number; data?: any };
 
 type HTTP<T extends Method> = <U extends PathProps<T>>(obj: RequireId<T, U>) => Promise<any>;
@@ -64,6 +66,6 @@ class Api {
   };
 }
 
-const Sender = new Api();
+const sender = new Api();
 
-export default Sender;
+export default sender;
