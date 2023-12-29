@@ -1,15 +1,16 @@
-import { ChangeEvent, MouseEvent, RefObject } from "react";
-import styles from "./Input.module.css";
 import Image from "next/image";
+import { ChangeEvent, MouseEvent } from "react";
+import styles from "./Input.module.css";
 
 interface InputProp {
   id: string;
   value: string;
   type: string;
+  name?: string;
   placeholder?: string | undefined;
   eyeButton?: boolean;
   eyesValue?: boolean;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onEyesClick: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -19,7 +20,7 @@ function Input({ placeholder, id, value, onChange, eyeButton, eyesValue, type = 
       <input className={styles.input} type={type} id={id} value={value} onChange={onChange} placeholder={placeholder} />
       {eyeButton && (
         <button className={styles.eyes} onClick={onEyesClick} type="button">
-          <Image src={`/images/icons/eyes${eyesValue ? "On" : "Off"}.svg`} width={18} height={18} alt="" />
+          <Image src={`/icons/eyes${eyesValue ? "On" : "Off"}.svg`} width={18} height={18} alt="" />
         </button>
       )}
     </>

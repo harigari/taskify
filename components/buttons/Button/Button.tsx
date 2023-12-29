@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { MouseEvent, ReactNode } from "react";
 import styles from "./Button.module.css";
 import clsx from "clsx";
 import ChipPlus from "../../Chips/ChipPlus/ChipPlus";
@@ -18,7 +18,7 @@ interface Props {
   children: ReactNode;
   icon?: boolean;
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent) => void;
   buttonType: ButtonType;
   color: Color;
 }

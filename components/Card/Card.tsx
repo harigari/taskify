@@ -1,10 +1,10 @@
 import style from "./Card.module.css";
-import { CardProps } from "./card.type";
+import { CardProps } from "./Card.type";
 import ChipTodo from "../Chips/ChipTodo/ChipTodo";
 import ChipNum from "../Chips/ChipNum/ChipNum";
 import ChipPlus from "../Chips/ChipPlus/ChipPlus";
 import CardTask from "./CardTask";
-const Card = ({ cardList, columnName }: CardProps) => {
+const Card = ({ cardList, columnName, onClick }: CardProps) => {
   return (
     <div className={style.totalContainer}>
       {/* 칼럼 상단 */}
@@ -20,7 +20,7 @@ const Card = ({ cardList, columnName }: CardProps) => {
 
       <div className={style.contentContainer}>
         {/* 컴포넌트로 바꾸기 */}
-        <div className={style.buttonWrapper}>
+        <div className={style.buttonWrapper} onClick={onClick}>
           <ChipPlus size="lg"></ChipPlus>
         </div>
         {cardList.map((card) => (

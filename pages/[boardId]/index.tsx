@@ -6,12 +6,11 @@ import Card from "@/components/Card/Card";
 import MenuLayout from "@/components/menulayout/MenuLayout";
 import style from "./dashboard.module.css";
 import ChipPlus from "@/components/Chips/ChipPlus/ChipPlus";
+import MultiInputModal from "@/modals/MultiInputModal";
 
 const Dashboard = () => {
-  // const [page, setPage] = useState(1);
-  // const [allCards, setAllCards] = useState([]);
-  // const [ref, inView] = useInView();
-  // const maxColumns = 5; // 최대 컬럼 수
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const mock = [
     {
       id: 0,
@@ -51,25 +50,31 @@ const Dashboard = () => {
     },
   ];
 
-  // useEffect(() => {
-  //   if (inView && allCards.length / 2 < maxColumns) {
-  //     console.log(inView, "무한 스크롤 요청 🎃");
-  //     mockDataFetch();
-  //   }
-  // }, [inView, allCards]);
-  const [mounted, setMounted] = useState<boolean>(false);
-
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleCreateModal = () => {
+    setIsCreateModalOpen(true);
+  };
+
   return (
     mounted && (
       <>
         {/* 대시보드에 맞는 레이아웃으로 설정 */}
         <MenuLayout>
+          {isCreateModalOpen && (
+            <MultiInputModal
+              title="할 일 생성"
+              buttonText="생성"
+              columnId={1}
+              dashboardId={2}
+              handleModalClose={handleModalClose}
+            />
+          )}
           <div className={style.layoutContainer}>
             <div className={style.columnContainer}>
-              <Card cardList={mock} columnName="To do" />
+              <Card cardList={mock} columnName="To do" onClick={() => handleCreateModal()} />
               <Card cardList={mock} columnName="On Progress" />
               <Card cardList={mock} columnName="Done" />
             </div>

@@ -1,0 +1,30 @@
+.root {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.root > div:nth-child(2),
+.root > div:nth-child(2) > div {
+  flex: 1;
+  width: 60%;
+  display: flex;
+}
+
+.image {
+  margin-bottom: 0.3rem;
+}
+
+.imageOpacity {
+  opacity: 0.5;
+}
+
+.datepick {
+  border: 0;
+  font-size: 1.6rem;
+}
+
+.datepick::placeholder {
+  color: var(--gray-gray_9FA6B2, #9fa6b2);
+}

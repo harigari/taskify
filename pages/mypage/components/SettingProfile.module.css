@@ -1,0 +1,68 @@
+.profile {
+  display: flex;
+  gap: 3.2rem;
+  justify-content: center;
+  flex-direction: column;
+  padding: 3.2rem;
+  max-width: 62rem;
+  width: 100%;
+  background-color: var(--white);
+  border-radius: 0.8rem;
+}
+
+.title {
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+.info {
+  display: flex;
+  gap: 2rem;
+}
+
+.info__imageinput > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  width: 18rem;
+  height: 18rem;
+}
+
+.info__imageinput label {
+  width: 18rem;
+  height: 18rem;
+  cursor: pointer;
+}
+
+.info__nickname {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  flex-grow: 1;
+  flex-direction: column;
+  height: 18rem;
+}
+
+.info__nickname > label {
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.info__nickname > label > input {
+  margin-top: 1rem;
+  padding: 1.4rem 1.6rem;
+  border: 0.1rem solid var(--gray30);
+  border-radius: 0.6rem;
+  width: 100%;
+}
+
+.savebutton {
+  align-self: flex-end;
+}
+
+@media screen and (max-width: 767px) {
+  .info {
+    flex-direction: column;
+  }
+}

@@ -4,7 +4,7 @@ import Label from "../Label/Label";
 import clsx from "clsx";
 
 interface InputWrapperProp extends InputHTMLAttributes<HTMLInputElement> {
-  labelName: string;
+  labelName?: string;
   children: ReactNode;
   star?: boolean;
   errorText?: string;
@@ -22,9 +22,11 @@ function InputWrapper({ labelName, htmlFor, star, mobile, errorText, children, o
 
   return (
     <div className={styles.root}>
-      <Label htmlFor={htmlFor} star={star} mobile={mobile}>
-        {labelName}
-      </Label>
+      {labelName && (
+        <Label htmlFor={htmlFor} star={star} mobile={mobile}>
+          {labelName}
+        </Label>
+      )}
       <div className={wrapperStyle} onBlur={onBlur} onFocus={onFocus}>
         {children}
       </div>
