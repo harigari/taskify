@@ -1,0 +1,25 @@
+.main {
+  padding: 2rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.backbutton {
+  width: 5rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.6rem;
+  font-weight: 500;
+  gap: 0.8rem;
+}
+
+.backbutton__img {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+}
+
+.section {
+  display: grid;
+  gap: 2rem;
+}

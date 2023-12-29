@@ -14,7 +14,7 @@ import {
 import Option from "./Option";
 import Label from "@/components/Label/Label";
 import Image from "next/image";
-import ProfileIcon from "@/components/header/members/ProfileIcon";
+import ProfileIcon from "@/components/Members/ProfileIcon";
 import { Member } from "@/hooks/useDropdownControll";
 
 interface DropdownProp {

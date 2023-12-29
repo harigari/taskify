@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { Dispatch, SetStateAction, useState } from "react";
 import styles from "@/components/Modal/Dropdown/Option.module.css";
 import Image from "next/image";
-import ProfileIcon from "@/components/header/members/ProfileIcon";
+import ProfileIcon from "@/components/Members/ProfileIcon";
 import { Member } from "@/hooks/useDropdownControll";
 
 interface OptionProp {

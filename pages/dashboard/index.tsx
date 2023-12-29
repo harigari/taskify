@@ -55,7 +55,7 @@ const INVITE = [
       title: "나의 대시보드",
       id: 1,
     },
-    invitee: {
+    inviter: {
       nickname: "유다미",
       email: "youdame@codeit.kr",
       id: 22,
@@ -68,7 +68,7 @@ const INVITE = [
       title: "리액트 탐험",
       id: 15,
     },
-    invitee: {
+    inviter: {
       nickname: "김하늘",
       email: "haneulkim@codeit.kr",
       id: 82,
@@ -81,7 +81,7 @@ const INVITE = [
       title: "제 생각에는요",
       id: 14,
     },
-    invitee: {
+    inviter: {
       nickname: "정진호",
       email: "jjh@codeit.kr",
       id: 56,
@@ -94,7 +94,7 @@ const INVITE = [
       title: "좋은것같아요",
       id: 3,
     },
-    invitee: {
+    inviter: {
       nickname: "안지수",
       email: "ahn@codeit.kr",
       id: 34,
@@ -106,35 +106,37 @@ const INVITE = [
 export default function DashBoard() {
   return (
     <MenuLayout>
-      <div className={styles.container}>
-        <div className={styles.dashboard}>
-          <Button buttonType="dashboard" color="white">
-            <span>새로운 대시보드</span>
-            <Image width={22} height={22} src="/images/image-addbox-purple.png" alt="대시보드 추가하기" />
-          </Button>
-          {DASHBOARD.map((dashboard) => (
-            <Button key={dashboard.id} buttonType="dashboard" color="white">
-              <div className={styles.dashboard__title}>
-                <div className={styles.dashboard__icon} style={{ backgroundColor: `var(--${dashboard.color})` }} />
-                <span>{dashboard.title}</span>
-              </div>
-              <Image
-                width={18}
-                height={18}
-                src="/icons/icon-arrowright.svg"
-                alt={`${dashboard.title} 대시보드로 바로가기`}
-              />
+      <main>
+        <section className={styles.container}>
+          <article className={styles.dashboard}>
+            <Button buttonType="dashboard" color="white">
+              <span>새로운 대시보드</span>
+              <Image width={22} height={22} src="/images/image-addbox-purple.png" alt="대시보드 추가하기" />
             </Button>
-          ))}
-        </div>
-        <TablePagenation
-          title="초대받은 대시보드"
-          row={6}
-          data={[]}
-          tableIndex={{ 이름: "dashboard", 초대자: "invitee", "수락 여부": "deleteButton" }}
-          search
-        />
-      </div>
+            {DASHBOARD.map((dashboard) => (
+              <Button key={dashboard.id} buttonType="dashboard" color="white">
+                <div className={styles.dashboard__title}>
+                  <div className={styles.dashboard__icon} style={{ backgroundColor: `var(--${dashboard.color})` }} />
+                  <span>{dashboard.title}</span>
+                </div>
+                <Image
+                  width={18}
+                  height={18}
+                  src="/icons/icon-arrowright.svg"
+                  alt={`${dashboard.title} 대시보드로 바로가기`}
+                />
+              </Button>
+            ))}
+          </article>
+          <TablePagenation
+            title="초대받은 대시보드"
+            row={6}
+            data={INVITE}
+            tableIndex={{ 이름: "dashboard", 초대자: "inviter", "수락 여부": "deleteButton" }}
+            search
+          />
+        </section>
+      </main>
     </MenuLayout>
   );
 }
