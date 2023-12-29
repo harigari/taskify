@@ -2,8 +2,8 @@ import clsx from "clsx";
 import { Dispatch, SetStateAction, useState } from "react";
 import styles from "@/components/Modal/Dropdown/Option.module.css";
 import Image from "next/image";
-import ProfileIcon from "@/components/header/members/ProfileIcon";
-import { Member } from "@/hooks/useDropdownControll";
+import ProfileIcon from "@/components/Members/ProfileIcon";
+import { Member } from "@/components/Header/Header.type";
 
 interface OptionProp {
   value: any;
@@ -25,7 +25,7 @@ function Option({ value, setValue, setIsOpen, option }: OptionProp) {
 
   const imageStyle = clsx(
     hover ? styles.MouseOverImage : styles.MouseOutImage,
-    value?.userId === option.userId && styles.selectedImage
+    value?.id === option.id && styles.selectedImage
   );
 
   return (
@@ -38,9 +38,9 @@ function Option({ value, setValue, setIsOpen, option }: OptionProp) {
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
     >
-      <Image className={imageStyle} src="/images/icons/check.svg" width={22} height={22} alt="" />
-
-      <div className={styles.profileWrapper}>
+      <Image className={imageStyle} src="/icons/check.svg" width={22} height={22} alt="" />
+      {/* ProfileIcon에 marginLeft -1rem이 달려있어서, 부득이 인라인 스타일로 이 부분을 조절함 */}
+      <div className={styles.profileWrapper} style={{ marginLeft: "1rem" }}>
         <ProfileIcon size="sm" member={option} />
         {option.nickname}
       </div>

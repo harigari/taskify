@@ -18,7 +18,7 @@ const ChipColor = ({ size, color, onClick, isSelected }: ChipColorProps) => {
         onClick={onClick}
       >
         {/* 크기에 따라 check.svg 변경 */}
-        {isSelected ? <img src="/images/icons/check_small.svg" /> : null}
+        {isSelected ? <img src="/icons/check_small.svg" /> : null}
       </div>
     </>
   );

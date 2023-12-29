@@ -19,7 +19,7 @@ function DateTime({ date, setDate, id }: DateTime) {
   return (
     <div className={styles.root}>
       <div>
-        <Image className={imageStyle} src="/images/icons/calendar.svg" width={20} height={20} alt="" />
+        <Image className={imageStyle} src="/icons/calendar.svg" width={20} height={20} alt="" />
       </div>
       <DatePicker
         id={id}

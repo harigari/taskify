@@ -1,12 +1,13 @@
 .root {
   display: flex;
   gap: 0.5rem;
+  flex: 1;
   overflow: hidden;
-  width: 40rem;
 }
 
 .input {
   flex: 1;
+  width: 100%;
   font-size: 1.6rem;
 }
 
@@ -16,13 +17,36 @@
 
 .tagContainer {
   display: flex;
-  direction: rtl;
   gap: 0.5rem;
   overflow-x: scroll;
   min-width: 0rem;
   max-width: 80%;
+  direction: rtl;
 }
 
 .tagContainer::-webkit-scrollbar {
   display: none; /* 스크롤바를 숨깁니다. */
+}
+
+.chipTagWrapper {
+  position: relative;
+}
+
+.tagDeleteButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: gray;
+  background-image: url("/icons/close.svg");
+  background-size: 1.5rem;
+  transform: translate(-50%, -50%);
+  border-radius: 9rem;
+}
+
+@media (max-width: 767px) {
+  .tagContainer {
+    max-width: 60%;
+  }
 }

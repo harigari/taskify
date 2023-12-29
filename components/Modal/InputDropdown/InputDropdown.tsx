@@ -14,8 +14,8 @@ import {
 import Option from "./Option";
 import Label from "@/components/Label/Label";
 import Image from "next/image";
-import ProfileIcon from "@/components/header/members/ProfileIcon";
-import { Member } from "@/hooks/useDropdownControll";
+import ProfileIcon from "@/components/Members/ProfileIcon";
+import { Member } from "@/components/Header/Header.type";
 
 interface DropdownProp {
   children: ReactNode;
@@ -79,9 +79,9 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
   }, [inputValue, options]);
 
   return (
-    <>
+    <div className={styles.root}>
       <Label>{children}</Label>
-      <div className={styles.root}>
+      <div className={styles.container}>
         <div className={selectedStyle} onFocus={handleFocus} onBlur={handleBlur}>
           {!value ? (
             <input
@@ -94,12 +94,13 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
             ></input>
           ) : (
             <div className={styles.selectedNickname}>
-              <div className={styles.profileWrapper}>
+              {/* ProfileIcon에 marginLeft -1rem이 달려있어서, 부득이 인라인 스타일로 이 부분을 조절함 */}
+              <div className={styles.profileWrapper} style={{ marginLeft: "1rem" }}>
                 <ProfileIcon size="sm" member={value} />
                 {value.nickname}
               </div>
               <button type="button" className={styles.button} onMouseDown={handleDeleteClick}>
-                <Image src="/images/icons/close.svg" alt="닫기 버튼" width={20} height={20} />
+                <Image src="/icons/close.svg" alt="닫기 버튼" width={20} height={20} />
               </button>
             </div>
           )}
@@ -115,7 +116,7 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

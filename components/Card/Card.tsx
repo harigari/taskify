@@ -1,5 +1,5 @@
 import style from "./Card.module.css";
-import { CardProps } from "./card.type";
+import { CardProps } from "./Card.type";
 import ChipTodo from "../Chips/ChipTodo/ChipTodo";
 import ChipNum from "../Chips/ChipNum/ChipNum";
 import ChipPlus from "../Chips/ChipPlus/ChipPlus";
@@ -15,7 +15,7 @@ const Card = ({ cardList }: CardProps) => {
           </ChipTodo>
           <ChipNum>{cardList.length}</ChipNum>
         </div>
-        <img src="/images/icons/setting.svg" />
+        <img src="/icons/setting.svg" />
       </div>
 
       <div className={style.contentContainer}>

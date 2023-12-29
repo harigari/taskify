@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction } from "react";
 import styles from "./TagInput.module.css";
-import ChipTag from "@/components/Chips/ChipTag/ChipTag";
+import TagList from "./TagList";
 
 interface TagInputProp {
   tagList: string[];
@@ -8,7 +8,7 @@ interface TagInputProp {
   value: string;
   id: string;
   setValue: Dispatch<SetStateAction<string>>;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 function TagInput({ tagList, setTagList, value, setValue, onChange, id }: TagInputProp) {
@@ -38,20 +38,26 @@ function TagInput({ tagList, setTagList, value, setValue, onChange, id }: TagInp
     }
   };
 
+  const handleClick = (tag: string) => {
+    setTagList((prevList) => {
+      const newList = prevList.filter((item) => item !== tag);
+
+      return [...newList];
+    });
+  };
+
   const placeholder = tagList.length !== 0 ? "" : "입력 후 Enter";
 
   return (
     <>
       <div className={styles.root}>
-        <div className={styles.tagContainer}>
-          {tagList.map((tag) => {
-            return (
-              <ChipTag key={tag} size="lg">
-                {tag}
-              </ChipTag>
-            ); // 중복된 태그 입력이 방지되었기 때문에 key를 tag 값으로 다루는 것이 가능해짐
-          })}
-        </div>
+        {tagList[0] && (
+          <div className={styles.tagContainer}>
+            {tagList.map((tag) => (
+              <TagList tag={tag} onClick={handleClick} key={tag} />
+            ))}
+          </div>
+        )}
         <input
           id={id}
           className={styles.input}

@@ -1,4 +1,4 @@
-const colorMapping = (str: string) => {
+const makeColorProfile = (str: string) => {
   const idx = str.toLowerCase();
   switch (true) {
     case (idx >= "a" && idx < "g") || (idx >= "가" && idx < "라"):
@@ -14,4 +14,4 @@ const colorMapping = (str: string) => {
   }
 };
 
-export { colorMapping };
+export { makeColorProfile };

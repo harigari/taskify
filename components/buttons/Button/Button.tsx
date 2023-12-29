@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { MouseEvent, ReactNode } from "react";
 import styles from "./Button.module.css";
 import clsx from "clsx";
 
@@ -16,7 +16,7 @@ type Color = "violet" | "white" | "gray";
 interface Props {
   children: ReactNode;
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent) => void;
   buttonType: ButtonType;
   color: Color;
 }

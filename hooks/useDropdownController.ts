@@ -13,10 +13,19 @@ export type Member = {
 
 interface Prop<T> {
   options: T[];
+  initialValue?: T;
 }
 
-function useDropdownController<T>({ options }: Prop<T>) {
-  const [value, setValue] = useState<T>();
+function useDropdownController<T>({ options, initialValue }: Prop<T>) {
+  const unifiedInitialValue = () => {
+    if (typeof initialValue === "string") {
+      return initialValue;
+    } else {
+      return undefined;
+    }
+  };
+
+  const [value, setValue] = useState<T | undefined>(unifiedInitialValue());
 
   return { options, value, setValue };
 }
