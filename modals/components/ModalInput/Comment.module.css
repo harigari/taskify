@@ -1,11 +1,11 @@
 .textarea {
   display: flex;
-  flex: 0 1 80%;
+  flex: 0 1 calc(100% - 9rem);
   border: none;
-  width: 80%;
+  width: calc(100% - 9rem);
+  height: 100%;
   font-size: 1.4rem;
   resize: none;
-  height: 100%;
 }
 
 .textarea::placeholder {
@@ -23,12 +23,7 @@
 }
 
 @media (max-width: 767px) {
-  .textareaWrapper {
-    width: 28.7rem;
-  }
-
   .textarea {
-    width: 65%;
     height: 100%;
   }
 }

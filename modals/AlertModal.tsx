@@ -1,15 +1,15 @@
 import ModalWrapper from "./ModalWrapper";
-import ModalButton from "@/components/Modal/ModalButton/ModalButton";
+import ModalButton from "./components/ModalButton/ModalButton";
 import styles from "./Modal.module.css";
 import { FormEvent, MouseEvent } from "react";
 
 interface AlartModalProp {
   isDoubleButton?: boolean;
-  alartText: string;
+  alertText: string;
   handleModalClose: (e: MouseEvent) => void;
 }
 
-const AlartModal = ({ isDoubleButton = true, alartText, handleModalClose }: AlartModalProp) => {
+const AlartModal = ({ isDoubleButton = true, alertText, handleModalClose }: AlartModalProp) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     // 페치 하게 될 듯
@@ -19,7 +19,7 @@ const AlartModal = ({ isDoubleButton = true, alartText, handleModalClose }: Alar
     <ModalWrapper size="md">
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <div className={styles.modal}>
-          <p className={styles.info}>{alartText}</p>
+          <p className={styles.info}>{alertText}</p>
         </div>
 
         {isDoubleButton ? (

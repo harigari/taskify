@@ -1,16 +1,16 @@
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent, ReactNode } from "react";
 import ModalButton from "../ModalButton/ModalButton";
-import styles from "./CommentInput.module.css";
+import styles from "./Comment.module.css";
 
 interface CommentProps {
   value: string;
   id: string;
+  children: ReactNode;
   onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string | undefined;
-  disabled?: boolean;
 }
 
-function CommentInput({ value, onChange, id, placeholder, disabled = false }: CommentProps) {
+function Comment({ value, onChange, id, placeholder, children }: CommentProps) {
   return (
     <>
       <textarea
@@ -20,9 +20,9 @@ function CommentInput({ value, onChange, id, placeholder, disabled = false }: Co
         className={styles.textarea}
         placeholder={placeholder}
       ></textarea>
-      <ModalButton.ModalSubmit disabled={disabled} className={styles.button} />
+      <ModalButton.ModalSubmit className={styles.button}>{children}</ModalButton.ModalSubmit>
     </>
   );
 }
 
-export default CommentInput;
+export default Comment;
