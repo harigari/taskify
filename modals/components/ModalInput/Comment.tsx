@@ -1,16 +1,15 @@
-import { ChangeEvent, Dispatch, ReactNode, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import ModalButton from "../ModalButton/ModalButton";
 import styles from "./Comment.module.css";
 
 interface CommentProps {
   value: string;
   id: string;
-  children: ReactNode;
   onChange: (e: ChangeEvent) => void;
   placeholder?: string | undefined;
 }
 
-function Comment({ value, onChange, id, placeholder, children }: CommentProps) {
+function Comment({ value, onChange, id, placeholder }: CommentProps) {
   return (
     <>
       <textarea
@@ -20,7 +19,7 @@ function Comment({ value, onChange, id, placeholder, children }: CommentProps) {
         className={styles.textarea}
         placeholder={placeholder}
       ></textarea>
-      <ModalButton.ModalSubmit className={styles.button}>{children}</ModalButton.ModalSubmit>
+      <ModalButton.ModalSubmit className={styles.button} />
     </>
   );
 }
