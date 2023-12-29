@@ -57,30 +57,36 @@ const Dashboard = () => {
   //     mockDataFetch();
   //   }
   // }, [inView, allCards]);
+  const [mounted, setMounted] = useState<boolean>(false);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   return (
-    <>
-      {/* 대시보드에 맞는 레이아웃으로 설정 */}
-      <MenuLayout>
-        <div className={style.layoutContainer}>
-          <div className={style.columnContainer}>
-            <Card cardList={mock} columnName="To do" />
-            <Card cardList={mock} columnName="On Progress" />
-            <Card cardList={mock} columnName="Done" />
+    mounted && (
+      <>
+        {/* 대시보드에 맞는 레이아웃으로 설정 */}
+        <MenuLayout>
+          <div className={style.layoutContainer}>
+            <div className={style.columnContainer}>
+              <Card cardList={mock} columnName="To do" />
+              <Card cardList={mock} columnName="On Progress" />
+              <Card cardList={mock} columnName="Done" />
+            </div>
+            <div className={style.buttonWrapper}>
+              <Button buttonType="add_column" color="white">
+                <div className={style.buttonContentWrapper}>
+                  <span>새로운 컬럼 추가하기</span>
+                  <button>
+                    <ChipPlus size="lg"></ChipPlus>
+                  </button>
+                </div>
+              </Button>
+            </div>
           </div>
-          <div className={style.buttonWrapper}>
-            <Button buttonType="add_column" color="white">
-              <div className={style.buttonContentWrapper}>
-                <span>새로운 컬럼 추가하기</span>
-                <button>
-                  <ChipPlus size="lg"></ChipPlus>
-                </button>
-              </div>
-            </Button>
-          </div>
-        </div>
-      </MenuLayout>
-    </>
+        </MenuLayout>
+      </>
+    )
   );
 };
 

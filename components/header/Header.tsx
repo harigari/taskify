@@ -1,8 +1,8 @@
+import { Member, User } from "@/components/Header/Header.type";
 import styles from "./Header.module.css";
-import HeaderButton from "./headerbutton/HeaderButton";
-import Members from "./members/Members";
-import Profile from "./members/Profile";
-import { Member, User } from "@/components/header/header.type";
+import HeaderButton from "./HeaderButton/HeaderButton";
+import Members from "./Members/Members";
+import Profile from "./Members/Profile";
 
 const MOCKUP: Member[] = [
   { id: 1, nickname: "haneul", profileImageUrl: "" },
@@ -31,12 +31,12 @@ const Header = () => {
         <h1 className={styles.boardname}>{title}</h1>
       </div>
       <div className={styles.grid__settings}>
-        <HeaderButton src="/images/icon-settings.svg" alt="대시보드 설정하기">
+        <HeaderButton src="/icons/icon-settings.svg" alt="대시보드 설정하기">
           관리
         </HeaderButton>
       </div>
       <div className={styles.grid__invite}>
-        <HeaderButton src="/images/icon-addbox.svg" alt="대시보드로 초대하기">
+        <HeaderButton src="/icons/icon-addbox.svg" alt="대시보드로 초대하기">
           초대하기
         </HeaderButton>
       </div>

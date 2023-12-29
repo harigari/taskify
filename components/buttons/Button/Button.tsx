@@ -3,7 +3,14 @@ import styles from "./Button.module.css";
 import clsx from "clsx";
 import ChipPlus from "../../Chips/ChipPlus/ChipPlus";
 
-type ButtonType = "login" | "delete" | "add_column" | "plus_icon" | "dashboard" | "accept_reject" | "dashboard_delete";
+export type ButtonType =
+  | "login"
+  | "delete"
+  | "add_column"
+  | "plus_icon"
+  | "dashboard"
+  | "accept_reject"
+  | "dashboard_delete";
 
 type Color = "violet" | "white" | "gray";
 

@@ -2,10 +2,11 @@ import clsx from "clsx";
 import { Dispatch, SetStateAction, useState } from "react";
 import styles from "./Option.module.css";
 import Image from "next/image";
+import ChipTodo from "@/components/Chips/ChipTodo/ChipTodo";
 
 interface OptionProp {
-  value: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  value: string | undefined;
+  setValue: Dispatch<SetStateAction<string | undefined>>;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   option: string;
 }
@@ -38,7 +39,9 @@ function Option({ value, setValue, setIsOpen, option }: OptionProp) {
     >
       <Image className={imageStyle} src="/images/icons/check.svg" width={22} height={22} alt="" />
 
-      <div>{option}</div>
+      <div>
+        <ChipTodo size="lg">{option}</ChipTodo>{" "}
+      </div>
     </div>
   );
 }

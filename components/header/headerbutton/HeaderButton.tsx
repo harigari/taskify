@@ -1,6 +1,12 @@
 import Image from "next/image";
+import { ReactNode } from "react";
 import styles from "./HeaderButton.module.css";
-import { HeaderButtonProps } from "@/components/header/header.type";
+
+interface HeaderButtonProps {
+  src: string;
+  alt: string;
+  children: ReactNode;
+}
 
 const HeaderButton = ({ src, alt, children, ...props }: HeaderButtonProps) => {
   return (

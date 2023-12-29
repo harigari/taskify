@@ -5,7 +5,7 @@ const ChipPlus = ({ size }: ChipPlusProps) => {
   return (
     <>
       <div className={clsx(style.imageWrapper, { [style.large]: size === "lg" })}>
-        <img src="/images/icons/add.svg" />
+        <img src="/icons/add.svg" />
       </div>
     </>
   );

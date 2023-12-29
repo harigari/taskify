@@ -1,23 +1,29 @@
 import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction } from "react";
 import styles from "./TagInput.module.css";
-import ChipTag from "@/components/Chip/ChipTag/ChipTag.tsx";
+import ChipTag from "@/components/Chips/ChipTag/ChipTag";
 
 interface TagInputProp {
   tagList: string[];
   setTagList: Dispatch<SetStateAction<string[]>>;
   value: string;
+  id: string;
   setValue: Dispatch<SetStateAction<string>>;
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
-function TagInput({ tagList, setTagList, value, setValue }: TagInputProp) {
+function TagInput({ tagList, setTagList, value, setValue, onChange, id }: TagInputProp) {
   const handleEnter = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && value !== "") {
-      const isAlreadyInList = tagList.find((tag) => tag === value);
+    const trimmedValue = value.trim(); // 문자열의 앞뒤 공백만 제거
+    const replacedValue = value.replace(/\s/g, ""); // 문자열 사이사이의 공백 제거
+
+    // 공백 문자열을 태그로 입력하는 것 방지
+    if (event.key === "Enter" && replacedValue !== "") {
+      const isAlreadyInList = tagList.find((tag) => tag === trimmedValue); // 중복된 태그 입력 방지
 
       if (!isAlreadyInList) {
         setTagList((prevList) => {
-          return [value, ...prevList];
-        }); // 중복된 태그 입력 방지
+          return [trimmedValue, ...prevList];
+        });
       }
 
       setValue("");
@@ -30,11 +36,6 @@ function TagInput({ tagList, setTagList, value, setValue }: TagInputProp) {
         return updatedList;
       });
     }
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setValue(e.target.value);
   };
 
   const placeholder = tagList.length !== 0 ? "" : "입력 후 Enter";
@@ -52,10 +53,11 @@ function TagInput({ tagList, setTagList, value, setValue }: TagInputProp) {
           })}
         </div>
         <input
+          id={id}
           className={styles.input}
           value={value}
           onKeyDown={handleEnter}
-          onChange={handleChange}
+          onChange={onChange}
           placeholder={placeholder}
         ></input>
       </div>

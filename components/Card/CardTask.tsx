@@ -18,20 +18,11 @@ const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) =
   const { slicedTagList, etc } = tagSlicer(tags);
 
   //날짜 변환
-  const convertToUTC = (dueDate: string): string => {
-    const date = new Date(dueDate);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}.${month}.${day}`;
-  };
   const convertDate = (dueDate: string): string => {
     const date = new Date(dueDate);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
-
     return `${year}.${month}.${day}`;
   };
 
@@ -66,14 +57,8 @@ const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) =
           {/* 카드 하단 날짜, 지정자 */}
           <div className={style.cardInfoWrapper}>
             <div className={style.dateWrapper}>
-              <Image
-                className={style.dateIcon}
-                src="/images/icons/calendar.svg"
-                alt="Calendar Icon"
-                width={20}
-                height={20}
-              />
-              <span className={style.date}>{convertToUTC(dueDate)}</span>
+              <Image className={style.dateIcon} src="/icons/calendar.svg" alt="Calendar Icon" width={20} height={20} />
+              <span className={style.date}>{convertDate(dueDate)}</span>
             </div>
             <ProfileIcon member={assignee} size="sm" />
           </div>

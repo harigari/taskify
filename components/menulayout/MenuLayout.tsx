@@ -1,8 +1,7 @@
-import Header from "@/components/header/Header";
-import Sidemenu from "@/components/sidemenu/Sidemenu";
+import Header from "@/components/Header/Header";
+import Sidemenu from "@/components/Sidemenu/Sidemenu";
 import { ReactNode } from "react";
 import styles from "./MenuLayout.module.css";
-import { clsx } from "clsx";
 
 interface Props {
   children: ReactNode;

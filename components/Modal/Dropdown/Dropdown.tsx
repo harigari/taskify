@@ -4,11 +4,12 @@ import { Dispatch, MouseEvent, ReactNode, SetStateAction, useState } from "react
 import Option from "./Option";
 import Image from "next/image";
 import Label from "@/components/Label/Label";
+import ChipTodo from "@/components/Chips/ChipTodo/ChipTodo";
 
 interface DropdownProp {
   children: ReactNode;
-  value: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  value: string | undefined;
+  setValue: Dispatch<SetStateAction<string | undefined>>;
   options: string[];
 }
 
@@ -27,7 +28,7 @@ const Dropdown = ({ options, value, setValue, children }: DropdownProp) => {
       <Label>{children}</Label>
       <div className={styles.root}>
         <div className={selectedStyle} onClick={handleClick}>
-          {value}
+          <ChipTodo size="lg">{value}</ChipTodo>
           <Image src="/images/icons/arrow_drop_down.svg" alt="" width={26} height={26} />
         </div>
         {isOpen && (

@@ -1,5 +1,18 @@
-import Card from "@/components/Card/Card";
+import IndexHeader from "@/components/Header/IndexHeader/IndexHeader";
+import styles from "./index.module.css";
+import SettingSection from "@/components/home/setting_section/SettingSection";
+import FeatureSection from "@/components/home/feature_section/FeatureSection";
+import HeroSection from "@/components/home/hero_section/HeroSection";
 
 export default function Home() {
-  return <></>;
+  return (
+    <>
+      <IndexHeader color="black" />
+      <main className={styles.main}>
+        <HeroSection />
+        <FeatureSection />
+        <SettingSection />
+      </main>
+    </>
+  );
 }

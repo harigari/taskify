@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./DateTime.module.css";
@@ -6,11 +6,12 @@ import Image from "next/image";
 import clsx from "clsx";
 
 interface DateTime {
+  id: string;
   date: Date | null;
   setDate: Dispatch<SetStateAction<Date | null>>;
 }
 
-function DateTime({ date, setDate }: DateTime) {
+function DateTime({ date, setDate, id }: DateTime) {
   const minDate = new Date();
 
   const imageStyle = clsx(styles.image, date || styles.imageOpacity);
@@ -21,6 +22,7 @@ function DateTime({ date, setDate }: DateTime) {
         <Image className={imageStyle} src="/images/icons/calendar.svg" width={20} height={20} alt="" />
       </div>
       <DatePicker
+        id={id}
         className={styles.datepick}
         selected={date}
         onChange={(date) => setDate(date)}

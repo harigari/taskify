@@ -15,7 +15,7 @@ const Card = ({ cardList, columnName }: CardProps) => {
           </ChipTodo>
           <ChipNum>{cardList.length}</ChipNum>
         </div>
-        <img src="/images/icons/setting.svg" />
+        <img src="/icons/setting.svg" />
       </div>
 
       <div className={style.contentContainer}>
