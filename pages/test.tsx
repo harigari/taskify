@@ -22,9 +22,5 @@ export default function Home() {
     dashboardId: 136,
   };
 
-  return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <TaskCardModal data={cardInfo} />
-    </div>
-  );
+  return <TaskCardModal data={cardInfo} />;
 }

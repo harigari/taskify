@@ -31,6 +31,12 @@
   font-size: 1.4rem;
   text-align: center;
 }
+@media (max-width: 1200px) {
+  .assignee_and_dueDate {
+    width: 18rem;
+    height: 15.5rem;
+  }
+}
 @media (max-width: 767px) {
   .assignee_and_dueDate {
     justify-content: space-between;

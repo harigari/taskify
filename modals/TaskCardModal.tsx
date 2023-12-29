@@ -9,6 +9,7 @@ import useInputController from "@/hooks/useInputController";
 import AssigneeAndDueDateInfo from "./components/AssigneeAndDueDateInfo/AssigneeAndDueDateInfo";
 import InputWrapper from "../components/Input/InputWrapper";
 import CommentInput from "@/modals/components/ModalInput/CommentInput";
+import ModalWrapper from "./ModalWrapper";
 
 interface TaskCardInfoProps {
   data: TaskInfo;
@@ -66,7 +67,7 @@ const TaskCardModal = ({ data }: TaskCardInfoProps) => {
   ];
 
   return (
-    <>
+    <ModalWrapper size="lg">
       <div className={styles.modal_wrapper}>
         <div className={styles.header}>
           <h1 className={styles.title}>{data.title}</h1>
@@ -124,7 +125,7 @@ const TaskCardModal = ({ data }: TaskCardInfoProps) => {
           <AssigneeAndDueDateInfo data={data} />
         </div>
       </div>
-    </>
+    </ModalWrapper>
   );
 };
 

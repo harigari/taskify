@@ -3,9 +3,7 @@
   gap: 2.4rem;
   flex-direction: column;
   padding: 3.2rem 2.8rem;
-  position: relative;
-  width: 73rem;
-  height: 76.3rem;
+
   background-color: var(--white);
   border-radius: 20px;
 }
@@ -30,6 +28,7 @@
   display: flex;
   gap: 1.6rem;
   flex-direction: column;
+  width: 45rem;
 }
 .icons {
   display: flex;
@@ -88,7 +87,7 @@
 .description {
   display: flex;
   overflow: auto;
-  width: 45rem;
+
   height: 10rem;
   font-size: 1.4rem;
   font-weight: 400;
@@ -109,7 +108,6 @@
 }
 
 .form {
-  width: 45rem;
   height: 13.9rem;
 }
 
@@ -118,21 +116,38 @@
 
   flex-direction: column;
   overflow: auto;
-  width: 45rem;
+
   height: 7rem;
 }
 .comments > div:first-child {
   margin-top: 0.5rem;
 }
+
+@media (max-width: 1200px) {
+  .first {
+    width: 42rem;
+  }
+
+  .image_wrapper {
+    width: 42rem;
+  }
+}
+
 @media (max-width: 767px) {
   .modal_wrapper {
     gap: 1.6rem;
     padding: 1.4rem 2rem;
-    width: 32.7rem;
-    height: 70.8rem;
   }
   .header {
     flex-direction: column-reverse;
+  }
+
+  .first {
+    width: 28.7rem;
+  }
+
+  .image_wrapper {
+    width: 28.7rem;
   }
 
   .options {
@@ -140,7 +155,6 @@
     right: 3.8rem;
   }
   .title {
-    margin-bottom: -1rem;
     font-size: 2rem;
     font-weight: 700;
   }
@@ -161,18 +175,15 @@
   }
 
   .description {
-    width: 28.7rem;
     font-size: 1.2rem;
 
     line-height: 2.2rem;
   }
 
   .image_wrapper {
-    width: 28.7rem;
     height: 16.8rem;
   }
   .form {
-    width: 28.7rem;
     height: 7rem;
   }
   .image_wrapper {
@@ -180,7 +191,7 @@
   }
   .comments {
     margin-top: 2.5rem;
-    width: 28.7rem;
+
     height: 8.5rem;
   }
 }
