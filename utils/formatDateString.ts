@@ -1,6 +1,6 @@
 /**
  * @param dateString {string} '2021-08-01T00:00:00.000Z'
- * @param format {string} 'yyyy.MM.dd HH:mm'과 같은 형식을 사용합니다. (옵션)
+ * @param format {Format} 'yyyy.MM.dd HH:mm'과 같은 형식을 사용합니다. (옵션)
  * @description 날짜를 원하는 포맷으로 변환합니다.
  */
 
