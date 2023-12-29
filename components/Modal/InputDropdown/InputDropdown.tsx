@@ -15,7 +15,7 @@ import Option from "./Option";
 import Label from "@/components/Label/Label";
 import Image from "next/image";
 import ProfileIcon from "@/components/Members/ProfileIcon";
-import { Member } from "@/components/Header/header.type";
+import { Member } from "@/components/Header/Header.type";
 
 interface DropdownProp {
   children: ReactNode;

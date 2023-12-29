@@ -1,5 +1,5 @@
 const apiConfig = {
-  BASE_URL: () => "https://sp-taskify-api.vercel.app/1-6",
+  BASE_URL: () => "https://sp-taskify-api.vercel.app/1-7",
   END_POINT: {
     auth: {
       signIn: (teamId: number) => `/${teamId}/auth/login`,

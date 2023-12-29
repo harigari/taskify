@@ -1,4 +1,4 @@
-import { Obj, ValidateFunc, isCurrentPassword, isReg, isSamePassword, isValue } from "@/utils/vaildate";
+import { Obj, ValidateFunc, isReg, isSamePassword, isValue } from "@/utils/vaildate";
 
 export interface Configs {
   errorConfig?: Array<[(value: string) => boolean, string] | [ValidateFunc]>;

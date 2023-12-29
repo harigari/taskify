@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import styles from "@/components/Modal/Dropdown/Option.module.css";
 import Image from "next/image";
 import ProfileIcon from "@/components/Members/ProfileIcon";
-import { Member } from "@/components/Header/header.type";
+import { Member } from "@/components/Header/Header.type";
 
 interface OptionProp {
   value: any;
