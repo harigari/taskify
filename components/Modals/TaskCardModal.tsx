@@ -8,7 +8,7 @@ import Comment from "./components/Comment";
 import useInputController from "@/hooks/useInputController";
 import AssigneeAndDueDateInfo from "./components/AssigneeAndDueDateInfo";
 import InputWrapper from "../Input/InputWrapper";
-import CommentInput from "../Modal/ModalInput/CommentInput";
+import CommentInput from "@/modals/components/ModalInput/CommentInput";
 
 interface TaskCardInfoProps {
   data: TaskInfo;
@@ -109,7 +109,9 @@ const TaskCardModal = ({ data }: TaskCardInfoProps) => {
             </div>
             <form className={styles.form} onSubmit={handleSubmit}>
               <InputWrapper {...comment.wrapper}>
-                <CommentInput disabled={!comment.input.value} {...comment.textarea} />
+                <CommentInput disabled={!comment.input.value} {...comment.textarea}>
+                  입력
+                </CommentInput>
               </InputWrapper>
             </form>
             <div className={styles.comments}>
