@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import styles from "./ModalButton.module.css";
-import { ReactNode } from "react";
+import { MouseEvent, ReactNode } from "react";
 
 function ModalSubmit({
   children,
@@ -26,7 +26,7 @@ function SingleButton({
   disabled = false,
 }: {
   children: ReactNode;
-  onClick: () => void;
+  onClick: (e: MouseEvent) => void;
   disabled?: boolean;
 }) {
   return (
@@ -49,8 +49,8 @@ function DoubleButton({
   disabled = false,
 }: {
   children: ReactNode;
-  onClick: () => void;
-  disabled: boolean;
+  onClick: (e: MouseEvent) => void;
+  disabled?: boolean;
 }) {
   return (
     <div className={styles.buttonContainer}>
