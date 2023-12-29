@@ -1,7 +1,7 @@
-import ProfileIcon from "@/components/Header/Members/ProfileIcon";
+import ProfileIcon from "@/components/Members/ProfileIcon";
 import { InviteBoard, Member, TableIndexType } from "@/components/Table/Table.type";
-import Button from "@/components/buttons/Button/Button";
-import { colorMapping } from "@/utils/colorMapping";
+import Button from "@/components/Buttons/Button/Button";
+import { makeColorProfile } from "@/utils/makeColorProfile";
 import styles from "./TableList.module.css";
 
 interface TableListProps {
@@ -35,12 +35,12 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
               arr.push(
                 <div className={styles.row__item} key={data[v].title}>
                   {isAccept && <span className={styles.row__text__mobile}>{key}</span>}
-                  <div className={styles.row__icon} style={{ backgroundColor: colorMapping(data[v].title) }} />
+                  <div className={styles.row__icon} style={{ backgroundColor: makeColorProfile(data[v].title) }} />
                   <p>{data[v].title}</p>
                 </div>
               );
               continue;
-            case v === "invitee":
+            case v === "inviter":
               if (!(v in data)) continue;
               arr.push(
                 <p className={styles.row__item} key={data[v].nickname}>
@@ -50,11 +50,11 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
               );
               continue;
             case v === "email":
-              if ("invitee" in data) {
+              if ("inviter" in data) {
                 arr.push(
-                  <div className={styles.row__item} key={data.invitee[v]}>
-                    <ProfileIcon member={data.invitee} tabIndex={-1} />
-                    <p className={styles.row__item}>{data.invitee[v]}</p>
+                  <div className={styles.row__item} key={data.inviter[v]}>
+                    <ProfileIcon member={data.inviter} tabIndex={-1} />
+                    <p className={styles.row__item}>{data.inviter[v]}</p>
                   </div>
                 );
               }

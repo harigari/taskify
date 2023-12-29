@@ -3,11 +3,10 @@ import { Dispatch, SetStateAction, useRef, useState } from "react";
 import styles from "./SearchInput.module.css";
 
 interface SearchInputProps {
-  keyword: string;
   setKeyword: Dispatch<SetStateAction<string>>;
 }
 
-const SearchInput = ({ keyword, setKeyword }: SearchInputProps) => {
+const SearchInput = ({ setKeyword }: SearchInputProps) => {
   const input = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState("");
 

@@ -1,4 +1,4 @@
-import Button from "@/components/buttons/Button/Button";
+import Button from "@/components/Buttons/Button/Button";
 import MultiInputModal from "@/modals/MultiInputModal";
 import SingleInputModal from "@/modals/SingleInputModal";
 import { MouseEvent, useState } from "react";

@@ -1,11 +1,12 @@
-import { ChangeEvent, MouseEvent, RefObject } from "react";
-import styles from "./Input.module.css";
 import Image from "next/image";
+import { ChangeEvent, MouseEvent } from "react";
+import styles from "./Input.module.css";
 
 interface InputProp {
   id: string;
   value: string;
   type: string;
+  name?: string;
   placeholder?: string | undefined;
   eyeButton?: boolean;
   eyesValue?: boolean;
