@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import style from "./CardTask.module.css";
-import { CardTaskProps } from "./card.type";
+import { CardTaskProps } from "./Card.type";
 import ChipTag from "../Chips/ChipTag/ChipTag";
-import ProfileIcon from "../header/members/ProfileIcon";
+import ProfileIcon from "@/components/Members/ProfileIcon";
 // import CardAssignee from "./CardAssinee";
 
 const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) => {

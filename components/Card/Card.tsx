@@ -1,5 +1,5 @@
 import style from "./Card.module.css";
-import { CardProps } from "./card.type";
+import { CardProps } from "./Card.type";
 import ChipTodo from "../Chips/ChipTodo/ChipTodo";
 import ChipNum from "../Chips/ChipNum/ChipNum";
 import ChipPlus from "../Chips/ChipPlus/ChipPlus";

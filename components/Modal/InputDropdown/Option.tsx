@@ -2,8 +2,8 @@ import clsx from "clsx";
 import { Dispatch, SetStateAction, useState } from "react";
 import styles from "@/components/Modal/Dropdown/Option.module.css";
 import Image from "next/image";
-import ProfileIcon from "@/components/header/members/ProfileIcon";
-import { Member } from "@/hooks/useDropdownController";
+import ProfileIcon from "@/components/Members/ProfileIcon";
+import { Member } from "@/components/Header/Header.type";
 
 interface OptionProp {
   value: any;
@@ -25,7 +25,7 @@ function Option({ value, setValue, setIsOpen, option }: OptionProp) {
 
   const imageStyle = clsx(
     hover ? styles.MouseOverImage : styles.MouseOutImage,
-    value?.userId === option.userId && styles.selectedImage
+    value?.id === option.id && styles.selectedImage
   );
 
   return (

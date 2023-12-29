@@ -1,11 +1,11 @@
-import { InviteBoard, Member, TableIndex } from "@/components/Table/Table.type";
+import { InviteBoard, Member, TableIndexType } from "@/components/Table/Table.type";
 import InviteButton from "@/components/Table/TablePagination/InviteButton";
 import clsx from "clsx";
 import styles from "./TableIndex.module.css";
 
 interface TableIndexProps {
   data: (Member | InviteBoard)[];
-  tableIndex: TableIndex;
+  tableIndex: TableIndexType;
   invite?: boolean;
 }
 
