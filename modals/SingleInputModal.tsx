@@ -2,7 +2,7 @@ import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
 import useInputController from "@/hooks/useInputController";
 import ModalWrapper from "./ModalWrapper";
-import ModalButton from "@/components/Modal/ModalButton/ModalButton";
+import ModalButton from "./components/ModalButton/ModalButton";
 import styles from "./Modal.module.css";
 import { FormEvent, MouseEvent } from "react";
 import ChipColors from "@/components/Chips/ChipColors/ChipColors";
