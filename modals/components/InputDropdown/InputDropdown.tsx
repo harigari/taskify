@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import styles from "@/components/Modal/Dropdown/Dropdown.module.css";
+import styles from "@/modals/components/Dropdown/Dropdown.module.css";
 import {
   ChangeEvent,
   Dispatch,

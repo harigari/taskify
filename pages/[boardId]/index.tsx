@@ -1,16 +1,19 @@
-// Dashboard 컴포넌트에서 변경
 import { useEffect, useState } from "react";
-// import { useInView } from "react-intersection-observer";
+import { useRouter } from "next/router";
 import Button from "@/components/buttons/Button/Button";
 import Card from "@/components/Card/Card";
 import MenuLayout from "@/components/menulayout/MenuLayout";
 import style from "./dashboard.module.css";
 import ChipPlus from "@/components/Chips/ChipPlus/ChipPlus";
 import MultiInputModal from "@/modals/MultiInputModal";
+import SingleInputModal from "@/modals/SingleInputModal";
 
 const Dashboard = () => {
   const [mounted, setMounted] = useState<boolean>(false);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isCreateCardOpen, setIsCreateCardOpen] = useState(false);
+  const [isCreateColumnOpen, setIsCreateColumnOpen] = useState(false);
+  const router = useRouter();
+  const { dashboardId } = router.query;
   const mock = [
     {
       id: 0,
@@ -54,31 +57,49 @@ const Dashboard = () => {
     setMounted(true);
   }, []);
 
-  const handleCreateModal = () => {
-    setIsCreateModalOpen(true);
+  const handleCreateCard = () => {
+    setIsCreateCardOpen(true);
   };
+
+  const handleCreateColumn = () => {
+    setIsCreateColumnOpen(true);
+  };
+
+  const handleCardModalToggle = (e: MouseEvent) => setIsCreateCardOpen((prevValue) => !prevValue);
+  const handleColumnModalToggle = (e: MouseEvent) => setIsCreateColumnOpen((prevValue) => !prevValue);
 
   return (
     mounted && (
       <>
-        {/* 대시보드에 맞는 레이아웃으로 설정 */}
+        {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}
         <MenuLayout>
-          {isCreateModalOpen && (
+          {/* 컬럼 아이디 어떻게 처리할 지 고민, dashboardId undefined인 거 처리 */}
+          {isCreateCardOpen && (
             <MultiInputModal
               title="할 일 생성"
               buttonText="생성"
               columnId={1}
-              dashboardId={2}
-              handleModalClose={handleModalClose}
+              dashboardId={dashboardId}
+              handleModalClose={handleCardModalToggle}
+            />
+          )}
+          {isCreateColumnOpen && (
+            <SingleInputModal
+              id=""
+              type="text"
+              labelName="이름"
+              title="새 컬럼 생성"
+              buttonText="생성"
+              handleModalClose={handleColumnModalToggle}
             />
           )}
           <div className={style.layoutContainer}>
-            <div className={style.columnContainer}>
-              <Card cardList={mock} columnName="To do" onClick={() => handleCreateModal()} />
+            <div className={style.columnContainer} onClick={() => handleCreateCard()}>
+              <Card cardList={mock} columnName="To do" />
               <Card cardList={mock} columnName="On Progress" />
               <Card cardList={mock} columnName="Done" />
             </div>
-            <div className={style.buttonWrapper}>
+            <div className={style.buttonWrapper} onClick={() => handleCreateColumn()}>
               <Button buttonType="add_column" color="white">
                 <div className={style.buttonContentWrapper}>
                   <span>새로운 컬럼 추가하기</span>
