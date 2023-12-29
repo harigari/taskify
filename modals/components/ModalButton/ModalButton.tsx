@@ -2,13 +2,13 @@ import clsx from "clsx";
 import styles from "./ModalButton.module.css";
 import { MouseEvent, ReactNode } from "react";
 
-function ModalSubmit({ children, className }: { children: string; className?: string }) {
+function ModalSubmit({ children, className }: { children: ReactNode; className?: string }) {
   const singleButtonStyle = clsx(styles.root, styles.single, className);
 
   return <button className={singleButtonStyle}>{children}</button>;
 }
 
-function SingleButton({ children }: { children: string }) {
+function SingleButton({ children }: { children: ReactNode }) {
   return (
     <div className={styles.buttonContainer}>
       <button type="submit" className={`${styles.root} ${styles.double} ${styles.accept}`}>
