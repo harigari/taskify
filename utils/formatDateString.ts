@@ -3,7 +3,9 @@
  * @param format {string} 'yyyy.MM.dd HH:mm'과 같은 형식을 사용합니다. (옵션)
  * @description 날짜를 원하는 포맷으로 변환합니다.
  */
-export default function formatDateString(dateString: string, format: string = "yyyy.MM.dd HH:mm") {
+
+type Format = "yyyy.MM.dd HH:mm" | "yyyy.MM.dd";
+export default function formatDateString(dateString: string, format: Format = "yyyy.MM.dd HH:mm") {
   const date = new Date(dateString);
 
   const year = date.getFullYear().toString();
