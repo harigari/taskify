@@ -1,7 +1,7 @@
 import ProfileIcon from "@/components/Members/ProfileIcon";
 import { Comment } from "../Modal.type";
 import styles from "./Comment.module.css";
-import formatDate, { DateFormat } from "@/utils/formatDate";
+import formatDate from "@/utils/formatDateString";
 interface CommentProps {
   data: Comment;
 }
@@ -14,7 +14,7 @@ const Comment = ({ data }: CommentProps) => {
       <div className={styles.detail}>
         <div className={styles.header}>
           <span className={styles.author}>{data.author.nickname}</span>
-          <span className={styles.createdAt}>{formatDate(data.createdAt, DateFormat.Full)}</span>
+          <span className={styles.createdAt}>{formatDate(data.createdAt)}</span>
         </div>
         <div className={styles.comment}>{data.content}</div>
         <div className={styles.buttons}>

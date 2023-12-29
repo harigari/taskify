@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./AssigneeAndDueDateInfo.module.css";
 
-import formatDate, { DateFormat } from "@/utils/formatDate";
+import formatDate from "@/utils/formatDateString";
 import { TaskInfo } from "../Modal.type";
 import ProfileIcon from "@/components/Members/ProfileIcon";
 
@@ -22,7 +22,7 @@ const AssigneeAndDueDateInfo = ({ data }: TaskCardInfoProps) => {
       </div>
       <div className={styles.dueDate}>
         <span className={styles.label}>마감일</span>
-        <span className={styles.detail}>{formatDate(data.dueDate, DateFormat.Full)}</span>
+        <span className={styles.detail}>{formatDate(data.dueDate)}</span>
       </div>
     </div>
   );

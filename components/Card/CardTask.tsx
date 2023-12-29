@@ -4,8 +4,7 @@ import style from "./CardTask.module.css";
 import { CardTaskProps } from "./Card.type";
 import ChipTag from "../Chips/ChipTag/ChipTag";
 import ProfileIcon from "../header/members/ProfileIcon";
-import formatDate, { DateFormat } from "@/utils/formatDate";
-// import CardAssignee from "./CardAssinee";
+import formatDate from "@/utils/formatDateString";
 
 const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) => {
   const tagSlicer = (tagList: string[]) => {
@@ -57,7 +56,7 @@ const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) =
                 width={20}
                 height={20}
               />
-              <span className={style.date}>{formatDate(dueDate, DateFormat.DateOnly)}</span>
+              <span className={style.date}>{formatDate(dueDate, "yyyy.MM.dd")}</span>
             </div>
             <ProfileIcon member={assignee} size="sm" />
           </div>
