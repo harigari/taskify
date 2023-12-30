@@ -15,16 +15,16 @@ import Option from "./Option";
 import Label from "@/components/Label/Label";
 import Image from "next/image";
 import ProfileIcon from "@/components/Members/ProfileIcon";
-import { Member } from "@/types/Header.type";
+import { BasicUserType } from "@/types/api.type";
 
 interface DropdownProp {
   children: ReactNode;
-  value: Member | undefined;
-  setValue: Dispatch<SetStateAction<Member | undefined>>;
-  options: Member[];
+  value: BasicUserType | undefined;
+  setValue: Dispatch<SetStateAction<BasicUserType | undefined>>;
+  options: BasicUserType[];
 }
 
-const optionFilter = (options: Member[], inputValue: string) => {
+const optionFilter = (options: BasicUserType[], inputValue: string) => {
   const filteredMembers = options.filter((option) => option.nickname.includes(inputValue));
   return filteredMembers;
 };
