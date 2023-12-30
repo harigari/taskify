@@ -7,14 +7,10 @@ interface AlertModalProp {
   isDoubleButton?: boolean;
   alertText: string;
   handleModalClose: (e: MouseEvent) => void;
+  handleSubmit: () => void;
 }
 
-const AlertModal = ({ isDoubleButton = true, alertText, handleModalClose }: AlertModalProp) => {
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    // 페치 하게 될 듯
-  };
-
+const AlertModal = ({ isDoubleButton = true, alertText, handleModalClose, handleSubmit }: AlertModalProp) => {
   return (
     <ModalWrapper size="md">
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
