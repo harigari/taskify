@@ -32,6 +32,7 @@
 .member__name {
   position: absolute;
   font-weight: 600;
+  font-size: 1.6rem;
 }
 
 @media screen and (max-width: 767px) {

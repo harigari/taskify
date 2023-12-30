@@ -59,8 +59,8 @@ function useInputController({ errorConfig, inputConfig, labelConfig }: Configs) 
       errorText,
       onBlur,
       onFocus,
-      htmlFor: inputConfig.id,
       ...labelConfig,
+      htmlFor: inputConfig.id,
     },
     input: {
       value,

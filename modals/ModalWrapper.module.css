@@ -16,6 +16,7 @@
   width: 73rem;
   height: 76.3rem;
   background: var(--white, #fff);
+  border-radius: 0.8rem;
 }
 
 .md {
@@ -29,6 +30,7 @@
   padding: 2.8rem;
   width: 50.6rem;
   background: var(--white, #fff);
+  border-radius: 0.8rem;
 }
 
 @media (max-width: 1200px) {

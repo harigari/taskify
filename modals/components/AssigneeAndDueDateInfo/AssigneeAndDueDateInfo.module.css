@@ -1,0 +1,68 @@
+.assignee_and_dueDate {
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  padding: 1.6rem;
+  border: 1px solid var(--gray30);
+
+  width: 20rem;
+  height: 15.5rem;
+  border-radius: 0.8rem;
+}
+
+.assignee {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.dueDate {
+  display: flex;
+  gap: 0.6rem;
+  flex-direction: column;
+}
+.label {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  text-align: center;
+}
+@media (max-width: 1200px) {
+  .assignee_and_dueDate {
+    width: 18rem;
+    height: 15.5rem;
+  }
+}
+@media (max-width: 767px) {
+  .assignee_and_dueDate {
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 1rem;
+    width: 28.7rem;
+    height: 6.4rem;
+  }
+  .label {
+    font-size: 1rem;
+  }
+  .detail {
+    font-size: 1.2rem;
+  }
+  .profile_icon button {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+  .profile_icon button div {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+  .profile_icon button span {
+    font-size: 1.2rem;
+  }
+  .dueDate {
+    justify-content: space-between;
+  }
+}

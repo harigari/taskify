@@ -13,6 +13,7 @@ interface TableListProps {
 const TableList = ({ data, tableIndex, row }: TableListProps) => {
   const column = Object.keys(tableIndex).length;
   const isAccept = Object.values(tableIndex).includes("acceptButton");
+  console.log(column, isAccept);
 
   return (
     <ul className={isAccept ? styles.list__mobile : ""}>

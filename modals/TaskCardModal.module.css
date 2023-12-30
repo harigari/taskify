@@ -1,0 +1,197 @@
+.modal_wrapper {
+  display: flex;
+  gap: 2.4rem;
+  flex-direction: column;
+  padding: 3.2rem 2.8rem;
+
+  background-color: var(--white);
+  border-radius: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--black1);
+}
+
+.body {
+  display: flex;
+  gap: 2.4rem;
+}
+
+.first {
+  display: flex;
+  gap: 1.6rem;
+  flex-direction: column;
+  width: 45rem;
+}
+.icons {
+  display: flex;
+  gap: 2.4rem;
+  position: relative;
+}
+
+.options {
+  display: flex;
+  gap: 0.7rem;
+  flex-direction: column;
+  padding: 0.6rem;
+  border: 1px solid var(--gray30);
+  position: absolute;
+  top: 3rem;
+  right: 6.8rem;
+  z-index: 3;
+  width: 9.3rem;
+  height: 8.2rem;
+  background: var(--white);
+  border-radius: 0.6rem;
+}
+
+.options .option {
+  padding: 0.4rem 1.6rem;
+  width: 8.1rem;
+  height: 3.2rem;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 2.4rem;
+
+  text-align: center;
+  cursor: pointer;
+  border-radius: 0.4rem;
+}
+.options .option:hover {
+  background-color: var(--violet8);
+  color: var(--violet);
+}
+
+.separator {
+  width: 0.1rem;
+  height: 2rem;
+  background-color: var(--gray30);
+}
+.chips {
+  display: flex;
+  gap: 2rem;
+}
+
+.tags {
+  display: flex;
+  gap: 1.6rem;
+}
+
+.description {
+  display: flex;
+  overflow: auto;
+
+  height: 10rem;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 2.4rem;
+}
+
+.image_wrapper {
+  margin-bottom: 0.9rem;
+  overflow: hidden;
+  position: relative;
+  width: 45rem;
+  height: 26rem;
+}
+
+.image_wrapper img {
+  border-radius: 0.6rem;
+  object-fit: cover;
+}
+
+.form {
+  height: 13.9rem;
+}
+
+.comments {
+  display: flex;
+
+  flex-direction: column;
+  overflow: auto;
+
+  height: 7rem;
+}
+.comments > div:first-child {
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 1200px) {
+  .first {
+    width: 42rem;
+  }
+
+  .image_wrapper {
+    width: 42rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .modal_wrapper {
+    gap: 1.6rem;
+    padding: 1.4rem 2rem;
+  }
+  .header {
+    flex-direction: column-reverse;
+  }
+
+  .first {
+    width: 28.7rem;
+  }
+
+  .image_wrapper {
+    width: 28.7rem;
+  }
+
+  .options {
+    top: 2.8rem;
+    right: 3.8rem;
+  }
+  .title {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  .icons {
+    gap: 0.2rem;
+    justify-content: flex-end;
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+  .body {
+    flex-direction: column-reverse;
+  }
+
+  .description {
+    font-size: 1.2rem;
+
+    line-height: 2.2rem;
+  }
+
+  .image_wrapper {
+    height: 16.8rem;
+  }
+  .form {
+    height: 7rem;
+  }
+  .image_wrapper {
+    margin-bottom: 0rem;
+  }
+  .comments {
+    margin-top: 2.5rem;
+
+    height: 8.5rem;
+  }
+}
