@@ -21,7 +21,7 @@ interface MultiInputModalProp {
   columnId: number;
   dashboardId: number;
   assigneeList: Member[];
-  handleModalClose: (e: MouseEvent) => void;
+  handleModalClose: () => void;
 }
 
 const MultiInputModal = ({
@@ -61,7 +61,7 @@ const MultiInputModal = ({
   const data = {
     columnId,
     dashboardId,
-    assigneeUserId: (modalDropdown.value && modalDropdown.value.id)!,
+    assigneeUserId: modalDropdown.value?.userId,
     title: modalTitle.input.value,
     description: modalExplain.input.value,
     dueDate: formatDateString(String(modalDate.dateTime.date), "yyyy-MM-dd HH:mm"),
@@ -85,16 +85,30 @@ const MultiInputModal = ({
       const imageFormData = new FormData();
       imageFormData.append("image", imageFile);
 
-      for (const v of imageFormData.keys()) {
-        console.log(v);
+      const imageRes = await fetch(`https://sp-taskify-api.vercel.app/1-7/columns/${columnId}/card-image`, {
+        method: "post",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: imageFormData,
+      });
+
+      const { imageUrl } = await imageRes.json();
+
+      const dataWithImage = { ...data, imageUrl };
+
+      const cardRes = await fetch(`https://sp-taskify-api.vercel.app/1-7/cards`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(dataWithImage),
+      });
+
+      if (cardRes.status === 201) {
+        handleModalClose();
       }
-      const imageRes = await postData({ path: "cardImage", id: columnId, data: imageFormData, accessToken });
-      if (!imageRes) return;
-      if (imageRes && imageRes.status > 201) return;
-
-      const newData = { ...data, imageUrl: imageRes.data.imageUrl };
-
-      const cardRes = await postData({ path: "card", data: newData, accessToken });
     }
   };
 
@@ -133,5 +147,4 @@ const MultiInputModal = ({
     </ModalWrapper>
   );
 };
-
 export default MultiInputModal;
