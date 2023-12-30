@@ -3,6 +3,8 @@ import TablePagenation from "@/components/Table/TablePagination/TablePagination"
 import Button from "@/components/buttons/Button/Button";
 import Image from "next/image";
 import styles from "./index.module.css";
+import ChipTodo from "@/components/Chips/ChipTodo/ChipTodo";
+import ChipPlus from "@/components/Chips/ChipPlus/ChipPlus";
 
 const MEMBER = [
   { id: 1, nickname: "haneul", profileImageUrl: "" },
