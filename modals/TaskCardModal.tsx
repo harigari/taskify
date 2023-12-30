@@ -1,4 +1,4 @@
-import React, { useRef, useState, FocusEvent, FormEvent } from "react";
+import React, { useRef, useState, FocusEvent, FormEvent, MouseEvent } from "react";
 import { TaskInfo } from "./Modal.type";
 import styles from "./TaskCardModal.module.css";
 import Image from "next/image";
@@ -10,13 +10,20 @@ import AssigneeAndDueDateInfo from "./components/AssigneeAndDueDateInfo/Assignee
 import InputWrapper from "../components/Input/InputWrapper";
 import CommentInput from "@/modals/components/ModalInput/CommentInput";
 import ModalWrapper from "./ModalWrapper";
+import MultiInputModal from "./MultiInputModal";
+import AlertModal from "./AlertModal";
 
 interface TaskCardInfoProps {
   data: TaskInfo;
+  handleModalClose: (e: MouseEvent) => void;
 }
 
-const TaskCardModal = ({ data }: TaskCardInfoProps) => {
+const TaskCardModal = ({ data, handleModalClose }: TaskCardInfoProps) => {
   const [isKebabOpen, setIsKebabOpen] = useState(false);
+  const [isModifyModalOpen, setModifyModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  // 케밥 열고 닫기
   const handleKebab = () => {
     setIsKebabOpen((prevValue) => !prevValue);
   };
@@ -27,6 +34,24 @@ const TaskCardModal = ({ data }: TaskCardInfoProps) => {
     if (!optionsRef.current?.contains(e.relatedTarget)) {
       setIsKebabOpen(false);
     }
+  };
+
+  // 수정하기 모달 열고 닫기
+  const handleModifyModalOpen = () => {
+    setModifyModalOpen(true);
+  };
+
+  const handleModifyModalClose = () => {
+    setModifyModalOpen(false);
+  };
+
+  // 삭제하기 모달 열고 닫기
+  const handleDeleteModalOpen = () => {
+    setDeleteModalOpen(true);
+  };
+
+  const handleDeleteModalClose = () => {
+    setDeleteModalOpen(false);
   };
 
   const comment = useInputController({
@@ -77,11 +102,27 @@ const TaskCardModal = ({ data }: TaskCardInfoProps) => {
             </button>
             {isKebabOpen && (
               <div className={styles.options} ref={optionsRef}>
-                <button className={styles.option}>수정하기</button>
-                <button className={styles.option}>삭제하기</button>
+                <button className={styles.option} onClick={handleModifyModalOpen}>
+                  수정하기
+                </button>
+                {isModifyModalOpen && (
+                  <MultiInputModal
+                    title="할 일 수정"
+                    buttonText="수정"
+                    columnId={1}
+                    dashboardId={1}
+                    handleModalClose={handleModifyModalClose}
+                  />
+                )}
+                <button className={styles.option} onClick={handleDeleteModalOpen}>
+                  삭제하기
+                </button>
+                {isDeleteModalOpen && (
+                  <AlertModal alertText="카드를 삭제하시겠습니까?" handleModalClose={handleDeleteModalClose} />
+                )}
               </div>
             )}
-            <button className={styles.icon}>
+            <button className={styles.icon} onClick={handleModalClose}>
               <Image src="/icons/close.svg" alt="창닫기 아이콘" width={32} height={32} />
             </button>
           </div>
