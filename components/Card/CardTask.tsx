@@ -18,6 +18,7 @@ const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) =
   };
   const { slicedTagList, etc } = tagSlicer(tags);
 
+
   return (
     <div className={style.cardContainer}>
       {/* 카드 이미지 */}

@@ -1,6 +1,7 @@
 import React, { MouseEvent, ReactNode } from "react";
 import styles from "./Button.module.css";
 import clsx from "clsx";
+import ChipPlus from "../../Chips/ChipPlus/ChipPlus";
 
 export type ButtonType =
   | "login"
@@ -15,6 +16,7 @@ type Color = "violet" | "white" | "gray";
 
 interface Props {
   children: ReactNode;
+  icon?: boolean;
   disabled?: boolean;
   onClick?: (e: MouseEvent) => void;
   buttonType: ButtonType;
