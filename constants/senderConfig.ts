@@ -34,6 +34,8 @@ const SENDER_CONFIG = {
     // 새로운 칼럼 생성하기
     comment: "/comments",
     // 새로운 댓글 생성하기
+    dashboard: "/dashboards",
+    // 새로운 대시보드 생성하기
     cardImage: (id: number) => `/columns/${id}/card-image`,
     // 새로운 카드 이미지 생성하기
     invitation: (id: number) => `/dashboards/${id}/invitations`,
