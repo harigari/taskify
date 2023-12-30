@@ -1,12 +1,18 @@
 import clsx from "clsx";
+import { ReactNode } from "react";
 import style from "./ChipTodo.module.css";
-import { ChipTodoProps } from "@/components/Chips/chips.type";
+
+interface ChipTodoProps {
+  size: "sm" | "lg";
+  color: "purple" | "white";
+  children: ReactNode;
+}
 
 const ChipTodo = ({ size, color, children }: ChipTodoProps) => {
   return (
     <>
       <div className={clsx(style.container, { [style.large]: size === "lg" }, { [style.white]: color === "white" })}>
-        <img src="/icons/todo_dot.svg" />
+        <div className={style.icon} />
         {/* prop에 따라 글자 내용 변경 */}
         <div
           className={clsx(

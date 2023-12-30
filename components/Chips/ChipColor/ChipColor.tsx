@@ -1,7 +1,14 @@
-import { useState } from "react";
 import clsx from "clsx";
 import style from "./ChipColor.module.css";
-import { ChipColorProps } from "@/components/Chips/chips.type";
+import Image from "next/image";
+
+interface ChipColorProps {
+  size: string;
+  color: "green" | "purple" | "orange" | "blue" | "pink";
+  onClick?: () => void;
+  isSelected: boolean;
+}
+
 const ChipColor = ({ size, color, onClick, isSelected }: ChipColorProps) => {
   return (
     <>
@@ -18,7 +25,7 @@ const ChipColor = ({ size, color, onClick, isSelected }: ChipColorProps) => {
         onClick={onClick}
       >
         {/* 크기에 따라 check.svg 변경 */}
-        {isSelected ? <img src="/icons/check_small.svg" /> : null}
+        {isSelected ? <Image width={22} height={22} src="/icons/icon-check.svg" alt="선택된 태그" /> : null}
       </div>
     </>
   );

@@ -1,11 +1,15 @@
-import ProfileIcon from "@/components/Members/ProfileIcon";
-import { InviteBoard, Member, TableIndexType } from "@/components/Table/Table.type";
 import Button from "@/components/Buttons/Button/Button";
-import { makeColorProfile } from "@/utils/makeColorProfile";
+import ProfileIcon from "@/components/Members/ProfileIcon";
+import { BasicUserType, InvitationData } from "@/types/api.type";
+import makeColorProfile from "@/utils/makeColorProfile";
 import styles from "./TableList.module.css";
 
+type TableIndexType = {
+  [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
+};
+
 interface TableListProps {
-  data: (Member | InviteBoard)[];
+  data: (BasicUserType | InvitationData)[];
   tableIndex: TableIndexType;
   row: number;
 }
@@ -13,7 +17,6 @@ interface TableListProps {
 const TableList = ({ data, tableIndex, row }: TableListProps) => {
   const column = Object.keys(tableIndex).length;
   const isAccept = Object.values(tableIndex).includes("acceptButton");
-  console.log(column, isAccept);
 
   return (
     <ul className={isAccept ? styles.list__mobile : ""}>
@@ -54,7 +57,6 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
               if ("inviter" in data) {
                 arr.push(
                   <div className={styles.row__item} key={data.inviter[v]}>
-                    <ProfileIcon member={data.inviter} tabIndex={-1} />
                     <p className={styles.row__item}>{data.inviter[v]}</p>
                   </div>
                 );

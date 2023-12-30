@@ -1,6 +1,6 @@
+import Button from "@/components/Buttons/Button/Button";
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
 import TablePagenation from "@/components/Table/TablePagination/TablePagination";
-import Button from "@/components/buttons/Button/Button";
 import Image from "next/image";
 import styles from "./index.module.css";
 
@@ -130,7 +130,7 @@ export default function DashBoard() {
           </article>
           <TablePagenation
             title="초대받은 대시보드"
-            row={6}
+            row={3}
             data={INVITE}
             tableIndex={{ 이름: "dashboard", 초대자: "inviter", "수락 여부": "deleteButton" }}
             search

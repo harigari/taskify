@@ -1,18 +1,22 @@
-import { InviteBoard, Member, TableIndexType } from "@/components/Table/Table.type";
+import ArrowButton from "@/components/Buttons/ArrowButton/ArrowButton";
 import TableIndex from "@/components/Table/TableIndex/TableIndex";
 import TableList from "@/components/Table/TableList/TableList";
 import HideButton from "@/components/Table/TablePagination/HideButton";
 import InviteButton from "@/components/Table/TablePagination/InviteButton";
 import SearchInput from "@/components/Table/TablePagination/SearchInput";
-import ArrowButton from "@/components/Buttons/ArrowButton/ArrowButton";
+import { BasicUserType, InvitationData } from "@/types/api.type";
 import { clsx } from "clsx";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import styles from "./TablePagination.module.css";
-import Image from "next/image";
+
+type TableIndexType = {
+  [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
+};
 
 interface TableProps {
   title: string;
-  data: Member[] | InviteBoard[];
+  data: BasicUserType[] | InvitationData[];
   row?: number;
   tableIndex: TableIndexType;
   invite?: boolean;

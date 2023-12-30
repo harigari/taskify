@@ -98,7 +98,7 @@ const TaskCardModal = ({ data, handleModalClose }: TaskCardInfoProps) => {
           <h1 className={styles.title}>{data.title}</h1>
           <div className={styles.icons}>
             <button className={styles.icon} onClick={handleKebab} onBlur={handleKebabClose}>
-              <Image src="/icons/kebab.svg" alt="케밥 아이콘" width={28} height={28} />
+              <Image src="/icons/icon-kebab.svg" alt="케밥 아이콘" width={28} height={28} />
             </button>
             {isKebabOpen && (
               <div className={styles.options} ref={optionsRef}>
@@ -122,8 +122,8 @@ const TaskCardModal = ({ data, handleModalClose }: TaskCardInfoProps) => {
                 )}
               </div>
             )}
-            <button className={styles.icon} onClick={handleModalClose}>
-              <Image src="/icons/close.svg" alt="창닫기 아이콘" width={32} height={32} />
+            <button className={styles.icon}>
+              <Image src="/icons/icon-close.svg" alt="창닫기 아이콘" width={32} height={32} />
             </button>
           </div>
         </div>

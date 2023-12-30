@@ -1,9 +1,7 @@
-import React from "react";
 import styles from "./AssigneeAndDueDateInfo.module.css";
-
+import ProfileIcon from "@/components/Members/ProfileIcon";
 import formatDate from "@/utils/formatDateString";
 import { TaskInfo } from "../../Modal.type";
-import ProfileIcon from "@/components/Members/ProfileIcon";
 
 interface TaskCardInfoProps {
   data: TaskInfo;

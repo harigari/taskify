@@ -1,6 +1,6 @@
+import clsx from "clsx";
 import { ReactNode } from "react";
 import styles from "./Label.module.css";
-import clsx from "clsx";
 
 interface ModalLabelProp {
   htmlFor?: string;

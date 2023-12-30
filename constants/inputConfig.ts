@@ -65,7 +65,7 @@ export const signupPassword: Configs = {
 };
 
 export const signupPasswordCheck: Configs = {
-  errorConfig: [[isSamePassword], [isValue]],
+  errorConfig: [[isSamePassword], [isReg], [isValue]],
   inputConfig: {
     id: "passwordCheck",
     type: "password",

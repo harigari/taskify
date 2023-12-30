@@ -15,16 +15,16 @@ import Option from "./Option";
 import Label from "@/components/Label/Label";
 import Image from "next/image";
 import ProfileIcon from "@/components/Members/ProfileIcon";
-import { Member } from "@/hooks/useDropdownController";
+import { BasicUserType } from "@/types/api.type";
 
 interface DropdownProp {
   children: ReactNode;
-  value: Member | undefined;
-  setValue: Dispatch<SetStateAction<Member | undefined>>;
-  options: Member[];
+  value: BasicUserType | undefined;
+  setValue: Dispatch<SetStateAction<BasicUserType | undefined>>;
+  options: BasicUserType[];
 }
 
-const optionFilter = (options: Member[], inputValue: string) => {
+const optionFilter = (options: BasicUserType[], inputValue: string) => {
   const filteredMembers = options.filter((option) => option.nickname.includes(inputValue));
   return filteredMembers;
 };
@@ -100,7 +100,7 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
                 {value.nickname}
               </div>
               <button type="button" className={styles.button} onMouseDown={handleDeleteClick}>
-                <Image src="/icons/close.svg" alt="닫기 버튼" width={20} height={20} />
+                <Image src="/icons/icon-close.svg" alt="닫기 버튼" width={20} height={20} />
               </button>
             </div>
           )}

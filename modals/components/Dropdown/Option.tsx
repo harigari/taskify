@@ -37,7 +37,7 @@ function Option({ value, setValue, setIsOpen, option }: OptionProp) {
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
     >
-      <Image className={imageStyle} src="/icons/check.svg" width={22} height={22} alt="" />
+      <Image className={imageStyle} src="/icons/icon-check.svg" width={22} height={22} alt="" />
 
       <div>
         <ChipTodo color="purple" size="lg">

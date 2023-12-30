@@ -15,7 +15,7 @@ const IndexHeader = ({ color = "white" }: IndexHeaderProps) => {
           [styles.header__black]: color === "black",
         })}
       >
-        <Link className={styles.logo__link} href="/mydashboard">
+        <Link className={styles.logo__link} href="/">
           <picture className={styles.logo__picture}>
             <source media="(max-width: 767px)" srcSet={`/images/logo-${color === "white" ? "purple" : "white"}.svg`} />
             <Image

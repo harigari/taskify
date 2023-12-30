@@ -1,9 +1,9 @@
+import clsx from "clsx";
+import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./DateTime.module.css";
-import Image from "next/image";
-import clsx from "clsx";
 
 interface DateTime {
   id: string;
@@ -25,7 +25,7 @@ function DateTime({ date, setDate, id }: DateTime) {
         id={id}
         className={styles.datepick}
         selected={date}
-        onChange={(date) => setDate(date)}
+        onChange={(date: Date) => setDate(date)}
         timeInputLabel="Time:"
         dateFormat="MM/dd/yyyy h:mm aa"
         placeholderText="날짜를 입력해 주세요"

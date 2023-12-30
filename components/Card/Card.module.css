@@ -1,3 +1,6 @@
+.totalFrame {
+  display: flex;
+}
 .totalContainer {
   display: flex;
   flex-direction: column;
@@ -5,34 +8,45 @@
   width: 35.4rem;
   height: auto;
   border-right: 1px solid var(--gray20);
-  background-color: var(--gray10);
-  cursor: pointer;
 }
 
-.headerContainer {
+.cardTagContainer {
   display: flex;
-  align-items: center;
-  margin-bottom: 2.5rem;
-  width: 100%;
-  height: fit-content;
   align-items: center;
   justify-content: space-between;
 }
 
-.todoWrapper {
+.cardTagsWrapper {
   display: flex;
-  gap: 1.2rem;
+  gap: 0.6rem;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.cardCountWrapper {
+  padding: 0.4rem 0.6rem;
+  width: fit-content;
+  height: 2rem;
+  background: var(--black2);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--gray20);
+  text-align: center;
+  border-radius: 0.8rem;
+}
+
+.cardInfoWrapper {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+  margin-top: 1.6rem;
 }
 
-.contentContainer {
+.dateWrapper {
   display: flex;
-  gap: 1.6rem;
-  flex-direction: column;
-}
-
-.buttonWrapper {
-  display: flex;
+  gap: 0.6rem;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
@@ -41,30 +55,56 @@
   height: 4rem;
   background: var(--white);
   border-radius: 0.6rem;
-  cursor: pointer;
 }
 
 @media screen and (max-width: 1200px) {
-  .totalFrame {
-    flex-direction: column;
+  .cardContainer {
+    align-items: center;
+    flex-direction: row;
   }
-  .totalContainer {
-    width: 58.4rem;
-    border-bottom: 1px solid var(--gray20);
-    border-right: none;
+  .imageContent {
+    width: 11rem;
+    height: auto;
+  }
+  .allContentContainer {
+    align-items: center;
+    flex-direction: row;
+  }
+  .cardTagsWrapper {
+    justify-content: start;
+    max-width: 20rem;
+  }
+  .cardTagCotainer {
+    margin-right: 1.6rem;
+  }
+  .cardCountWrapper {
+    display: none;
+  }
+  .cardInfoWrapper {
+    justify-content: space-between;
+    margin-top: 0;
   }
 }
 
 @media screen and (max-width: 767px) {
-  .totalFrame {
+  .cardContainer {
+    align-items: flex-start;
     flex-direction: column;
+    width: 100%;
   }
-  .totalContainer {
+  .cardContentContainer {
+    width: 100%;
+  }
+  .imageContent {
+    width: 26rem;
+    height: 15.2rem;
+  }
+  .allContentContainer {
+    align-items: flex-start;
     flex-direction: column;
     width: 30.8rem;
     margin-bottom: 1.2rem;
     stroke-width: 1px;
     stroke: var(--gray-gray_EEEEEE, #eee);
-    padding: 1.2rem;
   }
 }

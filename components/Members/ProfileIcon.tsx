@@ -1,5 +1,5 @@
-import { Member } from "@/components/Header/Header.type";
-import { makeColorProfile } from "@/utils/makeColorProfile";
+import { BasicUserType } from "@/types/api.type";
+import makeColorProfile from "@/utils/makeColorProfile";
 import clsx from "clsx";
 import Image from "next/image";
 import styles from "./ProfileIcon.module.css";
@@ -13,7 +13,7 @@ type HandlerFunc = {
 };
 
 interface ProfileIconProps extends HandlerFunc {
-  member: Member;
+  member: BasicUserType;
   size?: "sm" | "lg";
   tabIndex?: number;
   className?: string;

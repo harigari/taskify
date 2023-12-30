@@ -18,6 +18,13 @@
   text-align: center;
 }
 
+.icon {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 10rem;
+  background-color: var(--violet);
+}
+
 /* 큰 사이즈일 때의 스타일 */
 .large {
   height: 2.2rem;

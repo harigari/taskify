@@ -1,10 +1,10 @@
-import { Member, User } from "@/components/Header/Header.type";
 import styles from "./Header.module.css";
 import HeaderButton from "./HeaderButton/HeaderButton";
 import Members from "../Members/Members";
 import Profile from "../Members/Profile";
+import { BasicUserType } from "@/types/api.type";
 
-const MOCKUP: Member[] = [
+const MOCKUP: BasicUserType[] = [
   { id: 1, nickname: "haneul", profileImageUrl: "" },
   { id: 2, nickname: "Youdame", profileImageUrl: "" },
   { id: 3, nickname: "Jaden", profileImageUrl: "" },
@@ -15,9 +15,8 @@ const MOCKUP: Member[] = [
   { id: 8, nickname: "Youdame", profileImageUrl: "" },
 ];
 
-const USER: User = {
+const USER: BasicUserType = {
   id: 1,
-  email: "codeit@codeit.kr",
   nickname: "시골쥐",
   profileImageUrl: "",
 };

@@ -15,7 +15,7 @@ const FeatureSection = () => {
         </div>
         <div className={styles.flex_box1}>
           <div className={styles.feature_image_wrapper1}>
-            <Image fill alt="우선순위 관리 기능 예시 이미지" src="/images/photos/landing_feature1.png" />
+            <Image fill alt="우선순위 관리 기능 예시 이미지" src="/images/landing_feature1.png" />
           </div>
         </div>
       </article>
@@ -30,7 +30,7 @@ const FeatureSection = () => {
         </div>
         <div className={styles.flex_box2}>
           <div className={styles.feature_image_wrapper2}>
-            <Image fill alt="할 일 생성 기능 예시 이미지" src="/images/photos/landing_feature2.png" />
+            <Image fill alt="할 일 생성 기능 예시 이미지" src="/images/landing_feature2.png" />
           </div>
         </div>
       </article>

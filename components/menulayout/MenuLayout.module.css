@@ -1,7 +1,7 @@
 .container {
   display: grid;
-  grid-template-areas: "sidemenu header" "sidemenu main";
   grid-template-rows: auto 1fr;
+  grid-template-areas: "sidemenu header" "sidemenu main";
 }
 
 .grid__sidemenu {
@@ -11,6 +11,6 @@
   grid-area: header;
 }
 .grid__main {
-  grid-area: main;
   background-color: var(--gray10);
+  grid-area: main;
 }

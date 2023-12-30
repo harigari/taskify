@@ -1,7 +1,7 @@
+import { FormEvent, MouseEvent } from "react";
+import styles from "./Modal.module.css";
 import ModalWrapper from "./ModalWrapper";
 import ModalButton from "./components/ModalButton/ModalButton";
-import styles from "./Modal.module.css";
-import { FormEvent, MouseEvent } from "react";
 
 interface AlertModalProp {
   isDoubleButton?: boolean;
