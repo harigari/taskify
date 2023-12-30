@@ -1,5 +1,5 @@
 import sender from "@/apis/sender";
-import { HTTP, Method, PathProps, RequireId, ReturnData } from "@/types/api.type";
+import { HTTP, Method, PathProps, RequireId, ReturnData, Wrapped } from "@/types/api.type";
 import { useCallback, useEffect, useState } from "react";
 
 const useApi = <T extends Method, U extends PathProps<T>>(method: T, obj?: RequireId<T, U>) => {
@@ -8,7 +8,7 @@ const useApi = <T extends Method, U extends PathProps<T>>(method: T, obj?: Requi
   const [data, setData] = useState<ReturnData<T, U>>();
 
   const asyncFunction = sender[method] as HTTP<T>;
-  const wrappedFunction: HTTP<T> = useCallback(
+  const wrappedFunction: Wrapped<T> = useCallback(
     async (arg) => {
       try {
         setPending(true);
@@ -16,9 +16,9 @@ const useApi = <T extends Method, U extends PathProps<T>>(method: T, obj?: Requi
         return await asyncFunction(arg);
       } catch (e) {
         if (e instanceof Error) {
+          console.error(e);
           setError(e.message);
         }
-        return;
       } finally {
         setPending(false);
       }

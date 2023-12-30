@@ -18,7 +18,8 @@
   width: 100%;
 }
 
-.dashboard button:not(:first-child) {
+.dashboard a {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   padding: 0 3rem;
