@@ -52,8 +52,10 @@ const Signup = () => {
       password: passwordInput.value,
     };
 
-    const res = await sender.post({ path: "signup", data: JSON.stringify(signupData) });
-    if (res.status === 409) {
+    const res = await sender.post({ path: "signup", data: signupData });
+    if (!res) return;
+
+    if (res.status === 409 && "message" in res.data) {
       emailWrapper.setErrorText(res.data.message);
       return;
     }
@@ -64,10 +66,12 @@ const Signup = () => {
       password: passwordInput.value,
     };
 
-    const login = await sender.post({ path: "signin", data: JSON.stringify(signinData) });
-    if (login.status === 201) {
+    const login = await sender.post({ path: "signin", signinData });
+    if (!login) return;
+
+    if (login.status === 201 && !("message" in login.data)) {
       document.cookie = `accessToken=${login.data.accessToken}`;
-      router.push("/dashboard");
+      router.push("/mydashboard");
       return;
     }
   };

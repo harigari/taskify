@@ -19,14 +19,11 @@ class Api {
     if (typeof result === "function" && "id" in obj) {
       return result(obj.id);
     }
-    if (typeof result === "function" && !("id" in obj)) {
-      throw new Error("id를 입력해주세요.");
-    }
   };
 
   get: HTTP<"get"> = async (obj) => {
     const url = this.#pathFinder("get", obj);
-    const res = await fetch(this.#BASE_URL + url, { method: "GET" });
+    const res = await fetch(this.#BASE_URL + url, { method: "GET", headers: { Authorization: obj.accessToken || "" } });
     const data = await res.json();
     return { status: res.status, data };
   };
@@ -36,7 +33,10 @@ class Api {
     const res = await fetch(this.#BASE_URL + url, {
       method: "POST",
       body: JSON.stringify(obj.data),
-      headers: { "Content-Type": obj.path.includes("image") ? "multipart/form-data" : "application/json" },
+      headers: {
+        "Content-Type": obj.path.includes("image") ? "multipart/form-data" : "application/json",
+        Authorization: obj.accessToken || "",
+      },
     });
     const data = await res.json();
     return { status: res.status, data };

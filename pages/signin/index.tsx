@@ -44,18 +44,20 @@ const Signin = () => {
       email: emailInput.value,
       password: passwordInput.value,
     };
-    const login = await sender.post({ path: "signin", data: JSON.stringify(signData) });
-    if (login.status === 404) {
+
+    const login = await sender.post({ path: "signin", data: signData });
+    if (!login) return;
+    if (login.status === 404 && "message" in login.data) {
       emailWrapper.setErrorText(login.data.message);
       return;
     }
-    if (login.status === 400) {
+    if (login.status === 400 && "message" in login.data) {
       passwordWrapper.setErrorText(login.data.message);
       return;
     }
-    if (login.status === 201) {
+    if (login.status === 201 && !("message" in login.data)) {
       document.cookie = `accessToken=${login.data.accessToken}`;
-      router.push("/dashboard");
+      router.push("/mydashboard");
       return;
     }
   };

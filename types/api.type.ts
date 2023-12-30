@@ -421,16 +421,16 @@ export type Path<T extends Method> = (typeof SENDER_CONFIG)[T];
 export type PathProps<T extends Method> = keyof (typeof SENDER_CONFIG)[T];
 
 export type RequireId<T extends Method, U extends PathProps<T>> = Path<T>[U] extends string
-  ? { path: U; data?: RequestData<T, U> }
+  ? { path: U; accessToken?: string; data?: RequestData<T, U> }
   : Path<T>[U] extends (id: number) => string
-  ? { path: U; id: number; data?: RequestData<T, U> }
+  ? { path: U; id: number; accessToken?: string; data?: RequestData<T, U> }
   : Path<T>[U] extends (method: "infiniteScroll" | "pagination") => string
-  ? { path: U; method: "infiniteScroll" | "pagination"; data?: RequestData<T, U> }
-  : { path: U; dashboardId: number; invitationId: number; data?: RequestData<T, U> };
+  ? { path: U; method: "infiniteScroll" | "pagination"; accessToken?: string; data?: RequestData<T, U> }
+  : { path: U; dashboardId: number; invitationId: number; accessToken?: string; data?: RequestData<T, U> };
 
 export type HTTP<T extends Method> = <U extends PathProps<T>>(
   obj: RequireId<T, U>
-) => Promise<{ status: number; data: ReturnData<T, U> } | undefined>;
+) => Promise<{ status: number; data: ReturnData<T, U> | { message: string } } | undefined>;
 
 export type PathFinder = <T extends Method, U extends PathProps<T>>(
   method: T,
