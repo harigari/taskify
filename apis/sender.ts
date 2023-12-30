@@ -1,5 +1,5 @@
-import { HTTP, PathFinder } from "@/apis/types";
 import SENDER_CONFIG from "@/constants/senderConfig";
+import { HTTP, PathFinder } from "@/types/api.type";
 
 class Api {
   #BASE_URL;

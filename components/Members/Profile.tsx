@@ -1,14 +1,14 @@
-import { Member } from "@/components/Header/Header.type";
+import ProfileIcon from "@/components/Members/ProfileIcon";
+import { BasicUserType } from "@/types/api.type";
+import clsx from "clsx";
 import { useState } from "react";
 import styles from "./Profile.module.css";
 import ProfilePopup from "./ProfilePopup";
-import ProfileIcon from "@/components/Members/ProfileIcon";
-import clsx from "clsx";
 
 interface ProfileProps {
   idx?: number;
   className?: string;
-  member: Member | Member[];
+  member: BasicUserType | BasicUserType[];
 }
 
 const Profile = ({ member, idx, ...props }: ProfileProps) => {

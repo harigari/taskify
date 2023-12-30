@@ -1,10 +1,15 @@
-import { colorMappingChip } from "@/utils/colorMappingChip";
 import clsx from "clsx";
 import style from "./ChipTag.module.css";
-import { ChipTagProps } from "@/components/Chips/chips.type";
+import makeColorForChip from "@/utils/makeColorForChip";
+import { ReactNode } from "react";
+
+interface ChipTagProps {
+  size: "sm" | "lg";
+  children: ReactNode;
+}
 
 const ChipTag = ({ size, children }: ChipTagProps) => {
-  const [backgroundColor, fontColor] = colorMappingChip(children as string);
+  const [backgroundColor, fontColor] = makeColorForChip(children as string);
 
   return (
     <>

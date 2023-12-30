@@ -1,4 +1,4 @@
-import { Member, User } from "@/components/Header/Header.type";
+import { Member, User } from "@/types/Header.type";
 import styles from "./Header.module.css";
 import HeaderButton from "./HeaderButton/HeaderButton";
 import Members from "../Members/Members";

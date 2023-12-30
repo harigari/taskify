@@ -1,6 +1,10 @@
 import style from "./ChipPlus.module.css";
 import clsx from "clsx";
-import { ChipPlusProps } from "@/components/Chips/chips.type";
+
+interface ChipPlusProps {
+  size: "sm" | "lg";
+}
+
 const ChipPlus = ({ size }: ChipPlusProps) => {
   return (
     <>

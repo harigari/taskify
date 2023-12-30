@@ -1,6 +1,12 @@
 import clsx from "clsx";
 import style from "./ChipTodo.module.css";
-import { ChipTodoProps } from "@/components/Chips/chips.type";
+import { ReactNode } from "react";
+
+interface ChipTodoProps {
+  size: "sm" | "lg";
+  color: "purple" | "white";
+  children: ReactNode;
+}
 
 const ChipTodo = ({ size, color, children }: ChipTodoProps) => {
   return (

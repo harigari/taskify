@@ -1,7 +1,14 @@
 import { useState } from "react";
 import clsx from "clsx";
 import style from "./ChipColor.module.css";
-import { ChipColorProps } from "@/components/Chips/chips.type";
+
+interface ChipColorProps {
+  size: string;
+  color: "green" | "purple" | "orange" | "blue" | "pink";
+  onClick?: () => void;
+  isSelected: boolean;
+}
+
 const ChipColor = ({ size, color, onClick, isSelected }: ChipColorProps) => {
   return (
     <>

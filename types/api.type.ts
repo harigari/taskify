@@ -6,7 +6,7 @@ type TimeStamp = {
 };
 
 // 유저 관련 타입
-type BasicUserType = {
+export type BasicUserType = {
   profileImageUrl: string | null;
   nickname: string;
   id: number;
@@ -58,7 +58,7 @@ type Req_post_myImage = string;
 type Return_post_myImage = ImageUrlType;
 
 // 카드 관련 타입
-type CardData = {
+export type CardData = {
   id: number;
   title: string;
   description: string;
@@ -206,7 +206,7 @@ type DashBoardListData = {
   dashboards: DashBoardData[];
 };
 
-type InvitationData = {
+export type InvitationData = {
   id: number;
   inviter: {
     nickname: string;

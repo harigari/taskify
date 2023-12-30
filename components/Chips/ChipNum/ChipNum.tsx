@@ -1,5 +1,9 @@
+import { ReactNode } from "react";
 import style from "./ChipNum.module.css";
-import { ChipNumProps } from "@/components/Chips/chips.type";
+
+interface ChipNumProps {
+  children: ReactNode;
+}
 
 const ChipNum = ({ children }: ChipNumProps) => {
   return (

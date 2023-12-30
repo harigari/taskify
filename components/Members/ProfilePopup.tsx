@@ -1,9 +1,10 @@
-import { Member } from "@/components/Header/Header.type";
+import { Member } from "@/types/Header.type";
 import ProfileIcon from "./ProfileIcon";
 import styles from "./ProfilePopup.module.css";
+import { BasicUserType } from "@/types/api.type";
 
 interface ProfilePopupProps {
-  member: Member | Member[];
+  member: BasicUserType | BasicUserType[];
 }
 
 const ProfilePopup = ({ member }: ProfilePopupProps) => {

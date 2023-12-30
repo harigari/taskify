@@ -1,5 +1,5 @@
 import sender from "@/apis/sender";
-import { HTTP, Method, PathProps, RequireId, ReturnData } from "@/apis/types";
+import { HTTP, Method, PathProps, RequireId, ReturnData } from "@/types/api.type";
 import { useCallback, useEffect, useState } from "react";
 
 const useApi = <T extends Method, U extends PathProps<T>>(method: T, obj?: RequireId<T, U>) => {

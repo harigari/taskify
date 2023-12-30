@@ -14,4 +14,4 @@ const makeColorProfile = (str: string) => {
   }
 };
 
-export { makeColorProfile };
+export default makeColorProfile;

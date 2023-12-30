@@ -1,10 +1,14 @@
-import { InviteBoard, Member, TableIndexType } from "@/components/Table/Table.type";
 import InviteButton from "@/components/Table/TablePagination/InviteButton";
+import { BasicUserType, InvitationData } from "@/types/api.type";
 import clsx from "clsx";
 import styles from "./TableIndex.module.css";
 
+type TableIndexType = {
+  [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
+};
+
 interface TableIndexProps {
-  data: (Member | InviteBoard)[];
+  data: (BasicUserType | InvitationData)[];
   tableIndex: TableIndexType;
   invite?: boolean;
 }

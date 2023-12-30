@@ -1,9 +1,10 @@
-import { Member } from "@/components/Header/Header.type";
+import { Member } from "@/types/Header.type";
 import styles from "./Members.module.css";
 import Profile from "./Profile";
+import { BasicUserType } from "@/types/api.type";
 
 interface MembersProps {
-  members: Member[];
+  members: BasicUserType[];
 }
 
 const Members = ({ members }: MembersProps) => {

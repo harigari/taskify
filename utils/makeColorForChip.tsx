@@ -1,4 +1,4 @@
-const colorMappingChip = (firstLetter: string) => {
+const makeColorForChip = (firstLetter: string) => {
   switch (true) {
     case (firstLetter >= "a" && firstLetter < "g") || (firstLetter >= "가" && firstLetter < "라"):
       return ["var(--tag1)", "var(--tag1Font)"];
@@ -13,4 +13,4 @@ const colorMappingChip = (firstLetter: string) => {
   }
 };
 
-export { colorMappingChip };
+export default makeColorForChip;
