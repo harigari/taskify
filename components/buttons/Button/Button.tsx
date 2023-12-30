@@ -15,6 +15,7 @@ type Color = "violet" | "white" | "gray";
 
 interface Props {
   children: ReactNode;
+  icon?: boolean;
   disabled?: boolean;
   onClick?: (e: MouseEvent) => void;
   buttonType: ButtonType;

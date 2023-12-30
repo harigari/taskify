@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { ReactNode } from "react";
 import style from "./ChipTag.module.css";
 import makeColorForChip from "@/utils/makeColorForChip";
 import { ReactNode } from "react";
