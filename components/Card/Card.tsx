@@ -2,7 +2,7 @@ import ProfileIcon from "@/components/Members/ProfileIcon";
 import { CardData } from "@/types/api.type";
 import Image from "next/image";
 import ChipTag from "../Chips/ChipTag/ChipTag";
-import style from "./CardTask.module.css";
+import style from "./Card.module.css";
 
 const Card = ({ imageUrl, title, tags, dueDate, assignee }: CardData) => {
   const tagSlicer = (tagList: string[]) => {

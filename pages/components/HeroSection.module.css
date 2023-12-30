@@ -30,6 +30,9 @@
 }
 
 .hero_section .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 7rem;
   width: 28rem;
   height: 5rem;

@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./HeroSection.module.css";
 import Image from "next/image";
+import Link from "next/link";
 const HeroSection = () => {
   return (
     <>
@@ -12,7 +13,9 @@ const HeroSection = () => {
         <h1 className={styles.heading}>
           새로운 일정 관리<span className={styles.violet}>Taskify</span>
         </h1>
-        <button className={styles.button}>로그인하기</button>
+        <Link href="/signin" className={styles.button}>
+          로그인하기
+        </Link>
       </section>
     </>
   );
