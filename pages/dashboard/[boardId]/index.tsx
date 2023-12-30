@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Button from "@/components/buttons/Button/Button";
 import Card from "@/components/Card/Card";
 import MenuLayout from "@/components/menulayout/MenuLayout";
 import style from "./dashboard.module.css";
 import ChipPlus from "@/components/Chips/ChipPlus/ChipPlus";
 import MultiInputModal from "@/modals/MultiInputModal";
 import SingleInputModal from "@/modals/SingleInputModal";
+import Button from "@/components/Buttons/Button/Button";
 
 const Dashboard = () => {
-  const [mounted, setMounted] = useState<boolean>(false);
   const [isCreateCardOpen, setIsCreateCardOpen] = useState(false);
   const [isCreateColumnOpen, setIsCreateColumnOpen] = useState(false);
   const router = useRouter();
-  const { dashboardId } = router.query;
+  const { boardId } = router.query;
+  const dashboardId = Number(boardId);
+
   const mock = [
     {
       id: 0,
@@ -53,10 +54,6 @@ const Dashboard = () => {
     },
   ];
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const handleCreateCard = () => {
     setIsCreateCardOpen(true);
   };
@@ -69,50 +66,46 @@ const Dashboard = () => {
   const handleColumnModalToggle = (e: MouseEvent) => setIsCreateColumnOpen((prevValue) => !prevValue);
 
   return (
-    mounted && (
-      <>
-        {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}
-        <MenuLayout>
-          {/* 컬럼 아이디 어떻게 처리할 지 고민, dashboardId undefined인 거 처리 */}
-          {isCreateCardOpen && (
-            <MultiInputModal
-              title="할 일 생성"
-              buttonText="생성"
-              columnId={1}
-              dashboardId={dashboardId}
-              handleModalClose={handleCardModalToggle}
-            />
-          )}
-          {isCreateColumnOpen && (
-            <SingleInputModal
-              id=""
-              type="text"
-              labelName="이름"
-              title="새 컬럼 생성"
-              buttonText="생성"
-              handleModalClose={handleColumnModalToggle}
-            />
-          )}
-          <div className={style.layoutContainer}>
-            <div className={style.columnContainer} onClick={() => handleCreateCard()}>
-              <Card cardList={mock} columnName="To do" />
-              <Card cardList={mock} columnName="On Progress" />
-              <Card cardList={mock} columnName="Done" />
-            </div>
-            <div className={style.buttonWrapper} onClick={() => handleCreateColumn()}>
-              <Button buttonType="add_column" color="white">
-                <div className={style.buttonContentWrapper}>
-                  <span>새로운 컬럼 추가하기</span>
-                  <button>
-                    <ChipPlus size="lg"></ChipPlus>
-                  </button>
-                </div>
-              </Button>
-            </div>
+    <>
+      {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}
+      <MenuLayout>
+        {/* 컬럼 아이디 어떻게 처리할 지 고민, dashboardId undefined인 거 처리 */}
+        {isCreateCardOpen && (
+          <MultiInputModal
+            title="할 일 생성"
+            buttonText="생성"
+            columnId={1}
+            dashboardId={dashboardId}
+            handleModalClose={handleCardModalToggle}
+          />
+        )}
+        {isCreateColumnOpen && (
+          <SingleInputModal
+            id=""
+            type="text"
+            labelName="이름"
+            title="새 컬럼 생성"
+            buttonText="생성"
+            handleModalClose={handleColumnModalToggle}
+          />
+        )}
+        <div className={style.layoutContainer}>
+          <div className={style.columnContainer} onClick={() => handleCreateCard()}>
+            <Card cardList={mock} columnName="To do" />
+            <Card cardList={mock} columnName="On Progress" />
+            <Card cardList={mock} columnName="Done" />
           </div>
-        </MenuLayout>
-      </>
-    )
+          <div className={style.buttonWrapper} onClick={() => handleCreateColumn()}>
+            <Button buttonType="add_column" color="white">
+              <div className={style.buttonContentWrapper}>
+                <span>새로운 컬럼 추가하기</span>
+                <ChipPlus size="lg"></ChipPlus>
+              </div>
+            </Button>
+          </div>
+        </div>
+      </MenuLayout>
+    </>
   );
 };
 
