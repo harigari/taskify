@@ -103,7 +103,7 @@ const INVITE = [
   },
 ];
 
-export default function DashBoard() {
+export default function Mydashboard() {
   return (
     <MenuLayout>
       <main>
