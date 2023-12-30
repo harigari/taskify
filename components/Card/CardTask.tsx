@@ -3,8 +3,8 @@ import Image from "next/image";
 import style from "./CardTask.module.css";
 import { CardTaskProps } from "./Card.type";
 import ChipTag from "../Chips/ChipTag/ChipTag";
-import ProfileIcon from "@/components/Members/ProfileIcon";
-// import CardAssignee from "./CardAssinee";
+import ProfileIcon from "../header/members/ProfileIcon";
+import formatDate from "@/utils/formatDateString";
 
 const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) => {
   const tagSlicer = (tagList: string[]) => {
@@ -17,16 +17,6 @@ const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) =
     }
   };
   const { slicedTagList, etc } = tagSlicer(tags);
-
-  //날짜 변환
-  const convertToUTC = (dueDate: string): string => {
-    const date = new Date(dueDate);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}.${month}.${day}`;
-  };
 
   return (
     <div className={style.cardContainer}>
@@ -59,8 +49,14 @@ const CardTask = ({ imageUrl, title, tags, dueDate, assignee }: CardTaskProps) =
           {/* 카드 하단 날짜, 지정자 */}
           <div className={style.cardInfoWrapper}>
             <div className={style.dateWrapper}>
-              <Image className={style.dateIcon} src="/icons/calendar.svg" alt="Calendar Icon" width={20} height={20} />
-              <span className={style.date}>{convertToUTC(dueDate)}</span>
+              <Image
+                className={style.dateIcon}
+                src="/images/icons/calendar.svg"
+                alt="Calendar Icon"
+                width={20}
+                height={20}
+              />
+              <span className={style.date}>{formatDate(dueDate, "yyyy.MM.dd")}</span>
             </div>
             <ProfileIcon member={assignee} size="sm" />
           </div>

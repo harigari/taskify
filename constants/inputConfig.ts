@@ -6,6 +6,7 @@ export interface Configs {
     id: string;
     type?: string;
     name?: Obj["name"];
+    initialValue?: string;
     eyeButton?: boolean;
     placeholder?: string | undefined;
   };

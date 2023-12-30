@@ -2,13 +2,13 @@ import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
 import useInputController from "@/hooks/useInputController";
 import ModalWrapper from "./ModalWrapper";
-import ModalButton from "@/components/Modal/ModalButton/ModalButton";
+import ModalButton from "./components/ModalButton/ModalButton";
 import styles from "./Modal.module.css";
 import { FormEvent, MouseEvent, useState } from "react";
-import DateTime from "@/components/Modal/ModalInput/DateTime";
-import TagInput from "@/components/Modal/ModalInput/TagInput";
+import DateTime from "./components/ModalInput/DateTime";
+import TagInput from "./components/ModalInput/TagInput";
 import ImageInput from "@/components/ImageInput/ImageInput";
-import InputDropdown from "@/components/Modal/InputDropdown/InputDropdown";
+import InputDropdown from "./components/InputDropdown/InputDropdown";
 import useDropdownController, { Member } from "@/hooks/useDropdownController";
 
 interface MultiInputModalProp {

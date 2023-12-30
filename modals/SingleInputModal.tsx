@@ -2,7 +2,7 @@ import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
 import useInputController from "@/hooks/useInputController";
 import ModalWrapper from "./ModalWrapper";
-import ModalButton from "@/components/Modal/ModalButton/ModalButton";
+import ModalButton from "./components/ModalButton/ModalButton";
 import styles from "./Modal.module.css";
 import { FormEvent, MouseEvent } from "react";
 import ChipColors from "@/components/Chips/ChipColors/ChipColors";
@@ -58,6 +58,7 @@ const SingleInputModal = ({
           <button className={clsx(styles.button, deleteButton || styles.deleteButton)} type="button">
             삭제하기
           </button>
+
           <ModalButton.DoubleButton onClick={handleModalClose}>{buttonText}</ModalButton.DoubleButton>
         </div>
       </form>
