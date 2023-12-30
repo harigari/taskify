@@ -64,7 +64,6 @@ const MultiInputModal = ({
     assigneeUserId: (modalDropdown.value && modalDropdown.value.id)!,
     title: modalTitle.input.value,
     description: modalExplain.input.value,
-
     dueDate: formatDateString(String(modalDate.dateTime.date), "yyyy-MM-dd HH:mm"),
     tags: tagList,
   };
@@ -91,6 +90,7 @@ const MultiInputModal = ({
       }
       const imageRes = await postData({ path: "cardImage", id: columnId, data: imageFormData, accessToken });
       if (!imageRes) return;
+      if (imageRes && imageRes.status > 201) return;
 
       const newData = { ...data, imageUrl: imageRes.data.imageUrl };
 

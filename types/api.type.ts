@@ -112,7 +112,7 @@ type Return_put_card = CardData;
 export type ColumnData = {
   id: number;
   title: string;
-  teamId: "1-7";
+  teamId: string;
   dashboardId: number;
 } & TimeStamp;
 
@@ -132,6 +132,7 @@ type Return_post_column = {
   id: number;
   title: string;
   teamId: string;
+  dashboardId: number;
 } & TimeStamp;
 
 type Req_put_column = {
