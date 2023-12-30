@@ -21,18 +21,20 @@ interface ProfileIconProps extends HandlerFunc {
 
 const ProfileIcon = ({ member, size = "lg", ...props }: ProfileIconProps) => {
   return (
-    <button className={styles.member} {...props}>
+    <button className={clsx(styles.member, { [styles.member__image__small]: size === "sm" })} {...props}>
       {member.profileImageUrl ? (
-        <div className={clsx(styles.member__image, { [styles.member_image__small]: size === "sm" })}>
+        <div className={clsx(styles.member__image, { [styles.member__image__small]: size === "sm" })}>
           <Image fill src={member.profileImageUrl} alt={member.nickname} />
         </div>
       ) : (
-        <div
-          className={clsx(styles.member__defaultimage, { [styles.card]: size === "sm" })}
-          style={{ backgroundColor: makeColorProfile(member.nickname) }}
-        />
+        <>
+          <div
+            className={clsx(styles.member__defaultimage, { [styles.member__image__small]: size === "sm" })}
+            style={{ backgroundColor: makeColorProfile(member.nickname) }}
+          />
+          <span className={styles.member__name}>{member.nickname.slice(0, 1)}</span>
+        </>
       )}
-      <span className={styles.member__name}>{member.nickname.slice(0, 1)}</span>
     </button>
   );
 };

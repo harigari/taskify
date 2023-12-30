@@ -53,7 +53,7 @@ type Req_put_me = {
 
 type Return_put_me = ExtendedUserType;
 
-type Req_post_myImage = string;
+type Req_post_myImage = FormData;
 
 type Return_post_myImage = ImageUrlType;
 
@@ -79,7 +79,7 @@ type Return_get_cards = {
   cards: CardData[];
 };
 
-type Req_post_cardImage = string;
+type Req_post_cardImage = FormData;
 
 type Return_post_cardImage = ImageUrlType;
 
@@ -90,7 +90,7 @@ type Req_post_card = {
   title: string;
   description: string;
   dueDate: string;
-  tags: [string];
+  tags: string[];
   imageUrl: string;
 };
 
@@ -109,10 +109,11 @@ type Req_put_card = {
 type Return_put_card = CardData;
 
 // 컬럼 관련 타입
-type ColumnData = {
+export type ColumnData = {
   id: number;
-  cardId: number;
-  author: BasicUserType;
+  title: string;
+  teamId: "1-7";
+  dashboardId: number;
 } & TimeStamp;
 
 type ColumnListData = {
@@ -311,7 +312,7 @@ type Return_put_invitation = {
 } & TimeStamp;
 
 // 대시보드 맴버 관련 타입
-type Member = {
+export type Member = {
   id: number;
   userId: number;
   email: string;

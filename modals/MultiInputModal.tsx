@@ -9,99 +9,50 @@ import DateTime from "./components/ModalInput/DateTime";
 import TagInput from "./components/ModalInput/TagInput";
 import ImageInput from "@/components/ImageInput/ImageInput";
 import InputDropdown from "./components/InputDropdown/InputDropdown";
-import useDropdownController, { Member } from "@/hooks/useDropdownController";
+import useDropdownController from "@/hooks/useDropdownController";
+import { Member } from "@/types/api.type";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import useApi from "@/hooks/useApi";
+import formatDateString from "@/utils/formatDateString";
 
 interface MultiInputModalProp {
   title: string;
   buttonText: string;
-  type?: string;
   columnId: number;
   dashboardId: number;
+  assigneeList: Member[];
   handleModalClose: (e: MouseEvent) => void;
 }
 
 const MultiInputModal = ({
-  type = "text",
   title,
   buttonText,
   handleModalClose,
   columnId,
   dashboardId,
+  assigneeList,
 }: MultiInputModalProp) => {
   const modalTitle = useInputController({
-    inputConfig: { id: "title", type, placeholder: "제목을 입력해 주세요" },
+    inputConfig: { id: "title", type: "text", placeholder: "제목을 입력해 주세요" },
     labelConfig: { labelName: "제목", star: true, mobile: true },
   });
 
   const modalExplain = useInputController({
-    inputConfig: { id: "comment", type, placeholder: "설명을 입력해 주세요" },
+    inputConfig: { id: "comment", type: "text", placeholder: "설명을 입력해 주세요" },
     labelConfig: { labelName: "설명", star: true, mobile: true },
   });
 
   const modalDate = useInputController({
-    inputConfig: { id: "date", type, placeholder: "날짜를 입력해 주세요" },
+    inputConfig: { id: "date", type: "text", placeholder: "날짜를 입력해 주세요" },
     labelConfig: { labelName: "마감일", mobile: true },
   });
 
   const modalTag = useInputController({
-    inputConfig: { id: "tag", type, placeholder: "입력 후 Enter" },
+    inputConfig: { id: "tag", type: "text", placeholder: "입력 후 Enter" },
     labelConfig: { labelName: "태그", mobile: true },
   });
 
-  const testOp = [
-    {
-      id: 1,
-      userId: 101,
-      email: "user1@example.com",
-      nickname: "나란히",
-      profileImageUrl: "/icon-addbox.svg",
-      createdAt: "2023-01-01T00:00:00",
-      updatedAt: "2023-01-01T12:34:56",
-      isOwner: true,
-    },
-    {
-      id: 2,
-      userId: 102,
-      email: "user2@example.com",
-      nickname: "가요",
-      profileImageUrl: "/icon-addbox.svg",
-      createdAt: "2023-01-02T00:00:00",
-      updatedAt: "2023-01-02T12:34:56",
-      isOwner: false,
-    },
-    {
-      id: 3,
-      userId: 103,
-      email: "user3@example.com",
-      nickname: "룰루",
-      profileImageUrl: "/icon-addbox.svg",
-      createdAt: "2023-01-03T00:00:00",
-      updatedAt: "2023-01-03T12:34:56",
-      isOwner: false,
-    },
-    {
-      id: 4,
-      userId: 104,
-      email: "user4@example.com",
-      nickname: "ㅎㅎㅎㅎㄴ",
-      profileImageUrl: "/icon-addbox.svg",
-      createdAt: "2023-01-04T00:00:00",
-      updatedAt: "2023-01-04T12:34:56",
-      isOwner: false,
-    },
-    {
-      id: 5,
-      userId: 1099,
-      email: "user4@example.com",
-      nickname: "나민지",
-      profileImageUrl: "/icon-addbox.svg",
-      createdAt: "2023-01-04T00:00:00",
-      updatedAt: "2023-01-04T12:34:56",
-      isOwner: false,
-    },
-  ];
-
-  const modalDropdown = useDropdownController<Member>({ options: testOp });
+  const modalDropdown = useDropdownController<Member>({ options: assigneeList });
 
   const [tagList, setTagList] = useState<string[]>([]);
 
@@ -110,18 +61,41 @@ const MultiInputModal = ({
   const data = {
     columnId,
     dashboardId,
-    assigneeUserId: modalDropdown.value,
+    assigneeUserId: (modalDropdown.value && modalDropdown.value.id)!,
     title: modalTitle.input.value,
     description: modalExplain.input.value,
-    dueDate: modalTag.input.value,
+
+    dueDate: formatDateString(String(modalDate.dateTime.date), "yyyy-MM-dd HH:mm"),
     tags: tagList,
-    imageUrl: imageFile,
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const { pending, error, wrappedFunction: postData } = useApi("post");
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // 페치 하게 될 듯
+    const accessToken = getAccessTokenFromDocument("accessToken");
+
+    if (pending) return;
+
+    if (imageFile === null) {
+      return;
+    }
+
+    if (imageFile !== null) {
+      const imageFormData = new FormData();
+      imageFormData.append("image", imageFile);
+
+      for (const v of imageFormData.keys()) {
+        console.log(v);
+      }
+      const imageRes = await postData({ path: "cardImage", id: columnId, data: imageFormData, accessToken });
+      if (!imageRes) return;
+
+      const newData = { ...data, imageUrl: imageRes.data.imageUrl };
+
+      const cardRes = await postData({ path: "card", data: newData, accessToken });
+    }
   };
 
   return (

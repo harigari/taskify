@@ -39,9 +39,9 @@ class Api {
     const url = this.#pathFinder("post", obj);
     const res = await fetch(this.#BASE_URL + url, {
       method: "POST",
-      body: JSON.stringify(obj.data),
+      body: obj.path.includes("Image") ? obj.data : JSON.stringify(obj.data),
       headers: {
-        "Content-Type": obj.path.includes("image") ? "multipart/form-data" : "application/json",
+        "Content-Type": obj.path.includes("Image") ? "multipart/form-data" : "application/json",
         Authorization: obj.accessToken ? `Bearer ${obj.accessToken}` : "",
       },
     });

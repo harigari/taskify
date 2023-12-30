@@ -4,7 +4,7 @@
  * @description 날짜를 원하는 포맷으로 변환합니다.
  */
 
-type Format = "yyyy.MM.dd HH:mm" | "yyyy.MM.dd";
+type Format = "yyyy.MM.dd HH:mm" | "yyyy.MM.dd" | "yyyy-MM-dd HH:mm";
 export default function formatDateString(dateString: string, format: Format = "yyyy.MM.dd HH:mm") {
   const date = new Date(dateString);
 

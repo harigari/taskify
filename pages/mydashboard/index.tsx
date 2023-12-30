@@ -4,8 +4,7 @@ import Image from "next/image";
 import styles from "./index.module.css";
 import stylesFromSingle from "@/modals/Modal.module.css";
 import MenuLayout from "@/components/menulayout/MenuLayout";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import getAccessTokenFromCookie from "@/utils/getAccessTokenFromCookie";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { FormEvent, useState } from "react";
 import useInputController from "@/hooks/useInputController";
 import ModalWrapper from "@/modals/ModalWrapper";
@@ -16,8 +15,9 @@ import ModalButton from "@/modals/components/ModalButton/ModalButton";
 import sender from "@/apis/sender";
 import { ColorType, DashBoardData } from "@/types/api.type";
 import Link from "next/link";
+import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
 
   const res = await sender.get({ path: "dashboards", method: "pagination", accessToken: accessToken });
@@ -29,7 +29,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default function Mydashboard({ accessToken, dashboards }: InferGetServerSidePropsType<GetServerSideProps>) {
+export default function Mydashboard({
+  accessToken,
+  dashboards,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [dashboardList, setDashboardList] = useState<DashBoardData[]>(dashboards);
   const [isOpen, setIsOpen] = useState(false);
 

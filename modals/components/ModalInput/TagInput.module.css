@@ -36,11 +36,12 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: gray;
-  background-image: url("/icons/icon-close.svg");
-  background-size: 1.5rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  background-color: var(--white);
+  border: 0.2rem solid var(--gray40);
+  background-image: url("/icons/icon-close-black.svg");
+  background-size: 1.2rem;
   transform: translate(-50%, -50%);
   border-radius: 9rem;
 }

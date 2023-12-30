@@ -19,7 +19,7 @@ function DateTime({ date, setDate, id }: DateTime) {
   return (
     <div className={styles.root}>
       <div>
-        <Image className={imageStyle} src="/icons/calendar.svg" width={20} height={20} alt="" />
+        <Image className={imageStyle} src="/icons/icon-calendar.svg" width={20} height={20} alt="달력 아이콘" />
       </div>
       <DatePicker
         id={id}
@@ -27,7 +27,7 @@ function DateTime({ date, setDate, id }: DateTime) {
         selected={date}
         onChange={(date: Date) => setDate(date)}
         timeInputLabel="Time:"
-        dateFormat="MM/dd/yyyy h:mm aa"
+        dateFormat="yyyy-MM-dd h:mm aa"
         placeholderText="날짜를 입력해 주세요"
         minDate={minDate}
         showTimeInput

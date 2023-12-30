@@ -2,7 +2,7 @@ import ProfileIcon from "@/components/Members/ProfileIcon";
 import { CardData } from "@/types/api.type";
 import Image from "next/image";
 import ChipTag from "../Chips/ChipTag/ChipTag";
-import style from "./Card.module.css";
+import styles from "./Card.module.css";
 
 const Card = ({ imageUrl, title, tags, dueDate, assignee }: CardData) => {
   const tagSlicer = (tagList: string[]) => {
@@ -27,21 +27,21 @@ const Card = ({ imageUrl, title, tags, dueDate, assignee }: CardData) => {
   };
 
   return (
-    <div className={style.cardContainer}>
+    <div className={styles.cardContainer}>
       {/* 카드 이미지 */}
       {imageUrl && (
-        <div className={style.imageWrapper}>
-          <Image width={274} height={160} className={style.imageContent} src={imageUrl} alt="카드" />
+        <div className={styles.imageWrapper}>
+          <Image width={274} height={160} className={styles.imageContent} src={imageUrl} alt="카드" />
         </div>
       )}
       {/* 카드 내용 */}
-      <div className={style.cardContentContainer}>
+      <div className={styles.cardContentContainer}>
         {/* 카드 제목 */}
-        <span className={style.cardTitleWrapper}>{title}</span>
-        <div className={style.allContentContainer}>
+        <span className={styles.cardTitleWrapper}>{title}</span>
+        <div className={styles.allContentContainer}>
           {/* 카드 태그들 */}
-          <div className={style.cardTagContainer}>
-            <div className={style.cardTagsWrapper}>
+          <div className={styles.cardTagContainer}>
+            <div className={styles.cardTagsWrapper}>
               {slicedTagList.map((tag: string) => (
                 <ChipTag size="sm" key={tag}>
                   {tag}
@@ -49,22 +49,22 @@ const Card = ({ imageUrl, title, tags, dueDate, assignee }: CardData) => {
               ))}
             </div>
             {etc > 0 && (
-              <div className={style.cardCountWrapper}>
+              <div className={styles.cardCountWrapper}>
                 <span>그 외 {etc}개</span>
               </div>
             )}
           </div>
           {/* 카드 하단 날짜, 지정자 */}
-          <div className={style.cardInfoWrapper}>
-            <div className={style.dateWrapper}>
+          <div className={styles.cardInfoWrapper}>
+            <div className={styles.dateWrapper}>
               <Image
-                className={style.dateIcon}
+                className={styles.dateIcon}
                 src="/icons/icon-calendar.svg"
                 alt="Calendar Icon"
                 width={20}
                 height={20}
               />
-              <span className={style.date}>{convertToUTC(dueDate)}</span>
+              <span className={styles.date}>{convertToUTC(dueDate)}</span>
             </div>
             <ProfileIcon member={assignee} size="sm" />
           </div>

@@ -1,6 +1,7 @@
 .totalFrame {
   display: flex;
 }
+
 .totalContainer {
   display: flex;
   flex-direction: column;
@@ -70,16 +71,20 @@
     align-items: center;
     flex-direction: row;
   }
+
   .cardTagsWrapper {
     justify-content: start;
     max-width: 20rem;
   }
+
   .cardTagCotainer {
     margin-right: 1.6rem;
   }
+
   .cardCountWrapper {
     display: none;
   }
+
   .cardInfoWrapper {
     justify-content: space-between;
     margin-top: 0;

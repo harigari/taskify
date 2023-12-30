@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 
-const getAccessTokenFromCookie = (context: GetServerSidePropsContext) => {
+export const getAccessTokenFromCookie = (context: GetServerSidePropsContext) => {
   const cookieString = context.req.headers.cookie;
 
   if (!cookieString) return null;
@@ -16,4 +16,9 @@ const getAccessTokenFromCookie = (context: GetServerSidePropsContext) => {
   return null;
 };
 
-export default getAccessTokenFromCookie;
+export const getAccessTokenFromDocument = (name: string) => {
+  let matches = document.cookie.match(
+    new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)")
+  );
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+};

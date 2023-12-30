@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 0.2rem solid var(--white);
+  /* border: 0.2rem solid var(--white); */
   overflow: hidden;
   position: relative;
   z-index: 1;
@@ -33,6 +33,11 @@
   position: absolute;
   font-size: 1.6rem;
   font-weight: 600;
+}
+
+.member__image__small .member__name {
+  font-size: 1.2rem;
+  font-weight: 400;
 }
 
 @media screen and (max-width: 767px) {
