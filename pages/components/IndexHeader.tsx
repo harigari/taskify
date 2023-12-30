@@ -27,7 +27,7 @@ const IndexHeader = ({ color = "white" }: IndexHeaderProps) => {
             />
           </picture>
         </Link>
-        <Link className={styles.login__link} href="/login">
+        <Link className={styles.login__link} href="/signin">
           로그인
         </Link>
         <Link className={styles.signup__link} href="/signup">

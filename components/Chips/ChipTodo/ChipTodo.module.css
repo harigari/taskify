@@ -22,7 +22,11 @@
 .large {
   height: 2.2rem;
 }
-
+@media (max-width: 768px) {
+  .large {
+    height: 2rem;
+  }
+}
 .largeText {
   font-size: 1.2rem;
 }

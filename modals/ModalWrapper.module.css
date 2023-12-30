@@ -15,6 +15,7 @@
   width: 73rem;
   height: 76.3rem;
   background: var(--white, #fff);
+  border-radius: 0.8rem;
 }
 
 .md {
