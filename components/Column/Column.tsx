@@ -4,6 +4,7 @@ import ChipPlus from "../Chips/ChipPlus/ChipPlus";
 import ChipTodo from "../Chips/ChipTodo/ChipTodo";
 import style from "./Card.module.css";
 import Card from "@/components/Card/Card";
+import Image from "next/image";
 
 interface ColumnPorps {
   cardList: CardData[];
@@ -20,7 +21,9 @@ const Column = ({ cardList }: ColumnPorps) => {
           </ChipTodo>
           <ChipNum>{cardList.length}</ChipNum>
         </div>
-        <img src="/icons/setting.svg" />
+        <button>
+          <Image width={24} height={24} src="/icons/icon-settings.svg" alt="칼럼 설정하기" />
+        </button>
       </div>
 
       <div className={style.contentContainer}>

@@ -1,7 +1,6 @@
-import Image from "next/image";
-import React from "react";
-import styles from "./ArrowButton.module.css";
 import { clsx } from "clsx";
+import Image from "next/image";
+import styles from "./ArrowButton.module.css";
 
 interface Props {
   disabled?: boolean;
@@ -15,7 +14,7 @@ const ArrowButton = ({ disabled = false, right = false, onClick }: Props) => {
   return (
     <button disabled={disabled} className={clsx(buttonStyle)} onClick={onClick}>
       <div className={styles.icon_wrapper}>
-        <Image alt={`${right ? "오른쪽" : "왼쪽"} 화살표`} fill src="/icons/arrow.svg" />
+        <Image alt={`${right ? "오른쪽" : "왼쪽"} 화살표`} fill src="/icons/icon-arrowleft.svg" />
       </div>
     </button>
   );

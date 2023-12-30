@@ -1,8 +1,8 @@
 import Button from "@/components/Buttons/Button/Button";
 import ProfileIcon from "@/components/Members/ProfileIcon";
 import { BasicUserType, InvitationData } from "@/types/api.type";
-import styles from "./TableList.module.css";
 import makeColorProfile from "@/utils/makeColorProfile";
+import styles from "./TableList.module.css";
 
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
@@ -17,7 +17,6 @@ interface TableListProps {
 const TableList = ({ data, tableIndex, row }: TableListProps) => {
   const column = Object.keys(tableIndex).length;
   const isAccept = Object.values(tableIndex).includes("acceptButton");
-  console.log(column, isAccept);
 
   return (
     <ul className={isAccept ? styles.list__mobile : ""}>

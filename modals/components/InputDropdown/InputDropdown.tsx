@@ -100,7 +100,7 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
                 {value.nickname}
               </div>
               <button type="button" className={styles.button} onMouseDown={handleDeleteClick}>
-                <Image src="/icons/close.svg" alt="닫기 버튼" width={20} height={20} />
+                <Image src="/icons/icon-close.svg" alt="닫기 버튼" width={20} height={20} />
               </button>
             </div>
           )}

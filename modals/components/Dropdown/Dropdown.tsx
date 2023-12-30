@@ -31,7 +31,7 @@ const Dropdown = ({ options, value, setValue, children }: DropdownProp) => {
           <ChipTodo color="purple" size="lg">
             {value}
           </ChipTodo>
-          <Image src="/icons/arrow_drop_down.svg" alt="" width={26} height={26} />
+          <Image src="/icons/icon-dropdown.svg" alt="" width={26} height={26} />
         </div>
         {isOpen && (
           <div className={styles.options}>

@@ -13,32 +13,32 @@
 
 .title {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 100%;
+  justify-content: space-between;
   margin: 6rem 0 1rem;
   padding: 0 1rem;
+  width: 100%;
 }
 
 .logo {
-  width: fit-content;
   margin: 2.4rem;
   margin-bottom: 0;
+  width: fit-content;
 }
 
 .title__text {
+  padding: 1rem;
   font-size: 1.2rem;
   font-weight: 600;
   color: var(--gray50);
-  padding: 1rem;
 }
 
 .list {
   display: flex;
   gap: 1rem;
   flex-direction: column;
-  width: 100%;
   padding: 0 1rem;
+  width: 100%;
 }
 
 .title__button {
@@ -50,10 +50,10 @@
 }
 
 .item__button {
-  width: fit-content;
   display: flex;
   align-items: center;
   padding: 1.2rem;
+  width: fit-content;
   width: 100%;
   height: 4rem;
   border-radius: 0.4rem;

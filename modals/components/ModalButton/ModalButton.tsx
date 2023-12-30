@@ -26,7 +26,7 @@ function SingleButton({
   disabled = false,
 }: {
   children: ReactNode;
-  onClick: (e: MouseEvent) => void;
+  onClick?: (e: MouseEvent) => void;
   disabled?: boolean;
 }) {
   return (

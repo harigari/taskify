@@ -1,6 +1,6 @@
-import React, { MouseEvent, ReactNode } from "react";
-import styles from "./Button.module.css";
 import clsx from "clsx";
+import { MouseEvent, ReactNode } from "react";
+import styles from "./Button.module.css";
 
 export type ButtonType =
   | "login"

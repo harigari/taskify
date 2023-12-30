@@ -12,8 +12,8 @@
 
 .cardContentContainer {
   display: flex;
-  flex-direction: column;
   flex-grow: 1;
+  flex-direction: column;
 }
 .cardTitleWrapper {
   margin-bottom: 1rem;
@@ -59,8 +59,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 1.6rem;
   flex-grow: 1;
+  margin-top: 1.6rem;
 }
 
 .dateWrapper {
@@ -79,8 +79,8 @@
 
 @media screen and (max-width: 1200px) {
   .cardContainer {
-    flex-direction: row;
     align-items: center;
+    flex-direction: row;
   }
   .imageContent {
     width: 11rem;
@@ -108,8 +108,8 @@
 
 @media screen and (max-width: 767px) {
   .cardContainer {
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
     width: 100%;
   }
   .cardContentContainer {
@@ -120,16 +120,16 @@
     height: 15.2rem;
   }
   .allContentContainer {
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
   }
   .cardTitleWrapper {
     font-size: 1.4rem;
   }
   .cardTagCotainer {
+    gap: 0.8rem;
     margin: 0;
     width: 100%;
-    gap: 0.8rem;
   }
   .dateIcon {
     width: 1.4rem;

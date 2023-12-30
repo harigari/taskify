@@ -9,7 +9,7 @@
 }
 
 .textarea::placeholder {
-  color: var(--gray-gray_9FA6B2, #9fa6b2);
+  color: var(--gray40);
 }
 
 .textarea:focus {

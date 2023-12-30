@@ -1,7 +1,6 @@
-import { Member } from "@/types/Header.type";
+import { BasicUserType } from "@/types/api.type";
 import ProfileIcon from "./ProfileIcon";
 import styles from "./ProfilePopup.module.css";
-import { BasicUserType } from "@/types/api.type";
 
 interface ProfilePopupProps {
   member: BasicUserType | BasicUserType[];

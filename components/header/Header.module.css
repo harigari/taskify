@@ -51,11 +51,11 @@
 
 @media screen and (max-width: 1200px) {
   .header {
+    grid-template-columns: auto repeat(5, max-content);
+    grid-template-areas: "title settings invite members split profile";
     gap: 2rem;
     padding-right: 4rem;
     width: calc(100vw - 16rem);
-    grid-template-columns: auto repeat(5, max-content);
-    grid-template-areas: "title settings invite members split profile";
   }
 
   .boardname {

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ChangeEvent, ForwardedRef, MouseEvent, MutableRefObject, forwardRef } from "react";
+import { ChangeEvent, MouseEvent, MutableRefObject } from "react";
 import styles from "./Input.module.css";
 
 type RefProps = "email" | "nickname" | "password" | "passwordCheck";
@@ -49,7 +49,7 @@ function Input({
       />
       {eyeButton && (
         <button className={styles.eyes} onClick={onEyesClick} type="button">
-          <Image src={`/icons/eyes${eyesValue ? "On" : "Off"}.svg`} width={18} height={18} alt="" />
+          <Image src={`/icons/icon-eyes${eyesValue ? "On" : "Off"}.svg`} width={18} height={18} alt="" />
         </button>
       )}
     </>

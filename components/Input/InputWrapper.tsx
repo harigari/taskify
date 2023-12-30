@@ -1,7 +1,7 @@
-import { InputHTMLAttributes, ReactNode } from "react";
-import styles from "./Input.module.css";
-import Label from "../Label/Label";
 import clsx from "clsx";
+import { InputHTMLAttributes, ReactNode } from "react";
+import Label from "../Label/Label";
+import styles from "./Input.module.css";
 
 interface InputWrapperProp extends InputHTMLAttributes<HTMLInputElement> {
   labelName?: string;

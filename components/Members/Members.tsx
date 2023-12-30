@@ -1,7 +1,6 @@
-import { Member } from "@/types/Header.type";
+import { BasicUserType } from "@/types/api.type";
 import styles from "./Members.module.css";
 import Profile from "./Profile";
-import { BasicUserType } from "@/types/api.type";
 
 interface MembersProps {
   members: BasicUserType[];

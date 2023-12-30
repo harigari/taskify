@@ -1,15 +1,15 @@
+import { FormEvent, MouseEvent } from "react";
+import styles from "./Modal.module.css";
 import ModalWrapper from "./ModalWrapper";
 import ModalButton from "./components/ModalButton/ModalButton";
-import styles from "./Modal.module.css";
-import { FormEvent, MouseEvent } from "react";
 
-interface AlartModalProp {
+interface AlertModalProp {
   isDoubleButton?: boolean;
   alertText: string;
   handleModalClose: (e: MouseEvent) => void;
 }
 
-const AlartModal = ({ isDoubleButton = true, alertText, handleModalClose }: AlartModalProp) => {
+const AlertModal = ({ isDoubleButton = true, alertText, handleModalClose }: AlertModalProp) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     // 페치 하게 될 듯
@@ -32,4 +32,4 @@ const AlartModal = ({ isDoubleButton = true, alertText, handleModalClose }: Alar
   );
 };
 
-export default AlartModal;
+export default AlertModal;

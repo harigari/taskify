@@ -1,9 +1,8 @@
 import ProfileIcon from "@/components/Members/ProfileIcon";
+import { CardData } from "@/types/api.type";
 import Image from "next/image";
 import ChipTag from "../Chips/ChipTag/ChipTag";
 import style from "./CardTask.module.css";
-import { CardData } from "@/types/api.type";
-// import CardAssignee from "./CardAssinee";
 
 const Card = ({ imageUrl, title, tags, dueDate, assignee }: CardData) => {
   const tagSlicer = (tagList: string[]) => {
@@ -58,7 +57,13 @@ const Card = ({ imageUrl, title, tags, dueDate, assignee }: CardData) => {
           {/* 카드 하단 날짜, 지정자 */}
           <div className={style.cardInfoWrapper}>
             <div className={style.dateWrapper}>
-              <Image className={style.dateIcon} src="/icons/calendar.svg" alt="Calendar Icon" width={20} height={20} />
+              <Image
+                className={style.dateIcon}
+                src="/icons/icon-calendar.svg"
+                alt="Calendar Icon"
+                width={20}
+                height={20}
+              />
               <span className={style.date}>{convertToUTC(dueDate)}</span>
             </div>
             <ProfileIcon member={assignee} size="sm" />

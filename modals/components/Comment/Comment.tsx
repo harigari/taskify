@@ -1,7 +1,7 @@
 import ProfileIcon from "@/components/Members/ProfileIcon";
+import formatDate from "@/utils/formatDateString";
 import { Comment } from "../../Modal.type";
 import styles from "./Comment.module.css";
-import formatDate from "@/utils/formatDateString";
 interface CommentProps {
   data: Comment;
 }
