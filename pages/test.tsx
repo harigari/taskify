@@ -3,8 +3,20 @@ import InputWrapper from "@/components/Input/InputWrapper";
 import { TaskInfo } from "@/modals/Modal.type";
 import TaskCardModal from "@/modals/TaskCardModal";
 import useInputController from "@/hooks/useInputController";
+import { useState } from "react";
+import Button from "@/components/Buttons/Button/Button";
 
 export default function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
   const cardInfo: TaskInfo = {
     id: 81,
     title: "숙소 예약",
@@ -22,5 +34,12 @@ export default function Home() {
     dashboardId: 136,
   };
 
-  return <TaskCardModal data={cardInfo} />;
+  return (
+    <>
+      <Button color="gray" onClick={handleModalOpen} buttonType="login">
+        유담이 모달
+      </Button>
+      {isModalOpen && <TaskCardModal handleModalClose={handleModalClose} data={cardInfo} />}
+    </>
+  );
 }
