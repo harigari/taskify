@@ -1,20 +1,22 @@
+import ImageInput from "@/components/ImageInput/ImageInput";
 import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
+import useApi from "@/hooks/useApi";
+import useDropdownController from "@/hooks/useDropdownController";
 import useInputController from "@/hooks/useInputController";
-import ModalWrapper from "./ModalWrapper";
-import ModalButton from "./components/ModalButton/ModalButton";
+import { CardData, Member } from "@/types/api.type";
+import formatDateString from "@/utils/formatDateString";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react";
 import styles from "./Modal.module.css";
-import { Dispatch, FormEvent, MouseEvent, SetStateAction, useState } from "react";
+import ModalWrapper from "./ModalWrapper";
+import InputDropdown from "./components/InputDropdown/InputDropdown";
+import ModalButton from "./components/ModalButton/ModalButton";
 import DateTime from "./components/ModalInput/DateTime";
 import TagInput from "./components/ModalInput/TagInput";
-import ImageInput from "@/components/ImageInput/ImageInput";
-import InputDropdown from "./components/InputDropdown/InputDropdown";
-import useDropdownController from "@/hooks/useDropdownController";
-import { CardData, Member } from "@/types/api.type";
-import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
-import useApi from "@/hooks/useApi";
-import formatDateString from "@/utils/formatDateString";
-import { useRouter } from "next/router";
+import sender from "@/apis/sender";
 
 interface EditInputModalProp {
   title: string;
@@ -24,25 +26,25 @@ interface EditInputModalProp {
   initialvalue: CardData;
 }
 
-type Req_put_card = {
-  columnId: number;
-  assigneeUserId: number;
-  title: string;
-  description: string;
-  dueDate: string;
-  tags: [string];
-  imageUrl: string;
-};
-
 const EditInputModal = ({ title, buttonText, handleModalClose, setCardList, initialvalue }: EditInputModalProp) => {
   const columnId = initialvalue.columnId;
   const router = useRouter();
   const dashboardId = Number(router.query.boardId);
   const accessToken = getAccessTokenFromDocument("accessToken");
-  const { data: assigneeList } = useApi("get", { path: "members", id: dashboardId, accessToken });
+
+  const [assigneeList, setAssigneeList] = useState<Member[]>();
+  useEffect(() => {
+    (async () => {
+      const res = await sender.get({ path: "members", id: dashboardId, accessToken });
+
+      if (res.status < 300) {
+        setAssigneeList(res.data.members);
+      }
+    })();
+  }, []);
 
   const modalTitle = useInputController({
-    inputConfig: { id: "title", type: "text", placeholder: "제목을 입력해 주세요", initialValue: initialvalue.title },
+    inputConfig: { id: "title", type: "text", placeholder: "제목을 입력해 주세요", initialvalue: initialvalue.title },
     labelConfig: { labelName: "제목", star: true, mobile: true },
   });
 
@@ -51,13 +53,13 @@ const EditInputModal = ({ title, buttonText, handleModalClose, setCardList, init
       id: "comment",
       type: "text",
       placeholder: "설명을 입력해 주세요",
-      initialValue: initialvalue.description,
+      initialvalue: initialvalue.description,
     },
     labelConfig: { labelName: "설명", star: true, mobile: true },
   });
 
   const modalDate = useInputController({
-    inputConfig: { id: "date", type: "text", placeholder: "날짜를 입력해 주세요", initialValue: initialvalue.dueDate },
+    inputConfig: { id: "date", type: "text", placeholder: "날짜를 입력해 주세요", initialvalue: initialvalue.dueDate },
     labelConfig: { labelName: "마감일", mobile: true },
   });
 
@@ -66,10 +68,18 @@ const EditInputModal = ({ title, buttonText, handleModalClose, setCardList, init
     labelConfig: { labelName: "태그", mobile: true },
   });
 
-  const modalDropdown = useDropdownController<Member>({ options: assigneeList?.members });
+  const modalDropdown = useDropdownController({
+    options: assigneeList,
+  });
+
+  console.log("렌더링");
+  useEffect(() => {
+    if (assigneeList) {
+      modalDropdown.setValue(assigneeList.find((v) => v.userId === initialvalue.assignee.id));
+    }
+  }, [assigneeList]);
 
   const [tagList, setTagList] = useState<string[]>(initialvalue.tags);
-  const [date, setDate] = useState(initialvalue.dueDate);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -83,49 +93,8 @@ const EditInputModal = ({ title, buttonText, handleModalClose, setCardList, init
     tags: tagList,
   };
 
-  const { pending, wrappedFunction: postData } = useApi("post");
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
-    for (const value of Object.values(data)) {
-      if (!value) return;
-    }
-
-    const accessToken = getAccessTokenFromDocument("accessToken");
-
-    if (pending) return;
-
-    if (imageFile === null) {
-      return;
-    }
-
-    if (imageFile !== null) {
-      const imageFormData = new FormData();
-      imageFormData.append("image", imageFile);
-
-      const imageRes = await postData({
-        path: "cardImage",
-        id: columnId,
-        data: imageFormData,
-        accessToken,
-      });
-
-      if (!imageRes) return;
-
-      const {
-        data: { imageUrl },
-      } = imageRes;
-
-      const dataWithImage = { ...data, imageUrl };
-
-      const cardRes = await postData({ path: "card", data: dataWithImage, accessToken });
-
-      if (cardRes?.status === 201) {
-        setCardList((prevValue) => [...prevValue, cardRes.data]);
-        handleModalClose();
-      }
-    }
   };
 
   return (
@@ -154,7 +123,14 @@ const EditInputModal = ({ title, buttonText, handleModalClose, setCardList, init
 
           <div>
             <div className={styles.imageFileInputTitle}>이미지</div>
-            <ImageInput imageFile={imageFile} setImageFile={setImageFile} />
+            <div className={styles.imageFileInput}>
+              {initialvalue.imageUrl ? (
+                <div className={styles.currentImage}>
+                  <Image fill src={initialvalue.imageUrl} alt="현재 등록되어 있는 할 일 이미지" />
+                </div>
+              ) : null}
+              <ImageInput imageFile={imageFile} setImageFile={setImageFile} />
+            </div>
           </div>
         </div>
 

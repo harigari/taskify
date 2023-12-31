@@ -112,22 +112,6 @@
   object-fit: contain;
 }
 
-.form {
-  height: 13.9rem;
-}
-
-.comments {
-  display: flex;
-
-  flex-direction: column;
-  overflow: auto;
-
-  max-height: 8rem;
-}
-.comments > div:first-child {
-  margin-top: 0.5rem;
-}
-
 @media (max-width: 1200px) {
   .first {
     width: 42rem;
@@ -148,10 +132,6 @@
   }
 
   .first {
-    width: 28.7rem;
-  }
-
-  .image_wrapper {
     width: 28.7rem;
   }
 
@@ -186,17 +166,8 @@
   }
 
   .image_wrapper {
+    width: 28.7rem;
     height: 16.8rem;
-  }
-  .form {
-    height: 7rem;
-  }
-  .image_wrapper {
     margin-bottom: 0rem;
-  }
-  .comments {
-    margin-top: 2.5rem;
-
-    height: 8.5rem;
   }
 }

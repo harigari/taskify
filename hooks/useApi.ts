@@ -1,13 +1,13 @@
 import sender from "@/apis/sender";
 import { HTTP, Method, PathProps, RequireId, ReturnData, Wrapped } from "@/types/api.type";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const useApi = <T extends Method, U extends PathProps<T>>(method: T, obj?: RequireId<T, U>) => {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [data, setData] = useState<ReturnData<T, U>>();
 
-  const asyncFunction = useMemo(() => sender[method] as HTTP<T>, [method]);
+  const asyncFunction = useCallback(sender[method] as HTTP<T>, []);
   const wrappedFunction: Wrapped<T> = useCallback(
     async (arg) => {
       try {

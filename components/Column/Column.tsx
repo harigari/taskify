@@ -35,7 +35,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isColumnDeleteModalOpen, setIsColumnDeleteModalOpen] = useState(false);
   const settingModal = useInputController({
-    inputConfig: { id: "settingModal", initialValue: title },
+    inputConfig: { id: "settingModal", initialvalue: title },
     labelConfig: { labelName: "이름" },
   });
 

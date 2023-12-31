@@ -3,7 +3,6 @@
   gap: 2.8rem;
   align-items: flex-end;
   flex-direction: column;
-
 }
 
 .modal {
@@ -71,6 +70,21 @@ button.deleteButton {
   font-weight: 500;
   line-height: normal;
   color: var(--black1, #333236);
+}
+
+.imageFileInput {
+  display: flex;
+  gap: 1rem;
+}
+
+.currentImage {
+  width: 7.2rem;
+  height: 7.2rem;
+  position: relative;
+}
+
+.currentImage img {
+  object-fit: contain;
 }
 
 @media (max-width: 767px) {

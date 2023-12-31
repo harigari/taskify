@@ -1,13 +1,38 @@
 import ProfileIcon from "@/components/Members/ProfileIcon";
+import useApi from "@/hooks/useApi";
 import { CommentData } from "@/types/api.type";
 import formatDate from "@/utils/formatDateString";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import AlertModal from "../../AlertModal";
 import styles from "./Comment.module.css";
 
 interface CommentProps {
   data: CommentData;
+  setData: Dispatch<SetStateAction<CommentData[]>>;
 }
 
-const Comment = ({ data }: CommentProps) => {
+const Comment = ({ data, setData }: CommentProps) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const accessToken = getAccessTokenFromDocument("accessToken");
+
+  const handleModalToggle = () => {
+    setIsDeleteModalOpen((prevValue) => !prevValue);
+  };
+
+  const { wrappedFunction: deleteData } = useApi("delete");
+
+  const handleDeleteSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const res = await deleteData({ path: "comment", id: data.id, accessToken });
+    console.log(res);
+    if (res?.status === 204) {
+      setIsDeleteModalOpen(false);
+      setData((prev) => prev?.filter((v) => v.id !== data.id));
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.profile_icon}>
@@ -21,7 +46,16 @@ const Comment = ({ data }: CommentProps) => {
         <div className={styles.comment}>{data.content}</div>
         <div className={styles.buttons}>
           <button className={styles.button}>수정</button>
-          <button className={styles.button}>삭제</button>
+          <button onClick={handleModalToggle} className={styles.button}>
+            삭제
+          </button>
+          {isDeleteModalOpen && (
+            <AlertModal
+              alertText="댓글을 삭제하시겠습니까?"
+              handleModalClose={handleModalToggle}
+              handleSubmit={handleDeleteSubmit}
+            />
+          )}
         </div>
       </div>
     </div>
