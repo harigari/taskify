@@ -28,7 +28,7 @@ class Api {
     const url = this.#pathFinder("get", obj);
     const res = await fetch(this.#BASE_URL + url, {
       method: "GET",
-      headers: { Authorization: obj.accessToken ? `Bearer ${obj.accessToken}` : "" },
+      headers: { Authorization: `Bearer ${obj.accessToken}` },
     });
     const data = await res.json();
 
@@ -37,12 +37,13 @@ class Api {
 
   post: HTTP<"post"> = async (obj) => {
     const url = this.#pathFinder("post", obj);
+    const isImage = obj.path.includes("Image");
     const res = await fetch(this.#BASE_URL + url, {
       method: "POST",
-      body: obj.path.includes("Image") ? (obj.data as FormData) : JSON.stringify(obj.data),
+      body: isImage ? (obj.data as FormData) : JSON.stringify(obj.data),
       headers: {
-        "Content-Type": obj.path.includes("Image") ? "multipart/form-data" : "application/json",
-        Authorization: obj.accessToken ? `Bearer ${obj.accessToken}` : "",
+        Authorization: `Bearer ${obj.accessToken}`,
+        ...(isImage ? {} : { "Content-Type": "application/json" }),
       },
     });
     const data = await res.json();
@@ -54,9 +55,7 @@ class Api {
     const res = await fetch(this.#BASE_URL + url, {
       method: "PUT",
       body: JSON.stringify(obj.data),
-      headers: {
-        Authorization: obj.accessToken ? `Bearer ${obj.accessToken}` : "",
-      },
+      headers: { Authorization: `Bearer ${obj.accessToken}` },
     });
     const data = await res.json();
     return { status: res.status, data };
@@ -66,9 +65,7 @@ class Api {
     const url = this.#pathFinder("delete", obj);
     const res = await fetch(this.#BASE_URL + url, {
       method: "DELETE",
-      headers: {
-        Authorization: obj.accessToken ? `Bearer ${obj.accessToken}` : "",
-      },
+      headers: { Authorization: `Bearer ${obj.accessToken}` },
     });
     const data = await res.json();
     return { status: res.status, data };

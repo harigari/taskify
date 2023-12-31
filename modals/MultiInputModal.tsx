@@ -85,15 +85,18 @@ const MultiInputModal = ({
       const imageFormData = new FormData();
       imageFormData.append("image", imageFile);
 
-      const imageRes = await fetch(`https://sp-taskify-api.vercel.app/1-7/columns/${columnId}/card-image`, {
-        method: "post",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: imageFormData,
+      const imageRes = await postData({
+        path: "cardImage",
+        id: columnId,
+        data: imageFormData,
+        accessToken,
       });
 
-      const { imageUrl } = await imageRes.json();
+      if (!imageRes) return;
+
+      const {
+        data: { imageUrl },
+      } = imageRes;
 
       const dataWithImage = { ...data, imageUrl };
 
@@ -106,7 +109,7 @@ const MultiInputModal = ({
         body: JSON.stringify(dataWithImage),
       });
 
-      if (cardRes.status === 201) {
+      if (cardRes?.status === 201) {
         handleModalClose();
       }
     }
