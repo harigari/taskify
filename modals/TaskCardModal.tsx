@@ -2,10 +2,10 @@ import useApi from "@/hooks/useApi";
 import useInputController from "@/hooks/useInputController";
 import EditInputModal from "@/modals/EditInputModal";
 import CommentInput from "@/modals/components/ModalInput/CommentInput";
-import { CardData } from "@/types/api.type";
+import { CardData, CommentData } from "@/types/api.type";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import Image from "next/image";
-import { Dispatch, FocusEvent, FormEvent, SetStateAction, useRef, useState } from "react";
+import { Dispatch, FocusEvent, FormEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import ChipTag from "../components/Chips/ChipTag/ChipTag";
 import ChipTodo from "../components/Chips/ChipTodo/ChipTodo";
 import InputWrapper from "../components/Input/InputWrapper";
@@ -13,7 +13,6 @@ import AlertModal from "./AlertModal";
 import ModalWrapper from "./ModalWrapper";
 import styles from "./TaskCardModal.module.css";
 import AssigneeAndDueDateInfo from "./components/AssigneeAndDueDateInfo/AssigneeAndDueDateInfo";
-import Comment from "./components/Comment/Comment";
 
 interface TaskCardInfoProps {
   columnTitle: string;
@@ -27,6 +26,9 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
   const [isModifyModalOpen, setModifyModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
+  const [comments, setComments] = useState<CommentData[]>([]);
+
+  const accessToken = getAccessTokenFromDocument("accessToken");
   // 케밥 열고 닫기
   const handleKebab = () => {
     setIsKebabOpen((prevValue) => !prevValue);
@@ -50,16 +52,12 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
     setDeleteModalOpen((prevValue) => !prevValue);
   };
 
-  const comment = useInputController({
-    inputConfig: { id: "comment", type: "text" },
-    labelConfig: { labelName: "댓글", mobile: true },
-  });
-
   const { pending, wrappedFunction: deleteData } = useApi("delete");
 
+  // 카드 삭제하기
   const handleCardDelete = async (e: FormEvent) => {
     e.preventDefault();
-    const accessToken = getAccessTokenFromDocument("accessToken");
+
     const res = await deleteData({ path: "card", id: data.id, accessToken });
 
     if (pending) return;
@@ -74,15 +72,52 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
     }
   };
 
-  const handleCommentSubmit = (e: FormEvent) => {
+  const comment = useInputController({
+    inputConfig: { id: "comment", type: "text" },
+    labelConfig: { labelName: "댓글", mobile: true },
+  });
+
+  const { wrappedFunction: postData } = useApi("post");
+
+  // 댓글 추가하기
+  const handleCommentSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // api 리퀘스트로 댓글 내용 보내기
+    const res = await postData({
+      path: "comment",
+      data: {
+        content: comment.input.value,
+        cardId: data.id,
+        columnId: data.columnId,
+        dashboardId: data.dashboardId,
+      },
+      accessToken,
+    });
+
+    if (res?.status === 201) {
+    }
   };
 
-  const accessToken = getAccessTokenFromDocument("accessToken");
-
+  // 댓글 가져오기
   const { data: commentData } = useApi("get", { path: "comments", id: data.id, accessToken: accessToken });
-  const comments = commentData?.comments;
+  const fetchedComments = commentData?.comments;
+
+
+  // useEffect(() => {
+  //   (async function () {
+  //     const {
+  //       data: { cards },
+  //     } = await sender.get({ path: "cards", id: columnId, accessToken });
+  //     setCardList(cards);
+  //   })();
+  // }, []);
+
+  // useEffect(() => {
+  //   (async function () {
+  //     const { data : {}}
+  //   })
+  //   if (!fetchedComments) return;
+  //   setComments(fetchedComments);
+  // },[]);
 
   return (
     <ModalWrapper size="lg">

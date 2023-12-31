@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from "react";
 
 function useInputController({ errorConfig, inputConfig, labelConfig }: Configs) {
   const [value, setValue] = useState(inputConfig.initialValue || "");
-  const [date, setDate] = useState<Date | null>(new Date(inputConfig.initialValue ?? "") || null);
+  const [date, setDate] = useState<null>(null);
   const [errorText, setErrorText] = useState("");
   const [eyesValue, setEyesValue] = useState(false);
 

@@ -3,7 +3,7 @@ import TablePagenation from "@/components/Table/TablePagination/TablePagination"
 import Image from "next/image";
 import styles from "./index.module.css";
 import stylesFromSingle from "@/modals/Modal.module.css";
-import MenuLayout from "@/components/Menulayout/MenuLayout";
+import MenuLayout from "@/components/MenuLayout/MenuLayout";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { FormEvent, useEffect, useState } from "react";
 import useInputController from "@/hooks/useInputController";

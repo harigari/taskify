@@ -4,7 +4,7 @@ import Button from "@/components/Buttons/Button/Button";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import sender from "@/apis/sender";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
-import MenuLayout from "@/components/Menulayout/MenuLayout";
+
 import { FormEvent, useState, useEffect } from "react";
 import stylesFromSingle from "@/modals/Modal.module.css";
 import ModalWrapper from "@/modals/ModalWrapper";
@@ -15,6 +15,7 @@ import Input from "@/components/Input/Input";
 import useApi from "@/hooks/useApi";
 import { ColumnData } from "@/types/api.type";
 import { Column } from "@/components/Column/Column";
+import MenuLayout from "@/components/MenuLayout/MenuLayout";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
