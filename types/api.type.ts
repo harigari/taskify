@@ -1,8 +1,8 @@
 import SENDER_CONFIG from "@/constants/senderConfig";
 
 type TimeStamp = {
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 // 유저 관련 타입
@@ -146,7 +146,7 @@ type Return_put_column = {
 } & TimeStamp;
 
 // 댓글 관련 타입
-type CommentData = {
+export type CommentData = {
   id: number;
   content: string;
   cardId: number;

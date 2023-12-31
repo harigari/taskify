@@ -1,10 +1,12 @@
 import ProfileIcon from "@/components/Members/ProfileIcon";
+import { CommentData } from "@/types/api.type";
 import formatDate from "@/utils/formatDateString";
-import { Comment } from "../../Modal.type";
 import styles from "./Comment.module.css";
+
 interface CommentProps {
-  data: Comment;
+  data: CommentData;
 }
+
 const Comment = ({ data }: CommentProps) => {
   return (
     <div className={styles.wrapper}>

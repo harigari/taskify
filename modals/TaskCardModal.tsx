@@ -79,32 +79,10 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
     // api 리퀘스트로 댓글 내용 보내기
   };
 
-  const comments = [
-    {
-      id: 114,
-      content: "유담아 ~~~~ ",
-      createdAt: "2023-12-27T18:40:10.166Z",
-      updatedAt: "2023-12-27T18:40:10.166Z",
-      cardId: 81,
-      author: {
-        id: 102,
-        nickname: "경서",
-        profileImageUrl: null,
-      },
-    },
-    {
-      id: 115,
-      content: "유담아 모해 ",
-      createdAt: "2023-12-27T18:40:10.166Z",
-      updatedAt: "2023-12-27T18:40:10.166Z",
-      cardId: 81,
-      author: {
-        id: 103,
-        nickname: "민지",
-        profileImageUrl: null,
-      },
-    },
-  ];
+  const accessToken = getAccessTokenFromDocument("accessToken");
+
+  const { data: commentData } = useApi("get", { path: "comments", id: data.id, accessToken: accessToken });
+  const comments = commentData?.comments;
 
   return (
     <ModalWrapper size="lg">
@@ -125,7 +103,6 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
                     initialvalue={data}
                     title="할 일 수정"
                     buttonText="수정"
-                    columnId={1}
                     setCardList={setCardList}
                     handleModalClose={handleModifyModalToggle}
                   />
@@ -179,7 +156,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
               </InputWrapper>
             </form>
             <div className={styles.comments}>
-              {comments.map((comment) => (
+              {comments?.map((comment) => (
                 <Comment key={comment.id} data={comment} />
               ))}
             </div>

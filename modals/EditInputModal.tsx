@@ -19,7 +19,6 @@ import { useRouter } from "next/router";
 interface EditInputModalProp {
   title: string;
   buttonText: string;
-  columnId: number;
   setCardList: Dispatch<SetStateAction<CardData[]>>;
   handleModalClose: () => void;
   initialvalue: CardData;
@@ -35,18 +34,12 @@ type Req_put_card = {
   imageUrl: string;
 };
 
-const EditInputModal = ({
-  title,
-  buttonText,
-  handleModalClose,
-  columnId,
-  setCardList,
-  initialvalue,
-}: EditInputModalProp) => {
+const EditInputModal = ({ title, buttonText, handleModalClose, setCardList, initialvalue }: EditInputModalProp) => {
+  const columnId = initialvalue.columnId;
   const router = useRouter();
-  const dashboardId = router.query.boardId;
+  const dashboardId = Number(router.query.boardId);
   const accessToken = getAccessTokenFromDocument("accessToken");
-  const { data: assigneeList } = useApi("get", { path: "members", id: Number(dashboardId), accessToken });
+  const { data: assigneeList } = useApi("get", { path: "members", id: dashboardId, accessToken });
 
   const modalTitle = useInputController({
     inputConfig: { id: "title", type: "text", placeholder: "제목을 입력해 주세요", initialValue: initialvalue.title },
@@ -69,13 +62,14 @@ const EditInputModal = ({
   });
 
   const modalTag = useInputController({
-    inputConfig: { id: "tag", type: "text", placeholder: "입력 후 Enter", initialValue: initialvalue.tags },
+    inputConfig: { id: "tag", type: "text", placeholder: "입력 후 Enter" },
     labelConfig: { labelName: "태그", mobile: true },
   });
 
   const modalDropdown = useDropdownController<Member>({ options: assigneeList?.members });
 
-  const [tagList, setTagList] = useState<string[]>([]);
+  const [tagList, setTagList] = useState<string[]>(initialvalue.tags);
+  const [date, setDate] = useState(initialvalue.dueDate);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -89,7 +83,7 @@ const EditInputModal = ({
     tags: tagList,
   };
 
-  const { pending, error, wrappedFunction: postData } = useApi("post");
+  const { pending, wrappedFunction: postData } = useApi("post");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
