@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import styles from "./Sidemenu.module.css";
 import useInputController from "@/hooks/useInputController";
 import stylesFromSingle from "@/modals/Modal.module.css";
@@ -12,15 +12,17 @@ import ChipColors from "@/components/Chips/ChipColors/ChipColors";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
 import { ColorType, DashBoardData } from "@/types/api.type";
 import { useRouter } from "next/router";
+import sender from "@/apis/sender";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 
 interface SidemenuProps {
   dashboardList: DashBoardData[];
 }
 
 const Sidemenu = ({ dashboardList }: SidemenuProps) => {
+  const [dashboards, setDashboards] = useState(dashboardList);
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  // const [dashboardList, setDashboardList] = useState<DashBoardData[]>(dashboards);
   const [selectedColor, setSelectedColor] = useState<ColorType>("#7ac555");
 
   const column = useInputController({
@@ -34,23 +36,24 @@ const Sidemenu = ({ dashboardList }: SidemenuProps) => {
     setIsOpen((prevValue) => !prevValue);
   };
 
-  // const handleSubmit = async (e: FormEvent) => {
-  //   e.preventDefault();
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
 
-  //   const data = {
-  //     title: column.input.value,
-  //     color: selectedColor,
-  //   };
+    const data = {
+      title: column.input.value,
+      color: selectedColor,
+    };
 
-  //   // const res = await sender.post({ path: "dashboard", accessToken, data });
+    const accessToken = getAccessTokenFromDocument("accessToken");
+    const res = await sender.post({ path: "dashboard", accessToken, data });
 
-  //   // if (res?.status === 201) {
-  //   //   handleModalToggle();
-  //   //   setDashboardList((prevValue) => [res.data, ...prevValue]);
-  //   //   column.input.setValue("");
-  //   //   setSelectedColor("#7ac555");
-  //   // }
-  // };
+    if (res?.status === 201) {
+      handleModalToggle();
+      setDashboards((prevValue) => [res.data, ...prevValue]);
+      column.input.setValue("");
+      setSelectedColor("#7ac555");
+    }
+  };
 
   return (
     <aside className={styles.container}>
@@ -75,7 +78,7 @@ const Sidemenu = ({ dashboardList }: SidemenuProps) => {
         </button>
       </div>
       <ul className={styles.list}>
-        {dashboardList?.map((board) => (
+        {dashboards?.map((board) => (
           <li key={board.id}>
             <Link
               href={`/dashboard/${board.id}`}
@@ -98,8 +101,7 @@ const Sidemenu = ({ dashboardList }: SidemenuProps) => {
       </ul>
       {isOpen && (
         <ModalWrapper size="md">
-          {/* onSubmit={handleSubmit}  */}
-          <form className={stylesFromSingle.form} noValidate>
+          <form className={stylesFromSingle.form} onSubmit={handleSubmit} noValidate>
             <div className={stylesFromSingle.modal}>
               <div className={stylesFromSingle.modalTitle}>새로운 대시보드</div>
 

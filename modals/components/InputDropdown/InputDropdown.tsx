@@ -21,18 +21,18 @@ interface DropdownProp {
   children: ReactNode;
   value: Member | undefined;
   setValue: Dispatch<SetStateAction<Member | undefined>>;
-  options: Member[];
+  options: Member[] | undefined;
 }
 
-const optionFilter = (options: Member[], inputValue: string) => {
-  const filteredMembers = options.filter((option) => option.nickname.includes(inputValue));
+const optionFilter = (options: Member[] | undefined, inputValue: string) => {
+  const filteredMembers = (options ?? []).filter((option) => option?.nickname.includes(inputValue));
   return filteredMembers;
 };
 
 const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [filtedOptions, setFiltedOptions] = useState<any[]>(options);
+  const [filtedOptions, setFiltedOptions] = useState(options ?? []);
 
   const selectedStyle = clsx(styles.selected, (isOpen || inputValue) && styles.selectedBorder);
 

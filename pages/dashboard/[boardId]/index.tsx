@@ -76,25 +76,27 @@ const Dashboard = ({
     }
   };
 
+  useEffect(() => {
+    setColumnList(columnData);
+  }, [columnData]);
+
   return (
     <>
       {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}
       <MenuLayout dashboardList={dashboards}>
         <div className={style.layoutContainer}>
           <div className={style.columnContainer}>
-            {columnList.map((column, index) => {
-              return (
-                <Column
-                  setColumnList={setColumnList}
-                  accessToken={accessToken}
-                  columnId={column.id}
-                  assigneeList={assigneeList}
-                  title={column.title}
-                  dashboardId={column.dashboardId}
-                  key={column.id}
-                />
-              );
-            })}
+            {columnList.map((column) => (
+              <Column
+                setColumnList={setColumnList}
+                accessToken={accessToken}
+                columnId={column.id}
+                assigneeList={assigneeList}
+                title={column.title}
+                dashboardId={column.dashboardId}
+                key={column.id}
+              />
+            ))}
           </div>
           <div className={style.buttonWrapper}>
             <Button buttonType="add_column" color="white" onClick={handleCreateNewColumnModalToggle}>

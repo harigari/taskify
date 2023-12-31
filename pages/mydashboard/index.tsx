@@ -5,7 +5,7 @@ import styles from "./index.module.css";
 import stylesFromSingle from "@/modals/Modal.module.css";
 import MenuLayout from "@/components/Menulayout/MenuLayout";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import useInputController from "@/hooks/useInputController";
 import ModalWrapper from "@/modals/ModalWrapper";
 import InputWrapper from "@/components/Input/InputWrapper";
@@ -16,6 +16,7 @@ import sender from "@/apis/sender";
 import { ColorType, DashBoardData } from "@/types/api.type";
 import Link from "next/link";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
+import useApi from "@/hooks/useApi";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -50,15 +51,19 @@ export default function Mydashboard({
 
   const [selectedColor, setSelectedColor] = useState<ColorType>("#7ac555");
 
-  const handleSubmit = async (e: FormEvent) => {
+  const { pending, wrappedFunction: postData } = useApi("post");
+
+  const handleMakeDashboard = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (pending) return;
 
     const data = {
       title: column.input.value,
       color: selectedColor,
     };
 
-    const res = await sender.post({ path: "dashboard", accessToken, data });
+    const res = await postData({ path: "dashboard", accessToken, data });
 
     if (res?.status === 201) {
       handleModalToggle();
@@ -78,7 +83,7 @@ export default function Mydashboard({
                 <span>새로운 대시보드</span>
                 <Image width={22} height={22} src="/icons/icon-addbox-purple.png" alt="대시보드 추가하기" />
               </Button>
-              {dashboardList.map((dashboard: any) => (
+              {dashboardList.map((dashboard) => (
                 <Button key={dashboard.id} buttonType="dashboard" color="white">
                   <Link href={`/dashboard/${dashboard.id}`}>
                     <div className={styles.dashboard__title}>
@@ -107,7 +112,7 @@ export default function Mydashboard({
       </MenuLayout>
       {isOpen && (
         <ModalWrapper size="md">
-          <form className={stylesFromSingle.form} onSubmit={handleSubmit} noValidate>
+          <form className={stylesFromSingle.form} onSubmit={handleMakeDashboard} noValidate>
             <div className={stylesFromSingle.modal}>
               <div className={stylesFromSingle.modalTitle}>새로운 대시보드</div>
 

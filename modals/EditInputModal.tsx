@@ -14,16 +14,26 @@ import { CardData, Member } from "@/types/api.type";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import useApi from "@/hooks/useApi";
 import formatDateString from "@/utils/formatDateString";
+import { useRouter } from "next/router";
 
 interface EditInputModalProp {
   title: string;
   buttonText: string;
   columnId: number;
-  dashboardId: number;
   setCardList: Dispatch<SetStateAction<CardData[]>>;
   handleModalClose: () => void;
-  initialValue: any;
+  initialvalue: CardData;
 }
+
+type Req_put_card = {
+  columnId: number;
+  assigneeUserId: number;
+  title: string;
+  description: string;
+  dueDate: string;
+  tags: [string];
+  imageUrl: string;
+};
 
 const EditInputModal = ({
   title,
@@ -31,28 +41,35 @@ const EditInputModal = ({
   handleModalClose,
   columnId,
   setCardList,
-  initialValue,
-  dashboardId,
+  initialvalue,
 }: EditInputModalProp) => {
-  const { data: assigneeList, wrappedFunction: getData } = useApi("get", { path: "members", id: dashboardId });
+  const router = useRouter();
+  const dashboardId = router.query.boardId;
+  const accessToken = getAccessTokenFromDocument("accessToken");
+  const { data: assigneeList } = useApi("get", { path: "members", id: Number(dashboardId), accessToken });
 
   const modalTitle = useInputController({
-    inputConfig: { id: "title", type: "text", placeholder: "제목을 입력해 주세요", initialValue: initialValue.afda },
+    inputConfig: { id: "title", type: "text", placeholder: "제목을 입력해 주세요", initialValue: initialvalue.title },
     labelConfig: { labelName: "제목", star: true, mobile: true },
   });
 
   const modalExplain = useInputController({
-    inputConfig: { id: "comment", type: "text", placeholder: "설명을 입력해 주세요" },
+    inputConfig: {
+      id: "comment",
+      type: "text",
+      placeholder: "설명을 입력해 주세요",
+      initialValue: initialvalue.description,
+    },
     labelConfig: { labelName: "설명", star: true, mobile: true },
   });
 
   const modalDate = useInputController({
-    inputConfig: { id: "date", type: "text", placeholder: "날짜를 입력해 주세요" },
+    inputConfig: { id: "date", type: "text", placeholder: "날짜를 입력해 주세요", initialValue: initialvalue.dueDate },
     labelConfig: { labelName: "마감일", mobile: true },
   });
 
   const modalTag = useInputController({
-    inputConfig: { id: "tag", type: "text", placeholder: "입력 후 Enter" },
+    inputConfig: { id: "tag", type: "text", placeholder: "입력 후 Enter", initialValue: initialvalue.tags },
     labelConfig: { labelName: "태그", mobile: true },
   });
 

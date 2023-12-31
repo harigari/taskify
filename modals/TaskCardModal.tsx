@@ -62,6 +62,8 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
     const accessToken = getAccessTokenFromDocument("accessToken");
     const res = await deleteData({ path: "card", id: data.id, accessToken });
 
+    if (pending) return;
+
     if (res?.status === 204) {
       handleDeleteModalToggle();
       handleModalClose();
@@ -120,10 +122,10 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
                 </button>
                 {isModifyModalOpen && (
                   <EditInputModal
+                    initialvalue={data}
                     title="할 일 수정"
                     buttonText="수정"
                     columnId={1}
-                    dashboardId={1}
                     setCardList={setCardList}
                     handleModalClose={handleModifyModalToggle}
                   />
