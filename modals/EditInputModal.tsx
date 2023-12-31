@@ -21,9 +21,8 @@ interface EditInputModalProp {
   columnId: number;
   dashboardId: number;
   setCardList: Dispatch<SetStateAction<CardData[]>>;
-  assigneeList: Member[];
   handleModalClose: () => void;
-  initialValue: ,
+  initialValue: any;
 }
 
 const EditInputModal = ({
@@ -34,10 +33,11 @@ const EditInputModal = ({
   setCardList,
   initialValue,
   dashboardId,
-  assigneeList,
 }: EditInputModalProp) => {
+  const { data: assigneeList, wrappedFunction: getData } = useApi("get", { path: "members", id: dashboardId });
+
   const modalTitle = useInputController({
-    inputConfig: { id: "title", type: "text", placeholder: "제목을 입력해 주세요", initialValue:initialValue.afda },
+    inputConfig: { id: "title", type: "text", placeholder: "제목을 입력해 주세요", initialValue: initialValue.afda },
     labelConfig: { labelName: "제목", star: true, mobile: true },
   });
 
@@ -56,7 +56,7 @@ const EditInputModal = ({
     labelConfig: { labelName: "태그", mobile: true },
   });
 
-  const modalDropdown = useDropdownController<Member>({ options: assigneeList });
+  const modalDropdown = useDropdownController<Member>({ options: assigneeList?.members });
 
   const [tagList, setTagList] = useState<string[]>([]);
 

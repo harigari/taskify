@@ -5,7 +5,7 @@ import useInputController from "@/hooks/useInputController";
 import { signinEmail, signupNickname } from "@/constants/inputConfig";
 import InputWrapper from "@/components/Input/InputWrapper";
 import Input from "@/components/Input/Input";
-import Button from "@/components/buttons/Button/Button";
+import Button from "@/components/Buttons/Button/Button";
 
 const SettingProfile = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);

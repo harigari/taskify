@@ -1,9 +1,8 @@
-import { Member } from "@/components/Header/Header.type";
 import styles from "./ProfileIcon.module.css";
 import clsx from "clsx";
-import { ProfileIconProps } from "@/components/header/header.type";
-import { colorMapping } from "@/utils/colorMapping";
 import Image from "next/image";
+import { Member } from "@/types/api.type";
+import makeColorProfile from "@/utils/makeColorProfile";
 
 interface ProfileIconProps {
   member: Member;
@@ -30,7 +29,7 @@ const ProfileIcon = ({ member, size, ...props }: ProfileIconProps) => {
       ) : (
         <div
           className={clsx(styles.member__defaultimage, { [styles.card]: size === "sm" })}
-          style={{ backgroundColor: colorMapping(member.nickname) }}
+          style={{ backgroundColor: makeColorProfile(member.nickname) }}
         />
       )}
       <span className={styles.member__name}>{member.nickname.slice(0, 1)}</span>

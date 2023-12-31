@@ -15,8 +15,11 @@
 }
 
 .imageWrapper img {
-  object-fit: cover;
+  width: 27.4rem;
+  height: 16rem;
+  object-fit: contain;
 }
+
 .cardContentContainer {
   display: flex;
   flex-direction: column;
@@ -112,6 +115,10 @@
     justify-content: space-between;
     margin-top: 0;
   }
+  .imageWrapper img {
+    width: 9.08rem;
+    height: 5.3rem;
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -154,5 +161,9 @@
   }
   .cardCountWrapper {
     display: flex;
+  }
+  .imageWrapper img {
+    width: 26rem;
+    height: 15.2rem;
   }
 }

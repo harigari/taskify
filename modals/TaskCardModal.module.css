@@ -109,7 +109,7 @@
 }
 
 .image_wrapper img {
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .form {

@@ -19,6 +19,10 @@ import { Column } from "@/components/Column/Column";
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
 
+  const {
+    data: { dashboards },
+  } = await sender.get({ path: "dashboards", method: "pagination", accessToken: accessToken });
+
   const boardId = context.query["boardId"];
 
   const {
@@ -30,7 +34,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   } = await sender.get({ path: "members", id: Number(boardId), accessToken });
 
   return {
-    props: { accessToken, columnData, assigneeList, boardId },
+    props: { accessToken, columnData, assigneeList, boardId, dashboards },
   };
 };
 
@@ -39,6 +43,7 @@ const Dashboard = ({
   columnData,
   assigneeList,
   boardId,
+  dashboards,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [columnList, setColumnList] = useState<ColumnData[]>(columnData);
   const [isCreateModal, setIsCreateModal] = useState(false);
@@ -74,7 +79,7 @@ const Dashboard = ({
   return (
     <>
       {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}
-      <MenuLayout>
+      <MenuLayout dashboardList={dashboards}>
         <div className={style.layoutContainer}>
           <div className={style.columnContainer}>
             {columnList.map((column, index) => {

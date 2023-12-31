@@ -1,19 +1,19 @@
-import React, { useRef, useState, FocusEvent, FormEvent, MouseEvent, Dispatch, SetStateAction } from "react";
-import styles from "./TaskCardModal.module.css";
-import Image from "next/image";
-import ChipTodo from "../components/Chips/ChipTodo/ChipTodo";
-import ChipTag from "../components/Chips/ChipTag/ChipTag";
-import Comment from "./components/Comment/Comment";
-import useInputController from "@/hooks/useInputController";
-import AssigneeAndDueDateInfo from "./components/AssigneeAndDueDateInfo/AssigneeAndDueDateInfo";
-import InputWrapper from "../components/Input/InputWrapper";
-import CommentInput from "@/modals/components/ModalInput/CommentInput";
-import ModalWrapper from "./ModalWrapper";
-import MultiInputModal from "./MultiInputModal";
-import AlertModal from "./AlertModal";
-import { CardData } from "@/types/api.type";
 import useApi from "@/hooks/useApi";
+import useInputController from "@/hooks/useInputController";
+import EditInputModal from "@/modals/EditInputModal";
+import CommentInput from "@/modals/components/ModalInput/CommentInput";
+import { CardData } from "@/types/api.type";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import Image from "next/image";
+import { Dispatch, FocusEvent, FormEvent, SetStateAction, useRef, useState } from "react";
+import ChipTag from "../components/Chips/ChipTag/ChipTag";
+import ChipTodo from "../components/Chips/ChipTodo/ChipTodo";
+import InputWrapper from "../components/Input/InputWrapper";
+import AlertModal from "./AlertModal";
+import ModalWrapper from "./ModalWrapper";
+import styles from "./TaskCardModal.module.css";
+import AssigneeAndDueDateInfo from "./components/AssigneeAndDueDateInfo/AssigneeAndDueDateInfo";
+import Comment from "./components/Comment/Comment";
 
 interface TaskCardInfoProps {
   columnTitle: string;
@@ -119,11 +119,12 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
                   수정하기
                 </button>
                 {isModifyModalOpen && (
-                  <MultiInputModal
+                  <EditInputModal
                     title="할 일 수정"
                     buttonText="수정"
                     columnId={1}
                     dashboardId={1}
+                    setCardList={setCardList}
                     handleModalClose={handleModifyModalToggle}
                   />
                 )}

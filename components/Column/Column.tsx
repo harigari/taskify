@@ -20,7 +20,7 @@ import { CardData, ColumnData, Member } from "@/types/api.type";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
 import sender from "@/apis/sender";
 
-interface ColumnPorps {
+interface ColumnProps {
   accessToken: string;
   title: string;
   dashboardId: number;
@@ -29,7 +29,7 @@ interface ColumnPorps {
   columnId: number;
 }
 
-export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId, setColumnList }: ColumnPorps) => {
+export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId, setColumnList }: ColumnProps) => {
   const [cardList, setCardList] = useState<CardData[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
@@ -40,8 +40,6 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
   });
 
   const { pending: deletePending, wrappedFunction: deleteData } = useApi("delete");
-
-  const { pending: putPending, wrappedFunction: putData } = useApi("put");
 
   useEffect(() => {
     (async function () {
@@ -64,25 +62,20 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
     setIsColumnDeleteModalOpen((prevValue) => !prevValue);
   };
 
-  const handleFormSubmit = async (e: FormEvent) => {
+  const { pending, wrappedFunction: putData } = useApi("put");
+
+  const handleModifyColumn = async (e: FormEvent) => {
     e.preventDefault();
 
     const accessToken = getAccessTokenFromDocument("accessToken");
 
-    // const putRes = await putData({
-    //   path: "column",
-    //   id: columnId,
-    //   data: { title: settingModal.input.value },
-    //   accessToken,
-    // });
+    if (pending) return;
 
-    const putRes = await fetch(`https://sp-taskify-api.vercel.app/1-7/columns/${columnId}`, {
-      body: JSON.stringify({ title: settingModal.input.value }),
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
+    const putRes = await putData({
+      path: "column",
+      id: columnId,
+      data: { title: settingModal.input.value },
+      accessToken,
     });
 
     if (putRes?.status === 200) {
@@ -159,7 +152,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
 
       {isSettingModalOpen && (
         <ModalWrapper size="md">
-          <form className={stylesFromSingle.form} onSubmit={handleFormSubmit} noValidate>
+          <form className={stylesFromSingle.form} onSubmit={handleModifyColumn} noValidate>
             <div className={stylesFromSingle.modal}>
               <div className={stylesFromSingle.modalTitle}>컬럼 관리</div>
 

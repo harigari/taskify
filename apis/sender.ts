@@ -55,7 +55,7 @@ class Api {
     const res = await fetch(this.#BASE_URL + url, {
       method: "PUT",
       body: JSON.stringify(obj.data),
-      headers: { Authorization: `Bearer ${obj.accessToken}` },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${obj.accessToken}` },
     });
     const data = await res.json();
     return { status: res.status, data };

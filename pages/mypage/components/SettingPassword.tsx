@@ -1,6 +1,6 @@
 import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
-import Button from "@/components/buttons/Button/Button";
+import Button from "@/components/Buttons/Button/Button";
 import { mypageCurrentPassword, mypageNewPasswordCheck } from "@/constants/inputConfig";
 import useInputController from "@/hooks/useInputController";
 import { isCurrentPassword, isValue } from "@/utils/vaildate";

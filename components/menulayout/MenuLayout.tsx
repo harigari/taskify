@@ -2,9 +2,11 @@ import Header from "@/components/Header/Header";
 import Sidemenu from "@/components/Sidemenu/Sidemenu";
 import { ReactNode } from "react";
 import styles from "./MenuLayout.module.css";
+import { DashBoardData } from "@/types/api.type";
 
 interface Props {
   children: ReactNode;
+  dashboardList: DashBoardData[];
 }
 
 const MenuLayout = ({ dashboardList, children }: Props) => {

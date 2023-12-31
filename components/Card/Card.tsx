@@ -7,25 +7,13 @@ import formatDateString from "@/utils/formatDateString";
 import { Dispatch, SetStateAction, useState } from "react";
 import TaskCardModal from "@/modals/TaskCardModal";
 
-const tagSlicer = (tagList: string[]) => {
-  const tagLength = tagList.slice(0, 3).join("").length;
-
-  if (tagLength > 15) {
-    return { slicedTagList: tagList.slice(0, 2), etc: tagList.length - 2 };
-  } else {
-    return { slicedTagList: tagList.slice(0, 3), etc: tagList.length - 3 };
-  }
-};
-
-const Card = ({
-  data,
-  columnTitle,
-  setCardList,
-}: {
+interface CardProps {
   data: CardData;
   columnTitle: string;
   setCardList: Dispatch<SetStateAction<CardData[]>>;
-}) => {
+}
+
+const Card = ({ data, columnTitle, setCardList }: CardProps) => {
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const { slicedTagList, etc } = tagSlicer(data.tags);
 
@@ -79,7 +67,6 @@ const Card = ({
           </div>
         </div>
       </div>
-
       {isCardModalOpen && (
         <TaskCardModal
           data={data}
@@ -93,3 +80,13 @@ const Card = ({
 };
 
 export default Card;
+
+const tagSlicer = (tagList: string[]) => {
+  const tagLength = tagList.slice(0, 3).join("").length;
+
+  if (tagLength > 15) {
+    return { slicedTagList: tagList.slice(0, 2), etc: tagList.length - 2 };
+  } else {
+    return { slicedTagList: tagList.slice(0, 3), etc: tagList.length - 3 };
+  }
+};

@@ -38,7 +38,7 @@ const settingData: SettingData[] = [
 const SettingArticle = ({ alt, imageSrc, heading, description }: SettingData) => (
   <article className={styles.setting_article}>
     <div className={styles.setting_image_wrapper}>
-      <Image fill alt={alt} src={imageSrc} />
+      <Image sizes="50vw" fill alt={alt} src={imageSrc} />
     </div>
     <div className={styles.setting_description}>
       <h3 className={clsx(styles.heading, styles.setting_h3)}>{heading}</h3>
