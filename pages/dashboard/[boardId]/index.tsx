@@ -4,9 +4,8 @@ import Button from "@/components/Buttons/Button/Button";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import sender from "@/apis/sender";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
-import Column from "@/components/Column/Column";
 import MenuLayout from "@/components/Menulayout/MenuLayout";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import stylesFromSingle from "@/modals/Modal.module.css";
 import ModalWrapper from "@/modals/ModalWrapper";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
@@ -14,7 +13,8 @@ import useInputController from "@/hooks/useInputController";
 import InputWrapper from "@/components/Input/InputWrapper";
 import Input from "@/components/Input/Input";
 import useApi from "@/hooks/useApi";
-import { CardData, ColumnData } from "@/types/api.type";
+import { ColumnData } from "@/types/api.type";
+import { Column } from "@/components/Column/Column";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -25,34 +25,22 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     data: { data: columnData },
   } = await sender.get({ path: "columns", id: Number(boardId), accessToken });
 
-  const cardListData = await Promise.all(
-    (columnData || []).map(async ({ id }) => {
-      const {
-        data: { cards },
-      } = await sender.get({ path: "cards", id: id, accessToken });
-
-      return cards;
-    })
-  );
-
   const {
     data: { members: assigneeList },
   } = await sender.get({ path: "members", id: Number(boardId), accessToken });
 
   return {
-    props: { accessToken, columnData, cardListData, assigneeList, boardId },
+    props: { accessToken, columnData, assigneeList, boardId },
   };
 };
 
 const Dashboard = ({
   accessToken,
   columnData,
-  cardListData,
   assigneeList,
   boardId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [cardList, setCardList] = useState<CardData[][]>(cardListData);
-  const [columnList, setColumList] = useState<ColumnData[]>(columnData);
+  const [columnList, setColumnList] = useState<ColumnData[]>(columnData);
   const [isCreateModal, setIsCreateModal] = useState(false);
 
   const handleCreateNewColumnModalToggle = () => {
@@ -79,13 +67,7 @@ const Dashboard = ({
     if (res?.status === 201) {
       createModal.input.setValue("");
       handleCreateNewColumnModalToggle();
-
-      const {
-        data: { cards },
-      } = await sender.get({ path: "cards", id: res.data.id, accessToken });
-
-      setCardList((prevValue) => [...prevValue, cards]);
-      setColumList((prevValue) => [...prevValue, res.data]);
+      setColumnList((prevValue) => [...prevValue, res.data]);
     }
   };
 
@@ -98,12 +80,13 @@ const Dashboard = ({
             {columnList.map((column, index) => {
               return (
                 <Column
+                  setColumnList={setColumnList}
+                  accessToken={accessToken}
                   columnId={column.id}
                   assigneeList={assigneeList}
                   title={column.title}
                   dashboardId={column.dashboardId}
                   key={column.id}
-                  cardList={cardList[index]}
                 />
               );
             })}

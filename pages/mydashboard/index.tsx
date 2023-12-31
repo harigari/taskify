@@ -70,7 +70,7 @@ export default function Mydashboard({
 
   return (
     <>
-      <MenuLayout>
+      <MenuLayout dashboardList={dashboardList}>
         <main>
           <section className={styles.container}>
             <article className={styles.dashboard}>

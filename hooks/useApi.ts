@@ -40,7 +40,7 @@ const useApi = <T extends Method, U extends PathProps<T>>(method: T, obj?: Requi
     })();
   }, [wrappedFunction, obj]);
 
-  return { pending, error, data, wrappedFunction };
+  return { pending, error, data, setData, wrappedFunction };
 };
 
 export default useApi;

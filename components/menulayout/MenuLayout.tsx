@@ -7,11 +7,11 @@ interface Props {
   children: ReactNode;
 }
 
-const MenuLayout = ({ children }: Props) => {
+const MenuLayout = ({ dashboardList, children }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.grid__sidemenu}>
-        <Sidemenu />
+        <Sidemenu dashboardList={dashboardList} />
       </div>
       <div className={styles.grid__header}>
         <Header />

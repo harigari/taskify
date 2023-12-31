@@ -1,4 +1,3 @@
-import { CardData, Member } from "@/types/api.type";
 import ChipNum from "../Chips/ChipNum/ChipNum";
 import ChipPlus from "../Chips/ChipPlus/ChipPlus";
 import ChipTodo from "../Chips/ChipTodo/ChipTodo";
@@ -7,25 +6,31 @@ import Card from "@/components/Card/Card";
 import stylesFromSingle from "@/modals/Modal.module.css";
 import Image from "next/image";
 import Button from "../Buttons/Button/Button";
-import { useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react";
 import MultiInputModal from "@/modals/MultiInputModal";
 import InputWrapper from "../Input/InputWrapper";
 import ModalWrapper from "@/modals/ModalWrapper";
-import ModalButton from "@/modals/components/ModalButton/ModalButton";
 import clsx from "clsx";
 import Input from "../Input/Input";
 import useInputController from "@/hooks/useInputController";
 import AlertModal from "@/modals/AlertModal";
+import useApi from "@/hooks/useApi";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import { CardData, ColumnData, Member } from "@/types/api.type";
+import ModalButton from "@/modals/components/ModalButton/ModalButton";
+import sender from "@/apis/sender";
 
 interface ColumnPorps {
-  cardList: CardData[];
+  accessToken: string;
   title: string;
-  columnId: number;
   dashboardId: number;
+  setColumnList: Dispatch<SetStateAction<ColumnData[]>>;
   assigneeList: Member[];
+  columnId: number;
 }
 
-const Column = ({ title, cardList, dashboardId, assigneeList, columnId }: ColumnPorps) => {
+export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId, setColumnList }: ColumnPorps) => {
+  const [cardList, setCardList] = useState<CardData[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isColumnDeleteModalOpen, setIsColumnDeleteModalOpen] = useState(false);
@@ -34,6 +39,19 @@ const Column = ({ title, cardList, dashboardId, assigneeList, columnId }: Column
     inputConfig: { id: "settingModal", initialValue: title },
     labelConfig: { labelName: "이름" },
   });
+
+  const { pending: deletePending, wrappedFunction: deleteData } = useApi("delete");
+
+  const { pending: putPending, wrappedFunction: putData } = useApi("put");
+
+  useEffect(() => {
+    (async function () {
+      const {
+        data: { cards },
+      } = await sender.get({ path: "cards", id: columnId, accessToken });
+      setCardList(cards);
+    })();
+  }, []);
 
   const handleCreateModalToggle = () => {
     setIsCreateModalOpen((prevValue) => !prevValue);
@@ -47,19 +65,59 @@ const Column = ({ title, cardList, dashboardId, assigneeList, columnId }: Column
     setIsColumnDeleteModalOpen((prevValue) => !prevValue);
   };
 
-  /**
-   * @todo 1. {teamId}/columns/{columnId}에서 페치
-   * @todo 2. handleSettingModalToggle를 사용해 모달 닫기
-   * @todo 3. settingModal.input.setValue(title)로 다시 값 초기화?
-   */
-  const handleFormSubmit = () => {};
+  const handleFormSubmit = async (e: FormEvent) => {
+    e.preventDefault();
 
-  /**
-   * @todo 1. {teamId}/columns/{columnId}에서 페치
-   * @todo 2. handleSettingModalToggle, handleDeleteodalToggle을 사용해 모달 둘 다 닫기
-   * @todo 3. settingModal.input.setValue(title)로 다시 값 초기화?
-   */
-  const handleColumnDelete = () => {};
+    const accessToken = getAccessTokenFromDocument("accessToken");
+
+    // const putRes = await putData({
+    //   path: "column",
+    //   id: columnId,
+    //   data: { title: settingModal.input.value },
+    //   accessToken,
+    // });
+
+    const putRes = await fetch("https://sp-taskify-api.vercel.app/1-7/columns/3406", {
+      body: JSON.stringify({ title: settingModal.input.value }),
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (putRes?.status === 200) {
+      setColumnList((prevValue) => {
+        const newData = prevValue.map((column) => {
+          if (column.id !== columnId) return column;
+
+          const value = settingModal.input.value;
+
+          const changedColumn = { ...column, title: value };
+
+          return changedColumn;
+        });
+
+        return newData;
+      });
+      handleSettingModalToggle();
+    }
+  };
+
+  const handleColumnDelete = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const deleteRes = await deleteData({ path: "column", id: columnId, accessToken });
+
+    if (deleteRes?.status === 204) {
+      handleSettingModalToggle();
+      handleDeleteodalToggle();
+      setColumnList((prevValue) => {
+        const newValue = prevValue.filter((column) => column.id !== columnId);
+        return newValue;
+      });
+    }
+  };
 
   return (
     <>
@@ -90,6 +148,7 @@ const Column = ({ title, cardList, dashboardId, assigneeList, columnId }: Column
 
       {isCreateModalOpen && (
         <MultiInputModal
+          setCardList={setCardList}
           title="할 일 생성"
           buttonText="생성"
           columnId={columnId}
@@ -131,5 +190,3 @@ const Column = ({ title, cardList, dashboardId, assigneeList, columnId }: Column
     </>
   );
 };
-
-export default Column;

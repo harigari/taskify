@@ -56,7 +56,7 @@ const Signup = () => {
     if (!res) return;
 
     if (res.status === 409 && "message" in res.data) {
-      emailWrapper.setErrorText(res.data.message);
+      emailWrapper.setErrorText(res.data.message as string);
       return;
     }
     if (res.status > 201) return;
@@ -66,7 +66,7 @@ const Signup = () => {
       password: passwordInput.value,
     };
 
-    const login = await sender.post({ path: "signin", signinData });
+    const login = await sender.post({ path: "signin", data: signinData });
     if (!login) return;
 
     if (login.status === 201 && !("message" in login.data)) {

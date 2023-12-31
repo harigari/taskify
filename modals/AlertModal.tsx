@@ -7,7 +7,7 @@ interface AlertModalProp {
   isDoubleButton?: boolean;
   alertText: string;
   handleModalClose: (e: MouseEvent) => void;
-  handleSubmit: () => void;
+  handleSubmit: (e: FormEvent) => void;
 }
 
 const AlertModal = ({ isDoubleButton = true, alertText, handleModalClose, handleSubmit }: AlertModalProp) => {

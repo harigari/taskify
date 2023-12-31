@@ -67,8 +67,7 @@ class Api {
       method: "DELETE",
       headers: { Authorization: `Bearer ${obj.accessToken}` },
     });
-    const data = await res.json();
-    return { status: res.status, data };
+    return { status: res.status, data: null };
   };
 }
 

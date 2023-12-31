@@ -4,13 +4,13 @@ import useInputController from "@/hooks/useInputController";
 import ModalWrapper from "./ModalWrapper";
 import ModalButton from "./components/ModalButton/ModalButton";
 import styles from "./Modal.module.css";
-import { FormEvent, MouseEvent, useState } from "react";
+import { Dispatch, FormEvent, MouseEvent, SetStateAction, useState } from "react";
 import DateTime from "./components/ModalInput/DateTime";
 import TagInput from "./components/ModalInput/TagInput";
 import ImageInput from "@/components/ImageInput/ImageInput";
 import InputDropdown from "./components/InputDropdown/InputDropdown";
 import useDropdownController from "@/hooks/useDropdownController";
-import { Member } from "@/types/api.type";
+import { CardData, Member } from "@/types/api.type";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import useApi from "@/hooks/useApi";
 import formatDateString from "@/utils/formatDateString";
@@ -20,6 +20,7 @@ interface MultiInputModalProp {
   buttonText: string;
   columnId: number;
   dashboardId: number;
+  setCardList: Dispatch<SetStateAction<CardData[]>>;
   assigneeList: Member[];
   handleModalClose: () => void;
 }
@@ -29,6 +30,7 @@ const MultiInputModal = ({
   buttonText,
   handleModalClose,
   columnId,
+  setCardList,
   dashboardId,
   assigneeList,
 }: MultiInputModalProp) => {
@@ -61,7 +63,7 @@ const MultiInputModal = ({
   const data = {
     columnId,
     dashboardId,
-    assigneeUserId: modalDropdown.value?.userId,
+    assigneeUserId: modalDropdown.value?.userId!,
     title: modalTitle.input.value,
     description: modalExplain.input.value,
     dueDate: formatDateString(String(modalDate.dateTime.date), "yyyy-MM-dd HH:mm"),
@@ -72,6 +74,10 @@ const MultiInputModal = ({
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    for (const value of Object.values(data)) {
+      if (!value) return;
+    }
 
     const accessToken = getAccessTokenFromDocument("accessToken");
 
@@ -100,16 +106,10 @@ const MultiInputModal = ({
 
       const dataWithImage = { ...data, imageUrl };
 
-      const cardRes = await fetch(`https://sp-taskify-api.vercel.app/1-7/cards`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(dataWithImage),
-      });
+      const cardRes = await postData({ path: "card", data: dataWithImage, accessToken });
 
       if (cardRes?.status === 201) {
+        setCardList((prevValue) => [...prevValue, cardRes.data]);
         handleModalClose();
       }
     }

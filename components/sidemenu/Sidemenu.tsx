@@ -4,40 +4,40 @@ import Link from "next/link";
 import { useState } from "react";
 import styles from "./Sidemenu.module.css";
 
-const MOCKUP = [
-  {
-    id: 1,
-    title: "행복해서",
-    color: "green",
-    createdByMe: true,
-  },
-  {
-    id: 2,
-    title: "웃는게 아니라",
-    color: "purple",
-    createdByMe: true,
-  },
-  {
-    id: 3,
-    title: "웃어서",
-    color: "orange",
-    createdByMe: false,
-  },
-  {
-    id: 4,
-    title: "행복한거다",
-    color: "blue",
-    createdByMe: false,
-  },
-  {
-    id: 5,
-    title: "중요!",
-    color: "pink",
-    createdByMe: true,
-  },
-];
+// const MOCKUP = [
+//   {
+//     id: 1,
+//     title: "행복해서",
+//     color: "green",
+//     createdByMe: true,
+//   },
+//   {
+//     id: 2,
+//     title: "웃는게 아니라",
+//     color: "purple",
+//     createdByMe: true,
+//   },
+//   {
+//     id: 3,
+//     title: "웃어서",
+//     color: "orange",
+//     createdByMe: false,
+//   },
+//   {
+//     id: 4,
+//     title: "행복한거다",
+//     color: "blue",
+//     createdByMe: false,
+//   },
+//   {
+//     id: 5,
+//     title: "중요!",
+//     color: "pink",
+//     createdByMe: true,
+//   },
+// ];
 
-const Sidemenu = () => {
+const Sidemenu = ({ dashboardList }) => {
   const [selected, setSelected] = useState(0);
 
   return (
@@ -63,7 +63,7 @@ const Sidemenu = () => {
         </button>
       </div>
       <ul className={styles.list}>
-        {MOCKUP.map((board) => (
+        {dashboardList?.map((board) => (
           <li key={board.id}>
             <button
               className={clsx(styles.item__button, { [styles.selected]: board.id === selected })}
