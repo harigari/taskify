@@ -34,7 +34,6 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isColumnDeleteModalOpen, setIsColumnDeleteModalOpen] = useState(false);
-
   const settingModal = useInputController({
     inputConfig: { id: "settingModal", initialValue: title },
     labelConfig: { labelName: "이름" },
@@ -61,7 +60,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
     setIsSettingModalOpen((prevValue) => !prevValue);
   };
 
-  const handleDeleteodalToggle = () => {
+  const handleDeleteModalToggle = () => {
     setIsColumnDeleteModalOpen((prevValue) => !prevValue);
   };
 
@@ -77,7 +76,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
     //   accessToken,
     // });
 
-    const putRes = await fetch("https://sp-taskify-api.vercel.app/1-7/columns/3406", {
+    const putRes = await fetch(`https://sp-taskify-api.vercel.app/1-7/columns/${columnId}`, {
       body: JSON.stringify({ title: settingModal.input.value }),
       method: "PUT",
       headers: {
@@ -111,7 +110,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
 
     if (deleteRes?.status === 204) {
       handleSettingModalToggle();
-      handleDeleteodalToggle();
+      handleDeleteModalToggle();
       setColumnList((prevValue) => {
         const newValue = prevValue.filter((column) => column.id !== columnId);
         return newValue;
@@ -141,7 +140,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
             <ChipPlus size="lg" />
           </Button>
           {cardList.map((card) => (
-            <Card key={card.id} {...card} />
+            <Card key={card.id} columnTitle={title} data={card} setCardList={setCardList} />
           ))}
         </div>
       </div>
@@ -170,7 +169,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
             </div>
 
             <div className={clsx(stylesFromSingle.buttonContainer, stylesFromSingle.deleteButton)}>
-              <button className={stylesFromSingle.button} onClick={handleDeleteodalToggle} type="button">
+              <button className={stylesFromSingle.button} onClick={handleDeleteModalToggle} type="button">
                 삭제하기
               </button>
 
@@ -182,7 +181,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
 
       {isColumnDeleteModalOpen && (
         <AlertModal
-          handleModalClose={handleDeleteodalToggle}
+          handleModalClose={handleDeleteModalToggle}
           alertText="컬럼의 모든 카드가 삭제됩니다."
           handleSubmit={handleColumnDelete}
         />

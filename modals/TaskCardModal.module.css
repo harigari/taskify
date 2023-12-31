@@ -74,27 +74,33 @@
   height: 2rem;
   background-color: var(--gray30);
 }
+
 .chips {
   display: flex;
-  gap: 2rem;
+  gap: 1.6rem;
+  flex-grow: 1;
 }
 
 .tags {
   display: flex;
-  gap: 1.6rem;
+  flex-wrap: wrap;
+  flex: 1;
+  gap: 0.6rem;
 }
 
 .description {
   display: flex;
   overflow: auto;
 
-  height: 10rem;
+  max-height: 10rem;
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 2.4rem;
 }
 
 .image_wrapper {
+  border-radius: 0.6rem;
+  box-shadow: 2rem 2rem 5rem var(--gray20);
   margin-bottom: 0.9rem;
   overflow: hidden;
   position: relative;
@@ -103,7 +109,6 @@
 }
 
 .image_wrapper img {
-  border-radius: 0.6rem;
   object-fit: cover;
 }
 
@@ -117,7 +122,7 @@
   flex-direction: column;
   overflow: auto;
 
-  height: 7rem;
+  max-height: 8rem;
 }
 .comments > div:first-child {
   margin-top: 0.5rem;

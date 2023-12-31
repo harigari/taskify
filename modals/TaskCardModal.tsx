@@ -1,5 +1,4 @@
-import React, { useRef, useState, FocusEvent, FormEvent, MouseEvent } from "react";
-import { TaskInfo } from "./Modal.type";
+import React, { useRef, useState, FocusEvent, FormEvent, MouseEvent, Dispatch, SetStateAction } from "react";
 import styles from "./TaskCardModal.module.css";
 import Image from "next/image";
 import ChipTodo from "../components/Chips/ChipTodo/ChipTodo";
@@ -12,13 +11,18 @@ import CommentInput from "@/modals/components/ModalInput/CommentInput";
 import ModalWrapper from "./ModalWrapper";
 import MultiInputModal from "./MultiInputModal";
 import AlertModal from "./AlertModal";
+import { CardData } from "@/types/api.type";
+import useApi from "@/hooks/useApi";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 
 interface TaskCardInfoProps {
-  data: TaskInfo;
-  handleModalClose: (e: MouseEvent) => void;
+  columnTitle: string;
+  data: CardData;
+  setCardList: Dispatch<SetStateAction<CardData[]>>;
+  handleModalClose: () => void;
 }
 
-const TaskCardModal = ({ data, handleModalClose }: TaskCardInfoProps) => {
+const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: TaskCardInfoProps) => {
   const [isKebabOpen, setIsKebabOpen] = useState(false);
   const [isModifyModalOpen, setModifyModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -37,21 +41,13 @@ const TaskCardModal = ({ data, handleModalClose }: TaskCardInfoProps) => {
   };
 
   // 수정하기 모달 열고 닫기
-  const handleModifyModalOpen = () => {
-    setModifyModalOpen(true);
-  };
-
-  const handleModifyModalClose = () => {
-    setModifyModalOpen(false);
+  const handleModifyModalToggle = () => {
+    setModifyModalOpen((prevValue) => !prevValue);
   };
 
   // 삭제하기 모달 열고 닫기
-  const handleDeleteModalOpen = () => {
-    setDeleteModalOpen(true);
-  };
-
-  const handleDeleteModalClose = () => {
-    setDeleteModalOpen(false);
+  const handleDeleteModalToggle = () => {
+    setDeleteModalOpen((prevValue) => !prevValue);
   };
 
   const comment = useInputController({
@@ -59,7 +55,24 @@ const TaskCardModal = ({ data, handleModalClose }: TaskCardInfoProps) => {
     labelConfig: { labelName: "댓글", mobile: true },
   });
 
-  const handleSubmit = (e: FormEvent) => {
+  const { pending, wrappedFunction: deleteData } = useApi("delete");
+
+  const handleCardDelete = async (e: FormEvent) => {
+    e.preventDefault();
+    const accessToken = getAccessTokenFromDocument("accessToken");
+    const res = await deleteData({ path: "card", id: data.id, accessToken });
+
+    if (res?.status === 204) {
+      handleDeleteModalToggle();
+      handleModalClose();
+      setCardList((prevValue) => {
+        const newCardList = prevValue.filter((card) => card.id !== data.id);
+        return newCardList;
+      });
+    }
+  };
+
+  const handleCommentSubmit = (e: FormEvent) => {
     e.preventDefault();
     // api 리퀘스트로 댓글 내용 보내기
   };
@@ -102,7 +115,7 @@ const TaskCardModal = ({ data, handleModalClose }: TaskCardInfoProps) => {
             </button>
             {isKebabOpen && (
               <div className={styles.options} ref={optionsRef}>
-                <button className={styles.option} onClick={handleModifyModalOpen}>
+                <button className={styles.option} onClick={handleModifyModalToggle}>
                   수정하기
                 </button>
                 {isModifyModalOpen && (
@@ -111,19 +124,23 @@ const TaskCardModal = ({ data, handleModalClose }: TaskCardInfoProps) => {
                     buttonText="수정"
                     columnId={1}
                     dashboardId={1}
-                    handleModalClose={handleModifyModalClose}
+                    handleModalClose={handleModifyModalToggle}
                   />
                 )}
-                <button className={styles.option} onClick={handleDeleteModalOpen}>
+                <button className={styles.option} onClick={handleDeleteModalToggle}>
                   삭제하기
                 </button>
                 {isDeleteModalOpen && (
-                  <AlertModal alertText="카드를 삭제하시겠습니까?" handleModalClose={handleDeleteModalClose} />
+                  <AlertModal
+                    handleSubmit={handleCardDelete}
+                    alertText="카드를 삭제하시겠습니까?"
+                    handleModalClose={handleDeleteModalToggle}
+                  />
                 )}
               </div>
             )}
-            <button className={styles.icon}>
-              <Image src="/icons/icon-close.svg" alt="창닫기 아이콘" width={32} height={32} />
+            <button type="button" className={styles.icon} onClick={handleModalClose}>
+              <Image src="/icons/icon-close-black.svg" alt="창닫기 아이콘" width={32} height={32} />
             </button>
           </div>
         </div>
@@ -133,7 +150,7 @@ const TaskCardModal = ({ data, handleModalClose }: TaskCardInfoProps) => {
             <div className={styles.chips}>
               {/* 칼럼 아이디, 대시보드 아이디로 조회해서 가져와야하는 부분 */}
               <ChipTodo size="lg" color="purple">
-                To Do
+                {columnTitle}
               </ChipTodo>
               <div className={styles.separator}></div>
               <div className={styles.tags}>
@@ -146,10 +163,12 @@ const TaskCardModal = ({ data, handleModalClose }: TaskCardInfoProps) => {
             </div>
 
             <div className={styles.description}>{data.description}</div>
-            <div className={styles.image_wrapper}>
-              <Image fill src={data.imageUrl} alt="할 일 카드 이미지" />
-            </div>
-            <form className={styles.form} onSubmit={handleSubmit}>
+            {data.imageUrl && (
+              <div className={styles.image_wrapper}>
+                <Image fill src={data.imageUrl} alt="할 일 카드 이미지" />
+              </div>
+            )}
+            <form className={styles.form} onSubmit={handleCommentSubmit}>
               <InputWrapper {...comment.wrapper}>
                 <CommentInput disabled={!comment.input.value} {...comment.textarea}>
                   입력
