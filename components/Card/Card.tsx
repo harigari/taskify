@@ -60,7 +60,7 @@ const Card = ({ data, columnTitle, setCardList }: CardProps) => {
                   width={20}
                   height={20}
                 />
-                <span className={styles.date}>{formatDateString(data.dueDate, "yyyy.MM.dd")}</span>
+                <span className={styles.date}>{formatDateString(data.dueDate, "KOREA", "yyyy.MM.dd")}</span>
               </div>
               <ProfileIcon member={data.assignee} size="sm" />
             </div>

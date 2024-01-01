@@ -111,9 +111,9 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
         </div>
 
         <div className={styles.body}>
+          {/* 칩 부분 */}
           <div className={styles.first}>
             <div className={styles.chips}>
-              {/* 칼럼 아이디, 대시보드 아이디로 조회해서 가져와야하는 부분 */}
               <ChipTodo size="lg" color="purple">
                 {columnTitle}
               </ChipTodo>
@@ -127,12 +127,14 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
               </div>
             </div>
 
+            {/* 설명 및 사진 */}
             <div className={styles.description}>{data.description}</div>
             {data.imageUrl && (
               <div className={styles.image_wrapper}>
                 <Image fill src={data.imageUrl} alt="할 일 카드 이미지" />
               </div>
             )}
+            {/* 댓글 리스트 */}
             <CommentList cardData={data} />
           </div>
 

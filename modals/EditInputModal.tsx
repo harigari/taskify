@@ -89,7 +89,7 @@ const EditInputModal = ({ title, buttonText, handleModalClose, setCardList, init
     assigneeUserId: modalDropdown.value?.userId!,
     title: modalTitle.input.value,
     description: modalExplain.input.value,
-    dueDate: formatDateString(String(modalDate.dateTime.date), "yyyy-MM-dd HH:mm"),
+    dueDate: formatDateString(String(modalDate.dateTime.date), "KOREA", "yyyy-MM-dd HH:mm"),
     tags: tagList,
   };
 

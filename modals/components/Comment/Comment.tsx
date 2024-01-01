@@ -23,10 +23,12 @@ const Comment = ({ data, setData }: CommentProps) => {
 
   const { wrappedFunction: deleteData } = useApi("delete");
 
+
+  // 댓글 삭제 기능 
   const handleDeleteSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const res = await deleteData({ path: "comment", id: data.id, accessToken });
-    console.log(res);
+
     if (res?.status === 204) {
       setIsDeleteModalOpen(false);
       setData((prev) => prev?.filter((v) => v.id !== data.id));
@@ -41,7 +43,7 @@ const Comment = ({ data, setData }: CommentProps) => {
       <div className={styles.detail}>
         <div className={styles.header}>
           <span className={styles.author}>{data.author.nickname}</span>
-          <span className={styles.createdAt}>{formatDate(data.createdAt)}</span>
+          <span className={styles.createdAt}>{formatDate(data.createdAt, "UTC", "yyyy.MM.dd HH:mm" )}</span>
         </div>
         <div className={styles.comment}>{data.content}</div>
         <div className={styles.buttons}>

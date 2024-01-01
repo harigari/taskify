@@ -36,6 +36,7 @@ const CommentList = ({ cardData }: CommentListProps) => {
       }
     })();
   }, []);
+  
   // 댓글 추가하기
   const { pending: postPending, wrappedFunction: postData } = useApi("post");
   const handleCommentSubmit = async (e: FormEvent) => {
