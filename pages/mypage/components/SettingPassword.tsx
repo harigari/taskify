@@ -1,19 +1,22 @@
 import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
 import Button from "@/components/Buttons/Button/Button";
-import { mypageCurrentPassword, mypageNewPasswordCheck } from "@/constants/inputConfig";
+import { signinPassword, mypageCurrentPassword, mypageNewPasswordCheck } from "@/constants/inputConfig";
 import useInputController from "@/hooks/useInputController";
 import { isCurrentPassword, isValue } from "@/utils/vaildate";
 import { mypageNewPassword } from "../../../constants/inputConfig";
 import styles from "./SettingPassword.module.css";
-
+import useApi from "@/hooks/useApi";
+import { useState } from "react";
+import AlertModal from "@/modals/AlertModal";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 const SettingPassword = () => {
-  const currentPassword = "codeit101!";
-  const { wrapper: currentWrapper, input: currentInput } = useInputController(
-    Object.assign(mypageCurrentPassword, {
-      errorConfig: [[isCurrentPassword(currentPassword)], [isValue]],
-    })
-  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleModalToggle = () => {
+    setIsModalOpen((prev) => !prev);
+  };
+
+  const { wrapper: currentWrapper, input: currentInput } = useInputController(mypageCurrentPassword);
   const { wrapper: passwordWrapper, input: passwordInput } = useInputController(mypageNewPassword);
   const { wrapper: passwordCheckWrapper, input: passwordCheckInput } = useInputController(mypageNewPasswordCheck);
 
@@ -22,6 +25,29 @@ const SettingPassword = () => {
     [passwordWrapper, passwordInput],
     [passwordCheckWrapper, passwordCheckInput],
   ];
+
+  const { pending, wrappedFunction: putData } = useApi("put");
+  const handleSubmit = async () => {
+    if (pending) {
+      return;
+    }
+    const accessToken = getAccessTokenFromDocument("accessToken");
+    const res = await putData({
+      path: "passwordChange",
+      data: {
+        password: currentInput.value,
+        newPassword: passwordInput.value,
+      },
+      accessToken,
+    });
+    // if (res?.status === 204) {
+    //   handleModalToggle();
+    //   return;
+    // }
+
+    if (res?.status === 204) {
+    }
+  };
 
   return (
     <article className={styles.container}>
@@ -40,9 +66,11 @@ const SettingPassword = () => {
           disabled={inputs.some(([wrapper, input]) => {
             return !!wrapper.errorText || !input.value;
           })}
+          onClick={handleSubmit}
         >
           변경
         </Button>
+        {isModalOpen && <AlertModal alertText="현재 비밀번호가 틀렸습니다" handleModalClose={handleModalToggle} />}
       </div>
     </article>
   );

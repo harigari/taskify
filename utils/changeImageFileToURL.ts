@@ -20,4 +20,23 @@ const changeImageFileToURL = async (imageFile: File, columnId: number, accessTok
   return imageUrl;
 };
 
+export const changeImageFileToURLForUserProfile = async (imageFile: File, accessToken: string | undefined) => {
+  const imageFormData = new FormData();
+  imageFormData.append("image", imageFile);
+
+  const imageRes = await sender.post({
+    path: "myImage",
+    data: imageFormData,
+    accessToken,
+  });
+
+  if (!imageRes) return;
+
+  const {
+    data: { profileImageUrl },
+  } = imageRes;
+
+  return profileImageUrl;
+};
+
 export default changeImageFileToURL;

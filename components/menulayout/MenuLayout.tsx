@@ -16,7 +16,7 @@ const MenuLayout = ({ dashboardList, children }: Props) => {
         <Sidemenu dashboardList={dashboardList} />
       </div>
       <div className={styles.grid__header}>
-        <Header />
+        <Header dashboardList={dashboardList} />
       </div>
       <div className={styles.grid__main}>{children}</div>
     </div>

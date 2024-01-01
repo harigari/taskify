@@ -35,6 +35,12 @@
   cursor: pointer;
 }
 
+.info__imageinput label > div {
+  width: 18rem;
+  height: 18rem;
+  padding: 7.7rem;
+}
+
 .info__nickname {
   display: flex;
   gap: 1rem;

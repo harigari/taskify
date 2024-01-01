@@ -48,14 +48,16 @@ type Return_post_signup = ExtendedUserType;
 
 type Req_put_me = {
   nickname: string;
-  profileImageUrl: string;
+  profileImageUrl?: string;
 };
 
 type Return_put_me = ExtendedUserType;
 
 type Req_post_myImage = FormData;
 
-type Return_post_myImage = ImageUrlType;
+type Return_post_myImage = {
+  profileImageUrl: string;
+};
 
 // 카드 관련 타입
 export type CardData = {
@@ -344,8 +346,10 @@ export type RequestData<T, U> = T extends "post"
     ? Req_post_signin
     : U extends "signup"
     ? Req_post_signup
-    : U extends "myImage" | "cardImage"
+    : U extends "myImage"
     ? Req_post_myImage
+    : U extends "cardImage"
+    ? Req_post_cardImage
     : null
   : T extends "put"
   ? U extends "card"
@@ -402,8 +406,10 @@ export type ReturnData<T, U> = T extends "get"
     ? Return_post_dashboard
     : U extends "invitation"
     ? Return_post_invitation
-    : U extends "myImage" | "cardImage"
-    ? ImageUrlType
+    : U extends "myImage"
+    ? Return_post_myImage
+    : U extends "cardImage"
+    ? Return_post_cardImage
     : any
   : T extends "put"
   ? U extends "card"

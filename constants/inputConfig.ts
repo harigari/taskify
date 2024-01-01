@@ -77,7 +77,7 @@ export const signupPasswordCheck: Configs = {
 };
 
 export const mypageCurrentPassword: Configs = {
-  errorConfig: [],
+  errorConfig: [[isReg], [isValue]],
   inputConfig: {
     id: "current__password",
     type: "password",
@@ -89,7 +89,7 @@ export const mypageCurrentPassword: Configs = {
 };
 
 export const mypageNewPassword: Configs = {
-  errorConfig: [[isReg], [isValue]],
+  errorConfig: [[isSamePassword], [isReg], [isValue]],
   inputConfig: {
     id: "new__password",
     type: "password",
@@ -150,6 +150,7 @@ export const multiModalDate = (initialvalue?: string): Configs => {
 
   return obj;
 };
+
 export const multiModalTag = (initialvalue?: string): Configs => {
   const obj = {
     inputConfig: { id: "tag", type: "text", placeholder: "입력 후 Enter", initialvalue: "" },

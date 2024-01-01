@@ -19,20 +19,22 @@ const ProfileIcon = ({ member, size, ...props }: ProfileIconProps) => {
   return (
     <button className={styles.member} {...props}>
       {member.profileImageUrl ? (
-        <Image
-          className={clsx(styles.member__image, { [styles.card]: size === "sm" })}
-          width={40}
-          height={40}
-          src={member.profileImageUrl}
-          alt={member.nickname}
-        />
+        <div className={styles.profileImageWrapper}>
+          <Image
+            className={clsx(styles.member__image, { [styles.card]: size === "sm" })}
+            fill
+            src={member.profileImageUrl}
+            alt={member.nickname}
+          />
+        </div>
       ) : (
         <div
           className={clsx(styles.member__defaultimage, { [styles.card]: size === "sm" })}
           style={{ backgroundColor: makeColorProfile(member.nickname) }}
-        />
+        >
+          <span className={styles.member__name}>{member.nickname.slice(0, 1)}</span>
+        </div>
       )}
-      <span className={styles.member__name}>{member.nickname.slice(0, 1)}</span>
     </button>
   );
 };

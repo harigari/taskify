@@ -1,4 +1,4 @@
-import { BasicUserType } from "@/types/api.type";
+import { ExtendedUserType } from "@/types/api.type";
 import makeColorProfile from "@/utils/makeColorProfile";
 import clsx from "clsx";
 import Image from "next/image";
@@ -13,13 +13,14 @@ type HandlerFunc = {
 };
 
 interface ProfileIconProps extends HandlerFunc {
-  member: BasicUserType;
+  member?: ExtendedUserType;
   size?: "sm" | "lg";
   tabIndex?: number;
   className?: string;
 }
 
 const ProfileIcon = ({ member, size = "lg", ...props }: ProfileIconProps) => {
+  if (!member) return;
   return (
     <button className={clsx(styles.member, { [styles.member__image__small]: size === "sm" })} {...props}>
       {member.profileImageUrl ? (
