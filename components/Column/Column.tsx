@@ -19,6 +19,7 @@ import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import { CardData, ColumnData, Member } from "@/types/api.type";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
 import sender from "@/apis/sender";
+import { useRouter } from "next/router";
 
 interface ColumnProps {
   accessToken: string;
@@ -41,6 +42,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
 
   const { pending: deletePending, wrappedFunction: deleteData } = useApi("delete");
 
+  const router = useRouter();
   useEffect(() => {
     (async function () {
       const {
@@ -48,7 +50,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
       } = await sender.get({ path: "cards", id: columnId, accessToken });
       setCardList(cards);
     })();
-  }, []);
+  }, [router.query]);
 
   const handleCreateModalToggle = () => {
     setIsCreateModalOpen((prevValue) => !prevValue);

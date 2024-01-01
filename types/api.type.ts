@@ -102,8 +102,8 @@ type Req_put_card = {
   title: string;
   description: string;
   dueDate: string;
-  tags: [string];
-  imageUrl: string;
+  tags: string[];
+  imageUrl?: string;
 };
 
 type Return_put_card = CardData;

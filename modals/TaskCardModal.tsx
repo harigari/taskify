@@ -69,6 +69,11 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
     }
   };
 
+  const handleAllModalClose = () => {
+    handleModalClose();
+    setCardModifyModalOpen(false);
+  };
+
   return (
     <ModalWrapper size="lg">
       <div className={styles.modal_wrapper}>
@@ -91,6 +96,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
                     buttonText="수정"
                     setCardList={setCardList}
                     handleModalClose={handleModifyModalToggle}
+                    handleAllModalClose={handleAllModalClose}
                   />
                 )}
                 <button className={styles.option} onClick={handleDeleteModalToggle}>
@@ -129,7 +135,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
             </div>
 
             {/* 설명 및 사진 */}
-            <div className={styles.description}>{data.description}</div>
+            <p className={styles.description}>{data.description}</p>
             {data.imageUrl && (
               <div className={styles.image_wrapper}>
                 <Image fill src={data.imageUrl} alt="할 일 카드 이미지" />

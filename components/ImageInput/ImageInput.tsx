@@ -1,15 +1,25 @@
 import Image from "next/image";
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import {
+  MouseEventHandler,
+  KeyboardEventHandler,
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styles from "./ImageInput.module.css";
 
 interface ImageInputProp {
   setImageFile: Dispatch<SetStateAction<File | null>>;
   imageFile: File | null;
+  initialvalue?: string;
 }
 
-function ImageInput({ setImageFile, imageFile }: ImageInputProp) {
+function ImageInput({ setImageFile, imageFile, initialvalue = "" }: ImageInputProp) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [preview, setPreview] = useState<string>("");
+  const [preview, setPreview] = useState<string>(initialvalue);
   const [hover, setHover] = useState(false);
 
   const handleMouseOver = () => {
@@ -40,7 +50,7 @@ function ImageInput({ setImageFile, imageFile }: ImageInputProp) {
   }, [imageFile]);
 
   return (
-    <div className={styles.root} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+    <button className={styles.root} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
       <label htmlFor="imageFile" className={styles.label}>
         <Image className={styles.image} src={preview ? preview : "/icons/icon-add_file.svg"} fill alt="" />
         {hover && preview && (
@@ -57,7 +67,7 @@ function ImageInput({ setImageFile, imageFile }: ImageInputProp) {
         accept="image/jpeg, image/png"
         ref={inputRef}
       />
-    </div>
+    </button>
   );
 }
 

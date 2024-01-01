@@ -90,6 +90,7 @@ button.deleteButton {
 
 .currentImage img {
   object-fit: cover;
+  border-radius: 0.6rem;
 }
 
 @media (max-width: 767px) {

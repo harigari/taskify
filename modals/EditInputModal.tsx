@@ -3,7 +3,7 @@ import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
 import useDropdownController from "@/hooks/useDropdownController";
 import useInputController from "@/hooks/useInputController";
-import { CardData, Member } from "@/types/api.type";
+import { CardData, ColumnData, Member } from "@/types/api.type";
 import formatDateString from "@/utils/formatDateString";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import Image from "next/image";
@@ -19,11 +19,37 @@ import sender from "@/apis/sender";
 import Dropdown from "./components/Dropdown/Dropdown";
 import { multiModalDate, multiModalExplain, multiModalTag, multiModalTitle } from "@/constants/inputConfig";
 
+const sortColumnTitle = (columnList: ColumnData[]) => {
+  if (columnList) {
+    let columnTitleList: string[] = [];
+    for (const v of columnList) {
+      columnTitleList.push(v.title);
+    }
+
+    return columnTitleList;
+  }
+};
+
+const findColumnId = (columnList: ColumnData[], value: string | undefined): number => {
+  if (columnList) {
+    let id: number;
+
+    for (const v of columnList) {
+      if (v.title === value) {
+        id = v.id;
+
+        return id;
+      }
+    }
+  }
+};
+
 interface EditInputModalProp {
   title: string;
   buttonText: string;
   setCardList: Dispatch<SetStateAction<CardData[]>>;
   handleModalClose: () => void;
+  handleAllModalClose: () => void;
   initialvalue: CardData;
   columnTitle: string;
 }
@@ -32,6 +58,7 @@ const EditInputModal = ({
   title,
   buttonText,
   handleModalClose,
+  handleAllModalClose,
   setCardList,
   initialvalue,
   columnTitle,
@@ -52,6 +79,18 @@ const EditInputModal = ({
     })();
   }, []);
 
+  const [columnList, setColumnList] = useState<ColumnData[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const optionRes = await sender.get({ path: "columns", id: dashboardId, accessToken });
+
+      if (optionRes?.status === 200) {
+        setColumnList(optionRes.data.data);
+      }
+    })();
+  }, []);
+
   const modalTitle = useInputController(multiModalTitle(initialvalue.title));
   const modalExplain = useInputController(multiModalExplain(initialvalue.description));
   const modalDate = useInputController(multiModalDate(initialvalue.dueDate));
@@ -62,7 +101,7 @@ const EditInputModal = ({
   });
 
   const modalColumnDropdown = useDropdownController({
-    options: ["테스트 컬럼", "가나다"],
+    options: sortColumnTitle(columnList),
     initialValue: columnTitle,
   });
 
@@ -76,23 +115,35 @@ const EditInputModal = ({
 
   const [imageFile, setImageFile] = useState<File | null>(null);
 
-  const data = {
-    columnId,
-    dashboardId,
-    assigneeUserId: modalAssigneeDropdown.value?.userId!,
-    title: modalTitle.input.value,
-    description: modalExplain.input.value,
-    dueDate: formatDateString(String(modalDate.dateTime.date), "KOREA", "yyyy-MM-dd HH:mm"),
-    tags: tagList,
-  };
-
-  const handleSubmit = (e: FormEvent) => {
+  const handleEditSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    const data = {
+      columnId: findColumnId(columnList, modalColumnDropdown.value),
+      dashboardId,
+      assigneeUserId: modalAssigneeDropdown.value?.userId as number,
+      title: modalTitle.input.value,
+      description: modalExplain.input.value,
+      dueDate: formatDateString(String(modalDate.dateTime.date), "KOREA", "yyyy-MM-dd HH:mm"),
+      tags: tagList,
+      imageUrl: initialvalue.imageUrl,
+    };
+
+    for (const v of Object.values(data)) {
+      if (!v) return;
+    }
+
+    const res = await sender.put({ path: "card", id: initialvalue.id, data, accessToken });
+
+    if (res.status < 300) {
+      router.push(`/dashboard/${initialvalue.dashboardId}`);
+      handleAllModalClose();
+    }
   };
 
   return (
     <ModalWrapper size="sm">
-      <form className={styles.form} onSubmit={handleSubmit} noValidate>
+      <form className={styles.form} onSubmit={handleEditSubmit} noValidate>
         <div className={styles.modal}>
           <div className={styles.modalTitle}>{title}</div>
           <div className={styles.dropdownContainer}>
@@ -118,12 +169,7 @@ const EditInputModal = ({
           <div>
             <div className={styles.imageFileInputTitle}>이미지</div>
             <div className={styles.imageFileInput}>
-              {initialvalue.imageUrl ? (
-                <div className={styles.currentImage}>
-                  <Image fill src={initialvalue.imageUrl} alt="현재 등록되어 있는 할 일 이미지" />
-                </div>
-              ) : null}
-              <ImageInput imageFile={imageFile} setImageFile={setImageFile} />
+              <ImageInput initialvalue={initialvalue.imageUrl} imageFile={imageFile} setImageFile={setImageFile} />
             </div>
           </div>
         </div>
