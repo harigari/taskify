@@ -91,7 +91,7 @@ type Req_post_card = {
   description: string;
   dueDate: string;
   tags: string[];
-  imageUrl: string;
+  imageUrl?: string;
 };
 
 type Return_post_card = CardData;
