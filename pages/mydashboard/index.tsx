@@ -3,9 +3,8 @@ import TablePagenation from "@/components/Table/TablePagination/TablePagination"
 import Image from "next/image";
 import styles from "./index.module.css";
 import stylesFromSingle from "@/modals/Modal.module.css";
-import MenuLayout from "@/components/MenuLayout/MenuLayout";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import useInputController from "@/hooks/useInputController";
 import ModalWrapper from "@/modals/ModalWrapper";
 import InputWrapper from "@/components/Input/InputWrapper";
@@ -17,6 +16,7 @@ import { ColorType, DashBoardData } from "@/types/api.type";
 import Link from "next/link";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import useApi from "@/hooks/useApi";
+import MenuLayout from "@/components/MenuLayout/MenuLayout";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;

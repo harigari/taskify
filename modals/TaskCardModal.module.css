@@ -109,7 +109,7 @@
 }
 
 .image_wrapper img {
-  object-fit: contain;
+  object-fit: cover;
 }
 
 @media (max-width: 1200px) {

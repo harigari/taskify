@@ -17,7 +17,7 @@
 .imageWrapper img {
   width: 27.4rem;
   height: 16rem;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .cardContentContainer {

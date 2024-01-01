@@ -19,6 +19,11 @@ const CommentList = ({ cardData }: CommentListProps) => {
     labelConfig: { labelName: "댓글", mobile: true },
   });
 
+  const commentEdit = useInputController({
+    inputConfig: { id: "comment", type: "text" },
+    labelConfig: {},
+  });
+
   // 댓글 가져오기
   const accessToken = getAccessTokenFromDocument("accessToken");
   const [commentList, setCommentList] = useState<CommentData[]>([]);
@@ -36,7 +41,7 @@ const CommentList = ({ cardData }: CommentListProps) => {
       }
     })();
   }, []);
-  
+
   // 댓글 추가하기
   const { pending: postPending, wrappedFunction: postData } = useApi("post");
   const handleCommentSubmit = async (e: FormEvent) => {
@@ -59,6 +64,9 @@ const CommentList = ({ cardData }: CommentListProps) => {
       comment.input.setValue("");
     }
   };
+
+  const [editingId, setEditingId] = useState<number>();
+
   return (
     <>
       <form className={styles.form} onSubmit={handleCommentSubmit}>
@@ -69,9 +77,17 @@ const CommentList = ({ cardData }: CommentListProps) => {
         </InputWrapper>
       </form>
       <div className={styles.comments}>
-        {commentList?.map((comment) => (
-          <Comment key={comment.id} data={comment} setData={setCommentList} />
-        ))}
+        {commentList?.map((comment) =>
+          comment.id === editingId ? (
+            <InputWrapper key={comment.id} {...commentEdit.wrapper}>
+              <CommentInput disabled={!commentEdit.input.value} {...commentEdit.textarea}>
+                입력
+              </CommentInput>
+            </InputWrapper>
+          ) : (
+            <Comment key={comment.id} data={comment} setData={setCommentList} setEditingId={setEditingId} />
+          )
+        )}
       </div>
     </>
   );

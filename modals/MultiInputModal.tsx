@@ -4,7 +4,7 @@ import useInputController from "@/hooks/useInputController";
 import ModalWrapper from "./ModalWrapper";
 import ModalButton from "./components/ModalButton/ModalButton";
 import styles from "./Modal.module.css";
-import { Dispatch, FormEvent, MouseEvent, SetStateAction, useState } from "react";
+import { Dispatch, FormEvent, KeyboardEvent, MouseEvent, SetStateAction, useState } from "react";
 import DateTime from "./components/ModalInput/DateTime";
 import TagInput from "./components/ModalInput/TagInput";
 import ImageInput from "@/components/ImageInput/ImageInput";

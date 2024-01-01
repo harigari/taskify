@@ -11,7 +11,7 @@ export interface Configs {
     placeholder?: string | undefined;
   };
   labelConfig: {
-    labelName: string;
+    labelName?: string;
     mobile?: boolean;
     star?: boolean;
   };
