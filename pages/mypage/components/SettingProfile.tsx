@@ -2,12 +2,17 @@ import ImageInput from "@/components/ImageInput/ImageInput";
 import { useState } from "react";
 import styles from "./SettingProfile.module.css";
 import useInputController from "@/hooks/useInputController";
-import { signinEmail, signupNickname } from "@/constants/inputConfig";
+import { signupNickname } from "@/constants/inputConfig";
 import InputWrapper from "@/components/Input/InputWrapper";
 import Input from "@/components/Input/Input";
 import Button from "@/components/Buttons/Button/Button";
+import { ExtendedUserType } from "@/types/api.type";
 
-const SettingProfile = () => {
+interface ProfileProps {
+  userData: ExtendedUserType;
+}
+
+const SettingProfile = ({ userData }: ProfileProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const { wrapper, input } = useInputController(signupNickname);
 
@@ -21,7 +26,7 @@ const SettingProfile = () => {
         <div className={styles.info__nickname}>
           <label>
             <p>이메일</p>
-            <input disabled placeholder="test@example.com"></input>
+            <input disabled placeholder={userData.email}></input>
           </label>
           <InputWrapper {...wrapper}>
             <Input {...input} />

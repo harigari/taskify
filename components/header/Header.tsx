@@ -1,8 +1,14 @@
 import styles from "./Header.module.css";
 import HeaderButton from "./HeaderButton/HeaderButton";
 import Members from "../Members/Members";
-import Profile from "../Members/Profile";
+import ProfileIcon from "../Members/ProfileIcon";
 import { BasicUserType } from "@/types/api.type";
+import sender from "@/apis/sender";
+import { DashBoardData } from "@/types/api.type";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import { Member } from "@/types/api.type";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 
 const MOCKUP: BasicUserType[] = [
   { id: 1, nickname: "haneul", profileImageUrl: "" },
@@ -22,12 +28,28 @@ const USER: BasicUserType = {
 };
 
 const Header = () => {
-  const title = "내 대시보드";
+  const router = useRouter();
+  const boardId = router?.query.boardId;
+  const [memberList, setMemberList] = useState<Member[]>();
+  console.log(memberList);
+
+  useEffect(() => {
+    (async () => {
+      if (router.pathname === "/dashboard/[boardId]") {
+        const accessToken = getAccessTokenFromDocument("accessToken");
+        const res = await sender.get({ path: "members", id: Number(boardId), accessToken });
+
+        if (res?.status < 300) {
+          setMemberList(res.data.members);
+        }
+      }
+    })();
+  }, []);
 
   return (
     <header className={styles.header}>
       <div className={styles.grid__title}>
-        <h1 className={styles.boardname}>{title}</h1>
+        <h1 className={styles.boardname}>{""}</h1>
       </div>
       <div className={styles.grid__settings}>
         <HeaderButton src="/icons/icon-settings.svg" alt="대시보드 설정하기">
@@ -44,7 +66,7 @@ const Header = () => {
       </div>
       <div className={styles.splitline} />
       <div className={styles.profile}>
-        <Profile member={USER} />
+        <ProfileIcon member={USER} />
         <span className={styles.profile__name}>{USER.nickname}</span>
       </div>
     </header>

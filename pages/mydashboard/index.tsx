@@ -88,7 +88,9 @@ export default function Mydashboard({
                   <Link href={`/dashboard/${dashboard.id}`}>
                     <div className={styles.dashboard__title}>
                       <div className={styles.dashboard__icon} style={{ backgroundColor: dashboard.color }} />
-                      <span>{dashboard.title}</span>
+                      <span>
+                        {dashboard.title.length > 10 ? dashboard.title.slice(0, 10) + "..." : dashboard.title}
+                      </span>
                     </div>
                     <Image
                       width={18}

@@ -18,6 +18,8 @@ import TagInput from "./components/ModalInput/TagInput";
 import sender from "@/apis/sender";
 import Dropdown from "./components/Dropdown/Dropdown";
 import { multiModalDate, multiModalExplain, multiModalTag, multiModalTitle } from "@/constants/inputConfig";
+import useApi from "@/hooks/useApi";
+import changeImageFileToURL from "@/utils/changeImageFileToURL";
 
 const sortColumnTitle = (columnList: ColumnData[]) => {
   if (columnList) {
@@ -30,7 +32,7 @@ const sortColumnTitle = (columnList: ColumnData[]) => {
   }
 };
 
-const findColumnId = (columnList: ColumnData[], value: string | undefined): number => {
+const findColumnId = (columnList: ColumnData[], value: string | undefined) => {
   if (columnList) {
     let id: number;
 
@@ -115,29 +117,43 @@ const EditInputModal = ({
 
   const [imageFile, setImageFile] = useState<File | null>(null);
 
+  const data = {
+    columnId: findColumnId(columnList, modalColumnDropdown.value) as number,
+    dashboardId,
+    assigneeUserId: modalAssigneeDropdown.value?.userId as number,
+    title: modalTitle.input.value,
+    description: modalExplain.input.value,
+    dueDate: formatDateString(String(modalDate.dateTime.date), "KOREA", "yyyy-MM-dd HH:mm"),
+    tags: [...tagList].reverse(),
+    imageUrl: initialvalue.imageUrl,
+  };
+
+  const { pending: putPending, wrappedFunction: putData } = useApi("put");
+  const { pending: postPending, wrappedFunction: postData } = useApi("post");
+
   const handleEditSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    const data = {
-      columnId: findColumnId(columnList, modalColumnDropdown.value),
-      dashboardId,
-      assigneeUserId: modalAssigneeDropdown.value?.userId as number,
-      title: modalTitle.input.value,
-      description: modalExplain.input.value,
-      dueDate: formatDateString(String(modalDate.dateTime.date), "KOREA", "yyyy-MM-dd HH:mm"),
-      tags: tagList,
-      imageUrl: initialvalue.imageUrl,
-    };
+    if (imageFile === null) {
+      const cardUpdateRes = await putData({ path: "card", id: initialvalue.id, data, accessToken });
 
-    for (const v of Object.values(data)) {
-      if (!v) return;
+      if (cardUpdateRes?.status === 200) {
+        handleModalClose();
+        router.push(`/dashboard/${initialvalue.dashboardId}`);
+      }
     }
 
-    const res = await sender.put({ path: "card", id: initialvalue.id, data, accessToken });
+    if (imageFile !== null) {
+      const imageUrl = await changeImageFileToURL(imageFile, columnId, accessToken);
 
-    if (res.status < 300) {
-      router.push(`/dashboard/${initialvalue.dashboardId}`);
-      handleAllModalClose();
+      const dataWithImage = { ...data, imageUrl };
+
+      const cardRes = await putData({ path: "card", id: initialvalue.id, data: dataWithImage, accessToken });
+
+      if (cardRes?.status === 200) {
+        router.push(`/dashboard/${initialvalue.dashboardId}`);
+        handleModalClose();
+      }
     }
   };
 
@@ -179,4 +195,5 @@ const EditInputModal = ({
     </ModalWrapper>
   );
 };
+
 export default EditInputModal;

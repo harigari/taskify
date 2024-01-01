@@ -50,7 +50,7 @@ function ImageInput({ setImageFile, imageFile, initialvalue = "" }: ImageInputPr
   }, [imageFile]);
 
   return (
-    <button className={styles.root} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+    <div className={styles.root} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
       <label htmlFor="imageFile" className={styles.label}>
         <Image className={styles.image} src={preview ? preview : "/icons/icon-add_file.svg"} fill alt="" />
         {hover && preview && (
@@ -67,7 +67,7 @@ function ImageInput({ setImageFile, imageFile, initialvalue = "" }: ImageInputPr
         accept="image/jpeg, image/png"
         ref={inputRef}
       />
-    </button>
+    </div>
   );
 }
 

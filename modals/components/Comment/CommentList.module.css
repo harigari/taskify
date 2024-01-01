@@ -1,26 +1,7 @@
-.form {
-  height: 13.9rem;
-}
-
 .comments {
   display: flex;
-
+  gap: 1rem;
   flex-direction: column;
   overflow: auto;
-
-  max-height: 8rem;
-}
-.comments > div:first-child {
-  margin-top: 0.5rem;
-}
-
-@media screen and (max-width: 767px) {
-  .form {
-    height: 7rem;
-  }
-  .comments {
-    margin-top: 2.5rem;
-
-    height: 8.5rem;
-  }
+  max-height: 15rem;
 }

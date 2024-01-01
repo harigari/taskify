@@ -12,7 +12,7 @@ export type BasicUserType = {
   id: number;
 };
 
-type ExtendedUserType = {
+export type ExtendedUserType = {
   email: string;
 } & TimeStamp &
   BasicUserType;

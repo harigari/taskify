@@ -4,9 +4,10 @@ import { CommentData } from "@/types/api.type";
 import formatDate from "@/utils/formatDateString";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import { Dispatch, FormEvent, SetStateAction, useState } from "react";
-import AlertModal from "../../AlertModal";
+import AlertModal from "@/modals/AlertModal";
 import styles from "./Comment.module.css";
 import { MouseEvent, ChangeEvent } from "react";
+import clsx from "clsx";
 
 type Usage = "edit" | "show";
 
@@ -52,12 +53,11 @@ const Comment = ({ data, setCommentList, setEditingId, usage, handleEditCancel }
   const initialValue = data.content;
   const [editValue, setEditValue] = useState(initialValue);
 
-  const handleEditInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleEditInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setEditValue(e.target.value);
   };
 
   // 댓글 수정하기
-
   const { wrappedFunction: putData } = useApi("put");
 
   const handleEditSubmit = async (e: FormEvent) => {
@@ -89,9 +89,11 @@ const Comment = ({ data, setCommentList, setEditingId, usage, handleEditCancel }
 
         {usage === "edit" && (
           <>
-            <input value={editValue} onChange={handleEditInputChange} />
+            <textarea className={clsx(styles.textarea)} value={editValue} onChange={handleEditInputChange} />
+
+            {!editValue.trim() && <p className={styles.error}>비우지마 바보야~</p>}
             <div className={styles.buttons}>
-              <button className={styles.button} onClick={handleEditSubmit}>
+              <button className={styles.button} disabled={!editValue.trim()} onClick={handleEditSubmit}>
                 수정
               </button>
               <button className={styles.button} type="button" onClick={handleEditCancel}>
@@ -108,6 +110,7 @@ const Comment = ({ data, setCommentList, setEditingId, usage, handleEditCancel }
               <button className={styles.button} onClick={handleEditClick}>
                 수정
               </button>
+
               <button onClick={handleDeleteModalToggle} className={styles.button}>
                 삭제
               </button>

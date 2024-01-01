@@ -19,11 +19,6 @@ const CommentList = ({ cardData }: CommentListProps) => {
     labelConfig: { labelName: "댓글", mobile: true },
   });
 
-  const commentEdit = useInputController({
-    inputConfig: { id: "comment", type: "text", initialvalue: "" },
-    labelConfig: {},
-  });
-
   // 댓글 가져오기
   const accessToken = getAccessTokenFromDocument("accessToken");
   const [commentList, setCommentList] = useState<CommentData[]>([]);

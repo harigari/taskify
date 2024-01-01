@@ -66,11 +66,14 @@
 }
 
 .item__text {
-  margin-right: 0.8rem;
-  margin-left: 1.6rem;
+  margin: 0 0.6rem 0 1.6rem;
+  overflow: hidden;
+  width: 20rem;
   font-size: 1.8rem;
   font-weight: 500;
   color: var(--gray50);
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .selected {
@@ -93,7 +96,8 @@
 
   .item__text {
     margin-right: 0.4rem;
-    margin-left: 0.8rem;
+    margin-left: 1.6rem;
+    width: 8rem;
     font-size: 1.6rem;
   }
 }

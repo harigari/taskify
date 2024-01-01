@@ -4,7 +4,7 @@ import useInputController from "@/hooks/useInputController";
 import ModalWrapper from "./ModalWrapper";
 import ModalButton from "./components/ModalButton/ModalButton";
 import styles from "./Modal.module.css";
-import { Dispatch, FormEvent, KeyboardEvent, MouseEvent, SetStateAction, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import DateTime from "./components/ModalInput/DateTime";
 import TagInput from "./components/ModalInput/TagInput";
 import ImageInput from "@/components/ImageInput/ImageInput";
@@ -15,6 +15,7 @@ import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import useApi from "@/hooks/useApi";
 import formatDateString from "@/utils/formatDateString";
 import { multiModalDate, multiModalExplain, multiModalTag, multiModalTitle } from "@/constants/inputConfig";
+import changeImageFileToURL from "@/utils/changeImageFileToURL";
 
 interface MultiInputModalProp {
   title: string;
@@ -82,21 +83,7 @@ const MultiInputModal = ({
     }
 
     if (imageFile !== null) {
-      const imageFormData = new FormData();
-      imageFormData.append("image", imageFile);
-
-      const imageRes = await postData({
-        path: "cardImage",
-        id: columnId,
-        data: imageFormData,
-        accessToken,
-      });
-
-      if (!imageRes) return;
-
-      const {
-        data: { imageUrl },
-      } = imageRes;
+      const imageUrl = await changeImageFileToURL(imageFile, columnId, accessToken);
 
       const dataWithImage = { ...data, imageUrl };
 
