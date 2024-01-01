@@ -138,7 +138,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
             <p className={styles.description}>{data.description}</p>
             {data.imageUrl && (
               <div className={styles.image_wrapper}>
-                <Image fill src={data.imageUrl} alt="할 일 카드 이미지" />
+                <Image priority fill src={data.imageUrl} alt="할 일 카드 이미지" />
               </div>
             )}
             {/* 댓글 리스트 */}
