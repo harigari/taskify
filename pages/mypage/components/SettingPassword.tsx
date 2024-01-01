@@ -1,24 +1,31 @@
 import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
 import Button from "@/components/Buttons/Button/Button";
-import { signinPassword, mypageCurrentPassword, mypageNewPasswordCheck } from "@/constants/inputConfig";
+import {
+  mypageCurrentPassword as myPageCurrentPassword,
+  mypageNewPasswordCheck as myPageNewPasswordCheck,
+} from "@/constants/inputConfig";
 import useInputController from "@/hooks/useInputController";
-import { isCurrentPassword, isValue } from "@/utils/vaildate";
-import { mypageNewPassword } from "../../../constants/inputConfig";
+
+import { mypageNewPassword as myPageNewPassword } from "../../../constants/inputConfig";
 import styles from "./SettingPassword.module.css";
 import useApi from "@/hooks/useApi";
 import { useState } from "react";
 import AlertModal from "@/modals/AlertModal";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 const SettingPassword = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleModalToggle = () => {
-    setIsModalOpen((prev) => !prev);
+  const [isWrongPasswordModalOpen, setIsWrongPasswordModalOpen] = useState(false);
+  const handleWrongPasswordModalToggle = () => {
+    setIsWrongPasswordModalOpen((prev) => !prev);
   };
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
-  const { wrapper: currentWrapper, input: currentInput } = useInputController(mypageCurrentPassword);
-  const { wrapper: passwordWrapper, input: passwordInput } = useInputController(mypageNewPassword);
-  const { wrapper: passwordCheckWrapper, input: passwordCheckInput } = useInputController(mypageNewPasswordCheck);
+  const handleSuccessModalToggle = () => {
+    setIsSuccessModalOpen((prev) => !prev);
+  };
+  const { wrapper: currentWrapper, input: currentInput } = useInputController(myPageCurrentPassword);
+  const { wrapper: passwordWrapper, input: passwordInput } = useInputController(myPageNewPassword);
+  const { wrapper: passwordCheckWrapper, input: passwordCheckInput } = useInputController(myPageNewPasswordCheck);
 
   const inputs: Array<[typeof currentWrapper, typeof currentInput]> = [
     [currentWrapper, currentInput],
@@ -40,12 +47,18 @@ const SettingPassword = () => {
       },
       accessToken,
     });
-    // if (res?.status === 204) {
-    //   handleModalToggle();
-    //   return;
-    // }
+    if (res?.status === 400) {
+      console.log("비밀번호 틀림"); // 확인용
+      handleWrongPasswordModalToggle();
+      return;
+    }
 
     if (res?.status === 204) {
+      console.log("Success modal should open"); // 확인용
+      currentInput.setValue("");
+      passwordInput.setValue("");
+      passwordCheckInput.setValue("");
+      handleSuccessModalToggle();
     }
   };
 
@@ -70,7 +83,20 @@ const SettingPassword = () => {
         >
           변경
         </Button>
-        {isModalOpen && <AlertModal alertText="현재 비밀번호가 틀렸습니다" handleModalClose={handleModalToggle} />}
+        {isWrongPasswordModalOpen && (
+          <AlertModal
+            alertText="현재 비밀번호가 틀렸습니다."
+            isDoubleButton={false}
+            handleModalClose={handleWrongPasswordModalToggle}
+          />
+        )}
+        {isSuccessModalOpen && (
+          <AlertModal
+            alertText="비밀번호가 성공적으로 변경되었습니다."
+            isDoubleButton={false}
+            handleModalClose={handleSuccessModalToggle}
+          />
+        )}
       </div>
     </article>
   );

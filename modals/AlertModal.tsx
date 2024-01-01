@@ -21,7 +21,7 @@ const AlertModal = ({ isDoubleButton = true, alertText, handleModalClose, handle
         {isDoubleButton ? (
           <ModalButton.DoubleButton onClick={handleModalClose}>삭제</ModalButton.DoubleButton>
         ) : (
-          <ModalButton.SingleButton>확인</ModalButton.SingleButton>
+          <ModalButton.SingleButton onClick={handleModalClose}>확인</ModalButton.SingleButton>
         )}
       </form>
     </ModalWrapper>
