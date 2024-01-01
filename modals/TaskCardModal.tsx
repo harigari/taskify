@@ -87,6 +87,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
                   <EditInputModal
                     initialvalue={data}
                     title="할 일 수정"
+                    columnTitle={columnTitle}
                     buttonText="수정"
                     setCardList={setCardList}
                     handleModalClose={handleModifyModalToggle}

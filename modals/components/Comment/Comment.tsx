@@ -39,22 +39,6 @@ const Comment = ({ data, setData, setEditingId }: CommentProps) => {
     }
   };
 
-  const { wrappedFunction: putData } = useApi("put");
-
-  // // 댓글 수정하기
-  // const handleEditSubmit = async (e: FormEvent) => {
-  //   e.preventDefault();
-  //   const res = await putData({
-  //     path: "comment",
-  //     data: {
-  //       content: "",
-  //     },
-  //     id: data.id,
-  //     accessToken,
-  //   });
-  //   if (res?.status === 200) {
-  //   }
-  // };
   const handleEditClick = () => {
     setEditingId(data.id);
   };

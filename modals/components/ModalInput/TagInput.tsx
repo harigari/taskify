@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction, useRef } from "react";
 import styles from "./TagInput.module.css";
 import TagList from "./TagList";
 
@@ -12,12 +12,15 @@ interface TagInputProp {
 }
 
 function TagInput({ tagList, setTagList, value, setValue, onChange, id }: TagInputProp) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const handleEnter = (event: KeyboardEvent<HTMLInputElement>) => {
     const trimmedValue = value.trim(); // 문자열의 앞뒤 공백만 제거
     const replacedValue = value.replace(/\s/g, ""); // 문자열 사이사이의 공백 제거
 
     // 공백 문자열을 태그로 입력하는 것 방지
     if (event.key === "Enter" && replacedValue !== "") {
+      event.preventDefault();
       const isAlreadyInList = tagList.find((tag) => tag === trimmedValue); // 중복된 태그 입력 방지
 
       if (!isAlreadyInList) {
@@ -60,10 +63,11 @@ function TagInput({ tagList, setTagList, value, setValue, onChange, id }: TagInp
         )}
         <input
           id={id}
+          ref={inputRef}
           className={styles.input}
           value={value}
-          onKeyDown={handleEnter}
           onChange={onChange}
+          onKeyDown={handleEnter}
           placeholder={placeholder}
         ></input>
       </div>

@@ -25,9 +25,17 @@ interface EditInputModalProp {
   setCardList: Dispatch<SetStateAction<CardData[]>>;
   handleModalClose: () => void;
   initialvalue: CardData;
+  columnTitle: string;
 }
 
-const EditInputModal = ({ title, buttonText, handleModalClose, setCardList, initialvalue }: EditInputModalProp) => {
+const EditInputModal = ({
+  title,
+  buttonText,
+  handleModalClose,
+  setCardList,
+  initialvalue,
+  columnTitle,
+}: EditInputModalProp) => {
   const columnId = initialvalue.columnId;
   const router = useRouter();
   const dashboardId = Number(router.query.boardId);
@@ -54,11 +62,10 @@ const EditInputModal = ({ title, buttonText, handleModalClose, setCardList, init
   });
 
   const modalColumnDropdown = useDropdownController({
-    options: ["to do", "to done", "task"],
-    initialValue: "to do",
+    options: ["테스트 컬럼", "가나다"],
+    initialValue: columnTitle,
   });
 
-  console.log("렌더링");
   useEffect(() => {
     if (assigneeList) {
       modalAssigneeDropdown.setValue(assigneeList.find((v) => v.userId === initialvalue.assignee.id));
