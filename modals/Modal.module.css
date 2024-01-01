@@ -43,6 +43,11 @@
   color: var(--gray40, #9fa6b2);
 }
 
+.dropdownContainer {
+  display: flex;
+  gap: 1.6rem;
+}
+
 .buttonContainer {
   display: flex;
   align-items: flex-end;

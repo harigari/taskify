@@ -1,7 +1,6 @@
 import ImageInput from "@/components/ImageInput/ImageInput";
 import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
-import useApi from "@/hooks/useApi";
 import useDropdownController from "@/hooks/useDropdownController";
 import useInputController from "@/hooks/useInputController";
 import { CardData, Member } from "@/types/api.type";
@@ -17,6 +16,8 @@ import ModalButton from "./components/ModalButton/ModalButton";
 import DateTime from "./components/ModalInput/DateTime";
 import TagInput from "./components/ModalInput/TagInput";
 import sender from "@/apis/sender";
+import Dropdown from "./components/Dropdown/Dropdown";
+import { multiModalDate, multiModalExplain, multiModalTag, multiModalTitle } from "@/constants/inputConfig";
 
 interface EditInputModalProp {
   title: string;
@@ -43,50 +44,35 @@ const EditInputModal = ({ title, buttonText, handleModalClose, setCardList, init
     })();
   }, []);
 
-  const modalTitle = useInputController({
-    inputConfig: { id: "title", type: "text", placeholder: "제목을 입력해 주세요", initialvalue: initialvalue.title },
-    labelConfig: { labelName: "제목", star: true, mobile: true },
-  });
+  const modalTitle = useInputController(multiModalTitle(initialvalue.title));
+  const modalExplain = useInputController(multiModalExplain(initialvalue.description));
+  const modalDate = useInputController(multiModalDate(initialvalue.dueDate));
+  const modalTag = useInputController(multiModalTag());
 
-  const modalExplain = useInputController({
-    inputConfig: {
-      id: "comment",
-      type: "text",
-      placeholder: "설명을 입력해 주세요",
-      initialvalue: initialvalue.description,
-    },
-    labelConfig: { labelName: "설명", star: true, mobile: true },
-  });
-
-  const modalDate = useInputController({
-    inputConfig: { id: "date", type: "text", placeholder: "날짜를 입력해 주세요", initialvalue: initialvalue.dueDate },
-    labelConfig: { labelName: "마감일", mobile: true },
-  });
-
-  const modalTag = useInputController({
-    inputConfig: { id: "tag", type: "text", placeholder: "입력 후 Enter" },
-    labelConfig: { labelName: "태그", mobile: true },
-  });
-
-  const modalDropdown = useDropdownController({
+  const modalAssigneeDropdown = useDropdownController({
     options: assigneeList,
+  });
+
+  const modalColumnDropdown = useDropdownController({
+    options: ["to do", "to done", "task"],
+    initialValue: "to do",
   });
 
   console.log("렌더링");
   useEffect(() => {
     if (assigneeList) {
-      modalDropdown.setValue(assigneeList.find((v) => v.userId === initialvalue.assignee.id));
+      modalAssigneeDropdown.setValue(assigneeList.find((v) => v.userId === initialvalue.assignee.id));
     }
   }, [assigneeList]);
 
-  const [tagList, setTagList] = useState<string[]>(initialvalue.tags);
+  const [tagList, setTagList] = useState<string[]>([...initialvalue.tags].reverse());
 
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const data = {
     columnId,
     dashboardId,
-    assigneeUserId: modalDropdown.value?.userId!,
+    assigneeUserId: modalAssigneeDropdown.value?.userId!,
     title: modalTitle.input.value,
     description: modalExplain.input.value,
     dueDate: formatDateString(String(modalDate.dateTime.date), "KOREA", "yyyy-MM-dd HH:mm"),
@@ -102,9 +88,10 @@ const EditInputModal = ({ title, buttonText, handleModalClose, setCardList, init
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <div className={styles.modal}>
           <div className={styles.modalTitle}>{title}</div>
-
-          <InputDropdown {...modalDropdown}>담당자</InputDropdown>
-
+          <div className={styles.dropdownContainer}>
+            <Dropdown {...modalColumnDropdown}>상태</Dropdown>
+            <InputDropdown {...modalAssigneeDropdown}>담당자</InputDropdown>
+          </div>
           <InputWrapper {...modalTitle.wrapper}>
             <Input {...modalTitle.input} />
           </InputWrapper>
