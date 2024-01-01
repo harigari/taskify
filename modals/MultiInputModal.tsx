@@ -14,6 +14,7 @@ import { CardData, Member } from "@/types/api.type";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import useApi from "@/hooks/useApi";
 import formatDateString from "@/utils/formatDateString";
+import { multiModalDate, multiModalExplain, multiModalTag, multiModalTitle } from "@/constants/inputConfig";
 
 interface MultiInputModalProp {
   title: string;
@@ -34,25 +35,13 @@ const MultiInputModal = ({
   dashboardId,
   assigneeList,
 }: MultiInputModalProp) => {
-  const modalTitle = useInputController({
-    inputConfig: { id: "title", type: "text", placeholder: "제목을 입력해 주세요" },
-    labelConfig: { labelName: "제목", star: true, mobile: true },
-  });
+  const modalTitle = useInputController(multiModalTitle());
 
-  const modalExplain = useInputController({
-    inputConfig: { id: "comment", type: "text", placeholder: "설명을 입력해 주세요" },
-    labelConfig: { labelName: "설명", star: true, mobile: true },
-  });
+  const modalExplain = useInputController(multiModalExplain());
 
-  const modalDate = useInputController({
-    inputConfig: { id: "date", type: "text", placeholder: "날짜를 입력해 주세요" },
-    labelConfig: { labelName: "마감일", mobile: true },
-  });
+  const modalDate = useInputController(multiModalDate());
 
-  const modalTag = useInputController({
-    inputConfig: { id: "tag", type: "text", placeholder: "입력 후 Enter" },
-    labelConfig: { labelName: "태그", mobile: true },
-  });
+  const modalTag = useInputController(multiModalTag());
 
   const modalDropdown = useDropdownController<Member>({ options: assigneeList });
 
@@ -66,8 +55,8 @@ const MultiInputModal = ({
     assigneeUserId: modalDropdown.value?.userId!,
     title: modalTitle.input.value,
     description: modalExplain.input.value,
-    dueDate: formatDateString(String(modalDate.dateTime.date),"KOREA", "yyyy-MM-dd HH:mm"),
-    tags: tagList,
+    dueDate: formatDateString(String(modalDate.dateTime.date), "KOREA", "yyyy-MM-dd HH:mm"),
+    tags: [...tagList].reverse(),
   };
 
   const { pending, error, wrappedFunction: postData } = useApi("post");
@@ -84,7 +73,12 @@ const MultiInputModal = ({
     if (pending) return;
 
     if (imageFile === null) {
-      return;
+      const cardRes = await postData({ path: "card", data, accessToken });
+
+      if (cardRes?.status === 201) {
+        setCardList((prevValue) => [...prevValue, cardRes.data]);
+        handleModalClose();
+      }
     }
 
     if (imageFile !== null) {
