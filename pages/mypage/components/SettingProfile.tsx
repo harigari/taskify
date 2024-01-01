@@ -11,6 +11,7 @@ import useApi from "@/hooks/useApi";
 import { FormEvent } from "react";
 import { changeImageFileToURLForUserProfile } from "@/utils/changeImageFileToURL";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import AlertModal from "@/modals/AlertModal";
 
 interface ProfileProps {
   userData: ExtendedUserType;
@@ -19,6 +20,12 @@ interface ProfileProps {
 const SettingProfile = ({ userData }: ProfileProps) => {
   const [preview, setPreview] = useState<string | null | undefined>(userData.profileImageUrl);
   const [prevNickname, setPrevNickname] = useState(userData.nickname);
+
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+  const handleModalToggle = () => {
+    setIsSuccessModalOpen((prev) => !prev);
+  };
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const { wrapper, input } = useInputController({
@@ -54,6 +61,7 @@ const SettingProfile = ({ userData }: ProfileProps) => {
 
       if (res?.status === 200) {
         setPrevNickname(input.value);
+        handleModalToggle();
       }
     }
 
@@ -67,6 +75,7 @@ const SettingProfile = ({ userData }: ProfileProps) => {
       if (res?.status === 200) {
         setPreview(profileImageUrl);
         setPrevNickname(input.value);
+        handleModalToggle();
       }
     }
   };
@@ -97,6 +106,13 @@ const SettingProfile = ({ userData }: ProfileProps) => {
         >
           저장
         </Button>
+        {isSuccessModalOpen && (
+          <AlertModal
+            alertText="프로필 정보가 성공적으로 변경되었습니다."
+            isDoubleButton={false}
+            handleModalClose={handleModalToggle}
+          />
+        )}
       </div>
     </article>
   );
