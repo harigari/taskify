@@ -1,12 +1,13 @@
 import useInputController from "@/hooks/useInputController";
 import useApi from "@/hooks/useApi";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, Dispatch, SetStateAction } from "react";
 import { signinEmail } from "@/constants/inputConfig";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import SingleInputModal from "@/modals/SingleInputModal";
 import InnerInviteButton from "@/components/Table/TablePagination/InnerInviteButton";
 import HeaderButton from "@/components/Header/HeaderButton/HeaderButton";
 import headerButtonStyles from "@/components/Header/Header.module.css";
+import { InvitationData } from "@/types/api.type";
 
 type Usage = "header" | "edit_page";
 
@@ -14,8 +15,9 @@ interface InviteButtonProps {
   boardId: number;
   usage: Usage;
   className?: string;
+  setData : Dispatch<SetStateAction<InvitationData[]>>
 }
-const InviteButton = ({ boardId, usage, className }: InviteButtonProps) => {
+const InviteButton = ({ boardId, usage, className, setData }: InviteButtonProps) => {
   const inviteInput = useInputController(signinEmail);
 
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
@@ -39,12 +41,15 @@ const InviteButton = ({ boardId, usage, className }: InviteButtonProps) => {
       },
       accessToken,
     });
+    
 
     if (!res) return;
+
 
     if (res.status === 201) {
       handleInviteModalToggle();
       inviteInput.input.setValue("");
+      setData((prev) =>  [ res.data,  ...prev])
     }
 
     if (res.status > 400 && res.message) {

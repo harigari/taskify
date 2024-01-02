@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import styles from "./DashboardEdit.module.css";
 import { useState } from "react";
-import { ColorType } from "@/types/api.type";
+import { BasicUserType, ColorType, InvitationData, Member } from "@/types/api.type";
 import Link from "next/link";
 import useApi from "@/hooks/useApi";
 import InputWrapper from "@/components/Input/InputWrapper";
@@ -37,8 +37,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const {
     data: { members },
   } = await sender.get({ path: "members", id: Number(boardId), accessToken });
-
-  //여기에 있는 초대내역 id를 가지고 삭제를 해야함
 
   const {
     data: { invitations },
@@ -70,6 +68,9 @@ const DashboardEdit = ({
   const [prevColor, setPrevColor] = useState(dashboardData?.color ?? "#760dde");
   const [color, setColor] = useState<ColorType>(prevColor);
 
+  const [memberList, setMemberList] = useState<BasicUserType[]>(members);
+
+  const [invitationList, setInvitationList] = useState<InvitationData[]>(invitations)
   const [boardName, setBoardName] = useState(dashboardData?.title);
   const { pending, wrappedFunction } = useApi("delete");
 
@@ -134,12 +135,18 @@ const DashboardEdit = ({
           </div>
 
           {/* 구성원 */}
-          <TablePagination data={members} title="구성원" tableIndex={{ 이름: "nickname", "": "deleteButton" }} />
+          <TablePagination
+            data={memberList}
+            setData={setMemberList}
+            title="구성원"
+            tableIndex={{ 이름: "nickname", "": "deleteButton" }}
+          />
 
           {/* 초대 내역 */}
 
           <TablePagination
-            data={invitations}
+            data={invitationList}
+            setData={setInvitationList}
             invite
             title="초대 내역"
             tableIndex={{ 이메일: "email", "": "cancelButton" }}

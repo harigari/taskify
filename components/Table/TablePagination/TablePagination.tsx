@@ -6,7 +6,7 @@ import SearchInput from "@/components/Table/TablePagination/SearchInput";
 import { BasicUserType, InvitationData } from "@/types/api.type";
 import { clsx } from "clsx";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import styles from "./TablePagination.module.css";
 import InviteButton from "@/components/Buttons/InviteButton/InviteButton";
 
@@ -23,6 +23,7 @@ interface TableProps {
   tableIndex: TableIndexType;
   invite?: boolean;
   search?: boolean;
+  setData: Dispatch<SetStateAction<BasicUserType[]>> | Dispatch<SetStateAction<InvitationData[]>>
 }
 
 const TablePagination = ({
@@ -32,6 +33,7 @@ const TablePagination = ({
   tableIndex,
   invite = false,
   search = false,
+  setData,
 }: TableProps) => {
   const router = useRouter();
   const boardId = Number(router.query.boardId);
@@ -81,7 +83,7 @@ const TablePagination = ({
             />
           </div>
         )}
-        {invite && <InviteButton boardId={boardId} usage="edit_page" />}
+        {invite && <InviteButton setData = {setData} boardId={boardId} usage="edit_page" />}
       </div>
       {data.length > 0 ? (
         <>
@@ -89,7 +91,7 @@ const TablePagination = ({
             <>
               {search && <SearchInput setKeyword={setKeyword} />}
               <TableIndex data={rowData} tableIndex={tableIndex} invite={invite} />
-              <TableList data={rowData} tableIndex={tableIndex} row={row} />
+              <TableList data={rowData} setData={setData} tableIndex={tableIndex} row={row} />
             </>
           )}
           <HideButton isOpen={isOpen} setIsOpen={setIsOpen} />

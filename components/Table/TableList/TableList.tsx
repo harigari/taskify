@@ -7,18 +7,19 @@ import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import sender from "@/apis/sender";
 import { useRouter } from "next/router";
 import useApi from "@/hooks/useApi";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
 };
 
 interface TableListProps {
   data: (BasicUserType | InvitationData)[];
+  setData: Dispatch<SetStateAction<BasicUserType[]>> | Dispatch<SetStateAction<InvitationData[]>>
   tableIndex: TableIndexType;
   row: number;
 }
 
-const TableList = ({ data, tableIndex, row }: TableListProps) => {
+const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
   const column = Object.keys(tableIndex).length;
   const isAccept = Object.values(tableIndex).includes("acceptButton");
   const router = useRouter();
@@ -102,9 +103,13 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
               continue;
             case v === "deleteButton":
               {
+                // 구성원 삭제하기
                 const handleMemberDelete = async () => {
                   const accessToken = getAccessTokenFromDocument("accessToken");
-                  await deleteData({ path: "member", id: data.id, accessToken });
+                  const res = await deleteData({ path: "member", id: data.id, accessToken });
+                  if (res?.status === 204) {
+                    setData((prev) => prev.filter((member) => member.id !== data.id));
+                  }
                 };
 
                 arr.push(
@@ -116,14 +121,18 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
               continue;
             case v === "cancelButton":
               {
+                // 보낸 초대 요청 취소하기
                 const handleInviteCancel = async () => {
                   const accessToken = getAccessTokenFromDocument("accessToken");
-                  await deleteData({
+                  const res = await deleteData({
                     path: "dashboardInvitations",
                     dashboardId: boardId,
                     invitationId: data.id,
                     accessToken,
                   });
+                  if(res?.status === 204){
+                    setData((prev) => prev.filter((invitation) => invitation.id !== data.id));
+                  }
                 };
 
                 arr.push(
