@@ -15,6 +15,7 @@ import Input from "@/components/Input/Input";
 import useApi from "@/hooks/useApi";
 import { ColumnData } from "@/types/api.type";
 import { Column } from "@/components/Column/Column";
+import useInfScroll from "@/hooks/useInfScroll";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -85,9 +86,13 @@ const Dashboard = ({
     }
   };
 
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
-    setColumnList(columnData);
-  }, [columnData]);
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <>

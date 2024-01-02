@@ -18,29 +18,17 @@ type Color = "violet" | "white" | "gray";
 
 interface Props {
   children: ReactNode;
-  icon?: boolean;
   disabled?: boolean;
   onClick?: (e: MouseEvent) => void;
   buttonType: ButtonType;
   color: Color;
-  data?: BasicUserType | InvitationData;
-  setId?: Dispatch<SetStateAction<number | undefined>>;
 }
 
-const Button = ({ children, disabled, onClick, buttonType, color, data, setId }: Props) => {
-  const handleClick = (e: MouseEvent) => {
-    // setId가 있고 data.id가 존재하면 setId(data.id) 호출
-    if (setId && data?.id && onClick) {
-      console.log(data.id);
-      setId(data.id);
-      onClick(e);
-    }
-  };
-
+const Button = ({ children, disabled, onClick, buttonType, color }: Props) => {
   return (
     <button
       disabled={disabled}
-      onClick={handleClick}
+      onClick={onClick}
       className={clsx(styles.common, buttonType && styles[buttonType], color && styles[color])}
     >
       {children}

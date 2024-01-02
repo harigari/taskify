@@ -10,6 +10,7 @@ const useInfScroll = () => {
       setIsVisible(entry.isIntersecting);
     });
   }, []);
+
   useEffect(() => {
     if (myRef.current) {
       observer.observe(myRef.current);

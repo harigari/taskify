@@ -25,6 +25,15 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const boardId = context.params?.boardId;
 
+  if (!accessToken) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/signin",
+      },
+    };
+  }
+
   const {
     data: { members },
   } = await sender.get({ path: "members", id: Number(boardId), accessToken });

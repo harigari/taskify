@@ -39,11 +39,13 @@ type Pagination = {
 type InfRes = {
   cards: CardData[];
   cursorId: number;
+  totalCount: number;
 };
 
 export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId, setColumnList }: ColumnProps) => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
   const [isColumnDeleteModalOpen, setIsColumnDeleteModalOpen] = useState(false);
   const settingModal = useInputController({
     inputConfig: { id: "settingModal", initialvalue: title },
@@ -54,6 +56,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
   const router = useRouter();
 
   const { isVisible, setIsVisible, myRef } = useInfScroll();
+
   const [pagination, setPagination] = useState<Pagination>({
     id: columnId,
     size: 5,
@@ -80,13 +83,14 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
 
     const result: InfRes = await response.json();
 
-    const { cards, cursorId: cursor } = result;
+    const { cards, cursorId: cursor, totalCount } = result;
 
     setPagination((prevValue) => {
       return { ...prevValue, cursorId: cursor };
     });
     setCardList((prevValue) => [...prevValue, ...cards]);
     setIsVisible(false);
+    setTotalCount(totalCount);
   };
 
   useEffect(() => {
@@ -166,7 +170,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
             <ChipTodo size="sm" color="white">
               {title}
             </ChipTodo>
-            <ChipNum>{cardList.length}</ChipNum>
+            <ChipNum>{totalCount}</ChipNum>
           </div>
           <button onClick={handleSettingModalToggle}>
             <Image width={24} height={24} src="/icons/icon-settings.svg" alt="칼럼 설정하기" />
@@ -184,18 +188,6 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
           <p ref={myRef}></p>
         </div>
       </div>
-
-      {isCreateModalOpen && (
-        <MultiInputModal
-          setCardList={setCardList}
-          title="할 일 생성"
-          buttonText="생성"
-          columnId={columnId}
-          assigneeList={assigneeList}
-          dashboardId={dashboardId}
-          handleModalClose={handleCreateModalToggle}
-        />
-      )}
 
       {isSettingModalOpen && (
         <ModalWrapper size="md">
@@ -223,12 +215,22 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
           </form>
         </ModalWrapper>
       )}
-
       {isColumnDeleteModalOpen && (
         <AlertModal
           handleModalClose={handleDeleteModalToggle}
           alertText="컬럼의 모든 카드가 삭제됩니다."
           handleSubmit={handleColumnDelete}
+        />
+      )}
+      {isCreateModalOpen && (
+        <MultiInputModal
+          setCardList={setCardList}
+          title="할 일 생성"
+          buttonText="생성"
+          columnId={columnId}
+          assigneeList={assigneeList}
+          dashboardId={dashboardId}
+          handleModalClose={handleCreateModalToggle}
         />
       )}
     </>
