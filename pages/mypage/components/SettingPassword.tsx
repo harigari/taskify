@@ -48,13 +48,12 @@ const SettingPassword = () => {
       accessToken,
     });
     if (res?.status === 400) {
-      console.log("비밀번호 틀림"); // 확인용
       handleWrongPasswordModalToggle();
+      // currentWrapper.setErrorText(res?.message);
       return;
     }
 
     if (res?.status === 204) {
-      console.log("Success modal should open"); // 확인용
       currentInput.setValue("");
       passwordInput.setValue("");
       passwordCheckInput.setValue("");

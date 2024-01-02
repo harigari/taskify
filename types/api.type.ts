@@ -424,6 +424,8 @@ export type ReturnData<T, U> = T extends "get"
     ? Return_put_invitation
     : U extends "me"
     ? Return_put_me
+    : U extends "passwordChange"
+    ? null
     : any
   : any;
 

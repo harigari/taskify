@@ -30,10 +30,21 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     data: { invitations },
   } = await sender.get({ path: "invitations", accessToken });
 
+  if (!accessToken) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/signin",
+      },
+    };
+  }
+
   return {
     props: { accessToken, dashboards, invitations },
   };
 };
+
+// 엑세스토큰
 
 export default function Mydashboard({
   accessToken,

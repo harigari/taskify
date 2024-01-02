@@ -45,18 +45,17 @@ const Signin = () => {
       password: passwordInput.value,
     };
 
-    const login = await sender.post({ path: "signin", data: signData });
-    if (!login) return;
-    if (login.status === 404 && "message" in login.data) {
-      emailWrapper.setErrorText(login.data.message);
+    const signinRes = await sender.post({ path: "signin", data: signData });
+    if (!signinRes) return;
+
+    const errorMessage = signinRes.message;
+    if (signinRes.status > 300 && errorMessage) {
+      emailWrapper.setErrorText(errorMessage);
       return;
     }
-    if (login.status === 400 && "message" in login.data) {
-      passwordWrapper.setErrorText(login.data.message);
-      return;
-    }
-    if (login.status === 201 && !("message" in login.data)) {
-      document.cookie = `accessToken=${login.data.accessToken}`;
+
+    if (signinRes.status === 201) {
+      document.cookie = `accessToken=${signinRes.data.accessToken}`;
       router.push("/mydashboard");
       return;
     }

@@ -32,6 +32,13 @@ function DateTime({ date, setDate, id }: DateTime) {
         minDate={minDate}
         showTimeInput
       />
+      <button
+        onClick={() => {
+          setDate(null);
+        }}
+      >
+        {date && <Image src="/icons/icon-close-gray.svg" width={20} height={20} alt="" />}
+      </button>
     </div>
   );
 }

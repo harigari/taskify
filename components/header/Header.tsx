@@ -27,40 +27,6 @@ const Header = ({ dashboardList }: HeaderProps) => {
   const isOwner = memberList?.find((v) => v.userId === myData?.id)?.isOwner;
   const title = dashboardList?.find((v) => v.id === Number(boardId))?.title;
 
-  const inviteInput = useInputController(signinEmail);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleModalToggle = () => {
-    setIsModalOpen((prev) => !prev);
-  };
-
-  const { wrappedFunction: postData } = useApi("post");
-
-  const handleInviteUserSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    const accessToken = getAccessTokenFromDocument("accessToken");
-    const res = await postData({
-      path: "invitation",
-      id: Number(boardId),
-      data: {
-        email: inviteInput.input.value,
-      },
-      accessToken,
-    });
-
-    if (!res) return;
-
-    if (res.status === 201) {
-      handleModalToggle();
-      inviteInput.input.setValue("");
-    }
-
-    if (res.status > 400 && res.message) {
-      inviteInput.input.setValue("");
-      inviteInput.wrapper.setErrorText(res.message);
-    }
-  };
-
   useEffect(() => {
     (async () => {
       const accessToken = getAccessTokenFromDocument("accessToken");
@@ -79,7 +45,42 @@ const Header = ({ dashboardList }: HeaderProps) => {
         }
       }
     })();
-  }, []);
+  }, [dashboardList]);
+
+  const inviteInput = useInputController(signinEmail);
+
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const handleInviteModalToggle = () => {
+    inviteInput.wrapper.setErrorText("");
+    setIsInviteModalOpen((prev) => !prev);
+  };
+
+  const { wrappedFunction: postData } = useApi("post");
+
+  const handleInviteUserSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const accessToken = getAccessTokenFromDocument("accessToken");
+    const res = await postData({
+      path: "invitation",
+      id: Number(boardId),
+      data: {
+        email: inviteInput.input.value,
+      },
+      accessToken,
+    });
+
+    if (!res) return;
+
+    if (res.status === 201) {
+      handleInviteModalToggle();
+    }
+
+    if (res.status > 400 && res.message) {
+      inviteInput.input.setValue("");
+      inviteInput.wrapper.setErrorText(res.message);
+    }
+  };
 
   return (
     <header className={styles.header}>
@@ -96,14 +97,13 @@ const Header = ({ dashboardList }: HeaderProps) => {
             </Link>
           </div>
           <div className={styles.grid__invite}>
-            <HeaderButton onClick={handleModalToggle} src="/icons/icon-addbox.svg" alt="대시보드로 초대하기">
+            <HeaderButton onClick={handleInviteModalToggle} src="/icons/icon-addbox.svg" alt="대시보드로 초대하기">
               초대하기
             </HeaderButton>
           </div>
-          {isModalOpen && (
-            // 진호님은 singleInputModal 사용 안하시는 듯..?
+          {isInviteModalOpen && (
             <SingleInputModal
-              handleModalClose={handleModalToggle}
+              handleModalClose={handleInviteModalToggle}
               buttonText="초대"
               onSubmit={handleInviteUserSubmit}
               inputController={inviteInput}

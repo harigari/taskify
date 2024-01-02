@@ -18,10 +18,13 @@ import TablePagination from "@/components/Table/TablePagination/TablePagination"
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
+
   const {
     data: { dashboards },
   } = await sender.get({ path: "dashboards", method: "pagination", accessToken });
 
+  console.log(context.params);
+  // await sender.get({path : "members" ,id :  })
   return {
     props: { dashboards, accessToken },
   };
@@ -32,6 +35,7 @@ const DashboardEdit = ({ dashboards, accessToken }: InferGetServerSidePropsType<
   const dashboardData = dashboards.find((v) => v.id === Number(boardId));
   const [prevColor, setPrevColor] = useState(dashboardData?.color ?? "#760dde");
   const [color, setColor] = useState<ColorType>(prevColor);
+
   const [boardName, setBoardName] = useState(dashboardData?.title);
   const { pending, wrappedFunction } = useApi("delete");
 
@@ -59,6 +63,7 @@ const DashboardEdit = ({ dashboards, accessToken }: InferGetServerSidePropsType<
     });
 
     if (res?.status === 200) {
+      setColor(color);
       setPrevColor(color);
       input.setValue("");
       setBoardName(res.data.title);
@@ -95,7 +100,7 @@ const DashboardEdit = ({ dashboards, accessToken }: InferGetServerSidePropsType<
           </div>
 
           {/* 구성원 */}
-          {/* <TablePagination /> */}
+          {/* <TablePagination data={} title="구성원" tableIndex={} /> */}
 
           {/* 초대 내역 */}
 
