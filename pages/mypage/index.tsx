@@ -3,10 +3,27 @@ import SettingPassword from "@/pages/mypage/components/SettingPassword";
 import SettingProfile from "@/pages/mypage/components/SettingProfile";
 import Image from "next/image";
 import styles from "./mypage.module.css";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
+import sender from "@/apis/sender";
 
-const MyPage = () => {
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const accessToken = getAccessTokenFromCookie(context) as string;
+
+  const {
+    data: { dashboards },
+  } = await sender.get({ path: "dashboards", method: "pagination", accessToken });
+
+  const { data: userData } = await sender.get({ path: "me", accessToken });
+
+  return {
+    props: { dashboards, userData },
+  };
+};
+
+const MyPage = ({ dashboards, userData }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <MenuLayout>
+    <MenuLayout dashboardList={dashboards}>
       <main className={styles.main}>
         <button className={styles.backbutton}>
           <div className={styles.backbutton__img}>
@@ -15,7 +32,7 @@ const MyPage = () => {
           <span>돌아가기</span>
         </button>
         <section className={styles.section}>
-          <SettingProfile />
+          <SettingProfile userData={userData} />
           <SettingPassword />
         </section>
       </main>

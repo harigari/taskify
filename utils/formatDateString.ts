@@ -4,9 +4,16 @@
  * @description 날짜를 원하는 포맷으로 변환합니다.
  */
 
-type Format = "yyyy.MM.dd HH:mm" | "yyyy.MM.dd";
-export default function formatDateString(dateString: string, format: Format = "yyyy.MM.dd HH:mm") {
-  const date = new Date(dateString);
+type Format = "yyyy.MM.dd HH:mm" | "yyyy.MM.dd" | "yyyy-MM-dd HH:mm";
+type TimeZone = "UTC" | "KOREA";
+export default function formatDateString(dateString: string, timeZone: TimeZone = "KOREA", format: Format = "yyyy.MM.dd HH:mm") {
+  let date = new Date(dateString);
+
+  if (timeZone === "UTC") {
+    const koreaTimeDiff = 9 * 60 * 60 * 1000;
+    const localDate = new Date(date.getTime() - koreaTimeDiff);
+    date = new Date(localDate);
+  }
 
   const year = date.getFullYear().toString();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");

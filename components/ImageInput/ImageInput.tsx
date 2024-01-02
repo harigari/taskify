@@ -5,11 +5,12 @@ import styles from "./ImageInput.module.css";
 interface ImageInputProp {
   setImageFile: Dispatch<SetStateAction<File | null>>;
   imageFile: File | null;
+  initialvalue?: string | null;
 }
 
-function ImageInput({ setImageFile, imageFile }: ImageInputProp) {
+function ImageInput({ setImageFile, imageFile, initialvalue = "" }: ImageInputProp) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [preview, setPreview] = useState<string>("");
+  const [preview, setPreview] = useState<string | null>(initialvalue);
   const [hover, setHover] = useState(false);
 
   const handleMouseOver = () => {

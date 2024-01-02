@@ -4,104 +4,47 @@ import useInputController from "@/hooks/useInputController";
 import ModalWrapper from "./ModalWrapper";
 import ModalButton from "./components/ModalButton/ModalButton";
 import styles from "./Modal.module.css";
-import { FormEvent, MouseEvent, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import DateTime from "./components/ModalInput/DateTime";
 import TagInput from "./components/ModalInput/TagInput";
 import ImageInput from "@/components/ImageInput/ImageInput";
 import InputDropdown from "./components/InputDropdown/InputDropdown";
-import useDropdownController, { Member } from "@/hooks/useDropdownController";
+import useDropdownController from "@/hooks/useDropdownController";
+import { CardData, Member } from "@/types/api.type";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import useApi from "@/hooks/useApi";
+import formatDateString from "@/utils/formatDateString";
+import { multiModalDate, multiModalExplain, multiModalTag, multiModalTitle } from "@/constants/inputConfig";
+import changeImageFileToURL from "@/utils/changeImageFileToURL";
 
 interface MultiInputModalProp {
   title: string;
   buttonText: string;
-  type?: string;
   columnId: number;
   dashboardId: number;
-  handleModalClose: (e: MouseEvent) => void;
+  setCardList: Dispatch<SetStateAction<CardData[]>>;
+  assigneeList: Member[];
+  handleModalClose: () => void;
 }
 
 const MultiInputModal = ({
-  type = "text",
   title,
   buttonText,
   handleModalClose,
   columnId,
+  setCardList,
   dashboardId,
+  assigneeList,
 }: MultiInputModalProp) => {
-  const modalTitle = useInputController({
-    inputConfig: { id: "title", type, placeholder: "제목을 입력해 주세요" },
-    labelConfig: { labelName: "제목", star: true, mobile: true },
-  });
+  const modalTitle = useInputController(multiModalTitle());
 
-  const modalExplain = useInputController({
-    inputConfig: { id: "comment", type, placeholder: "설명을 입력해 주세요" },
-    labelConfig: { labelName: "설명", star: true, mobile: true },
-  });
+  const modalExplain = useInputController(multiModalExplain());
 
-  const modalDate = useInputController({
-    inputConfig: { id: "date", type, placeholder: "날짜를 입력해 주세요" },
-    labelConfig: { labelName: "마감일", mobile: true },
-  });
+  const modalDate = useInputController(multiModalDate());
 
-  const modalTag = useInputController({
-    inputConfig: { id: "tag", type, placeholder: "입력 후 Enter" },
-    labelConfig: { labelName: "태그", mobile: true },
-  });
+  const modalTag = useInputController(multiModalTag());
 
-  const testOp = [
-    {
-      id: 1,
-      userId: 101,
-      email: "user1@example.com",
-      nickname: "나란히",
-      profileImageUrl: "/icon-addbox.svg",
-      createdAt: "2023-01-01T00:00:00",
-      updatedAt: "2023-01-01T12:34:56",
-      isOwner: true,
-    },
-    {
-      id: 2,
-      userId: 102,
-      email: "user2@example.com",
-      nickname: "가요",
-      profileImageUrl: "/icon-addbox.svg",
-      createdAt: "2023-01-02T00:00:00",
-      updatedAt: "2023-01-02T12:34:56",
-      isOwner: false,
-    },
-    {
-      id: 3,
-      userId: 103,
-      email: "user3@example.com",
-      nickname: "룰루",
-      profileImageUrl: "/icon-addbox.svg",
-      createdAt: "2023-01-03T00:00:00",
-      updatedAt: "2023-01-03T12:34:56",
-      isOwner: false,
-    },
-    {
-      id: 4,
-      userId: 104,
-      email: "user4@example.com",
-      nickname: "ㅎㅎㅎㅎㄴ",
-      profileImageUrl: "/icon-addbox.svg",
-      createdAt: "2023-01-04T00:00:00",
-      updatedAt: "2023-01-04T12:34:56",
-      isOwner: false,
-    },
-    {
-      id: 5,
-      userId: 1099,
-      email: "user4@example.com",
-      nickname: "나민지",
-      profileImageUrl: "/icon-addbox.svg",
-      createdAt: "2023-01-04T00:00:00",
-      updatedAt: "2023-01-04T12:34:56",
-      isOwner: false,
-    },
-  ];
-
-  const modalDropdown = useDropdownController<Member>({ options: testOp });
+  const modalDropdown = useDropdownController<Member>({ options: assigneeList });
 
   const [tagList, setTagList] = useState<string[]>([]);
 
@@ -110,18 +53,47 @@ const MultiInputModal = ({
   const data = {
     columnId,
     dashboardId,
-    assigneeUserId: modalDropdown.value,
+    assigneeUserId: modalDropdown.value?.userId!,
     title: modalTitle.input.value,
     description: modalExplain.input.value,
-    dueDate: modalTag.input.value,
-    tags: tagList,
-    imageUrl: imageFile,
+    dueDate: formatDateString(String(modalDate.dateTime.date), "KOREA", "yyyy-MM-dd HH:mm"),
+    tags: [...tagList].reverse(),
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const { pending, error, wrappedFunction: postData } = useApi("post");
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // 페치 하게 될 듯
+    for (const value of Object.values(data)) {
+      if (!value) return;
+    }
+
+    const accessToken = getAccessTokenFromDocument("accessToken");
+
+    if (pending) return;
+
+    if (imageFile === null) {
+      const cardRes = await postData({ path: "card", data, accessToken });
+
+      if (cardRes?.status === 201) {
+        setCardList((prevValue) => [...prevValue, cardRes.data]);
+        handleModalClose();
+      }
+    }
+
+    if (imageFile !== null) {
+      const imageUrl = await changeImageFileToURL(imageFile, columnId, accessToken);
+
+      const dataWithImage = { ...data, imageUrl };
+
+      const cardRes = await postData({ path: "card", data: dataWithImage, accessToken });
+
+      if (cardRes?.status === 201) {
+        setCardList((prevValue) => [...prevValue, cardRes.data]);
+        handleModalClose();
+      }
+    }
   };
 
   return (
@@ -159,5 +131,4 @@ const MultiInputModal = ({
     </ModalWrapper>
   );
 };
-
 export default MultiInputModal;

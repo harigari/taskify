@@ -2,8 +2,8 @@ import { Configs } from "@/constants/inputConfig";
 import { ChangeEvent, useState } from "react";
 
 function useInputController({ errorConfig, inputConfig, labelConfig }: Configs) {
-  const [value, setValue] = useState(inputConfig.initialValue || "");
-  const [date, setDate] = useState<Date | null>(null);
+  const [value, setValue] = useState(inputConfig.initialvalue || "");
+  const [date, setDate] = useState<Date | null>(inputConfig.initialvalue ? new Date(inputConfig.initialvalue) : null);
   const [errorText, setErrorText] = useState("");
   const [eyesValue, setEyesValue] = useState(false);
 

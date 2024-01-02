@@ -1,44 +1,59 @@
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import styles from "./Sidemenu.module.css";
+import useInputController from "@/hooks/useInputController";
+import stylesFromSingle from "@/modals/Modal.module.css";
+import ModalWrapper from "@/modals/ModalWrapper";
+import InputWrapper from "@/components/Input/InputWrapper";
+import Input from "@/components/Input/Input";
+import ChipColors from "@/components/Chips/ChipColors/ChipColors";
+import ModalButton from "@/modals/components/ModalButton/ModalButton";
+import { ColorType, DashBoardData } from "@/types/api.type";
+import { useRouter } from "next/router";
+import sender from "@/apis/sender";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 
-const MOCKUP = [
-  {
-    id: 1,
-    title: "행복해서",
-    color: "green",
-    createdByMe: true,
-  },
-  {
-    id: 2,
-    title: "웃는게 아니라",
-    color: "purple",
-    createdByMe: true,
-  },
-  {
-    id: 3,
-    title: "웃어서",
-    color: "orange",
-    createdByMe: false,
-  },
-  {
-    id: 4,
-    title: "행복한거다",
-    color: "blue",
-    createdByMe: false,
-  },
-  {
-    id: 5,
-    title: "중요!",
-    color: "pink",
-    createdByMe: true,
-  },
-];
+interface SidemenuProps {
+  dashboardList: DashBoardData[];
+}
 
-const Sidemenu = () => {
-  const [selected, setSelected] = useState(0);
+const Sidemenu = ({ dashboardList }: SidemenuProps) => {
+  const [dashboards, setDashboards] = useState(dashboardList);
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedColor, setSelectedColor] = useState<ColorType>("#7ac555");
+
+  const column = useInputController({
+    inputConfig: {
+      id: "newDashboard",
+      type: "text",
+    },
+    labelConfig: { labelName: "대시보드 이름" },
+  });
+  const handleModalToggle = () => {
+    setIsOpen((prevValue) => !prevValue);
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const data = {
+      title: column.input.value,
+      color: selectedColor,
+    };
+
+    const accessToken = getAccessTokenFromDocument("accessToken");
+    const res = await sender.post({ path: "dashboard", accessToken, data });
+
+    if (res?.status === 201) {
+      handleModalToggle();
+      setDashboards((prevValue) => [res.data, ...prevValue]);
+      column.input.setValue("");
+      setSelectedColor("#7ac555");
+    }
+  };
 
   return (
     <aside className={styles.container}>
@@ -58,18 +73,18 @@ const Sidemenu = () => {
         <Link className={styles.title__link} href="/mydashboard">
           <p className={styles.title__text}>Dash Boards</p>
         </Link>
-        <button className={styles.title__button}>
+        <button className={styles.title__button} onClick={handleModalToggle}>
           <Image width={20} height={20} src="/icons/icon-addbox.svg" alt="대시보드 추가하기" />
         </button>
       </div>
       <ul className={styles.list}>
-        {MOCKUP.map((board) => (
+        {dashboards?.map((board) => (
           <li key={board.id}>
-            <button
-              className={clsx(styles.item__button, { [styles.selected]: board.id === selected })}
-              onClick={() => setSelected(board.id)}
+            <Link
+              href={`/dashboard/${board.id}`}
+              className={clsx(styles.item__button, { [styles.selected]: board.id === Number(router.query.boardId) })}
             >
-              <div className={styles.item__icon} style={{ backgroundColor: `var(--${board.color})` }} />
+              <div className={styles.item__icon} style={{ backgroundColor: board.color }} />
               <p className={styles.item__text}>{board.title}</p>
               {board.createdByMe && (
                 <Image
@@ -80,10 +95,27 @@ const Sidemenu = () => {
                   alt="내가 생성한 대시보드"
                 />
               )}
-            </button>
+            </Link>
           </li>
         ))}
       </ul>
+      {isOpen && (
+        <ModalWrapper size="md">
+          <form className={stylesFromSingle.form} onSubmit={handleSubmit} noValidate>
+            <div className={stylesFromSingle.modal}>
+              <div className={stylesFromSingle.modalTitle}>새로운 대시보드</div>
+
+              <InputWrapper {...column.wrapper}>
+                <Input {...column.input} />
+              </InputWrapper>
+            </div>
+            <ChipColors selectedColor={selectedColor} setSelectedColor={setSelectedColor} size="lg" />
+            <div className={stylesFromSingle.buttonContainer}>
+              <ModalButton.DoubleButton onClick={handleModalToggle}>생성</ModalButton.DoubleButton>
+            </div>
+          </form>
+        </ModalWrapper>
+      )}
     </aside>
   );
 };

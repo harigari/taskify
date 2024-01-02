@@ -6,12 +6,12 @@ export interface Configs {
     id: string;
     type?: string;
     name?: Obj["name"];
-    initialValue?: string;
+    initialvalue?: string;
     eyeButton?: boolean;
     placeholder?: string | undefined;
   };
   labelConfig: {
-    labelName: string;
+    labelName?: string;
     mobile?: boolean;
     star?: boolean;
   };
@@ -77,7 +77,7 @@ export const signupPasswordCheck: Configs = {
 };
 
 export const mypageCurrentPassword: Configs = {
-  errorConfig: [],
+  errorConfig: [[isReg], [isValue]],
   inputConfig: {
     id: "current__password",
     type: "password",
@@ -89,7 +89,7 @@ export const mypageCurrentPassword: Configs = {
 };
 
 export const mypageNewPassword: Configs = {
-  errorConfig: [[isReg], [isValue]],
+  errorConfig: [[isSamePassword], [isReg], [isValue]],
   inputConfig: {
     id: "new__password",
     type: "password",
@@ -110,4 +110,56 @@ export const mypageNewPasswordCheck: Configs = {
     eyeButton: true,
   },
   labelConfig: { labelName: "새로운 비밀번호 확인" },
+};
+
+export const multiModalTitle = (initialvalue?: string): Configs => {
+  const obj = {
+    inputConfig: { id: "title", type: "text", placeholder: "제목을 입력해 주세요", initialvalue: "" },
+    labelConfig: { labelName: "제목", star: true, mobile: true },
+  };
+
+  if (initialvalue) {
+    obj.inputConfig.initialvalue = initialvalue;
+  }
+
+  return obj;
+};
+
+export const multiModalExplain = (initialvalue?: string): Configs => {
+  const obj = {
+    inputConfig: { id: "comment", type: "text", placeholder: "설명을 입력해 주세요", initialvalue: "" },
+    labelConfig: { labelName: "설명", star: true, mobile: true },
+  };
+
+  if (initialvalue) {
+    obj.inputConfig.initialvalue = initialvalue;
+  }
+
+  return obj;
+};
+
+export const multiModalDate = (initialvalue?: string): Configs => {
+  const obj = {
+    inputConfig: { id: "date", type: "text", placeholder: "날짜를 입력해 주세요", initialvalue: "" },
+    labelConfig: { labelName: "마감일", mobile: true },
+  };
+
+  if (initialvalue) {
+    obj.inputConfig.initialvalue = initialvalue;
+  }
+
+  return obj;
+};
+
+export const multiModalTag = (initialvalue?: string): Configs => {
+  const obj = {
+    inputConfig: { id: "tag", type: "text", placeholder: "입력 후 Enter", initialvalue: "" },
+    labelConfig: { labelName: "태그", mobile: true },
+  };
+
+  if (initialvalue) {
+    obj.inputConfig.initialvalue = initialvalue;
+  }
+
+  return obj;
 };

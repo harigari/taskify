@@ -38,9 +38,8 @@ function Option({ value, setValue, setIsOpen, option }: OptionProp) {
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
     >
-      <Image className={imageStyle} src="/icons/icon-check.svg" width={22} height={22} alt="" />
-      {/* ProfileIcon에 marginLeft -1rem이 달려있어서, 부득이 인라인 스타일로 이 부분을 조절함 */}
-      <div className={styles.profileWrapper} style={{ marginLeft: "1rem" }}>
+      <Image className={imageStyle} src="/icons/icon-check-gray.svg" width={22} height={22} alt="" />
+      <div className={styles.profileWrapper}>
         <ProfileIcon size="sm" member={option} />
         {option.nickname}
       </div>

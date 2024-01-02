@@ -1,16 +1,19 @@
 .wrapper {
   display: flex;
   gap: 1rem;
-  height: 8rem;
+  width: 95%;
 }
+
 .header {
   display: flex;
   gap: 0.8rem;
+  align-items: baseline;
 }
 
 .detail {
   display: flex;
   gap: 0.8rem;
+  flex: 1;
   flex-direction: column;
 }
 .author {
@@ -36,8 +39,30 @@
 .button {
   font-size: 1.2rem;
   color: var(--gray40);
-  text-decoration-line: underline;
 }
+
+.textarea {
+  padding: 1rem;
+  border: 1px solid var(--gray30);
+  outline: none;
+  width: 100%;
+  font-size: 1.4rem;
+  resize: none;
+  border-radius: 0.6rem;
+}
+
+.textarea:focus-within {
+  border: 1px solid var(--violet);
+}
+.textarea::placeholder {
+  color: var(--gray40);
+}
+
+.error {
+  font-size: 1.5rem;
+  color: var(--red);
+}
+
 @media (max-width: 768px) {
   .author {
     font-size: 1.2rem;
@@ -48,7 +73,9 @@
   .comment {
     font-size: 1.2rem;
   }
-
+  .textarea {
+    font-size: 1.2rem;
+  }
   .profile_icon button {
     width: 2.6rem;
     height: 2.6rem;

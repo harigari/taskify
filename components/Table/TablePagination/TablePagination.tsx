@@ -94,6 +94,7 @@ const TablePagenation = ({
           <Image
             width={100}
             height={100}
+            priority
             src="/icons/icon-noinvite-dashboard.svg"
             alt="초대받은 대시보드가 없습니다."
           />

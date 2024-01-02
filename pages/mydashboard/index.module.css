@@ -6,7 +6,7 @@
 
 .dashboard {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(20%, 1fr));
   gap: 2.4rem;
 }
 
@@ -18,7 +18,8 @@
   width: 100%;
 }
 
-.dashboard button:not(:first-child) {
+.dashboard a {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   padding: 0 3rem;

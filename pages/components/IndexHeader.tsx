@@ -21,7 +21,8 @@ const IndexHeader = ({ color = "white" }: IndexHeaderProps) => {
             <Image
               width={110}
               height={35}
-              priority
+              placeholder="blur"
+              blurDataURL={`/images/logo-${color === "white" ? "purple" : "white"}-horizontal.png`}
               src={`/images/logo-${color === "white" ? "purple" : "white"}-horizontal.png`}
               alt="홈페이지로 바로가기"
             />

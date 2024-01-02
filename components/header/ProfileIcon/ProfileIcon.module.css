@@ -1,0 +1,50 @@
+.member {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 1;
+  width: 4rem;
+  height: 4rem;
+  color: var(--white);
+  border-radius: 10rem;
+}
+
+.profileImageWrapper {
+  position: relative;
+  width: 4rem;
+  height: 4rem;
+}
+
+.member__image {
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+}
+
+.member__image__small {
+  width: 2.4rem;
+  height: 2.4rem;
+  object-fit: cover;
+}
+
+.member__defaultimage {
+  overflow: hidden;
+  position: absolute;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 10rem;
+}
+
+.member__name {
+  position: absolute;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 767px) {
+  .member[data-index="2"],
+  .member[data-index="3"] {
+    display: none;
+  }
+}

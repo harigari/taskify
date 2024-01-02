@@ -1,9 +1,9 @@
-import { BasicUserType } from "@/types/api.type";
+import { Member } from "@/types/api.type";
 import styles from "./Members.module.css";
 import Profile from "./Profile";
 
 interface MembersProps {
-  members: BasicUserType[];
+  members: Member[];
 }
 
 const Members = ({ members }: MembersProps) => {

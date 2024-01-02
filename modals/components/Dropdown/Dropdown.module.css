@@ -1,6 +1,8 @@
 .root {
+  position: relative;
   display: flex;
   gap: 1rem;
+  width: 21.7rem;
   flex-direction: column;
 }
 

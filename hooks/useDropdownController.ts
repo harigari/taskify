@@ -12,7 +12,7 @@ export type Member = {
 };
 
 interface Prop<T> {
-  options: T[];
+  options: T[] | undefined;
   initialValue?: T;
 }
 

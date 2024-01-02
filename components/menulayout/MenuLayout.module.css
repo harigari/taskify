@@ -13,4 +13,5 @@
 .grid__main {
   background-color: var(--gray10);
   grid-area: main;
+  overflow: hidden;
 }

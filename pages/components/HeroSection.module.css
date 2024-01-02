@@ -21,15 +21,19 @@
 
 .hero_section .heading {
   font-size: 7.6rem;
+  display: flex;
+  align-items: center;
 }
 
 .hero_section .heading .violet {
   color: var(--violet);
   font-size: 9rem;
-  text-align: center;
 }
 
 .hero_section .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 7rem;
   width: 28rem;
   height: 5rem;

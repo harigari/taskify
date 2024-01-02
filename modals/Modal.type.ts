@@ -9,7 +9,7 @@ export interface TaskInfo {
     nickname: string;
     profileImageUrl: string | null;
   };
-  imageUrl: string;
+  imageUrl?: string;
   columnId: number;
   dashboardId: number;
 }

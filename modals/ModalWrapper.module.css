@@ -14,7 +14,7 @@
 
 .lg {
   width: 73rem;
-  height: 76.3rem;
+
   background: var(--white, #fff);
   border-radius: 0.8rem;
 }
@@ -36,7 +36,6 @@
 @media (max-width: 1200px) {
   .lg {
     width: 68rem;
-    height: 77rem;
     border-radius: 0.8rem;
   }
 }
@@ -44,7 +43,6 @@
 @media (max-width: 767px) {
   .lg {
     width: 32.7rem;
-    height: 70.8rem;
     border-radius: 0.8rem;
   }
 

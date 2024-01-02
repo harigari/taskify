@@ -15,24 +15,24 @@ import Option from "./Option";
 import Label from "@/components/Label/Label";
 import Image from "next/image";
 import ProfileIcon from "@/components/Members/ProfileIcon";
-import { BasicUserType } from "@/types/api.type";
+import { Member } from "@/types/api.type";
 
 interface DropdownProp {
   children: ReactNode;
-  value: BasicUserType | undefined;
-  setValue: Dispatch<SetStateAction<BasicUserType | undefined>>;
-  options: BasicUserType[];
+  value: Member | undefined;
+  setValue: Dispatch<SetStateAction<Member | undefined>>;
+  options: Member[] | undefined;
 }
 
-const optionFilter = (options: BasicUserType[], inputValue: string) => {
-  const filteredMembers = options.filter((option) => option.nickname.includes(inputValue));
+const optionFilter = (options: Member[] | undefined, inputValue: string) => {
+  const filteredMembers = (options ?? []).filter((option) => option?.nickname.includes(inputValue));
   return filteredMembers;
 };
 
 const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [filtedOptions, setFiltedOptions] = useState<any[]>(options);
+  const [filtedOptions, setFiltedOptions] = useState(options ?? []);
 
   const selectedStyle = clsx(styles.selected, (isOpen || inputValue) && styles.selectedBorder);
 
@@ -94,13 +94,12 @@ const InputDropdown = ({ options, value, setValue, children }: DropdownProp) => 
             ></input>
           ) : (
             <div className={styles.selectedNickname}>
-              {/* ProfileIcon에 marginLeft -1rem이 달려있어서, 부득이 인라인 스타일로 이 부분을 조절함 */}
-              <div className={styles.profileWrapper} style={{ marginLeft: "1rem" }}>
+              <div className={styles.profileWrapper}>
                 <ProfileIcon size="sm" member={value} />
                 {value.nickname}
               </div>
               <button type="button" className={styles.button} onMouseDown={handleDeleteClick}>
-                <Image src="/icons/icon-close.svg" alt="닫기 버튼" width={20} height={20} />
+                <Image src="/icons/icon-close-black.svg" alt="닫기 버튼" width={20} height={20} />
               </button>
             </div>
           )}

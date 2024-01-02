@@ -1,6 +1,7 @@
 .layoutContainer {
   display: flex;
   gap: 2rem;
+  height: 100%;
 }
 
 .columnContainer {

@@ -1,0 +1,7 @@
+.comments {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  overflow: auto;
+  max-height: 15rem;
+}

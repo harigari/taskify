@@ -1,8 +1,8 @@
 import SENDER_CONFIG from "@/constants/senderConfig";
 
 type TimeStamp = {
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 // 유저 관련 타입
@@ -12,7 +12,7 @@ export type BasicUserType = {
   id: number;
 };
 
-type ExtendedUserType = {
+export type ExtendedUserType = {
   email: string;
 } & TimeStamp &
   BasicUserType;
@@ -48,14 +48,16 @@ type Return_post_signup = ExtendedUserType;
 
 type Req_put_me = {
   nickname: string;
-  profileImageUrl: string;
+  profileImageUrl?: string;
 };
 
 type Return_put_me = ExtendedUserType;
 
-type Req_post_myImage = string;
+type Req_post_myImage = FormData;
 
-type Return_post_myImage = ImageUrlType;
+type Return_post_myImage = {
+  profileImageUrl: string;
+};
 
 // 카드 관련 타입
 export type CardData = {
@@ -79,7 +81,7 @@ type Return_get_cards = {
   cards: CardData[];
 };
 
-type Req_post_cardImage = string;
+type Req_post_cardImage = FormData;
 
 type Return_post_cardImage = ImageUrlType;
 
@@ -90,8 +92,8 @@ type Req_post_card = {
   title: string;
   description: string;
   dueDate: string;
-  tags: [string];
-  imageUrl: string;
+  tags: string[];
+  imageUrl?: string;
 };
 
 type Return_post_card = CardData;
@@ -102,17 +104,18 @@ type Req_put_card = {
   title: string;
   description: string;
   dueDate: string;
-  tags: [string];
-  imageUrl: string;
+  tags: string[];
+  imageUrl?: string;
 };
 
 type Return_put_card = CardData;
 
 // 컬럼 관련 타입
-type ColumnData = {
+export type ColumnData = {
   id: number;
-  cardId: number;
-  author: BasicUserType;
+  title: string;
+  teamId: string;
+  dashboardId: number;
 } & TimeStamp;
 
 type ColumnListData = {
@@ -131,6 +134,7 @@ type Return_post_column = {
   id: number;
   title: string;
   teamId: string;
+  dashboardId: number;
 } & TimeStamp;
 
 type Req_put_column = {
@@ -144,7 +148,7 @@ type Return_put_column = {
 } & TimeStamp;
 
 // 댓글 관련 타입
-type CommentData = {
+export type CommentData = {
   id: number;
   content: string;
   cardId: number;
@@ -192,10 +196,13 @@ type Return_put_comment = {
 } & TimeStamp;
 
 // 대시보드 관련 타입
-type DashBoardData = {
+
+export type ColorType = "#7ac555" | "#760dde" | "#ffa500" | "#76a5ea" | "#e876ea";
+
+export type DashBoardData = {
   id: number;
   title: string;
-  color: string;
+  color: ColorType;
   createdByMe: Boolean;
   userId: number;
 } & TimeStamp;
@@ -244,13 +251,13 @@ type Return_get_dashboards = DashBoardListData;
 
 type Req_post_dashboard = {
   title: string;
-  color: string;
+  color: ColorType;
 };
 
 type Return_post_dashboard = {
   id: number;
   title: string;
-  color: string;
+  color: ColorType;
   createdByMe: boolean;
   userId: number;
 } & TimeStamp;
@@ -308,7 +315,7 @@ type Return_put_invitation = {
 } & TimeStamp;
 
 // 대시보드 맴버 관련 타입
-type Member = {
+export type Member = {
   id: number;
   userId: number;
   email: string;
@@ -339,8 +346,10 @@ export type RequestData<T, U> = T extends "post"
     ? Req_post_signin
     : U extends "signup"
     ? Req_post_signup
-    : U extends "myImage" | "cardImage"
+    : U extends "myImage"
     ? Req_post_myImage
+    : U extends "cardImage"
+    ? Req_post_cardImage
     : null
   : T extends "put"
   ? U extends "card"
@@ -397,8 +406,10 @@ export type ReturnData<T, U> = T extends "get"
     ? Return_post_dashboard
     : U extends "invitation"
     ? Return_post_invitation
-    : U extends "myImage" | "cardImage"
-    ? ImageUrlType
+    : U extends "myImage"
+    ? Return_post_myImage
+    : U extends "cardImage"
+    ? Return_post_cardImage
     : any
   : T extends "put"
   ? U extends "card"
@@ -421,14 +432,18 @@ export type Path<T extends Method> = (typeof SENDER_CONFIG)[T];
 export type PathProps<T extends Method> = keyof (typeof SENDER_CONFIG)[T];
 
 export type RequireId<T extends Method, U extends PathProps<T>> = Path<T>[U] extends string
-  ? { path: U; data?: RequestData<T, U> }
+  ? { path: U; accessToken?: string; data?: RequestData<T, U> }
   : Path<T>[U] extends (id: number) => string
-  ? { path: U; id: number; data?: RequestData<T, U> }
+  ? { path: U; id: number; accessToken?: string; data?: RequestData<T, U> }
   : Path<T>[U] extends (method: "infiniteScroll" | "pagination") => string
-  ? { path: U; method: "infiniteScroll" | "pagination"; data?: RequestData<T, U> }
-  : { path: U; dashboardId: number; invitationId: number; data?: RequestData<T, U> };
+  ? { path: U; method: "infiniteScroll" | "pagination"; accessToken?: string; data?: RequestData<T, U> }
+  : { path: U; dashboardId: number; invitationId: number; accessToken?: string; data?: RequestData<T, U> };
 
 export type HTTP<T extends Method> = <U extends PathProps<T>>(
+  obj: RequireId<T, U>
+) => Promise<{ status: number; data: ReturnData<T, U> }>;
+
+export type Wrapped<T extends Method> = <U extends PathProps<T>>(
   obj: RequireId<T, U>
 ) => Promise<{ status: number; data: ReturnData<T, U> } | undefined>;
 
