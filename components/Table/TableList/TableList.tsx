@@ -3,6 +3,8 @@ import ProfileIcon from "@/components/Members/ProfileIcon";
 import { BasicUserType, InvitationData } from "@/types/api.type";
 import makeColorProfile from "@/utils/makeColorProfile";
 import styles from "./TableList.module.css";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import sender from "@/apis/sender";
 
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
@@ -73,6 +75,11 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
               continue;
             case v === "acceptButton":
               {
+                const handleReject = async () => {
+                  const accessToken = getAccessTokenFromDocument("accessToken");
+                  const res = await sender.put({ path: "invitation", data: { inviteAccepted: false }, accessToken });
+                };
+
                 arr.push(
                   <div className={styles.acceptbutton__wrapper} key={v}>
                     <Button buttonType="accept_reject" color="violet">
