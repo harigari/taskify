@@ -3,13 +3,6 @@ import style from "./ChipColors.module.css";
 import ChipColor from "../ChipColor/ChipColor";
 import { ColorType } from "@/types/api.type";
 
-// interface ChipColorProps {
-//   size: string;
-//   color: "green" | "purple" | "orange" | "blue" | "pink";
-//   onClick?: () => void;
-//   isSelected: boolean;
-// }
-
 interface ChipColorsProps {
   selectedColor: ColorType;
   setSelectedColor: Dispatch<SetStateAction<ColorType>>;

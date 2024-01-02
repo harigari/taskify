@@ -70,7 +70,7 @@ const DashboardEdit = ({
 
   const [memberList, setMemberList] = useState<BasicUserType[]>(members);
 
-  const [invitationList, setInvitationList] = useState<InvitationData[]>(invitations)
+  const [invitationList, setInvitationList] = useState<InvitationData[]>(invitations);
   const [boardName, setBoardName] = useState(dashboardData?.title);
   const { pending, wrappedFunction } = useApi("delete");
 
@@ -135,6 +135,7 @@ const DashboardEdit = ({
           </div>
 
           {/* 구성원 */}
+
           <TablePagination
             data={memberList}
             setData={setMemberList}
@@ -151,6 +152,7 @@ const DashboardEdit = ({
             title="초대 내역"
             tableIndex={{ 이메일: "email", "": "cancelButton" }}
           />
+
           <Button disabled={pending} onClick={handleDashboardDeleteClick} color="gray" buttonType="dashboard_delete">
             대시보드 삭제하기
           </Button>

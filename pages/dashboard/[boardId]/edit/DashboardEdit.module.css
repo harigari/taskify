@@ -3,6 +3,11 @@
   gap: 1.2rem;
   flex-direction: column;
   padding: 2rem;
+  width: 62rem;
+}
+
+.body > :last-child {
+  margin-top: 4rem;
 }
 
 .back_button {
@@ -26,7 +31,6 @@
   display: flex;
   flex-direction: column;
   padding: 3.2rem 2.8rem;
-  width: 62rem;
   background-color: var(--white);
   border-radius: 0.8rem;
   gap: 2rem;
@@ -65,4 +69,15 @@
 
 .edit_button:disabled {
   background-color: var(--gray40);
+}
+
+@media (max-width: 1200px) {
+  .body {
+    width: 54rem;
+  }
+}
+@media (max-width: 767px) {
+  .body {
+    width: 28.4rem;
+  }
 }
