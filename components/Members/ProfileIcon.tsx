@@ -17,6 +17,7 @@ interface ProfileIconProps extends HandlerFunc {
   size?: "sm" | "lg";
   tabIndex?: number;
   className?: string;
+  ["data-index"]?: number;
 }
 
 const ProfileIcon = ({ member, size = "lg", ...props }: ProfileIconProps) => {

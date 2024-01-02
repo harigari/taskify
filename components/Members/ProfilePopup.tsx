@@ -12,7 +12,7 @@ const ProfilePopup = ({ member }: ProfilePopupProps) => {
   return (
     <ul className={styles.popup}>
       {arr.map((member, idx) => (
-        <li className={styles.popup__list} key={member.id} data-index={arr.length > 2 && idx}>
+        <li className={styles.popup__list} key={member.id}>
           <ProfileIcon member={member} />
           <span className={styles.popup__name}>{member.nickname}</span>
         </li>

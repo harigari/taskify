@@ -33,7 +33,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     data: { invitations },
   } = await sender.get({ path: "dashboardInvitations", id: Number(boardId), accessToken });
 
-  console.log(invitations);
   if (!accessToken) {
     return {
       redirect: {
@@ -128,7 +127,12 @@ const DashboardEdit = ({
 
           {/* 초대 내역 */}
 
-          <TablePagination data={invitations} title="초대 내역" tableIndex={{ 이메일: "email", "": "cancelButton" }} />
+          <TablePagination
+            data={invitations}
+            invite
+            title="초대 내역"
+            tableIndex={{ 이메일: "email", "": "cancelButton" }}
+          />
           <Button disabled={pending} onClick={handleDashboardDeleteClick} color="gray" buttonType="dashboard_delete">
             대시보드 삭제하기
           </Button>

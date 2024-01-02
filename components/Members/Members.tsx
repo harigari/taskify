@@ -1,8 +1,9 @@
+import ProfileIcon from "@/components/Members/ProfileIcon";
 import { Member } from "@/types/api.type";
-import styles from "./Members.module.css";
-import Profile from "./Profile";
-import ProfilePopup from "./ProfilePopup";
+import clsx from "clsx";
 import { useState } from "react";
+import styles from "./Members.module.css";
+import ProfilePopup from "./ProfilePopup";
 
 interface MembersProps {
   members: Member[];
@@ -17,6 +18,15 @@ const Members = ({ members }: MembersProps) => {
     setIsOpen(false);
   };
 
+  const countStyle = {
+    className: clsx(styles.count, {
+      [styles.hidecount__desktop]: members.length <= 4,
+      [styles.hidecount__mobile]: members.length <= 2,
+    }),
+    ["data-desktop-count"]: members.length - 4,
+    ["data-mobile-count"]: members.length - 2,
+  };
+
   return (
     <div
       tabIndex={0}
@@ -27,9 +37,9 @@ const Members = ({ members }: MembersProps) => {
       className={styles.container}
     >
       {members.slice(0, 4).map((member, idx) => (
-        <Profile key={member.id} member={member} idx={idx} />
+        <ProfileIcon key={member.id} member={member} data-index={idx} />
       ))}
-      <Profile member={members} />
+      <div {...countStyle} />
       {isOpen && <ProfilePopup member={members} />}
     </div>
   );

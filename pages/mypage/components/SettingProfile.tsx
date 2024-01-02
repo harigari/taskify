@@ -12,12 +12,14 @@ import { FormEvent } from "react";
 import { changeImageFileToURLForUserProfile } from "@/utils/changeImageFileToURL";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import AlertModal from "@/modals/AlertModal";
+import { useRouter } from "next/router";
 
 interface ProfileProps {
   userData: ExtendedUserType;
 }
 
 const SettingProfile = ({ userData }: ProfileProps) => {
+  const router = useRouter();
   const [preview, setPreview] = useState<string | null | undefined>(userData.profileImageUrl);
   const [prevNickname, setPrevNickname] = useState(userData.nickname);
 
@@ -108,7 +110,10 @@ const SettingProfile = ({ userData }: ProfileProps) => {
           <AlertModal
             alertText="프로필 정보가 성공적으로 변경되었습니다."
             isDoubleButton={false}
-            handleModalClose={handleModalToggle}
+            handleModalClose={() => {
+              router.push("/mypage");
+              handleModalToggle();
+            }}
           />
         )}
       </div>
