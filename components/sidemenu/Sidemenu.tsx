@@ -20,7 +20,6 @@ interface SidemenuProps {
 }
 
 const Sidemenu = ({ dashboardList }: SidemenuProps) => {
-  const [dashboards, setDashboards] = useState(dashboardList);
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState<ColorType>("#7ac555");
@@ -49,9 +48,15 @@ const Sidemenu = ({ dashboardList }: SidemenuProps) => {
 
     if (res?.status === 201) {
       handleModalToggle();
-      setDashboards((prevValue) => [res.data, ...prevValue]);
       column.input.setValue("");
       setSelectedColor("#7ac555");
+
+      const boardId = router.query.boardId;
+      if (boardId) {
+        router.push(`/dashboard/${boardId}`);
+        return;
+      }
+      router.push(router.pathname);
     }
   };
 
@@ -78,7 +83,7 @@ const Sidemenu = ({ dashboardList }: SidemenuProps) => {
         </button>
       </div>
       <ul className={styles.list}>
-        {dashboards?.map((board) => (
+        {dashboardList?.map((board) => (
           <li key={board.id}>
             <Link
               href={`/dashboard/${board.id}`}

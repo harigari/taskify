@@ -12,14 +12,6 @@ interface ProfileProps {
 }
 
 const Profile = ({ member, idx, ...props }: ProfileProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-
   const whenArray = Array.isArray(member)
     ? {
         className: clsx(styles.button, {
@@ -35,15 +27,10 @@ const Profile = ({ member, idx, ...props }: ProfileProps) => {
     <div className={styles.container}>
       <ProfileIcon
         member={Array.isArray(member) ? { id: 0, nickname: "", profileImageUrl: "" } : member}
-        onMouseOver={handleOpen}
-        onMouseOut={handleClose}
-        onFocus={handleOpen}
-        onBlur={handleClose}
         data-index={idx}
         {...whenArray}
         {...props}
       />
-      {isOpen && <ProfilePopup member={Array.isArray(member) ? member.slice(2) : member} />}
     </div>
   );
 };

@@ -4,7 +4,6 @@
   position: relative;
 }
 
-.container button {
+.container > div {
   margin-left: -1rem;
-  border: 0.2rem solid var(--white);
 }

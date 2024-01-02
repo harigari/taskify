@@ -6,6 +6,8 @@ import styles from "./mypage.module.css";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import sender from "@/apis/sender";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -22,10 +24,12 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 };
 
 const MyPage = ({ dashboards, userData }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const router = useRouter();
+
   return (
     <MenuLayout dashboardList={dashboards}>
       <main className={styles.main}>
-        <button className={styles.backbutton}>
+        <button onClick={() => router.back()} className={styles.backbutton}>
           <div className={styles.backbutton__img}>
             <Image fill src="/icons/icon-arrowleft.svg" alt="이전 페이지로 돌아가기" />
           </div>

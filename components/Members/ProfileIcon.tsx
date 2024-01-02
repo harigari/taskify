@@ -1,4 +1,4 @@
-import { ExtendedUserType } from "@/types/api.type";
+import { BasicUserType } from "@/types/api.type";
 import makeColorProfile from "@/utils/makeColorProfile";
 import clsx from "clsx";
 import Image from "next/image";
@@ -13,7 +13,7 @@ type HandlerFunc = {
 };
 
 interface ProfileIconProps extends HandlerFunc {
-  member?: ExtendedUserType;
+  member?: BasicUserType;
   size?: "sm" | "lg";
   tabIndex?: number;
   className?: string;

@@ -24,7 +24,7 @@ const Header = ({ dashboardList }: HeaderProps) => {
   const boardId = router?.query.boardId;
   const [memberList, setMemberList] = useState<Member[]>([]);
   const [myData, setMyData] = useState<ExtendedUserType>();
-  const isOwner = memberList?.some((v) => v.userId === myData?.id);
+  const isOwner = memberList?.find((v) => v.userId === myData?.id)?.isOwner;
   const title = dashboardList?.find((v) => v.id === Number(boardId))?.title;
 
   const inviteInput = useInputController(signinEmail);
@@ -48,14 +48,14 @@ const Header = ({ dashboardList }: HeaderProps) => {
       accessToken,
     });
 
-    if (res?.status === 201) {
+    if (!res) return;
+
+    if (res.status === 201) {
       handleModalToggle();
       inviteInput.input.setValue("");
     }
 
-    if (!res?.status) return;
-
-    if (res?.status > 400 && res.message) {
+    if (res.status > 400 && res.message) {
       inviteInput.input.setValue("");
       inviteInput.wrapper.setErrorText(res.message);
     }

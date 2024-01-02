@@ -5,6 +5,7 @@ import makeColorProfile from "@/utils/makeColorProfile";
 import styles from "./TableList.module.css";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import sender from "@/apis/sender";
+import { useRouter } from "next/router";
 
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
@@ -19,6 +20,7 @@ interface TableListProps {
 const TableList = ({ data, tableIndex, row }: TableListProps) => {
   const column = Object.keys(tableIndex).length;
   const isAccept = Object.values(tableIndex).includes("acceptButton");
+  const router = useRouter();
 
   return (
     <ul className={isAccept ? styles.list__mobile : ""}>
@@ -75,17 +77,27 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
               continue;
             case v === "acceptButton":
               {
-                const handleReject = async () => {
+                if (!("dashboard" in data)) return;
+                const handleReject = (yesOrNo: boolean) => async () => {
                   const accessToken = getAccessTokenFromDocument("accessToken");
-                  const res = await sender.put({ path: "invitation", data: { inviteAccepted: false }, accessToken });
+                  const res = await sender.put({
+                    path: "invitation",
+                    id: data.id,
+                    data: { inviteAccepted: yesOrNo },
+                    accessToken,
+                  });
+
+                  if (res.status < 300) {
+                    router.push("/mydashboard");
+                  }
                 };
 
                 arr.push(
                   <div className={styles.acceptbutton__wrapper} key={v}>
-                    <Button buttonType="accept_reject" color="violet">
+                    <Button onClick={handleReject(true)} buttonType="accept_reject" color="violet">
                       수락
                     </Button>
-                    <Button buttonType="accept_reject" color="white">
+                    <Button onClick={handleReject(false)} buttonType="accept_reject" color="white">
                       거절
                     </Button>
                   </div>

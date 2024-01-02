@@ -18,7 +18,10 @@
   font-weight: 500;
   color: var(--black1);
 }
-
+.button_box {
+  display: flex;
+  justify-content: flex-end;
+}
 .name_edit_box {
   display: flex;
   flex-direction: column;
@@ -35,9 +38,6 @@
 }
 
 .dashboard_name {
-  padding: 0 1rem;
-  border: 0.1rem solid var(--gray30);
-  border-radius: 0.8rem;
   color: var(--black1);
   font-size: 2rem;
   font-weight: 700;
@@ -61,4 +61,8 @@
   font-weight: 500;
   color: var(--white);
   border-radius: 0.4rem;
+}
+
+.edit_button:disabled {
+  background-color: var(--gray40);
 }

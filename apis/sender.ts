@@ -47,7 +47,7 @@ class Api {
       },
     });
     const data = await res.json();
-    return { status: res.status, data };
+    return { status: res.status, data, message: data.message };
   };
 
   put: HTTP<"put"> = async (obj) => {
@@ -58,12 +58,7 @@ class Api {
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${obj.accessToken}` },
     });
     const data = await res.json();
-
-    if (res.status > 205) {
-      return { status: res.status, data: null, message: data.message };
-    }
-
-    return { status: res.status, data };
+    return { status: res.status, data, message: data.message };
   };
 
   delete: HTTP<"delete"> = async (obj) => {

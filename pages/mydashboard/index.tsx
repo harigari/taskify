@@ -1,5 +1,5 @@
 import Button from "@/components/Buttons/Button/Button";
-import TablePagenation from "@/components/Table/TablePagination/TablePagination";
+import TablePagination from "@/components/Table/TablePagination/TablePagination";
 import Image from "next/image";
 import styles from "./index.module.css";
 import stylesFromSingle from "@/modals/Modal.module.css";
@@ -17,6 +17,7 @@ import Link from "next/link";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import useApi from "@/hooks/useApi";
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -39,7 +40,7 @@ export default function Mydashboard({
   dashboards,
   invitations,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [dashboardList, setDashboardList] = useState<DashBoardData[]>(dashboards);
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleModalToggle = () => {
@@ -72,15 +73,21 @@ export default function Mydashboard({
 
     if (res?.status === 201) {
       handleModalToggle();
-      setDashboardList((prevValue) => [res.data, ...prevValue]);
       column.input.setValue("");
       setSelectedColor("#7ac555");
+
+      const boardId = router.query.boardId;
+      if (boardId) {
+        router.push(`/dashboard/${boardId}`);
+        return;
+      }
+      router.push(router.pathname);
     }
   };
 
   return (
     <>
-      <MenuLayout dashboardList={dashboardList}>
+      <MenuLayout dashboardList={dashboards}>
         <main>
           <section className={styles.container}>
             <article className={styles.dashboard}>
@@ -88,7 +95,7 @@ export default function Mydashboard({
                 <span>새로운 대시보드</span>
                 <Image width={22} height={22} src="/icons/icon-addbox-purple.png" alt="대시보드 추가하기" />
               </Button>
-              {dashboardList.map((dashboard) => (
+              {dashboards.map((dashboard) => (
                 <Button key={dashboard.id} buttonType="dashboard" color="white">
                   <Link href={`/dashboard/${dashboard.id}`}>
                     <div className={styles.dashboard__title}>
@@ -107,7 +114,7 @@ export default function Mydashboard({
                 </Button>
               ))}
             </article>
-            <TablePagenation
+            <TablePagination
               title="초대받은 대시보드"
               row={3}
               data={invitations}

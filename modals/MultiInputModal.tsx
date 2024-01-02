@@ -60,7 +60,7 @@ const MultiInputModal = ({
     tags: [...tagList].reverse(),
   };
 
-  const { pending, error, wrappedFunction: postData } = useApi("post");
+  const { pending, wrappedFunction: postData } = useApi("post");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

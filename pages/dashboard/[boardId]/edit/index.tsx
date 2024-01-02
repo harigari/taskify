@@ -10,6 +10,11 @@ import styles from "./DashboardEdit.module.css";
 import { useState } from "react";
 import { ColorType } from "@/types/api.type";
 import Link from "next/link";
+import useApi from "@/hooks/useApi";
+import InputWrapper from "@/components/Input/InputWrapper";
+import useInputController from "@/hooks/useInputController";
+import Input from "@/components/Input/Input";
+import TablePagination from "@/components/Table/TablePagination/TablePagination";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -18,15 +23,47 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   } = await sender.get({ path: "dashboards", method: "pagination", accessToken });
 
   return {
-    props: { dashboards },
+    props: { dashboards, accessToken },
   };
 };
-const DashboardEdit = ({ dashboards }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log(dashboards);
+const DashboardEdit = ({ dashboards, accessToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const boardId = router?.query.boardId;
   const dashboardData = dashboards.find((v) => v.id === Number(boardId));
-  const [color, setColor] = useState<ColorType>(dashboardData?.color ?? "#7ac555");
+  const [prevColor, setPrevColor] = useState(dashboardData?.color ?? "#760dde");
+  const [color, setColor] = useState<ColorType>(prevColor);
+  const [boardName, setBoardName] = useState(dashboardData?.title);
+  const { pending, wrappedFunction } = useApi("delete");
+
+  const handleDashboardDeleteClick = async () => {
+    const deleteRes = await wrappedFunction({ path: "dashboard", id: Number(boardId), accessToken });
+
+    if (deleteRes?.status === 204) {
+      router.push(`/mydashboard`);
+    }
+  };
+
+  const { wrapper, input } = useInputController({
+    inputConfig: { id: "dashboardName" },
+    labelConfig: { labelName: "대시보드 이름" },
+  });
+
+  const { wrappedFunction: putData } = useApi("put");
+
+  const handleDashboardEditClick = async () => {
+    const res = await putData({
+      path: "dashboard",
+      id: Number(boardId),
+      data: { title: input.value, color },
+      accessToken,
+    });
+
+    if (res?.status === 200) {
+      setPrevColor(color);
+      input.setValue("");
+      setBoardName(res.data.title);
+    }
+  };
 
   return (
     <>
@@ -39,13 +76,30 @@ const DashboardEdit = ({ dashboards }: InferGetServerSidePropsType<typeof getSer
 
           <div className={styles.name_edit_box}>
             <div className={styles.name_edit_header}>
-              <input className={styles.dashboard_name} value={dashboardData?.title} />
+              <span className={styles.dashboard_name}>{boardName}</span>
               <ChipColors size="lg" selectedColor={color} setSelectedColor={setColor} />
             </div>
-            <button className={styles.edit_button}>변경</button>
+
+            <InputWrapper {...wrapper}>
+              <Input {...input} />
+            </InputWrapper>
+            <div className={styles.button_box}>
+              <button
+                onClick={handleDashboardEditClick}
+                disabled={!input.value && prevColor === color}
+                className={styles.edit_button}
+              >
+                변경
+              </button>
+            </div>
           </div>
 
-          <Button color="gray" buttonType="dashboard_delete">
+          {/* 구성원 */}
+          {/* <TablePagination /> */}
+
+          {/* 초대 내역 */}
+
+          <Button disabled={pending} onClick={handleDashboardDeleteClick} color="gray" buttonType="dashboard_delete">
             대시보드 삭제하기
           </Button>
         </div>

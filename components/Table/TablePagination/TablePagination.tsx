@@ -23,7 +23,7 @@ interface TableProps {
   search?: boolean;
 }
 
-const TablePagenation = ({
+const TablePagination = ({
   title,
   data = [],
   row = Infinity,
@@ -105,4 +105,4 @@ const TablePagenation = ({
   );
 };
 
-export default TablePagenation;
+export default TablePagination;
