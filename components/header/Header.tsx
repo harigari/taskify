@@ -24,6 +24,7 @@ const Header = ({ dashboardList }: HeaderProps) => {
   const [memberList, setMemberList] = useState<Member[]>([]);
   const [myData, setMyData] = useState<ExtendedUserType>();
   const isOwner = memberList?.some((v) => v.userId === myData?.id);
+  const title = dashboardList?.find((v) => v.id === Number(boardId))?.title;
 
   const inviteInput = useInputController({
     inputConfig: { id: "" },
@@ -77,7 +78,7 @@ const Header = ({ dashboardList }: HeaderProps) => {
   return (
     <header className={styles.header}>
       <div className={styles.grid__title}>
-        {boardId && <h1 className={styles.boardname}>{dashboardList?.find((v) => v.id === Number(boardId))?.title}</h1>}
+        {title && <h1 className={styles.boardname}>{title.length > 20 ? title.slice(0, 20) + "..." : title}</h1>}
       </div>
       {isOwner && (
         <>

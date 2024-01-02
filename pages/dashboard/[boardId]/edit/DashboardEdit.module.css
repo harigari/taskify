@@ -10,9 +10,6 @@
   gap: 0.6rem;
   align-items: center;
   margin-bottom: 1.3rem;
-}
-
-.back_button button {
   font-size: 1.6rem;
   font-weight: 500;
   color: var(--black1);
@@ -32,10 +29,19 @@
   display: flex;
   justify-content: space-between;
 }
-.name_edit_header .dashboard_name {
+
+.dashboard_name {
+  padding: 0 1rem;
+  border: 0.1rem solid var(--gray30);
+  border-radius: 0.8rem;
   color: var(--black1);
   font-size: 2rem;
   font-weight: 700;
+}
+
+.dashboard_name:focus-within {
+  outline: none;
+  border: 0.1rem solid var(--violet);
 }
 
 .edit_button {
