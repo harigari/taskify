@@ -10,7 +10,7 @@ interface InviteButtonProps {
   onClick: (e: MouseEvent) => void;
 }
 
-const InviteButton = ({ className = "", onClick }: InviteButtonProps) => {
+const InnerInviteButton = ({ className = "", onClick }: InviteButtonProps) => {
   const inviteInput = useInputController(signinEmail);
 
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
@@ -21,11 +21,11 @@ const InviteButton = ({ className = "", onClick }: InviteButtonProps) => {
   };
 
   return (
-    <button className={clsx(styles[className], styles.invitebutton)}>
+    <button onClick={onClick} className={clsx(styles[className], styles.invitebutton)}>
       <Image width={16} height={16} src="/icons/icon-addbox-white.svg" alt="새로운 구성원 초대하기" />
       <span>초대하기</span>
     </button>
   );
 };
 
-export default InviteButton;
+export default InnerInviteButton;

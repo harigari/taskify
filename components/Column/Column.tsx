@@ -18,8 +18,8 @@ import useApi from "@/hooks/useApi";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import { CardData, ColumnData, Member } from "@/types/api.type";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
-import sender from "@/apis/sender";
 import { useRouter } from "next/router";
+import useInfScroll from "@/hooks/useInfScroll";
 
 interface ColumnProps {
   accessToken: string;
@@ -30,8 +30,18 @@ interface ColumnProps {
   columnId: number;
 }
 
+type Pagination = {
+  id: number;
+  size: number;
+  cursorId?: number;
+};
+
+type InfRes = {
+  cards: CardData[];
+  cursorId: number;
+};
+
 export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId, setColumnList }: ColumnProps) => {
-  const [cardList, setCardList] = useState<CardData[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isColumnDeleteModalOpen, setIsColumnDeleteModalOpen] = useState(false);
@@ -41,16 +51,50 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
   });
 
   const { pending: deletePending, wrappedFunction: deleteData } = useApi("delete");
-
   const router = useRouter();
+
+  const { isVisible, setIsVisible, myRef } = useInfScroll();
+  const [pagination, setPagination] = useState<Pagination>({
+    id: columnId,
+    size: 5,
+  });
+
+  //  카드리스트 가져오기
+  const [cardList, setCardList] = useState<CardData[]>([]);
+
+  const getComments = async () => {
+    const { id, size, cursorId } = pagination;
+    const options = { headers: { Authorization: `Bearer ${accessToken}` } };
+    let response;
+
+    if (cursorId) {
+      response = await fetch(
+        `https://sp-taskify-api.vercel.app/1-7/cards?size=${size}&columnId=${id}&cursorId=${cursorId}`,
+        options
+      );
+    } else {
+      response = await fetch(`https://sp-taskify-api.vercel.app/1-7/cards?size=${size}&columnId=${id}`, options);
+    }
+
+    if (response.status !== 200) return;
+
+    const result: InfRes = await response.json();
+
+    const { cards, cursorId: cursor } = result;
+
+    setPagination((prevValue) => {
+      return { ...prevValue, cursorId: cursor };
+    });
+    setCardList((prevValue) => [...prevValue, ...cards]);
+    setIsVisible(false);
+  };
+
   useEffect(() => {
-    (async function () {
-      const {
-        data: { cards },
-      } = await sender.get({ path: "cards", id: columnId, accessToken });
-      setCardList(cards);
-    })();
-  }, [router.query]);
+    if (pagination.cursorId === null) return;
+    if (isVisible) {
+      getComments();
+    }
+  }, [isVisible, router.query]);
 
   const handleCreateModalToggle = () => {
     setIsCreateModalOpen((prevValue) => !prevValue);
@@ -137,6 +181,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
           {cardList.map((card) => (
             <Card key={card.id} columnTitle={title} data={card} setCardList={setCardList} />
           ))}
+          <p ref={myRef}></p>
         </div>
       </div>
 

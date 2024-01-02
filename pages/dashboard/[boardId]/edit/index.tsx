@@ -29,6 +29,8 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     data: { members },
   } = await sender.get({ path: "members", id: Number(boardId), accessToken });
 
+  //여기에 있는 초대내역 id를 가지고 삭제를 해야함
+
   const {
     data: { invitations },
   } = await sender.get({ path: "dashboardInvitations", id: Number(boardId), accessToken });

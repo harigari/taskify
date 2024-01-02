@@ -24,7 +24,7 @@
   height: 4rem;
   color: var(--white);
   border-radius: 10rem;
-  background-color: var(--violet);
+  background-color: var(--gray50);
 }
 
 .hidecount__desktop {

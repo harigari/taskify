@@ -2,13 +2,15 @@ import ArrowButton from "@/components/Buttons/ArrowButton/ArrowButton";
 import TableIndex from "@/components/Table/TableIndex/TableIndex";
 import TableList from "@/components/Table/TableList/TableList";
 import HideButton from "@/components/Table/TablePagination/HideButton";
-import InviteButton from "@/components/Table/TablePagination/InviteButton";
 import SearchInput from "@/components/Table/TablePagination/SearchInput";
 import { BasicUserType, InvitationData } from "@/types/api.type";
 import { clsx } from "clsx";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import styles from "./TablePagination.module.css";
+import InviteButton from "@/components/Buttons/InviteButton/InviteButton";
+
+import { useRouter } from "next/router";
 
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
@@ -31,6 +33,9 @@ const TablePagination = ({
   invite = false,
   search = false,
 }: TableProps) => {
+  const router = useRouter();
+  const boardId = Number(router.query.boardId);
+
   const entirePageNum = Math.ceil(data.length / row);
   const [pageCount, setPageCount] = useState(1);
   const [rowNum, setRowNum] = useState(row);
@@ -76,7 +81,7 @@ const TablePagination = ({
             />
           </div>
         )}
-        {invite && <InviteButton />}
+        {invite && <InviteButton boardId={boardId} usage="edit_page" />}
       </div>
       {data.length > 0 ? (
         <>

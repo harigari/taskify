@@ -13,14 +13,17 @@ class Api {
     if (typeof result === "string") {
       return result;
     }
+    if (typeof result === "function" && "method" in obj) {
+      return result(obj.method, obj.size, obj.cursorId);
+    }
+    if (typeof result === "function" && "size" in obj) {
+      return result(obj.id, obj.size, obj.cursorId);
+    }
     if (typeof result === "function" && "dashboardId" in obj) {
       return result(obj.dashboardId, obj.invitationId);
     }
     if (typeof result === "function" && "id" in obj) {
       return result(obj.id);
-    }
-    if (typeof result === "function" && "method" in obj) {
-      return result(obj.method);
     }
   };
 

@@ -40,7 +40,7 @@
 
 /* 화이트 버전일 때 */
 .white {
-  background-color: white;
+  background-color: var(--gray10);
 }
 
 .whiteText {

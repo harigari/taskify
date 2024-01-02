@@ -13,7 +13,7 @@ import useInputController from "@/hooks/useInputController";
 import InputWrapper from "@/components/Input/InputWrapper";
 import Input from "@/components/Input/Input";
 import useApi from "@/hooks/useApi";
-import { ColumnData, DashBoardData } from "@/types/api.type";
+import { ColumnData } from "@/types/api.type";
 import { Column } from "@/components/Column/Column";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {

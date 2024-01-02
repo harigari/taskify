@@ -4,7 +4,7 @@ import { useState, FormEvent } from "react";
 import { signinEmail } from "@/constants/inputConfig";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import SingleInputModal from "@/modals/SingleInputModal";
-
+import InnerInviteButton from "@/components/Table/TablePagination/InnerInviteButton";
 import HeaderButton from "@/components/Header/HeaderButton/HeaderButton";
 import headerButtonStyles from "@/components/Header/Header.module.css";
 
@@ -62,7 +62,7 @@ const InviteButton = ({ boardId, usage, className }: InviteButtonProps) => {
           </HeaderButton>
         </div>
       )}
-      {usage === "edit_page" && <InviteButton className={className} onClick={handleInviteModalToggle} />}
+      {usage === "edit_page" && <InnerInviteButton className={className} onClick={handleInviteModalToggle} />}
       {isInviteModalOpen && (
         <SingleInputModal
           handleModalClose={handleInviteModalToggle}

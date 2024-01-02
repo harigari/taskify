@@ -6,7 +6,8 @@ import styles from "./TableList.module.css";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import sender from "@/apis/sender";
 import { useRouter } from "next/router";
-
+import useApi from "@/hooks/useApi";
+import { useState } from "react";
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
 };
@@ -21,6 +22,24 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
   const column = Object.keys(tableIndex).length;
   const isAccept = Object.values(tableIndex).includes("acceptButton");
   const router = useRouter();
+
+  const [invitationId, setInvitationId] = useState<number | undefined>(undefined);
+
+  const [memberId, setMemberId] = useState<number | undefined>(undefined);
+
+  const boardId = Number(router.query.boardId);
+
+  const { wrappedFunction: deleteData } = useApi("delete");
+
+  const handleInviteCancel = async () => {
+    const accessToken = getAccessTokenFromDocument("accessToken");
+    await deleteData({ path: "dashboardInvitations", dashboardId: boardId, invitationId: invitationId, accessToken });
+  };
+
+  const handleMemberDelete = async () => {
+    const accessToken = getAccessTokenFromDocument("accessToken");
+    await deleteData({ path: "member", id: memberId as number, accessToken });
+  };
 
   return (
     <ul className={isAccept ? styles.list__mobile : ""}>
@@ -69,7 +88,14 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
             case v === "deleteButton":
               {
                 arr.push(
-                  <Button buttonType="delete" color="white" key={v}>
+                  <Button
+                    data={data}
+                    setId={setMemberId}
+                    onClick={handleMemberDelete}
+                    buttonType="delete"
+                    color="white"
+                    key={v}
+                  >
                     삭제
                   </Button>
                 );
@@ -106,7 +132,14 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
               continue;
             case v === "cancelButton":
               arr.push(
-                <Button buttonType="delete" color="white" key={v}>
+                <Button
+                  data={data}
+                  onClick={handleInviteCancel}
+                  setId={setInvitationId}
+                  buttonType="delete"
+                  color="white"
+                  key={v}
+                >
                   취소
                 </Button>
               );

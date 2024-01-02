@@ -125,13 +125,15 @@ export default function Mydashboard({
                 </Button>
               ))}
             </article>
-            <TablePagination
+            {/* <TablePagination
               title="초대받은 대시보드"
-              row={3}
+              row={15}
               data={invitations}
               tableIndex={{ 이름: "dashboard", 초대자: "inviter", "수락 여부": "acceptButton" }}
               search
-            />
+            /> */}
+
+            <InvitedDashboard />
           </section>
         </main>
       </MenuLayout>

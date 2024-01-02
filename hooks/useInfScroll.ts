@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const useScroll = () => {
+const useInfScroll = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const myRef = useRef();
+  const myRef = useRef<HTMLParagraphElement>(null);
 
   const observer = useMemo(() => {
     return new IntersectionObserver((entries) => {
@@ -26,4 +26,4 @@ const useScroll = () => {
   };
 };
 
-export default useScroll;
+export default useInfScroll;

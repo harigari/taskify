@@ -14,7 +14,7 @@ import useInputController from "@/hooks/useInputController";
 import SingleInputModal from "@/modals/SingleInputModal";
 import useApi from "@/hooks/useApi";
 import { signinEmail } from "@/constants/inputConfig";
-import InviteUserModal from "@/modals/InviteUserModal";
+import InviteButton from "../Buttons/InviteButton/InviteButton";
 
 interface HeaderProps {
   dashboardList: DashBoardData[];
@@ -48,43 +48,6 @@ const Header = ({ dashboardList }: HeaderProps) => {
     })();
   }, [dashboardList]);
 
-  // const inviteInput = useInputController(signinEmail);
-
-  // const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
-
-  // const handleInviteModalToggle = () => {
-  //   inviteInput.wrapper.setErrorText("");
-  //   setIsInviteModalOpen((prev) => !prev);
-  // };
-
-  // const { wrappedFunction: postData } = useApi("post");
-
-  // const handleInviteUserSubmit = async (e: FormEvent) => {
-  //   e.preventDefault();
-
-  //   const accessToken = getAccessTokenFromDocument("accessToken");
-  //   const res = await postData({
-  //     path: "invitation",
-  //     id: Number(boardId),
-  //     data: {
-  //       email: inviteInput.input.value,
-  //     },
-  //     accessToken,
-  //   });
-
-  //   if (!res) return;
-
-  //   if (res.status === 201) {
-  //     handleInviteModalToggle();
-  //     inviteInput.input.setValue("");
-  //   }
-
-  //   if (res.status > 400 && res.message) {
-  //     inviteInput.input.setValue("");
-  //     inviteInput.wrapper.setErrorText(res.message);
-  //   }
-  // };
-
   return (
     <header className={styles.header}>
       <div className={styles.grid__title}>
@@ -99,21 +62,7 @@ const Header = ({ dashboardList }: HeaderProps) => {
               </HeaderButton>
             </Link>
           </div>
-          <InviteUserModal boardId={Number(boardId)} usage="header" />
-          {/* <div className={styles.grid__invite}>
-            <HeaderButton onClick={handleInviteModalToggle} src="/icons/icon-addbox.svg" alt="대시보드로 초대하기">
-              초대하기
-            </HeaderButton>
-          </div>
-          {isInviteModalOpen && (
-            <SingleInputModal
-              handleModalClose={handleInviteModalToggle}
-              buttonText="초대"
-              onSubmit={handleInviteUserSubmit}
-              inputController={inviteInput}
-              title="초대하기"
-            />
-          )} */}
+          <InviteButton boardId={Number(boardId)} usage="header" />
         </>
       )}
       <div className={styles.grid__members}>

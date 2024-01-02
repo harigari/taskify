@@ -126,7 +126,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
               </ChipTodo>
               <div className={styles.separator}></div>
               <div className={styles.tags}>
-                {data.tags.map((tag) => (
+                {data?.tags.map((tag) => (
                   <ChipTag size="lg" key={tag}>
                     {tag}
                   </ChipTag>
@@ -136,7 +136,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
 
             {/* 설명 및 사진 */}
             <p className={styles.description}>{data.description}</p>
-            {data.imageUrl && (
+            {data?.imageUrl && (
               <div className={styles.image_wrapper}>
                 <Image priority fill src={data.imageUrl} alt="할 일 카드 이미지" />
               </div>

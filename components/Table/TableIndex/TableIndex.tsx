@@ -1,8 +1,6 @@
-import InviteButton from "@/components/Table/TablePagination/InviteButton";
 import { BasicUserType, InvitationData } from "@/types/api.type";
 import clsx from "clsx";
 import styles from "./TableIndex.module.css";
-import InviteUserModal from "@/modals/InviteUserModal";
 
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
@@ -39,8 +37,6 @@ const TableIndex = ({ tableIndex, invite = false }: TableIndexProps) => {
             </p>
           )
       )}
-      {invite && <InviteUserModal className="tableindex" />}
-      {/* {invite && <InviteButton className="tableindex" />} */}
     </div>
   );
 };
