@@ -24,6 +24,9 @@
 
 .member__defaultimage {
   position: absolute;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 10rem;
 }
 
 .member__name {
@@ -39,7 +42,8 @@
   }
 
   .member,
-  .member__image {
+  .member__image,
+  .member__defaultimage {
     width: 2.4rem;
     height: 2.4rem;
   }

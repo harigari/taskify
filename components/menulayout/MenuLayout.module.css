@@ -2,6 +2,7 @@
   display: grid;
   grid-template-rows: auto 1fr;
   grid-template-areas: "sidemenu header" "sidemenu main";
+  scrollbar-gutter: stable;
 }
 
 .grid__sidemenu {
@@ -13,5 +14,28 @@
 .grid__main {
   background-color: var(--gray10);
   grid-area: main;
-  overflow: hidden;
+  height: calc(100vh - 7rem);
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+.grid__main::-webkit-scrollbar {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+}
+
+.grid__main::-webkit-scrollbar-thumb {
+  height: 10%;
+  background: var(--violet);
+
+  border-radius: 10px;
+}
+
+/* .grid__main::-webkit-scrollbar-track {
+  display: none;
+} */
+
+.grid__main::-webkit-scrollbar-corner {
+  background: var(--gray10);
 }
