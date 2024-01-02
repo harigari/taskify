@@ -38,6 +38,10 @@
   color: var(--white, #fff);
 }
 
+.accept:disabled {
+  background: var(--gray-gray_9FA6B2, #9fa6b2);
+}
+
 @media (max-width: 767px) {
   .buttonContainer {
     margin: 0 auto;

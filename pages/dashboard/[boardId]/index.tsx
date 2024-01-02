@@ -120,7 +120,10 @@ const Dashboard = ({
               </InputWrapper>
             </div>
 
-            <ModalButton.DoubleButton disabled={pending} onClick={handleCreateNewColumnModalToggle}>
+            <ModalButton.DoubleButton
+              disabled={pending || !createModal.input.value}
+              onClick={handleCreateNewColumnModalToggle}
+            >
               생성
             </ModalButton.DoubleButton>
           </form>

@@ -58,8 +58,8 @@ class Api {
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${obj.accessToken}` },
     });
 
-    if (res.status === 204) {
-      return { status: res.status, data: null };
+    if (res.status > 201) {
+      return { status: res.status, ...(await res.json()) };
     }
 
     const data = await res.json();

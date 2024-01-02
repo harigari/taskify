@@ -21,18 +21,23 @@ import MenuLayout from "@/components/MenuLayout/MenuLayout";
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
 
-  const res = await sender.get({ path: "dashboards", method: "pagination", accessToken: accessToken });
+  const {
+    data: { dashboards },
+  } = await sender.get({ path: "dashboards", method: "pagination", accessToken: accessToken });
 
-  const { dashboards } = res.data;
+  const {
+    data: { invitations },
+  } = await sender.get({ path: "invitations", accessToken });
 
   return {
-    props: { accessToken, dashboards },
+    props: { accessToken, dashboards, invitations },
   };
 };
 
 export default function Mydashboard({
   accessToken,
   dashboards,
+  invitations,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [dashboardList, setDashboardList] = useState<DashBoardData[]>(dashboards);
   const [isOpen, setIsOpen] = useState(false);
@@ -105,8 +110,8 @@ export default function Mydashboard({
             <TablePagenation
               title="초대받은 대시보드"
               row={3}
-              data={[]}
-              tableIndex={{ 이름: "dashboard", 초대자: "inviter", "수락 여부": "deleteButton" }}
+              data={invitations}
+              tableIndex={{ 이름: "dashboard", 초대자: "inviter", "수락 여부": "acceptButton" }}
               search
             />
           </section>
@@ -124,7 +129,9 @@ export default function Mydashboard({
             </div>
             <ChipColors selectedColor={selectedColor} setSelectedColor={setSelectedColor} size="lg" />
             <div className={stylesFromSingle.buttonContainer}>
-              <ModalButton.DoubleButton onClick={handleModalToggle}>생성</ModalButton.DoubleButton>
+              <ModalButton.DoubleButton disabled={pending || !column.input.value} onClick={handleModalToggle}>
+                생성
+              </ModalButton.DoubleButton>
             </div>
           </form>
         </ModalWrapper>

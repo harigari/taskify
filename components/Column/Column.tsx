@@ -168,7 +168,12 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
                 삭제하기
               </button>
 
-              <ModalButton.DoubleButton onClick={handleSettingModalToggle}>변경</ModalButton.DoubleButton>
+              <ModalButton.DoubleButton
+                disabled={pending || !settingModal.input.value}
+                onClick={handleSettingModalToggle}
+              >
+                변경
+              </ModalButton.DoubleButton>
             </div>
           </form>
         </ModalWrapper>

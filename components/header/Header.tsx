@@ -2,7 +2,7 @@ import styles from "./Header.module.css";
 import HeaderButton from "./HeaderButton/HeaderButton";
 import Members from "../Members/Members";
 import ProfileIcon from "../Members/ProfileIcon";
-import { BasicUserType } from "@/types/api.type";
+
 import sender from "@/apis/sender";
 import { DashBoardData } from "@/types/api.type";
 import { useRouter } from "next/router";
@@ -13,6 +13,7 @@ import Link from "next/link";
 import useInputController from "@/hooks/useInputController";
 import SingleInputModal from "@/modals/SingleInputModal";
 import useApi from "@/hooks/useApi";
+import { signinEmail } from "@/constants/inputConfig";
 
 interface HeaderProps {
   dashboardList: DashBoardData[];
@@ -26,10 +27,8 @@ const Header = ({ dashboardList }: HeaderProps) => {
   const isOwner = memberList?.some((v) => v.userId === myData?.id);
   const title = dashboardList?.find((v) => v.id === Number(boardId))?.title;
 
-  const inviteInput = useInputController({
-    inputConfig: { id: "" },
-    labelConfig: { labelName: "이메일", mobile: true },
-  });
+  const inviteInput = useInputController(signinEmail);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleModalToggle = () => {
     setIsModalOpen((prev) => !prev);
@@ -49,9 +48,14 @@ const Header = ({ dashboardList }: HeaderProps) => {
       accessToken,
     });
 
-    // 이상하게 같은 이메일로 요청을 여러 번 보내도 서버에서 에러 안남..
     if (res?.status === 201) {
       handleModalToggle();
+      inviteInput.input.setValue("");
+    }
+
+    if (res?.status > 400) {
+      inviteInput.input.setValue("");
+      inviteInput.wrapper.setErrorText(res?.data.message);
     }
   };
 
