@@ -13,7 +13,7 @@
   cursor: pointer;
 }
 
-.back_button button {
+.back_button span {
   font-size: 1.6rem;
   font-weight: 500;
   color: var(--black1);

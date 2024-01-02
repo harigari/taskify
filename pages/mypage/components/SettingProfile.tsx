@@ -50,8 +50,6 @@ const SettingProfile = ({ userData }: ProfileProps) => {
       nickname: input.value,
     };
 
-    if (prevNickname === input.value && !imageFile) return;
-
     if (imageFile === null) {
       const res = await putData({
         path: "me",
@@ -102,7 +100,7 @@ const SettingProfile = ({ userData }: ProfileProps) => {
           buttonType="accept_reject"
           onClick={handleSubmit}
           color="violet"
-          disabled={!!wrapper.errorText || !input.value}
+          disabled={prevNickname === input.value && !imageFile}
         >
           저장
         </Button>

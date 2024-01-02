@@ -141,7 +141,7 @@ export const multiModalExplain = (initialvalue?: string): Configs => {
 export const multiModalDate = (initialvalue?: string): Configs => {
   const obj = {
     inputConfig: { id: "date", type: "text", placeholder: "날짜를 입력해 주세요", initialvalue: "" },
-    labelConfig: { labelName: "마감일", mobile: true },
+    labelConfig: { labelName: "마감일", mobile: true, star: true },
   };
 
   if (initialvalue) {

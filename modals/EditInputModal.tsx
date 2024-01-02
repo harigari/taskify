@@ -71,6 +71,7 @@ const EditInputModal = ({
   const accessToken = getAccessTokenFromDocument("accessToken");
 
   const [assigneeList, setAssigneeList] = useState<Member[]>();
+
   useEffect(() => {
     (async () => {
       const res = await sender.get({ path: "members", id: dashboardId, accessToken });
@@ -128,8 +129,7 @@ const EditInputModal = ({
     imageUrl: initialvalue.imageUrl,
   };
 
-  const { pending: putPending, wrappedFunction: putData } = useApi("put");
-  const { pending: postPending, wrappedFunction: postData } = useApi("post");
+  const { pending, wrappedFunction: putData } = useApi("put");
 
   const handleEditSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -190,7 +190,12 @@ const EditInputModal = ({
           </div>
         </div>
 
-        <ModalButton.DoubleButton onClick={handleModalClose}>{buttonText}</ModalButton.DoubleButton>
+        <ModalButton.DoubleButton
+          disabled={pending || !modalTitle.input.value || !modalExplain.textarea.value || !modalDate.dateTime.date}
+          onClick={handleModalClose}
+        >
+          {buttonText}
+        </ModalButton.DoubleButton>
       </form>
     </ModalWrapper>
   );

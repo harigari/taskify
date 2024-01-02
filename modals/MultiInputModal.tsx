@@ -65,10 +65,6 @@ const MultiInputModal = ({
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    for (const value of Object.values(data)) {
-      if (!value) return;
-    }
-
     const accessToken = getAccessTokenFromDocument("accessToken");
 
     if (pending) return;
@@ -126,7 +122,12 @@ const MultiInputModal = ({
           </div>
         </div>
 
-        <ModalButton.DoubleButton onClick={handleModalClose}>{buttonText}</ModalButton.DoubleButton>
+        <ModalButton.DoubleButton
+          disabled={pending || !modalTitle.input.value || !modalExplain.textarea.value || !modalDate.dateTime.date}
+          onClick={handleModalClose}
+        >
+          {buttonText}
+        </ModalButton.DoubleButton>
       </form>
     </ModalWrapper>
   );

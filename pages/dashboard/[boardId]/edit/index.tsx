@@ -22,6 +22,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   };
 };
 const DashboardEdit = ({ dashboards }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  console.log(dashboards);
   const router = useRouter();
   const boardId = router?.query.boardId;
   const dashboardData = dashboards.find((v) => v.id === Number(boardId));

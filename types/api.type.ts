@@ -441,11 +441,11 @@ export type RequireId<T extends Method, U extends PathProps<T>> = Path<T>[U] ext
 
 export type HTTP<T extends Method> = <U extends PathProps<T>>(
   obj: RequireId<T, U>
-) => Promise<{ status: number; data: ReturnData<T, U> }>;
+) => Promise<{ status: number; data: ReturnData<T, U>; message?: string }>;
 
 export type Wrapped<T extends Method> = <U extends PathProps<T>>(
   obj: RequireId<T, U>
-) => Promise<{ status: number; data: ReturnData<T, U> } | undefined>;
+) => Promise<{ status: number; data: ReturnData<T, U>; message?: string } | undefined>;
 
 export type PathFinder = <T extends Method, U extends PathProps<T>>(
   method: T,

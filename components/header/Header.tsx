@@ -36,7 +36,7 @@ const Header = ({ dashboardList }: HeaderProps) => {
 
   const { wrappedFunction: postData } = useApi("post");
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleInviteUserSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const accessToken = getAccessTokenFromDocument("accessToken");
     const res = await postData({
@@ -53,9 +53,11 @@ const Header = ({ dashboardList }: HeaderProps) => {
       inviteInput.input.setValue("");
     }
 
-    if (res?.status > 400) {
+    if (!res?.status) return;
+
+    if (res?.status > 400 && res.message) {
       inviteInput.input.setValue("");
-      inviteInput.wrapper.setErrorText(res?.data.message);
+      inviteInput.wrapper.setErrorText(res.message);
     }
   };
 
@@ -103,7 +105,7 @@ const Header = ({ dashboardList }: HeaderProps) => {
             <SingleInputModal
               handleModalClose={handleModalToggle}
               buttonText="초대"
-              onSubmit={handleSubmit}
+              onSubmit={handleInviteUserSubmit}
               inputController={inviteInput}
               title="초대하기"
             />
