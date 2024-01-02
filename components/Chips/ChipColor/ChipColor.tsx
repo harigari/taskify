@@ -12,7 +12,7 @@ interface ChipColorProps {
 const ChipColor = ({ size, color, onClick, isSelected }: ChipColorProps) => {
   return (
     <>
-      <div
+      <button
         className={clsx(
           style.container,
           { [style.large]: size === "lg" },
@@ -26,7 +26,7 @@ const ChipColor = ({ size, color, onClick, isSelected }: ChipColorProps) => {
       >
         {/* 크기에 따라 check.svg 변경 */}
         {isSelected ? <Image width={22} height={22} src="/icons/icon-check.svg" alt="선택된 태그" /> : null}
-      </div>
+      </button>
     </>
   );
 };
