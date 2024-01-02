@@ -18,6 +18,15 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const { data: userData } = await sender.get({ path: "me", accessToken });
 
+  if (!accessToken) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/signin",
+      },
+    };
+  }
+
   return {
     props: { dashboards, userData },
   };

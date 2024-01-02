@@ -33,6 +33,15 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     data: { members: assigneeList },
   } = await sender.get({ path: "members", id: Number(boardId), accessToken });
 
+  if (!accessToken) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/signin",
+      },
+    };
+  }
+
   return {
     props: { accessToken, columnData, assigneeList, boardId, dashboards },
   };

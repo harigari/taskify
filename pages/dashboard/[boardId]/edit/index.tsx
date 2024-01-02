@@ -23,13 +23,37 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     data: { dashboards },
   } = await sender.get({ path: "dashboards", method: "pagination", accessToken });
 
-  console.log(context.params);
-  // await sender.get({path : "members" ,id :  })
+  const boardId = context.params?.boardId;
+
+  const {
+    data: { members },
+  } = await sender.get({ path: "members", id: Number(boardId), accessToken });
+
+  const {
+    data: { invitations },
+  } = await sender.get({ path: "dashboardInvitations", id: Number(boardId), accessToken });
+
+  console.log(invitations);
+  if (!accessToken) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/signin",
+      },
+    };
+  }
+
   return {
-    props: { dashboards, accessToken },
+    props: { dashboards, accessToken, members, invitations },
   };
 };
-const DashboardEdit = ({ dashboards, accessToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+
+const DashboardEdit = ({
+  dashboards,
+  members,
+  accessToken,
+  invitations,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const boardId = router?.query.boardId;
   const dashboardData = dashboards.find((v) => v.id === Number(boardId));
@@ -100,10 +124,11 @@ const DashboardEdit = ({ dashboards, accessToken }: InferGetServerSidePropsType<
           </div>
 
           {/* 구성원 */}
-          {/* <TablePagination data={} title="구성원" tableIndex={} /> */}
+          <TablePagination data={members} title="구성원" tableIndex={{ 이름: "nickname", "": "deleteButton" }} />
 
           {/* 초대 내역 */}
 
+          <TablePagination data={invitations} title="초대 내역" tableIndex={{ 이메일: "email", "": "cancelButton" }} />
           <Button disabled={pending} onClick={handleDashboardDeleteClick} color="gray" buttonType="dashboard_delete">
             대시보드 삭제하기
           </Button>

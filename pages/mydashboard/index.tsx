@@ -12,7 +12,7 @@ import Input from "@/components/Input/Input";
 import ChipColors from "@/components/Chips/ChipColors/ChipColors";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
 import sender from "@/apis/sender";
-import { ColorType, DashBoardData } from "@/types/api.type";
+import { ColorType } from "@/types/api.type";
 import Link from "next/link";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import useApi from "@/hooks/useApi";

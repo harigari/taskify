@@ -22,16 +22,16 @@
   object-fit: cover;
 }
 
-.member__image__small {
-  height: 2.4rem;
-  width: 2.4rem;
-}
-
 .member__defaultimage {
   position: absolute;
   width: 4rem;
   height: 4rem;
   border-radius: 10rem;
+}
+
+.member__image__small {
+  height: 2.4rem;
+  width: 2.4rem;
 }
 
 .member__name {
@@ -45,11 +45,4 @@
   .member[data-index="3"] {
     display: none;
   }
-
-  /* .member,
-  .member__image,
-  .member__defaultimage {
-    width: 2.4rem;
-    height: 2.4rem;
-  } */
 }

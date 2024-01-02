@@ -74,6 +74,7 @@ const Header = ({ dashboardList }: HeaderProps) => {
 
     if (res.status === 201) {
       handleInviteModalToggle();
+      inviteInput.input.setValue("");
     }
 
     if (res.status > 400 && res.message) {

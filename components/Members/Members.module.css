@@ -8,3 +8,7 @@
 .container > div {
   margin-left: -1rem;
 }
+
+.container > div > div > div {
+  border: 0.1rem solid var(--white);
+}

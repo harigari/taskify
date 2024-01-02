@@ -129,6 +129,8 @@ const EditInputModal = ({
     imageUrl: initialvalue.imageUrl,
   };
 
+  console.log(data.dueDate);
+
   const { pending, wrappedFunction: putData } = useApi("put");
 
   const handleEditSubmit = async (e: FormEvent) => {

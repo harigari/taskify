@@ -60,8 +60,8 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
             case v === "email":
               if ("inviter" in data) {
                 arr.push(
-                  <div className={styles.row__item} key={data.inviter[v]}>
-                    <p className={styles.row__item}>{data.inviter[v]}</p>
+                  <div className={styles.row__item} key={data.invitee[v]}>
+                    <p className={styles.row__item}>{data.invitee[v]}</p>
                   </div>
                 );
               }
