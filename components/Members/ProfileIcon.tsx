@@ -22,10 +22,10 @@ interface ProfileIconProps extends HandlerFunc {
 const ProfileIcon = ({ member, size = "lg", ...props }: ProfileIconProps) => {
   if (!member) return;
   return (
-    <button className={clsx(styles.member, { [styles.member__image__small]: size === "sm" })} {...props}>
+    <div className={clsx(styles.member, { [styles.member__image__small]: size === "sm" })} {...props}>
       {member.profileImageUrl ? (
         <div className={clsx(styles.member__image, { [styles.member__image__small]: size === "sm" })}>
-          <Image fill src={member.profileImageUrl} alt={member.nickname} />
+          <Image fill sizes="(max-width:767px) 5vw, 10vw" src={member.profileImageUrl} alt={member.nickname} />
         </div>
       ) : (
         <>
@@ -36,7 +36,7 @@ const ProfileIcon = ({ member, size = "lg", ...props }: ProfileIconProps) => {
           <span className={styles.member__name}>{member.nickname.slice(0, 1)}</span>
         </>
       )}
-    </button>
+    </div>
   );
 };
 
