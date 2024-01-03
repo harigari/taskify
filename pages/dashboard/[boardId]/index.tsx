@@ -108,11 +108,13 @@ const Dashboard = ({
 
   useEffect(() => {
     setMount(true);
+    //boardId 바뀔 때, 화면에 보이는 데이터 전환
     setEntireList(entireData);
   }, [router.query.boardId]);
 
+  // 드래그드랍 핸들러함수
   const onDragEnd = useCallback(
-    (result: DropResult) => {
+    async (result: DropResult) => {
       const { destination, source, draggableId } = result;
       if (!destination) return;
       if (destination.droppableId === source.droppableId) return;
@@ -126,9 +128,24 @@ const Dashboard = ({
       const endCardList = entireList.cards[dragEndColumnId];
       endCardList.splice(destination.index, 0, ...movingCard);
 
+      const res = await sender.put({
+        path: "card",
+        id: movingCard[0].id,
+        data: { ...movingCard[0], columnId: dragEndColumnId },
+        accessToken,
+      });
+
+      if (res.status > 204) return;
+
       setEntireList((prev) => ({
         ...prev,
-        cards: { ...prev.cards, [dragStartColumnId]: startCardList, [dragEndColumnId]: endCardList },
+        cards: {
+          ...prev.cards,
+          [dragStartColumnId]: startCardList.sort(
+            (a, b) => Number(new Date(a.createdAt)) - Number(new Date(b.createdAt))
+          ),
+          [dragEndColumnId]: endCardList.sort((a, b) => Number(new Date(a.createdAt)) - Number(new Date(b.createdAt))),
+        },
       }));
     },
     [entireList]

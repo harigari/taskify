@@ -86,7 +86,6 @@ type Req_post_cardImage = FormData;
 type Return_post_cardImage = ImageUrlType;
 
 type Req_post_card = {
-  assigneeUserId: number;
   dashboardId: number;
   columnId: number;
   title: string;
@@ -100,7 +99,6 @@ type Return_post_card = CardData;
 
 type Req_put_card = {
   columnId: number;
-  assigneeUserId: number;
   title: string;
   description: string;
   dueDate: string;
