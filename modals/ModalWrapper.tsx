@@ -13,15 +13,16 @@ interface ModalWrapperProp {
 const ModalWrapper = ({ children, size, handleModalClose }: ModalWrapperProp) => {
   const portalRoot = document.getElementById("modal-root") as HTMLElement;
 
-  // const modalRef = useRef(null);
+  const modalOutsideRef = useRef(null);
 
-  // const modalOutsideClick = (e: MouseEvent) => {
-  //   if (modalRef.current !== e.target) {
-  //     handleModalClose(e);
-  //   }
-  // };
+  const modalOutsideClick = (e: MouseEvent) => {
+    if (modalOutsideRef.current === e.target) {
+      handleModalClose(e);
+    }
+  };
+
   return createPortal(
-    <div className={styles.root}>
+    <div onClick={modalOutsideClick} ref={modalOutsideRef} className={styles.root}>
       <div className={styles[size]}>{children}</div>
     </div>,
     portalRoot
