@@ -4,7 +4,6 @@
   position: relative;
   background-color: var(--white);
   border-radius: 1.2rem;
-  overflow-y: auto;
 }
 
 .title__text {

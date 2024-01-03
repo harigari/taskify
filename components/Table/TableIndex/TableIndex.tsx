@@ -1,4 +1,4 @@
-import { BasicUserType, InvitationData } from "@/types/api.type";
+import { InvitationData, Member } from "@/types/api.type";
 import clsx from "clsx";
 import styles from "./TableIndex.module.css";
 
@@ -7,7 +7,7 @@ type TableIndexType = {
 };
 
 interface TableIndexProps {
-  data: (BasicUserType | InvitationData)[];
+  data: (Member | InvitationData)[];
   tableIndex: TableIndexType;
   invite?: boolean;
 }

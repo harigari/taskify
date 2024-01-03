@@ -1,3 +1,8 @@
+.list {
+  height: 28rem;
+  overflow-y: scroll;
+}
+
 .button {
   border: 0.1rem solid var(--gray30);
   width: 8rem;
@@ -88,4 +93,22 @@
     display: block;
     color: var(--gray40);
   }
+}
+
+.list::-webkit-scrollbar {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+}
+
+.list::-webkit-scrollbar-thumb {
+  width: 10%;
+  height: 10%;
+  background: var(--violet);
+
+  border-radius: 10px;
+}
+
+.list::-webkit-scrollbar-corner {
+  background: var(--gray10);
 }

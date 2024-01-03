@@ -23,6 +23,7 @@
   font-weight: 500;
   color: var(--black1);
 }
+
 .button_box {
   display: flex;
   justify-content: flex-end;
@@ -78,6 +79,12 @@
 }
 @media (max-width: 767px) {
   .body {
-    width: 28.4rem;
+    min-width: 100% -28rem;
+    padding: 2rem;
+  }
+
+  .name_edit_header {
+    flex-direction: column;
+    gap: 1rem;
   }
 }

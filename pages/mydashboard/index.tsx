@@ -24,7 +24,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const {
     data: { dashboards },
-  } = await sender.get({ path: "dashboards", method: "pagination", accessToken: accessToken });
+  } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
 
   const {
     data: { invitations },
@@ -143,6 +143,7 @@ export default function Mydashboard({
               title="초대받은 대시보드"
               type="invitations"
               tableIndex={{ 대시보드: "dashboard", "수락 여부": "acceptButton" }}
+              search
             />
           </section>
         </main>

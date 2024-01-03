@@ -7,8 +7,10 @@ import { InvitationData, Member } from "@/types/api.type";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import makeColorProfile from "@/utils/makeColorProfile";
 import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, FormEvent, RefObject } from "react";
 import styles from "./TableList.module.css";
+import Image from "next/image";
+import clsx from "clsx";
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
 };
@@ -17,11 +19,10 @@ interface TableListProps {
   data: (Member | InvitationData)[];
   setData: Dispatch<SetStateAction<(Member | InvitationData)[]>>;
   tableIndex: TableIndexType;
-  row: number;
+  myRef?: RefObject<HTMLParagraphElement>;
 }
 
-const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
-  console.log(data);
+const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
   const column = Object.keys(tableIndex).length;
   const isAccept = Object.values(tableIndex).includes("acceptButton");
   const router = useRouter();
@@ -29,12 +30,13 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
   const boardId = Number(router.query.boardId);
 
   const { wrappedFunction: deleteData } = useApi("delete");
-  const [isInviteDeleteModalOpen, setIsInviteDeleteModalOpen] = useState(false);
-  const handleInviteDeleteModalToggle = () => {
-    setIsInviteDeleteModalOpen((prev) => !prev);
+  const [isMemberDeleteModalOpen, setIsMemberDeleteModalOpen] = useState(false);
+  const handleMemberDeleteModalToggle = () => {
+    setIsMemberDeleteModalOpen((prev) => !prev);
   };
+
   return (
-    <ul className={isAccept ? styles.list__mobile : ""}>
+    <ul className={clsx(styles.list, { [styles.list__mobile]: isAccept })}>
       {data.map((data, idx) => {
         const arr = [];
         for (const key of Object.keys(tableIndex)) {
@@ -43,7 +45,7 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
             case v === "nickname":
               if (!(v in data)) continue;
               arr.push(
-                <div className={styles.row__item} key={data[v]}>
+                <div className={styles.row__item} key={v}>
                   <ProfileIcon member={data} tabIndex={-1} />
                   <p className={styles.row__item}>{data[v]}</p>
                 </div>
@@ -52,7 +54,7 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
             case v === "dashboard":
               if (!(v in data)) continue;
               arr.push(
-                <div className={styles.row__item} key={data[v].title}>
+                <div className={styles.row__item} key={data.dashboard.id}>
                   {isAccept && <span className={styles.row__text__mobile}>{key}</span>}
                   <div className={styles.row__icon} style={{ backgroundColor: makeColorProfile(data[v].title) }} />
                   <p>{data[v].title}</p>
@@ -62,7 +64,7 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
             case v === "inviter":
               if (!(v in data)) continue;
               arr.push(
-                <p className={styles.row__item} key={data[v].nickname}>
+                <p className={styles.row__item} key={v}>
                   {isAccept && <span className={styles.row__text__mobile}>{key}</span>}
                   {data[v].nickname}
                 </p>
@@ -71,7 +73,7 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
             case v === "email":
               if ("inviter" in data) {
                 arr.push(
-                  <div className={styles.row__item} key={data.invitee[v]}>
+                  <div className={styles.row__item} key={v}>
                     <p className={styles.row__item}>{data.invitee[v]}</p>
                   </div>
                 );
@@ -90,12 +92,13 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
                   });
 
                   if (res.status < 300) {
+                    setData((prev) => prev.filter((v) => v.id !== data.id));
                     router.push("/mydashboard");
                   }
                 };
 
                 arr.push(
-                  <div className={styles.acceptbutton__wrapper} key={v}>
+                  <div className={styles.acceptbutton__wrapper} key={data.id}>
                     <Button onClick={handleReject(true)} buttonType="accept_reject" color="violet">
                       수락
                     </Button>
@@ -109,41 +112,47 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
             case v === "deleteButton":
               {
                 // 구성원 삭제하기
-                const handleMemberDelete = async () => {
+                const handleMemberDelete = async (e: FormEvent) => {
+                  e.preventDefault();
                   const accessToken = getAccessTokenFromDocument("accessToken");
                   const res = await deleteData({ path: "member", id: data.id, accessToken });
                   if (res?.status === 204) {
                     setData((prev) => prev.filter((member) => member.id !== data.id));
+                    handleMemberDeleteModalToggle();
                   }
                 };
 
-                arr.push(
-                  <Button
-                    disabled={data.isOwner}
-                    onClick={handleMemberDelete}
-                    buttonType="delete"
-                    color="white"
-                    key={v}
-                  >
-                    삭제
-                  </Button>
-                );
-                // 삭제하겠냐는 모달이 안띄워짐
-                {
-                  isInviteDeleteModalOpen && (
-                    <AlertModal
-                      alertText="구성원을 삭제하시겠습니까?"
-                      handleSubmit={handleMemberDelete}
-                      handleModalClose={handleInviteDeleteModalToggle}
-                    />
-                  );
+                if ("isOwner" in data && data.isOwner) {
+                  arr.push(<Image width={30} height={30} src="/icons/icon-crown.svg" alt="내가 만든 대시보드" />);
+                  continue;
                 }
+                arr.push(
+                  <>
+                    <Button
+                      disabled={"isOwner" in data ? data.isOwner : false}
+                      onClick={handleMemberDeleteModalToggle}
+                      buttonType="delete"
+                      color="white"
+                      key={v}
+                    >
+                      삭제
+                    </Button>
+                    {isMemberDeleteModalOpen && (
+                      <AlertModal
+                        alertText="구성원을 삭제하시겠습니까?"
+                        handleSubmit={handleMemberDelete}
+                        handleModalClose={handleMemberDeleteModalToggle}
+                      />
+                    )}
+                  </>
+                );
               }
               continue;
             case v === "cancelButton":
               {
                 // 보낸 초대 요청 취소하기
-                const handleInviteCancel = async () => {
+                const handleInviteCancel = async (e: FormEvent) => {
+                  e.preventDefault();
                   const accessToken = getAccessTokenFromDocument("accessToken");
                   const res = await deleteData({
                     path: "dashboardInvitations",
@@ -157,7 +166,7 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
                 };
 
                 arr.push(
-                  <Button onClick={handleInviteDeleteModalToggle} buttonType="delete" color="white" key={v}>
+                  <Button onClick={handleInviteCancel} buttonType="delete" color="white" key={v}>
                     취소
                   </Button>
                 );
@@ -185,6 +194,7 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
         Array(row - data.length)
           .fill("")
           .map((v, i) => <li className={styles.row} key={i}></li>)} */}
+      <p ref={myRef}></p>
     </ul>
   );
 };

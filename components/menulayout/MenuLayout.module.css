@@ -26,15 +26,12 @@
 }
 
 .grid__main::-webkit-scrollbar-thumb {
+  width: 10%;
   height: 10%;
   background: var(--violet);
 
   border-radius: 10px;
 }
-
-/* .grid__main::-webkit-scrollbar-track {
-  display: none;
-} */
 
 .grid__main::-webkit-scrollbar-corner {
   background: var(--gray10);

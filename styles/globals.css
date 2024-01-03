@@ -48,3 +48,7 @@ h2 {
 .react-datepicker__triangle {
   margin-left: -50% !important;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}

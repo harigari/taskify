@@ -23,7 +23,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const {
     data: { dashboards },
-  } = await sender.get({ path: "dashboards", method: "pagination", accessToken: accessToken });
+  } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
 
   const boardId = context.query["boardId"];
 

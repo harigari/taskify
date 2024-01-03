@@ -1,14 +1,14 @@
 import ArrowButton from "@/components/Buttons/ArrowButton/ArrowButton";
-import InviteButton from "@/components/Buttons/InviteButton/InviteButton";
 import TableIndex from "@/components/Table/TableIndex/TableIndex";
 import TableList from "@/components/Table/TableList/TableList";
 import HideButton from "@/components/Table/TablePagination/HideButton";
 import SearchInput from "@/components/Table/TablePagination/SearchInput";
-import { InvitationData, Member } from "@/types/api.type";
+import { BasicUserType, InvitationData, Member } from "@/types/api.type";
 import { clsx } from "clsx";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import styles from "./TablePagination.module.css";
+import InviteButton from "@/components/Buttons/InviteButton/InviteButton";
 
 import { useRouter } from "next/router";
 
@@ -18,12 +18,12 @@ type TableIndexType = {
 
 interface TableProps {
   title: string;
-  data: Member[] | InvitationData[];
+  data: (Member | InvitationData)[];
   row?: number;
   tableIndex: TableIndexType;
   invite?: boolean;
   search?: boolean;
-  setData: Dispatch<SetStateAction<Member[]>> | Dispatch<SetStateAction<InvitationData[]>>;
+  setData: Dispatch<SetStateAction<(Member | InvitationData)[]>>;
 }
 
 const TablePagination = ({
@@ -91,7 +91,7 @@ const TablePagination = ({
             <>
               {search && <SearchInput setKeyword={setKeyword} />}
               <TableIndex data={rowData} tableIndex={tableIndex} invite={invite} />
-              <TableList data={rowData} setData={setData} tableIndex={tableIndex} row={row} />
+              <TableList data={rowData} setData={setData} tableIndex={tableIndex} />
             </>
           )}
           <HideButton isOpen={isOpen} setIsOpen={setIsOpen} />

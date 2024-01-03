@@ -39,7 +39,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     data: { members },
   } = await sender.get({ path: "members", id: Number(boardId), accessToken });
 
-  console.log(members);
   const {
     data: { invitations },
   } = await sender.get({ path: "dashboardInvitations", id: Number(boardId), accessToken });
@@ -70,9 +69,9 @@ const DashboardEdit = ({
   const [prevColor, setPrevColor] = useState(dashboardData?.color ?? "#760dde");
   const [color, setColor] = useState<ColorType>(prevColor);
 
-  const [memberList, setMemberList] = useState<Member[]>(members);
+  const [memberList, setMemberList] = useState<(Member | InvitationData)[]>(members);
 
-  const [invitationList, setInvitationList] = useState<InvitationData[]>(invitations);
+  const [invitationList, setInvitationList] = useState<(Member | InvitationData)[]>(invitations);
   const [boardName, setBoardName] = useState(dashboardData?.title);
 
   const [isOpenDashboardDeleteModal, setIsOpenDashboardDeleteModal] = useState(false);
@@ -146,6 +145,7 @@ const DashboardEdit = ({
           {/* 구성원 */}
 
           <TablePagination
+            row={5}
             data={memberList}
             setData={setMemberList}
             title="구성원"
@@ -155,6 +155,7 @@ const DashboardEdit = ({
           {/* 초대 내역 */}
 
           <TablePagination
+            row={5}
             data={invitationList}
             setData={setInvitationList}
             invite
@@ -170,6 +171,7 @@ const DashboardEdit = ({
           >
             대시보드 삭제하기
           </Button>
+
           {isOpenDashboardDeleteModal && (
             <AlertModal
               alertText="대시보드를 삭제하시겠습니까?"

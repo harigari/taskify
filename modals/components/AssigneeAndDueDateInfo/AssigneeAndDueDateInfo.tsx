@@ -14,7 +14,7 @@ const AssigneeAndDueDateInfo = ({ data }: TaskCardInfoProps) => {
           <span className={styles.label}>담당자</span>
           <div className={styles.assignee}>
             <div className={styles.profile_icon}>
-              <ProfileIcon size="lg" member={data.assignee} />
+              <ProfileIcon size="sm" member={data.assignee} />
             </div>
             <span className={styles.detail}>{data.assignee.nickname}</span>
           </div>

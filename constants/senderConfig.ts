@@ -80,7 +80,7 @@ const SENDER_CONFIG = {
     // 특정한 댓글 1개 삭제하기
     dashboard: ({ id }: { id: number }) => `/dashboards/${id}`,
     // 특정한 대시보드 1개 삭제하기
-    dashboardInvitations: (dashboardId: number, invitationId: number) =>
+    dashboardInvitations: ({ dashboardId, invitationId }: { dashboardId: number; invitationId: number }) =>
       `/dashboards/${dashboardId}/invitations/${invitationId}`,
     // 특정한 대시보드의 초대장 1개 삭제하기
     member: ({ id }: { id: number }) => `/members/${id}`,

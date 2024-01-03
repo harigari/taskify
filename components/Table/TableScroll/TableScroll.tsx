@@ -1,15 +1,17 @@
+import sender from "@/apis/sender";
 import InviteButton from "@/components/Buttons/InviteButton/InviteButton";
 import TableIndex from "@/components/Table/TableIndex/TableIndex";
 import TableList from "@/components/Table/TableList/TableList";
 import HideButton from "@/components/Table/TablePagination/HideButton";
 import SearchInput from "@/components/Table/TablePagination/SearchInput";
-import { BasicUserType, InvitationData } from "@/types/api.type";
-import { useEffect, useMemo, useState } from "react";
-import styles from "./TableScroll.module.css";
-import { useRouter } from "next/router";
 import useInfScroll from "@/hooks/useInfScroll";
-import sender from "@/apis/sender";
+import { InvitationData, Member } from "@/types/api.type";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
+import styles from "../TablePagination/TablePagination.module.css";
+import scrollStyles from "./TableScroll.module.css";
+import Image from "next/image";
 
 type Pagination = {
   id: number;
@@ -30,7 +32,7 @@ interface TableProps {
   search?: boolean;
 }
 
-const TableScroll = ({ title, type, row = 5, tableIndex, invite = false, search = false }: TableProps) => {
+const TableScroll = ({ title, type, tableIndex, invite = false, search = false }: TableProps) => {
   const router = useRouter();
 
   const { isVisible, setIsVisible, myRef } = useInfScroll();
@@ -38,7 +40,7 @@ const TableScroll = ({ title, type, row = 5, tableIndex, invite = false, search 
     id: Number(router.query.boardId),
     size: 5,
   });
-  const [data, setData] = useState<(BasicUserType | InvitationData)[]>([]);
+  const [data, setData] = useState<(Member | InvitationData)[]>([]);
   const getScrollData = async () => {
     const accessToken = getAccessTokenFromDocument("accessToken");
     const { id, size, cursorId } = pagination;
@@ -67,7 +69,7 @@ const TableScroll = ({ title, type, row = 5, tableIndex, invite = false, search 
     if (isVisible) {
       getScrollData();
     }
-  }, [isVisible]);
+  }, [isVisible, router.query]);
 
   const [isOpen, setIsOpen] = useState(true);
   const [keyword, setKeyword] = useState("");
@@ -87,7 +89,7 @@ const TableScroll = ({ title, type, row = 5, tableIndex, invite = false, search 
   );
 
   return (
-    <article className={styles.container}>
+    <article className={scrollStyles.container}>
       <div className={styles.title}>
         <h2 className={styles.title__text}>{title}</h2>
         {invite && <InviteButton setData={setData} boardId={Number(router.query.boardId)} usage="edit_page" />}
@@ -97,11 +99,23 @@ const TableScroll = ({ title, type, row = 5, tableIndex, invite = false, search 
         <>
           {search && <SearchInput setKeyword={setKeyword} />}
           <TableIndex data={rowData} tableIndex={tableIndex} invite={invite} />
-          <TableList data={rowData} setData={setData} tableIndex={tableIndex} />
+          <TableList data={rowData} setData={setData} tableIndex={tableIndex} myRef={myRef} />
         </>
       )}
       <HideButton isOpen={isOpen} setIsOpen={setIsOpen} />
-      <p ref={myRef}></p>
+
+      {data.length === 0 ? (
+        <div className={styles.empty}>
+          <Image
+            width={100}
+            height={100}
+            priority
+            src="/icons/icon-noinvite-dashboard.svg"
+            alt="초대 내역이 없습니다."
+          />
+          <p>초대 내역이 없습니다.</p>
+        </div>
+      ) : null}
     </article>
   );
 };

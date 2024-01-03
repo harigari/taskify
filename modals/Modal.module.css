@@ -94,6 +94,12 @@ button.deleteButton {
 }
 
 @media (max-width: 767px) {
+  .dropdownContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
   .form {
     gap: 2.4rem;
   }

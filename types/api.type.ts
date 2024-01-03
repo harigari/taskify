@@ -270,25 +270,7 @@ type Req_post_invitation = {
   email: string;
 };
 
-type Return_post_invitation = {
-  id: number;
-  inviter: {
-    nickname: string;
-    email: string;
-    id: number;
-  };
-  teamId: string;
-  dashboard: {
-    title: string;
-    id: number;
-  };
-  invitee: {
-    nickname: string;
-    email: string;
-    id: number;
-  };
-  inviteAccepted: boolean;
-} & TimeStamp;
+type Return_post_invitation = InvitationData;
 
 type Req_put_invitation = {
   inviteAccepted: boolean;

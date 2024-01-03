@@ -15,7 +15,7 @@ interface InviteButtonProps {
   boardId: number;
   usage: Usage;
   className?: string;
-  setData: Dispatch<SetStateAction<Member[]>> | Dispatch<SetStateAction<InvitationData[]>>;
+  setData: Dispatch<SetStateAction<(Member | InvitationData)[]>>;
 }
 const InviteButton = ({ boardId, usage, className, setData }: InviteButtonProps) => {
   const inviteInput = useInputController(signinEmail);
