@@ -70,7 +70,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
   };
 
   return (
-    <ModalWrapper size="lg">
+    <ModalWrapper size="lg" handleModalClose={handleModalClose}>
       <div className={styles.modal_wrapper}>
         <div className={styles.header}>
           <h1 className={styles.title}>{data.title}</h1>

@@ -93,7 +93,7 @@ const MultiInputModal = ({
   };
 
   return (
-    <ModalWrapper size="sm">
+    <ModalWrapper size="sm" handleModalClose={handleModalClose}>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <div className={styles.modal}>
           <div className={styles.modalTitle}>{title}</div>

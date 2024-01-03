@@ -59,7 +59,6 @@ const EditInputModal = ({
   title,
   buttonText,
   handleModalClose,
-  handleAllModalClose,
   setCardList,
   initialvalue,
   columnTitle,
@@ -158,7 +157,7 @@ const EditInputModal = ({
   };
 
   return (
-    <ModalWrapper size="sm">
+    <ModalWrapper handleModalClose={handleModalClose} size="sm">
       <form className={styles.form} onSubmit={handleEditSubmit} noValidate>
         <div className={styles.modal}>
           <div className={styles.modalTitle}>{title}</div>

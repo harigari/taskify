@@ -13,6 +13,7 @@
 }
 
 .lg {
+  z-index: 2;
   width: 73rem;
 
   background: var(--white, #fff);
@@ -20,6 +21,7 @@
 }
 
 .md {
+  z-index: 2;
   padding: 2.8rem;
   width: 54rem;
   background: var(--white, #fff);
@@ -27,6 +29,7 @@
 }
 
 .sm {
+  z-index: 2;
   padding: 2.8rem;
   width: 50.6rem;
   background: var(--white, #fff);
