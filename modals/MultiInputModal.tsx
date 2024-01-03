@@ -22,7 +22,6 @@ interface MultiInputModalProp {
   buttonText: string;
   columnId: number;
   dashboardId: number;
-  setCardList: Dispatch<SetStateAction<CardData[]>>;
   setEntireList: Dispatch<SetStateAction<EntireData>>;
   assigneeList: Member[];
   handleModalClose: () => void;
@@ -33,7 +32,6 @@ const MultiInputModal = ({
   buttonText,
   handleModalClose,
   columnId,
-  setCardList,
   setEntireList,
   dashboardId,
   assigneeList,

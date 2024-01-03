@@ -15,7 +15,8 @@ import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import style from "./dashboard.module.css";
-import { DragDropContext } from "@hello-pangea/dnd";
+import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -102,18 +103,37 @@ const Dashboard = ({
     }
   };
 
-  const [mounted, setMounted] = useState(false);
+  const [mount, setMount] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
-    setMounted(true);
+    setMount(true);
     setEntireList(entireData);
-  }, [entireData]);
+  }, [router.query.boardId]);
 
-  const onDragEnd = useCallback(() => {}, []);
+  const onDragEnd = useCallback((result: DropResult) => {
+    const { destination, source, draggableId } = result;
+    if (!destination) return;
+    if (destination.droppableId === source.droppableId) return;
+    if (destination.droppableId === source.droppableId && source.index === destination.index) return;
 
-  if (!mounted) return null;
+    console.log(entireList);
+    console.log(source.droppableId, destination.droppableId);
+    const dragStartColumnId = Number(source.droppableId);
+    const startCardList = entireList.cards[dragStartColumnId];
+    const movingCard = startCardList.splice(source.index, 1);
 
-  console.log(entireList);
+    const dragEndColumnId = Number(destination.droppableId);
+    const endCardList = entireList.cards[dragEndColumnId];
+    endCardList.splice(destination.index, 0, ...movingCard);
+
+    setEntireList((prev) => ({
+      ...prev,
+      cards: { ...prev.cards, [dragStartColumnId]: startCardList, [dragEndColumnId]: endCardList },
+    }));
+  }, []);
+
+  if (!mount) return;
   return (
     <>
       {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}
@@ -150,7 +170,7 @@ const Dashboard = ({
       </MenuLayout>
 
       {isCreateModal && (
-        <ModalWrapper size="md">
+        <ModalWrapper size="md" handleModalClose={handleCreateNewColumnModalToggle}>
           <form className={stylesFromSingle.form} onSubmit={handleSubmit} noValidate>
             <div className={stylesFromSingle.modal}>
               <div className={stylesFromSingle.modalTitle}>새 컬럼 생성</div>

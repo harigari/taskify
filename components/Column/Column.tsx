@@ -73,8 +73,6 @@ export const Column = ({
   });
 
   //  카드리스트 가져오기
-  const [cardList, setCardList] = useState<CardData[]>([]);
-
   const getComments = async () => {
     const { id, size, cursorId } = pagination;
     let response;
@@ -91,7 +89,6 @@ export const Column = ({
     setPagination((prevValue) => {
       return { ...prevValue, cursorId: cursor };
     });
-    setCardList((prevValue) => [...prevValue, ...cards]);
     setEntireList((prev) => ({
       ...prev,
       cards: { ...prev.cards, [columnId]: [...(prev.cards[columnId] ?? []), ...cards] },
@@ -168,41 +165,38 @@ export const Column = ({
 
   return (
     <>
-      <div className={style.totalContainer}>
-        {/* 칼럼 상단 */}
-        <div className={style.headerContainer}>
-          <div className={style.todoWrapper}>
-            <ChipTodo size="sm" color="white">
-              {title}
-            </ChipTodo>
-            <ChipNum>{totalCount}</ChipNum>
-          </div>
-          <button onClick={handleSettingModalToggle}>
-            <Image width={24} height={24} src="/icons/icon-settings.svg" alt="칼럼 설정하기" />
-          </button>
-        </div>
-
-        <div className={style.contentContainer}>
-          {/* 컴포넌트로 바꾸기 */}
-          <Button buttonType="plus_icon" color="white" onClick={handleCreateModalToggle}>
-            <ChipPlus size="lg" />
-          </Button>
-          <Droppable droppableId={String(columnId)}>
-            {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
-                {entireList.cards[columnId]?.map((card, index) => (
-                  <Card key={card.id} columnTitle={title} data={card} index={index} setCardList={setCardList} />
-                ))}
-                {provided.placeholder}
+      <Droppable droppableId={String(columnId)}>
+        {(provided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef} className={style.totalContainer}>
+            {/* 칼럼 상단 */}
+            <div className={style.headerContainer}>
+              <div className={style.todoWrapper}>
+                <ChipTodo size="sm" color="white">
+                  {title}
+                </ChipTodo>
+                <ChipNum>{totalCount}</ChipNum>
               </div>
-            )}
-          </Droppable>
-          <p ref={myRef}></p>
-        </div>
-      </div>
+              <button onClick={handleSettingModalToggle}>
+                <Image width={24} height={24} src="/icons/icon-settings.svg" alt="칼럼 설정하기" />
+              </button>
+            </div>
 
+            <div className={style.contentContainer}>
+              {/* 컴포넌트로 바꾸기 */}
+              <Button buttonType="plus_icon" color="white" onClick={handleCreateModalToggle}>
+                <ChipPlus size="lg" />
+              </Button>
+              {entireList.cards[columnId]?.map((card, index) => (
+                <Card key={card.id} columnTitle={title} data={card} index={index} setEntireList={setEntireList} />
+              ))}
+              <p ref={myRef}></p>
+            </div>
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
       {isSettingModalOpen && (
-        <ModalWrapper size="md">
+        <ModalWrapper size="md" handleModalClose={handleSettingModalToggle}>
           <form className={stylesFromSingle.form} onSubmit={handleModifyColumn} noValidate>
             <div className={stylesFromSingle.modal}>
               <div className={stylesFromSingle.modalTitle}>컬럼 관리</div>
@@ -236,7 +230,6 @@ export const Column = ({
       )}
       {isCreateModalOpen && (
         <MultiInputModal
-          setCardList={setCardList}
           setEntireList={setEntireList}
           title="할 일 생성"
           buttonText="생성"

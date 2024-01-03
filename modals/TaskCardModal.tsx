@@ -1,7 +1,7 @@
 import useApi from "@/hooks/useApi";
 import EditInputModal from "@/modals/EditInputModal";
 import CommentList from "@/modals/components/Comment/CommentList";
-import { CardData } from "@/types/api.type";
+import { CardData, EntireData } from "@/types/api.type";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import Image from "next/image";
 import { Dispatch, FocusEvent, FormEvent, SetStateAction, useRef, useState } from "react";
@@ -15,11 +15,11 @@ import AssigneeAndDueDateInfo from "./components/AssigneeAndDueDateInfo/Assignee
 interface TaskCardInfoProps {
   columnTitle: string;
   data: CardData;
-  setCardList: Dispatch<SetStateAction<CardData[]>>;
+  setEntireList: Dispatch<SetStateAction<EntireData>>;
   handleModalClose: () => void;
 }
 
-const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: TaskCardInfoProps) => {
+const TaskCardModal = ({ data, columnTitle, setEntireList, handleModalClose }: TaskCardInfoProps) => {
   const [isKebabOpen, setIsKebabOpen] = useState(false);
   const [isCardModifyModalOpen, setCardModifyModalOpen] = useState(false);
   const [isCardDeleteModalOpen, setCardDeleteModalOpen] = useState(false);
@@ -62,10 +62,15 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
     if (res?.status === 204) {
       handleDeleteModalToggle();
       handleModalClose();
-      setCardList((prevValue) => {
-        const newCardList = prevValue.filter((card) => card.id !== data.id);
-        return newCardList;
-      });
+      setEntireList(
+        (prev) => (
+          delete prev.columns[data.columnId],
+          {
+            ...prev,
+            columnOrder: prev.columnOrder.filter((id) => id !== data.columnId),
+          }
+        )
+      );
     }
   };
 
@@ -94,7 +99,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
                 title="할 일 수정"
                 columnTitle={columnTitle}
                 buttonText="수정"
-                setCardList={setCardList}
+                setEntireList={setEntireList}
                 handleModalClose={handleModifyModalToggle}
               />
             )}

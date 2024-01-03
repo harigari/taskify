@@ -1,5 +1,5 @@
 import ProfileIcon from "@/components/Members/ProfileIcon";
-import { CardData } from "@/types/api.type";
+import { CardData, EntireData } from "@/types/api.type";
 import Image from "next/image";
 import ChipTag from "../Chips/ChipTag/ChipTag";
 import styles from "./Card.module.css";
@@ -12,10 +12,10 @@ interface CardProps {
   data: CardData;
   index: number;
   columnTitle: string;
-  setCardList: Dispatch<SetStateAction<CardData[]>>;
+  setEntireList: Dispatch<SetStateAction<EntireData>>;
 }
 
-const Card = ({ data, index, columnTitle, setCardList }: CardProps) => {
+const Card = ({ data, index, columnTitle, setEntireList }: CardProps) => {
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const { slicedTagList, etc } = tagSlicer(data.tags);
 
@@ -82,7 +82,7 @@ const Card = ({ data, index, columnTitle, setCardList }: CardProps) => {
               data={data}
               columnTitle={columnTitle}
               handleModalClose={handleCardModalToggle}
-              setCardList={setCardList}
+              setEntireList={setEntireList}
             />
           )}
         </>
