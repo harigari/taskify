@@ -27,7 +27,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
   const accessToken = getAccessTokenFromDocument("accessToken");
 
   // 케밥 열고 닫기
-  const handleKebab = () => {
+  const handleKebabToggle = () => {
     setIsKebabOpen((prevValue) => !prevValue);
   };
 
@@ -75,7 +75,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
         <div className={styles.header}>
           <h1 className={styles.title}>{data.title}</h1>
           <div className={styles.icons}>
-            <button className={styles.icon} onClick={handleKebab} onBlur={handleKebabClose}>
+            <button className={styles.icon} onClick={handleKebabToggle} onBlur={handleKebabClose}>
               <Image src="/icons/icon-kebab.svg" alt="케밥 아이콘" width={28} height={28} />
             </button>
             {isKebabOpen && (
