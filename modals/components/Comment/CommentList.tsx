@@ -9,6 +9,7 @@ import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import CommentTextArea from "../ModalInput/CommentTextArea";
 import useInfScroll from "@/hooks/useInfScroll";
 import sender from "@/apis/sender";
+import SENDER_CONFIG from "@/constants/senderConfig";
 
 interface CommentListProps {
   cardData: CardData;
