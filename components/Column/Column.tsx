@@ -16,19 +16,21 @@ import useInputController from "@/hooks/useInputController";
 import AlertModal from "@/modals/AlertModal";
 import useApi from "@/hooks/useApi";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
-import { CardData, ColumnData, Member } from "@/types/api.type";
+import { CardData, ColumnData, EntireData, Member } from "@/types/api.type";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
 import { useRouter } from "next/router";
 import useInfScroll from "@/hooks/useInfScroll";
 import sender from "@/apis/sender";
+import { Droppable } from "@hello-pangea/dnd";
 
 interface ColumnProps {
   accessToken: string;
   title: string;
   dashboardId: number;
-  setColumnList: Dispatch<SetStateAction<ColumnData[]>>;
   assigneeList: Member[];
   columnId: number;
+  entireList: EntireData;
+  setEntireList: Dispatch<SetStateAction<EntireData>>;
 }
 
 type Pagination = {
@@ -43,7 +45,15 @@ type InfRes = {
   totalCount: number;
 };
 
-export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId, setColumnList }: ColumnProps) => {
+export const Column = ({
+  accessToken,
+  title,
+  dashboardId,
+  assigneeList,
+  columnId,
+  entireList,
+  setEntireList,
+}: ColumnProps) => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
@@ -82,6 +92,10 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
       return { ...prevValue, cursorId: cursor };
     });
     setCardList((prevValue) => [...prevValue, ...cards]);
+    setEntireList((prev) => ({
+      ...prev,
+      cards: { ...prev.cards, [columnId]: [...(prev.cards[columnId] ?? []), ...cards] },
+    }));
     setIsVisible(false);
     setTotalCount(totalCount);
   };
@@ -122,19 +136,10 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
     });
 
     if (putRes?.status === 200) {
-      setColumnList((prevValue) => {
-        const newData = prevValue.map((column) => {
-          if (column.id !== columnId) return column;
-
-          const value = settingModal.input.value;
-
-          const changedColumn = { ...column, title: value };
-
-          return changedColumn;
-        });
-
-        return newData;
-      });
+      setEntireList((prev) => ({
+        ...prev,
+        columns: { ...prev.columns, [putRes.data.id]: putRes.data },
+      }));
       handleSettingModalToggle();
     }
   };
@@ -148,10 +153,16 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
     if (deleteRes?.status === 204) {
       handleSettingModalToggle();
       handleDeleteModalToggle();
-      setColumnList((prevValue) => {
-        const newValue = prevValue.filter((column) => column.id !== columnId);
-        return newValue;
-      });
+
+      setEntireList(
+        (prev) => (
+          delete prev.columns[columnId],
+          {
+            ...prev,
+            columnOrder: prev.columnOrder.filter((id) => id !== columnId),
+          }
+        )
+      );
     }
   };
 
@@ -176,9 +187,16 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
           <Button buttonType="plus_icon" color="white" onClick={handleCreateModalToggle}>
             <ChipPlus size="lg" />
           </Button>
-          {cardList.map((card) => (
-            <Card key={card.id} columnTitle={title} data={card} setCardList={setCardList} />
-          ))}
+          <Droppable droppableId={String(columnId)}>
+            {(provided) => (
+              <div {...provided.droppableProps} ref={provided.innerRef}>
+                {entireList.cards[columnId]?.map((card, index) => (
+                  <Card key={card.id} columnTitle={title} data={card} index={index} setCardList={setCardList} />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
           <p ref={myRef}></p>
         </div>
       </div>
@@ -219,6 +237,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
       {isCreateModalOpen && (
         <MultiInputModal
           setCardList={setCardList}
+          setEntireList={setEntireList}
           title="할 일 생성"
           buttonText="생성"
           columnId={columnId}
