@@ -4,10 +4,12 @@ import TableList from "@/components/Table/TableList/TableList";
 import HideButton from "@/components/Table/TablePagination/HideButton";
 import SearchInput from "@/components/Table/TablePagination/SearchInput";
 import { BasicUserType, InvitationData } from "@/types/api.type";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./TableScroll.module.css";
 import { useRouter } from "next/router";
 import useInfScroll from "@/hooks/useInfScroll";
+import sender from "@/apis/sender";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 
 type Pagination = {
   id: number;
@@ -21,14 +23,52 @@ type TableIndexType = {
 
 interface TableProps {
   title: string;
+  type: "dashboardInvitations" | "invitations";
   row?: number;
   tableIndex: TableIndexType;
   invite?: boolean;
   search?: boolean;
 }
 
-const TableScroll = ({ title, row = 6, tableIndex, invite = false, search = false }: TableProps) => {
-  const [data, setData] = useState<BasicUserType[] | InvitationData[]>([]);
+const TableScroll = ({ title, type, row = 5, tableIndex, invite = false, search = false }: TableProps) => {
+  const router = useRouter();
+
+  const { isVisible, setIsVisible, myRef } = useInfScroll();
+  const [pagination, setPagination] = useState<Pagination>({
+    id: Number(router.query.boardId),
+    size: 5,
+  });
+  const [data, setData] = useState<(BasicUserType | InvitationData)[]>([]);
+  const getScrollData = async () => {
+    const accessToken = getAccessTokenFromDocument("accessToken");
+    const { id, size, cursorId } = pagination;
+    let response;
+    if (cursorId) {
+      response = await sender.get({ path: type, id, size, cursorId, accessToken });
+    } else {
+      response = await sender.get({ path: type, id, size, accessToken });
+    }
+
+    if (response.status !== 200) return;
+    setIsVisible(false);
+
+    if ("cursorId" in response.data) {
+      const { invitations, cursorId: cursor } = response.data;
+      setData((prevValue) => [...prevValue, ...invitations]);
+      setPagination((prevValue) => {
+        return { ...prevValue, cursorId: cursor };
+      });
+      return;
+    }
+  };
+
+  useEffect(() => {
+    if (pagination.cursorId === null) return;
+    if (isVisible) {
+      getScrollData();
+    }
+  }, [isVisible]);
+
   const [isOpen, setIsOpen] = useState(true);
   const [keyword, setKeyword] = useState("");
   const rowData = useMemo(
@@ -45,46 +85,6 @@ const TableScroll = ({ title, row = 6, tableIndex, invite = false, search = fals
         : data,
     [data]
   );
-
-  const router = useRouter();
-
-  const { isVisible, setIsVisible, myRef } = useInfScroll();
-
-  const [pagination, setPagination] = useState<Pagination>({
-    id: columnId,
-    size: 5,
-  });
-
-  //  카드리스트 가져오기
-  const [cardList, setCardList] = useState<CardData[]>([]);
-
-  const getComments = async () => {
-    const { id, size, cursorId } = pagination;
-    let response;
-    if (cursorId) {
-      response = await sender.get({ path: "cards", id, size, cursorId, accessToken });
-    } else {
-      response = await sender.get({ path: "cards", id, size, accessToken });
-    }
-
-    if (response.status !== 200) return;
-
-    const { cards, cursorId: cursor, totalCount } = response.data;
-
-    setPagination((prevValue) => {
-      return { ...prevValue, cursorId: cursor };
-    });
-    setCardList((prevValue) => [...prevValue, ...cards]);
-    setIsVisible(false);
-    setTotalCount(totalCount);
-  };
-
-  useEffect(() => {
-    if (pagination.cursorId === null) return;
-    if (isVisible) {
-      getComments();
-    }
-  }, [isVisible]);
 
   return (
     <article className={styles.container}>

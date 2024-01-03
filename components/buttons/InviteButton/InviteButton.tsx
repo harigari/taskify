@@ -7,7 +7,7 @@ import SingleInputModal from "@/modals/SingleInputModal";
 import InnerInviteButton from "@/components/Table/TablePagination/InnerInviteButton";
 import HeaderButton from "@/components/Header/HeaderButton/HeaderButton";
 import headerButtonStyles from "@/components/Header/Header.module.css";
-import { BasicUserType, InvitationData } from "@/types/api.type";
+import { Member, InvitationData } from "@/types/api.type";
 
 type Usage = "header" | "edit_page";
 
@@ -15,7 +15,7 @@ interface InviteButtonProps {
   boardId: number;
   usage: Usage;
   className?: string;
-  setData: Dispatch<SetStateAction<BasicUserType[]>> | Dispatch<SetStateAction<InvitationData[]>>;
+  setData: Dispatch<SetStateAction<Member[]>> | Dispatch<SetStateAction<InvitationData[]>>;
 }
 const InviteButton = ({ boardId, usage, className, setData }: InviteButtonProps) => {
   const inviteInput = useInputController(signinEmail);
@@ -25,6 +25,7 @@ const InviteButton = ({ boardId, usage, className, setData }: InviteButtonProps)
   const handleInviteModalToggle = () => {
     inviteInput.wrapper.setErrorText("");
     setIsInviteModalOpen((prev) => !prev);
+    inviteInput.input.setValue("");
   };
 
   const { wrappedFunction: postData } = useApi("post");
@@ -68,6 +69,7 @@ const InviteButton = ({ boardId, usage, className, setData }: InviteButtonProps)
       {usage === "edit_page" && <InnerInviteButton className={className} onClick={handleInviteModalToggle} />}
       {isInviteModalOpen && (
         <SingleInputModal
+          disabled={!inviteInput.input.value}
           handleModalClose={handleInviteModalToggle}
           buttonText="초대"
           onSubmit={handleInviteUserSubmit}

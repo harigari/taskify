@@ -1,11 +1,11 @@
+import ChipColors from "@/components/Chips/ChipColors/ChipColors";
 import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
+import clsx from "clsx";
+import { FormEvent, MouseEvent } from "react";
+import styles from "./Modal.module.css";
 import ModalWrapper from "./ModalWrapper";
 import ModalButton from "./components/ModalButton/ModalButton";
-import styles from "./Modal.module.css";
-import { FormEvent, MouseEvent } from "react";
-import ChipColors from "@/components/Chips/ChipColors/ChipColors";
-import clsx from "clsx";
 
 interface SingleInputModalProp {
   title: string;
@@ -15,6 +15,7 @@ interface SingleInputModalProp {
   deleteButton?: boolean;
   handleModalClose: (e: MouseEvent) => void;
   inputController: any;
+  disabled?: boolean;
 }
 
 const SingleInputModal = ({
@@ -25,6 +26,7 @@ const SingleInputModal = ({
   inputController,
   handleModalClose,
   deleteButton = false,
+  disabled,
 }: SingleInputModalProp) => {
   return (
     <ModalWrapper size="md">
@@ -44,7 +46,9 @@ const SingleInputModal = ({
             삭제하기
           </button>
 
-          <ModalButton.DoubleButton onClick={handleModalClose}>{buttonText}</ModalButton.DoubleButton>
+          <ModalButton.DoubleButton disabled={disabled} onClick={handleModalClose}>
+            {buttonText}
+          </ModalButton.DoubleButton>
         </div>
       </form>
     </ModalWrapper>

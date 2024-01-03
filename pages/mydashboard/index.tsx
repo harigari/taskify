@@ -1,23 +1,23 @@
-import Button from "@/components/Buttons/Button/Button";
-import TablePagination from "@/components/Table/TablePagination/TablePagination";
-import Image from "next/image";
-import styles from "./index.module.css";
-import stylesFromSingle from "@/modals/Modal.module.css";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import { FormEvent, useState } from "react";
-import useInputController from "@/hooks/useInputController";
-import ModalWrapper from "@/modals/ModalWrapper";
-import InputWrapper from "@/components/Input/InputWrapper";
-import Input from "@/components/Input/Input";
-import ChipColors from "@/components/Chips/ChipColors/ChipColors";
-import ModalButton from "@/modals/components/ModalButton/ModalButton";
 import sender from "@/apis/sender";
-import { ColorType } from "@/types/api.type";
-import Link from "next/link";
-import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
-import useApi from "@/hooks/useApi";
+import Button from "@/components/Buttons/Button/Button";
+import ChipColors from "@/components/Chips/ChipColors/ChipColors";
+import Input from "@/components/Input/Input";
+import InputWrapper from "@/components/Input/InputWrapper";
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
+import TableScroll from "@/components/Table/TableScroll/TableScroll";
+import useApi from "@/hooks/useApi";
+import useInputController from "@/hooks/useInputController";
+import stylesFromSingle from "@/modals/Modal.module.css";
+import ModalWrapper from "@/modals/ModalWrapper";
+import ModalButton from "@/modals/components/ModalButton/ModalButton";
+import { ColorType } from "@/types/api.type";
+import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { FormEvent, useEffect, useState } from "react";
+import styles from "./index.module.css";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -28,7 +28,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const {
     data: { invitations },
-  } = await sender.get({ path: "invitations", accessToken });
+  } = await sender.get({ path: "invitations", size: 5, accessToken });
 
   if (!accessToken) {
     return {
@@ -95,6 +95,14 @@ export default function Mydashboard({
     }
   };
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <>
       <MenuLayout dashboardList={dashboards}>
@@ -124,15 +132,18 @@ export default function Mydashboard({
                 </Button>
               ))}
             </article>
-            <TablePagination
+            {/* <TablePagination
               title="초대받은 대시보드"
-              row={15}
+              row={5}
               data={invitations}
               tableIndex={{ 이름: "dashboard", 초대자: "inviter", "수락 여부": "acceptButton" }}
               search
+            /> */}
+            <TableScroll
+              title="초대받은 대시보드"
+              type="invitations"
+              tableIndex={{ 대시보드: "dashboard", "수락 여부": "acceptButton" }}
             />
-
-            {/* <InvitedDashboard /> */}
           </section>
         </main>
       </MenuLayout>

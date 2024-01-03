@@ -1,25 +1,27 @@
+import sender from "@/apis/sender";
 import Button from "@/components/Buttons/Button/Button";
 import ProfileIcon from "@/components/Members/ProfileIcon";
-import { BasicUserType, InvitationData } from "@/types/api.type";
-import makeColorProfile from "@/utils/makeColorProfile";
-import styles from "./TableList.module.css";
-import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
-import sender from "@/apis/sender";
-import { useRouter } from "next/router";
 import useApi from "@/hooks/useApi";
+import AlertModal from "@/modals/AlertModal";
+import { InvitationData, Member } from "@/types/api.type";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import makeColorProfile from "@/utils/makeColorProfile";
+import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useState } from "react";
+import styles from "./TableList.module.css";
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
 };
 
 interface TableListProps {
-  data: (BasicUserType | InvitationData)[];
-  setData: Dispatch<SetStateAction<BasicUserType[]>> | Dispatch<SetStateAction<InvitationData[]>>;
+  data: (Member | InvitationData)[];
+  setData: Dispatch<SetStateAction<(Member | InvitationData)[]>>;
   tableIndex: TableIndexType;
   row: number;
 }
 
 const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
+  console.log(data);
   const column = Object.keys(tableIndex).length;
   const isAccept = Object.values(tableIndex).includes("acceptButton");
   const router = useRouter();
@@ -27,7 +29,10 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
   const boardId = Number(router.query.boardId);
 
   const { wrappedFunction: deleteData } = useApi("delete");
-
+  const [isInviteDeleteModalOpen, setIsInviteDeleteModalOpen] = useState(false);
+  const handleInviteDeleteModalToggle = () => {
+    setIsInviteDeleteModalOpen((prev) => !prev);
+  };
   return (
     <ul className={isAccept ? styles.list__mobile : ""}>
       {data.map((data, idx) => {
@@ -113,10 +118,26 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
                 };
 
                 arr.push(
-                  <Button onClick={handleMemberDelete} buttonType="delete" color="white" key={v}>
+                  <Button
+                    disabled={data.isOwner}
+                    onClick={handleMemberDelete}
+                    buttonType="delete"
+                    color="white"
+                    key={v}
+                  >
                     삭제
                   </Button>
                 );
+                // 삭제하겠냐는 모달이 안띄워짐
+                {
+                  isInviteDeleteModalOpen && (
+                    <AlertModal
+                      alertText="구성원을 삭제하시겠습니까?"
+                      handleSubmit={handleMemberDelete}
+                      handleModalClose={handleInviteDeleteModalToggle}
+                    />
+                  );
+                }
               }
               continue;
             case v === "cancelButton":
@@ -136,7 +157,7 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
                 };
 
                 arr.push(
-                  <Button onClick={handleInviteCancel} buttonType="delete" color="white" key={v}>
+                  <Button onClick={handleInviteDeleteModalToggle} buttonType="delete" color="white" key={v}>
                     취소
                   </Button>
                 );

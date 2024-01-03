@@ -435,8 +435,7 @@ export type PathProps<T extends Method> = keyof (typeof SENDER_CONFIG)[T];
 
 export type RequireId<T extends Method, U extends PathProps<T>> = Path<T>[U] extends string
   ? { path: U; accessToken?: string; data?: RequestData<T, U> }
-  : Path<T>[U] extends (id: number, size: number) => string
-  ? {
+  : {
       path: U;
       id?: number;
       method?: "infiniteScroll" | "pagination";
@@ -446,8 +445,7 @@ export type RequireId<T extends Method, U extends PathProps<T>> = Path<T>[U] ext
       invitationId?: number;
       accessToken?: string;
       data?: RequestData<T, U>;
-    }
-  : { path: U; id: number; accessToken?: string; data?: RequestData<T, U> };
+    };
 
 export type HTTP<T extends Method> = <U extends PathProps<T>>(
   obj: RequireId<T, U>

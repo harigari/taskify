@@ -1,27 +1,28 @@
 import sender from "@/apis/sender";
 import Button from "@/components/Buttons/Button/Button";
 import ChipColors from "@/components/Chips/ChipColors/ChipColors";
+import Input from "@/components/Input/Input";
+import InputWrapper from "@/components/Input/InputWrapper";
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
+import TablePagination from "@/components/Table/TablePagination/TablePagination";
+import useApi from "@/hooks/useApi";
+import useInputController from "@/hooks/useInputController";
+import AlertModal from "@/modals/AlertModal";
+import { ColorType, InvitationData, Member } from "@/types/api.type";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import styles from "./DashboardEdit.module.css";
-import { useState } from "react";
-import { BasicUserType, ColorType, InvitationData, Member } from "@/types/api.type";
 import Link from "next/link";
-import useApi from "@/hooks/useApi";
-import InputWrapper from "@/components/Input/InputWrapper";
-import useInputController from "@/hooks/useInputController";
-import Input from "@/components/Input/Input";
-import TablePagination from "@/components/Table/TablePagination/TablePagination";
+import { useRouter } from "next/router";
+import { FormEvent, useState } from "react";
+import styles from "./DashboardEdit.module.css";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
 
   const {
     data: { dashboards },
-  } = await sender.get({ path: "dashboards", method: "pagination", accessToken });
+  } = await sender.get({ path: "dashboards", method: "infiniteScroll", size: 5, accessToken });
 
   const boardId = context.params?.boardId;
 
@@ -38,6 +39,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     data: { members },
   } = await sender.get({ path: "members", id: Number(boardId), accessToken });
 
+  console.log(members);
   const {
     data: { invitations },
   } = await sender.get({ path: "dashboardInvitations", id: Number(boardId), accessToken });
@@ -68,13 +70,20 @@ const DashboardEdit = ({
   const [prevColor, setPrevColor] = useState(dashboardData?.color ?? "#760dde");
   const [color, setColor] = useState<ColorType>(prevColor);
 
-  const [memberList, setMemberList] = useState<BasicUserType[]>(members);
+  const [memberList, setMemberList] = useState<Member[]>(members);
 
   const [invitationList, setInvitationList] = useState<InvitationData[]>(invitations);
   const [boardName, setBoardName] = useState(dashboardData?.title);
+
+  const [isOpenDashboardDeleteModal, setIsOpenDashboardDeleteModal] = useState(false);
   const { pending, wrappedFunction } = useApi("delete");
 
-  const handleDashboardDeleteClick = async () => {
+  const handleDashboardDeleteModalToggle = () => {
+    setIsOpenDashboardDeleteModal((prev) => !prev);
+  };
+
+  const handleDashboardDeleteSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     const deleteRes = await wrappedFunction({ path: "dashboard", id: Number(boardId), accessToken });
 
     if (deleteRes?.status === 204) {
@@ -153,9 +162,21 @@ const DashboardEdit = ({
             tableIndex={{ 이메일: "email", "": "cancelButton" }}
           />
 
-          <Button disabled={pending} onClick={handleDashboardDeleteClick} color="gray" buttonType="dashboard_delete">
+          <Button
+            disabled={pending}
+            onClick={handleDashboardDeleteModalToggle}
+            color="gray"
+            buttonType="dashboard_delete"
+          >
             대시보드 삭제하기
           </Button>
+          {isOpenDashboardDeleteModal && (
+            <AlertModal
+              alertText="대시보드를 삭제하시겠습니까?"
+              handleSubmit={handleDashboardDeleteSubmit}
+              handleModalClose={handleDashboardDeleteModalToggle}
+            />
+          )}
         </div>
       </MenuLayout>
     </>
