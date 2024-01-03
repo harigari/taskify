@@ -20,6 +20,7 @@ interface CommentProps {
 }
 
 const Comment = ({ data, setCommentList, setEditingId, usage, handleEditCancel }: CommentProps) => {
+  // console.log(data);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const accessToken = getAccessTokenFromDocument("accessToken");
 
@@ -76,6 +77,9 @@ const Comment = ({ data, setCommentList, setEditingId, usage, handleEditCancel }
     }
   };
 
+  // 내 정보 가져오기
+  const { data: myData } = useApi("get", { path: "me", accessToken });
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.profile_icon}>
@@ -90,8 +94,7 @@ const Comment = ({ data, setCommentList, setEditingId, usage, handleEditCancel }
         {usage === "edit" && (
           <>
             <textarea className={clsx(styles.textarea)} value={editValue} onChange={handleEditInputChange} />
-
-            {!editValue.trim() && <p className={styles.error}>비우지마 바보야~</p>}
+            {!editValue.trim() && <p className={styles.error}>내용을 입력해주세요.</p>}
             <div className={styles.buttons}>
               <button className={styles.button} disabled={!editValue.trim()} onClick={handleEditSubmit}>
                 수정
@@ -106,22 +109,24 @@ const Comment = ({ data, setCommentList, setEditingId, usage, handleEditCancel }
         {usage === "show" && (
           <>
             <p className={styles.comment}>{data.content}</p>
-            <div className={styles.buttons}>
-              <button className={styles.button} onClick={handleEditClick}>
-                수정
-              </button>
+            {myData?.id === data.author.id && (
+              <div className={styles.buttons}>
+                <button className={styles.button} onClick={handleEditClick}>
+                  수정
+                </button>
 
-              <button onClick={handleDeleteModalToggle} className={styles.button}>
-                삭제
-              </button>
-              {isDeleteModalOpen && (
-                <AlertModal
-                  alertText="댓글을 삭제하시겠습니까?"
-                  handleModalClose={handleDeleteModalToggle}
-                  handleSubmit={handleDeleteSubmit}
-                />
-              )}
-            </div>
+                <button onClick={handleDeleteModalToggle} className={styles.button}>
+                  삭제
+                </button>
+                {isDeleteModalOpen && (
+                  <AlertModal
+                    alertText="댓글을 삭제하시겠습니까?"
+                    handleModalClose={handleDeleteModalToggle}
+                    handleSubmit={handleDeleteSubmit}
+                  />
+                )}
+              </div>
+            )}
           </>
         )}
       </div>

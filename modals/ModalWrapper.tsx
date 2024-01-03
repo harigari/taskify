@@ -13,7 +13,7 @@ interface ModalWrapperProp {
 const ModalWrapper = ({ children, size, handleModalClose }: ModalWrapperProp) => {
   const portalRoot = document.getElementById("modal-root") as HTMLElement;
 
-  const modalOutsideRef = useRef(null);
+  const modalOutsideRef = useRef<HTMLDivElement>(null);
 
   const modalOutsideClick = (e: MouseEvent) => {
     if (modalOutsideRef.current === e.target) {
