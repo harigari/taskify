@@ -111,27 +111,28 @@ const Dashboard = ({
     setEntireList(entireData);
   }, [router.query.boardId]);
 
-  const onDragEnd = useCallback((result: DropResult) => {
-    const { destination, source, draggableId } = result;
-    if (!destination) return;
-    if (destination.droppableId === source.droppableId) return;
-    if (destination.droppableId === source.droppableId && source.index === destination.index) return;
+  const onDragEnd = useCallback(
+    (result: DropResult) => {
+      const { destination, source, draggableId } = result;
+      if (!destination) return;
+      if (destination.droppableId === source.droppableId) return;
+      if (destination.droppableId === source.droppableId && source.index === destination.index) return;
 
-    console.log(entireList);
-    console.log(source.droppableId, destination.droppableId);
-    const dragStartColumnId = Number(source.droppableId);
-    const startCardList = entireList.cards[dragStartColumnId];
-    const movingCard = startCardList.splice(source.index, 1);
+      const dragStartColumnId = Number(source.droppableId);
+      const startCardList = entireList.cards[dragStartColumnId];
+      const movingCard = startCardList.splice(source.index, 1);
 
-    const dragEndColumnId = Number(destination.droppableId);
-    const endCardList = entireList.cards[dragEndColumnId];
-    endCardList.splice(destination.index, 0, ...movingCard);
+      const dragEndColumnId = Number(destination.droppableId);
+      const endCardList = entireList.cards[dragEndColumnId];
+      endCardList.splice(destination.index, 0, ...movingCard);
 
-    setEntireList((prev) => ({
-      ...prev,
-      cards: { ...prev.cards, [dragStartColumnId]: startCardList, [dragEndColumnId]: endCardList },
-    }));
-  }, []);
+      setEntireList((prev) => ({
+        ...prev,
+        cards: { ...prev.cards, [dragStartColumnId]: startCardList, [dragEndColumnId]: endCardList },
+      }));
+    },
+    [entireList]
+  );
 
   if (!mount) return;
   return (
