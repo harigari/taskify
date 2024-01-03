@@ -20,6 +20,7 @@ import { CardData, ColumnData, Member } from "@/types/api.type";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
 import { useRouter } from "next/router";
 import useInfScroll from "@/hooks/useInfScroll";
+import sender from "@/apis/sender";
 
 interface ColumnProps {
   accessToken: string;
@@ -53,7 +54,6 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
   });
 
   const { pending: deletePending, wrappedFunction: deleteData } = useApi("delete");
-  const router = useRouter();
 
   const { isVisible, setIsVisible, myRef } = useInfScroll();
 
@@ -67,23 +67,16 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
 
   const getComments = async () => {
     const { id, size, cursorId } = pagination;
-    const options = { headers: { Authorization: `Bearer ${accessToken}` } };
     let response;
-
     if (cursorId) {
-      response = await fetch(
-        `https://sp-taskify-api.vercel.app/1-7/cards?size=${size}&columnId=${id}&cursorId=${cursorId}`,
-        options
-      );
+      response = await sender.get({ path: "cards", id, size, cursorId, accessToken });
     } else {
-      response = await fetch(`https://sp-taskify-api.vercel.app/1-7/cards?size=${size}&columnId=${id}`, options);
+      response = await sender.get({ path: "cards", id, size, accessToken });
     }
 
     if (response.status !== 200) return;
 
-    const result: InfRes = await response.json();
-
-    const { cards, cursorId: cursor, totalCount } = result;
+    const { cards, cursorId: cursor, totalCount } = response.data;
 
     setPagination((prevValue) => {
       return { ...prevValue, cursorId: cursor };
@@ -98,7 +91,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
     if (isVisible) {
       getComments();
     }
-  }, [isVisible, router.query]);
+  }, [isVisible]);
 
   const handleCreateModalToggle = () => {
     setIsCreateModalOpen((prevValue) => !prevValue);
@@ -149,6 +142,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
   const handleColumnDelete = async (e: FormEvent) => {
     e.preventDefault();
 
+    if (deletePending) return;
     const deleteRes = await deleteData({ path: "column", id: columnId, accessToken });
 
     if (deleteRes?.status === 204) {

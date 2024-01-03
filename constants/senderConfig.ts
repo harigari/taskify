@@ -1,17 +1,18 @@
 const SENDER_CONFIG = {
   BASE_URL: "https://sp-taskify-api.vercel.app/1-7",
   get: {
-    cards: (id: number) => `/cards?columnId=${id}`,
+    cards: (id: number, size: number = 5, cursorId: number = 0) =>
+      `/cards?columnId=${id}&size=${size}${cursorId ? `&cursorId=${cursorId}` : ""}`,
     // 특정한 칼럼에 있는 전체 카드 목록 가져오기
     card: (id: number) => `/cards/${id}`,
     // 특정한 카드 1개 정보 가져오기
     columns: (id: number) => `/columns?dashboardId=${id}`,
     // 특정한 대시보드에 있는 전체 칼럼 목록 가져오기
-    comments: (id: number, size: number = 10, cursorId: number = 0) =>
-      `/comments?cardId=${id}&size=${size}&cursorId=${cursorId}`,
+    comments: (id: number, size: number = 5, cursorId: number = 0) =>
+      `/comments?cardId=${id}&size=${size}${cursorId ? `&cursorId=${cursorId}` : ""}`,
     // 특정한 카드에 있는 전체 댓글 목록 가져오기
-    dashboards: (method: "infiniteScroll" | "pagination", size: number = 10, cursorId: number = 0) =>
-      `/dashboards?navigationMethod=${method}&size=${size}&cursorId=${cursorId}`,
+    dashboards: (method: "infiniteScroll" | "pagination", size: number = 5, cursorId: number = 0) =>
+      `/dashboards?navigationMethod=${method}&size=${size}${cursorId ? `&cursorId=${cursorId}` : ""}`,
     // 초대받거나 생성한 전체 대시보드 목록 가져오기
     // 무한스크롤과 페이지네이션 중 옵션을 고를 수 있습니다.
     dashboard: (id: number) => `/dashboards/${id}`,

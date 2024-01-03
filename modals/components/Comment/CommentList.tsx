@@ -8,6 +8,7 @@ import styles from "./CommentList.module.css";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import CommentTextArea from "../ModalInput/CommentTextArea";
 import useInfScroll from "@/hooks/useInfScroll";
+import sender from "@/apis/sender";
 
 interface CommentListProps {
   cardData: CardData;
@@ -42,23 +43,17 @@ const CommentList = ({ cardData }: CommentListProps) => {
 
   const getComments = async () => {
     const { id, size, cursorId } = pagination;
-    const options = { headers: { Authorization: `Bearer ${accessToken}` } };
     let response;
 
     if (cursorId) {
-      response = await fetch(
-        `https://sp-taskify-api.vercel.app/1-7/comments?cardId=${id}&size=${size}&cursorId=${cursorId}`,
-        options
-      );
+      response = await sender.get({ path: "comments", id, size, cursorId, accessToken });
     } else {
-      response = await fetch(`https://sp-taskify-api.vercel.app/1-7/comments?cardId=${id}&size=${size}`, options);
+      response = await sender.get({ path: "comments", id, size, accessToken });
     }
 
     if (response.status !== 200) return;
 
-    const result: InfRes = await response.json();
-
-    const { comments, cursorId: cursor } = result;
+    const { comments, cursorId: cursor } = response.data;
 
     setPagination((prevValue) => {
       return { ...prevValue, cursorId: cursor };
