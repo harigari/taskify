@@ -27,7 +27,7 @@ const Card = ({ data, index, columnTitle, setEntireList }: CardProps) => {
     <Draggable draggableId={String(data.id)} index={index}>
       {(provided) => (
         <>
-          <div
+          <article
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
@@ -76,7 +76,7 @@ const Card = ({ data, index, columnTitle, setEntireList }: CardProps) => {
                 </div>
               </div>
             </div>
-          </div>
+          </article>
           {isCardModalOpen && (
             <TaskCardModal
               data={data}

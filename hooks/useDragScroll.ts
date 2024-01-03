@@ -7,6 +7,8 @@ export default function useDragScroll(dragRef: RefObject<HTMLElement>) {
 
   const mouseTouchDown = (e: MouseEvent | TouchEvent) => {
     // 마우스를 눌렀을 때 이벤트 함수
+    const target = e.target as HTMLElement;
+    if (target.className.includes("Card")) return;
     const ref = dragRef.current; // dragRef.current가 아래에서 반복적으로 사용되기에 선언
     if (ref) {
       isDown = true; // 마우스가 눌림
