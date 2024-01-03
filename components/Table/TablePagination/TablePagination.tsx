@@ -23,7 +23,7 @@ interface TableProps {
   tableIndex: TableIndexType;
   invite?: boolean;
   search?: boolean;
-  setData: Dispatch<SetStateAction<BasicUserType[]>> | Dispatch<SetStateAction<InvitationData[]>>
+  setData: Dispatch<SetStateAction<BasicUserType[]>> | Dispatch<SetStateAction<InvitationData[]>>;
 }
 
 const TablePagination = ({
@@ -83,7 +83,7 @@ const TablePagination = ({
             />
           </div>
         )}
-        {invite && <InviteButton setData = {setData} boardId={boardId} usage="edit_page" />}
+        {invite && <InviteButton setData={setData} boardId={boardId} usage="edit_page" />}
       </div>
       {data.length > 0 ? (
         <>
@@ -103,9 +103,9 @@ const TablePagination = ({
             height={100}
             priority
             src="/icons/icon-noinvite-dashboard.svg"
-            alt="초대받은 대시보드가 없습니다."
+            alt="초대 내역이 없습니다."
           />
-          <p>아직 초대받은 대시보드가 없어요</p>
+          <p>초대 내역이 없습니다.</p>
         </div>
       )}
     </article>

@@ -14,7 +14,7 @@ type TableIndexType = {
 
 interface TableListProps {
   data: (BasicUserType | InvitationData)[];
-  setData: Dispatch<SetStateAction<BasicUserType[]>> | Dispatch<SetStateAction<InvitationData[]>>
+  setData: Dispatch<SetStateAction<BasicUserType[]>> | Dispatch<SetStateAction<InvitationData[]>>;
   tableIndex: TableIndexType;
   row: number;
 }
@@ -130,7 +130,7 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
                     invitationId: data.id,
                     accessToken,
                   });
-                  if(res?.status === 204){
+                  if (res?.status === 204) {
                     setData((prev) => prev.filter((invitation) => invitation.id !== data.id));
                   }
                 };
@@ -159,11 +159,11 @@ const TableList = ({ data, tableIndex, row, setData }: TableListProps) => {
           </li>
         );
       })}
-      {row !== Infinity &&
+      {/* {row !== Infinity &&
         data.length < row &&
         Array(row - data.length)
           .fill("")
-          .map((v, i) => <li className={styles.row} key={i}></li>)}
+          .map((v, i) => <li className={styles.row} key={i}></li>)} */}
     </ul>
   );
 };

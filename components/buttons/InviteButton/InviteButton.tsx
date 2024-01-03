@@ -7,7 +7,7 @@ import SingleInputModal from "@/modals/SingleInputModal";
 import InnerInviteButton from "@/components/Table/TablePagination/InnerInviteButton";
 import HeaderButton from "@/components/Header/HeaderButton/HeaderButton";
 import headerButtonStyles from "@/components/Header/Header.module.css";
-import { InvitationData } from "@/types/api.type";
+import { BasicUserType, InvitationData } from "@/types/api.type";
 
 type Usage = "header" | "edit_page";
 
@@ -15,7 +15,7 @@ interface InviteButtonProps {
   boardId: number;
   usage: Usage;
   className?: string;
-  setData : Dispatch<SetStateAction<InvitationData[]>>
+  setData: Dispatch<SetStateAction<BasicUserType[]>> | Dispatch<SetStateAction<InvitationData[]>>;
 }
 const InviteButton = ({ boardId, usage, className, setData }: InviteButtonProps) => {
   const inviteInput = useInputController(signinEmail);
@@ -41,15 +41,13 @@ const InviteButton = ({ boardId, usage, className, setData }: InviteButtonProps)
       },
       accessToken,
     });
-    
 
     if (!res) return;
-
 
     if (res.status === 201) {
       handleInviteModalToggle();
       inviteInput.input.setValue("");
-      setData((prev) =>  [ res.data,  ...prev])
+      setData((prev) => [res.data, ...prev]);
     }
 
     if (res.status > 400 && res.message) {
