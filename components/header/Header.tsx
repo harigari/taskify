@@ -62,7 +62,7 @@ const Header = ({ dashboardList }: HeaderProps) => {
               </HeaderButton>
             </Link>
           </div>
-          <InviteButton boardId={Number(boardId)} usage="header" />
+          <InviteButton usage="header" />
         </>
       )}
       <div className={styles.grid__members}>

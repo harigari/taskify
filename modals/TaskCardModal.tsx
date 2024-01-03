@@ -69,11 +69,6 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
     }
   };
 
-  const handleAllModalClose = () => {
-    handleModalClose();
-    setCardModifyModalOpen(false);
-  };
-
   return (
     <ModalWrapper size="lg">
       <div className={styles.modal_wrapper}>
@@ -85,31 +80,30 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
             </button>
             {isKebabOpen && (
               <div className={styles.options} ref={optionsRef}>
-                <button className={styles.option} onClick={handleModifyModalToggle}>
+                <button className={styles.option} onClick={() => (handleModifyModalToggle(), setIsKebabOpen(false))}>
                   수정하기
                 </button>
-                {isCardModifyModalOpen && (
-                  <EditInputModal
-                    initialvalue={data}
-                    title="할 일 수정"
-                    columnTitle={columnTitle}
-                    buttonText="수정"
-                    setCardList={setCardList}
-                    handleModalClose={handleModifyModalToggle}
-                    handleAllModalClose={handleAllModalClose}
-                  />
-                )}
-                <button className={styles.option} onClick={handleDeleteModalToggle}>
+                <button className={styles.option} onClick={() => (handleDeleteModalToggle(), setIsKebabOpen(false))}>
                   삭제하기
                 </button>
-                {isCardDeleteModalOpen && (
-                  <AlertModal
-                    handleSubmit={handleCardDelete}
-                    alertText="카드를 삭제하시겠습니까?"
-                    handleModalClose={handleDeleteModalToggle}
-                  />
-                )}
               </div>
+            )}
+            {isCardModifyModalOpen && (
+              <EditInputModal
+                initialvalue={data}
+                title="할 일 수정"
+                columnTitle={columnTitle}
+                buttonText="수정"
+                setCardList={setCardList}
+                handleModalClose={handleModifyModalToggle}
+              />
+            )}
+            {isCardDeleteModalOpen && (
+              <AlertModal
+                handleSubmit={handleCardDelete}
+                alertText="카드를 삭제하시겠습니까?"
+                handleModalClose={handleDeleteModalToggle}
+              />
             )}
             <button type="button" className={styles.icon} onClick={handleModalClose}>
               <Image src="/icons/icon-close-black.svg" alt="창닫기 아이콘" width={32} height={32} />

@@ -145,7 +145,7 @@ const DashboardEdit = ({
           {/* 구성원 */}
 
           <TablePagination
-            row={5}
+            row={4}
             data={memberList}
             setData={setMemberList}
             title="구성원"
@@ -155,7 +155,7 @@ const DashboardEdit = ({
           {/* 초대 내역 */}
 
           <TablePagination
-            row={5}
+            row={4}
             data={invitationList}
             setData={setInvitationList}
             invite

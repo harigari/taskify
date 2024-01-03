@@ -54,6 +54,9 @@
 }
 
 .cardCountWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0.4rem 0.6rem;
   width: fit-content;
   height: 2rem;

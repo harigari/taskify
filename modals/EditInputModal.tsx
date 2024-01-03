@@ -51,7 +51,6 @@ interface EditInputModalProp {
   buttonText: string;
   setCardList: Dispatch<SetStateAction<CardData[]>>;
   handleModalClose: () => void;
-  handleAllModalClose: () => void;
   initialvalue: CardData;
   columnTitle: string;
 }
@@ -70,7 +69,8 @@ const EditInputModal = ({
   const dashboardId = Number(router.query.boardId);
   const accessToken = getAccessTokenFromDocument("accessToken");
 
-  const [assigneeList, setAssigneeList] = useState<Member[]>();
+  const [assigneeList, setAssigneeList] = useState<Member[]>([]);
+  const [assignee, setAssignee] = useState<Member>();
 
   useEffect(() => {
     (async () => {
@@ -110,7 +110,7 @@ const EditInputModal = ({
 
   useEffect(() => {
     if (assigneeList) {
-      modalAssigneeDropdown.setValue(assigneeList.find((v) => v.userId === initialvalue.assignee.id));
+      setAssignee(assigneeList.find((v) => v.userId === initialvalue?.assignee?.id));
     }
   }, [assigneeList]);
 
@@ -121,15 +121,13 @@ const EditInputModal = ({
   const data = {
     columnId: findColumnId(columnList, modalColumnDropdown.value) as number,
     dashboardId,
-    assigneeUserId: modalAssigneeDropdown.value?.userId as number,
+    assigneeUserId: assignee?.userId!,
     title: modalTitle.input.value,
     description: modalExplain.input.value,
     dueDate: formatDateString(String(modalDate.dateTime.date), "KOREA", "yyyy-MM-dd HH:mm"),
     tags: [...tagList].reverse(),
     imageUrl: initialvalue.imageUrl,
   };
-
-  console.log(data.dueDate);
 
   const { pending, wrappedFunction: putData } = useApi("put");
 
@@ -141,7 +139,7 @@ const EditInputModal = ({
 
       if (cardUpdateRes?.status === 200) {
         handleModalClose();
-        router.push(`/dashboard/${initialvalue.dashboardId}`);
+        setCardList((prev) => prev.map((v) => (v.id === cardUpdateRes.data.id ? cardUpdateRes.data : v)));
       }
     }
 
@@ -153,8 +151,8 @@ const EditInputModal = ({
       const cardRes = await putData({ path: "card", id: initialvalue.id, data: dataWithImage, accessToken });
 
       if (cardRes?.status === 200) {
-        router.push(`/dashboard/${initialvalue.dashboardId}`);
         handleModalClose();
+        setCardList((prev) => prev.map((v) => (v.id === cardRes.data.id ? cardRes.data : v)));
       }
     }
   };
@@ -166,7 +164,9 @@ const EditInputModal = ({
           <div className={styles.modalTitle}>{title}</div>
           <div className={styles.dropdownContainer}>
             <Dropdown {...modalColumnDropdown}>상태</Dropdown>
-            <InputDropdown {...modalAssigneeDropdown}>담당자</InputDropdown>
+            <InputDropdown options={assigneeList} value={assignee} setValue={setAssignee}>
+              담당자
+            </InputDropdown>
           </div>
           <InputWrapper {...modalTitle.wrapper}>
             <Input {...modalTitle.input} />

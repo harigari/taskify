@@ -123,7 +123,11 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
                 };
 
                 if ("isOwner" in data && data.isOwner) {
-                  arr.push(<Image width={30} height={30} src="/icons/icon-crown.svg" alt="내가 만든 대시보드" />);
+                  arr.push(
+                    <div className={styles.crown}>
+                      <Image width={30} height={30} src="/icons/icon-crown.svg" alt="내가 만든 대시보드" />
+                    </div>
+                  );
                   continue;
                 }
                 arr.push(

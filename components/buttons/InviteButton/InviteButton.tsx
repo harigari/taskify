@@ -8,19 +8,23 @@ import InnerInviteButton from "@/components/Table/TablePagination/InnerInviteBut
 import HeaderButton from "@/components/Header/HeaderButton/HeaderButton";
 import headerButtonStyles from "@/components/Header/Header.module.css";
 import { Member, InvitationData } from "@/types/api.type";
+import { useRouter } from "next/router";
 
 type Usage = "header" | "edit_page";
 
 interface InviteButtonProps {
-  boardId: number;
+  boardId?: number;
   usage: Usage;
   className?: string;
-  setData: Dispatch<SetStateAction<(Member | InvitationData)[]>>;
+  setData?: Dispatch<SetStateAction<(Member | InvitationData)[]>> | undefined;
 }
-const InviteButton = ({ boardId, usage, className, setData }: InviteButtonProps) => {
+const InviteButton = ({ usage, className, setData }: InviteButtonProps) => {
   const inviteInput = useInputController(signinEmail);
 
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+
+  const router = useRouter();
+  const boardId = Number(router.query.boardId);
 
   const handleInviteModalToggle = () => {
     inviteInput.wrapper.setErrorText("");
@@ -48,7 +52,9 @@ const InviteButton = ({ boardId, usage, className, setData }: InviteButtonProps)
     if (res.status === 201) {
       handleInviteModalToggle();
       inviteInput.input.setValue("");
-      setData((prev) => [res.data, ...prev]);
+      if (setData) {
+        setData((prev) => [res.data, ...prev]);
+      }
     }
 
     if (res.status > 400 && res.message) {

@@ -70,7 +70,6 @@ const MultiInputModal = ({
     if (pending || !modalTitle.input.value || !modalExplain.textarea.value || !modalDate.dateTime.date) return;
 
     if (imageFile === null) {
-      console.log("또 혹시나");
       const cardRes = await postData({ path: "card", data, accessToken });
 
       if (cardRes?.status === 201) {

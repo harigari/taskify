@@ -21,12 +21,11 @@
 
 .grid__main::-webkit-scrollbar {
   display: block;
-  width: 1rem;
-  height: 1rem;
+  width: 0.8rem;
+  height: 0.8em;
 }
 
 .grid__main::-webkit-scrollbar-thumb {
-  width: 10%;
   height: 10%;
   background: var(--violet);
 

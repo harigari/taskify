@@ -63,9 +63,11 @@ const TablePagination = ({
     <article className={styles.container}>
       <div className={styles.title}>
         <h2 className={styles.title__text}>{title}</h2>
+
         {entirePageNum > 1 && (
           <div className={clsx(styles.pagecount, isAccept && styles.pagecount__mobile)}>
             <span className={styles.pagecount__text}>{`${pageCount} 페이지 중 ${entirePageNum}`}</span>
+
             <ArrowButton
               disabled={pageCount === 1}
               onClick={() => {
@@ -85,12 +87,13 @@ const TablePagination = ({
         )}
         {invite && <InviteButton setData={setData} boardId={boardId} usage="edit_page" />}
       </div>
+
       {data.length > 0 ? (
         <>
           {isOpen && (
             <>
               {search && <SearchInput setKeyword={setKeyword} />}
-              <TableIndex data={rowData} tableIndex={tableIndex} invite={invite} />
+              <TableIndex data={rowData} setData={setData} tableIndex={tableIndex} invite={invite} />
               <TableList data={rowData} setData={setData} tableIndex={tableIndex} />
             </>
           )}
