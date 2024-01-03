@@ -138,9 +138,31 @@ const EditInputModal = ({
 
       if (cardNoImageRes?.status === 200) {
         handleModalClose();
+
+        const editedCard = cardNoImageRes.data;
+        const newColumnId = editedCard.columnId;
+        const prevColumnId = initialvalue.columnId;
+
+        if (prevColumnId === newColumnId) {
+          setEntireList((prev) => ({
+            ...prev,
+            cards: {
+              ...prev.cards,
+              [newColumnId]: prev.cards[newColumnId].map((v) => (v.id === editedCard.id ? editedCard : v)),
+            },
+          }));
+          return;
+        }
+
         setEntireList((prev) => ({
           ...prev,
-          columns: { ...prev.columns, [cardNoImageRes.data.id]: cardNoImageRes.data },
+          cards: {
+            ...prev.cards,
+            [prevColumnId]: prev.cards[prevColumnId].filter((v) => v.id !== editedCard.id),
+            [newColumnId]:
+              (prev.cards[newColumnId].push(editedCard),
+              prev.cards[newColumnId].sort((a, b) => Number(new Date(a.createdAt)) - Number(new Date(b.createdAt)))),
+          },
         }));
       }
     }
@@ -154,9 +176,15 @@ const EditInputModal = ({
 
       if (cardWithImageRes?.status === 200) {
         handleModalClose();
+
+        const editedCard = cardWithImageRes.data;
+        const columnId = editedCard.columnId;
         setEntireList((prev) => ({
           ...prev,
-          columns: { ...prev.columns, [cardWithImageRes.data.id]: cardWithImageRes.data },
+          cards: {
+            ...prev.cards,
+            [columnId]: prev.cards[columnId].map((v) => (v.id === editedCard.id ? editedCard : v)),
+          },
         }));
       }
     }

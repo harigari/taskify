@@ -13,10 +13,11 @@ import ModalButton from "@/modals/components/ModalButton/ModalButton";
 import { CardData, ColumnData, EntireData } from "@/types/api.type";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import style from "./dashboard.module.css";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { useRouter } from "next/router";
+import useDragScroll from "@/hooks/useDragScroll";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -151,7 +152,6 @@ const Dashboard = ({
     [entireList]
   );
 
-  if (!mount) return;
   return (
     <>
       {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}

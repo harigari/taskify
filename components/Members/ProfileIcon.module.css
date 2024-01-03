@@ -3,7 +3,6 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  z-index: 1;
   width: 4rem;
   height: 4rem;
   color: var(--white);
