@@ -6,7 +6,7 @@
   border: 1px solid var(--gray30);
 
   width: 20rem;
-  height: 15.5rem;
+  height: 100%;
   border-radius: 0.8rem;
 }
 
@@ -34,7 +34,7 @@
 @media (max-width: 1200px) {
   .assignee_and_dueDate {
     width: 18rem;
-    height: 15.5rem;
+    height: 100%;
   }
 }
 @media (max-width: 767px) {
