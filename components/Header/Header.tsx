@@ -52,12 +52,13 @@ const Header = ({ dashboardList }: HeaderProps) => {
   return (
     <header className={styles.header}>
       <div className={styles.grid__title}>
-        {!!title || (
+        {title ? (
+          <h1 className={styles.boardname}>{title.length > 20 ? title.slice(0, 20) + "..." : title}</h1>
+        ) : (
           <h1 className={styles.welcome_message}>
             {WELCOME_MESSAGE[Math.floor(Math.random() * WELCOME_MESSAGE.length)]}
           </h1>
         )}
-        {!!title && <h1 className={styles.boardname}>{title.length > 20 ? title.slice(0, 20) + "..." : title}</h1>}
       </div>
       {isOwner && (
         <>
