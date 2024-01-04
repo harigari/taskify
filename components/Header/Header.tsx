@@ -20,7 +20,7 @@ const WELCOME_MESSAGE = [
 ];
 
 interface HeaderProps {
-  dashboardList: DashBoardData[];
+  dashboard?: DashBoardData;
 }
 
 const Header = () => {
@@ -32,9 +32,10 @@ const Header = () => {
   const dashboardList = useAtomValue(dashboardListAtom);
 
   const isOwner = memberList?.find((v) => v.userId === myData?.id)?.isOwner;
-  const title = dashboardList?.find((v) => v.id === Number(boardId))?.title;
+  const [title, setTitle] = useState(dashboard?.title);
 
   useEffect(() => {
+    setTitle(dashboard?.title);
     (async () => {
       const accessToken = getAccessTokenFromDocument("accessToken");
 
@@ -52,7 +53,7 @@ const Header = () => {
         }
       }
     })();
-  }, [dashboardList]);
+  }, [dashboard]);
 
   return (
     <header className={styles.header}>

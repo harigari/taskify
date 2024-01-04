@@ -10,6 +10,7 @@ import Head from "next/head";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
+  const boardId = Number(context.query.boardId);
 
   const { data: userData } = await sender.get({ path: "me", accessToken });
 

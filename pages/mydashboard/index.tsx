@@ -16,7 +16,7 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import styles from "./index.module.css";
 import { atom, useAtom } from "jotai";
 import { dashboardListAtom } from "@/atoms/atoms";
@@ -29,10 +29,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     data: { dashboards },
   } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
 
-  const {
-    data: { invitations },
-  } = await sender.get({ path: "invitations", size: 5, accessToken });
-
   if (!accessToken) {
     return {
       redirect: {
@@ -43,7 +39,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { accessToken, dashboards, invitations },
+    props: { accessToken, dashboards },
   };
 };
 
@@ -52,14 +48,12 @@ export default function Mydashboard({
   accessToken,
   dashboards,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
   if (!dashboardList.length) {
     setDashboardList(dashboards);
   }
-
   const handleModalToggle = () => {
     setIsOpen((prevValue) => !prevValue);
   };
@@ -106,14 +100,6 @@ export default function Mydashboard({
     }
   };
 
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
   return (
     <>
       <Head>
@@ -146,13 +132,7 @@ export default function Mydashboard({
                 </Button>
               ))}
             </article>
-            {/* <TablePagination
-              title="초대받은 대시보드"
-              row={5}
-              data={invitations}
-              tableIndex={{ 이름: "dashboard", 초대자: "inviter", "수락 여부": "acceptButton" }}
-              search
-            /> */}
+
             <TableScroll
               title="초대받은 대시보드"
               type="invitations"

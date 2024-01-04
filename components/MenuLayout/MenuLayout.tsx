@@ -20,7 +20,6 @@ const MenuLayout = ({ children }: Props) => {
       </div>
       <div className={styles.grid__header}>
         <Header />
-      </div>
       <div className={styles.grid__main} ref={dragRef}>
         {children}
       </div>

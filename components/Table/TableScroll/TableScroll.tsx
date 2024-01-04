@@ -86,7 +86,7 @@ const TableScroll = ({ title, type, tableIndex, invite = false, search = false }
             }
           })
         : data,
-    [data]
+    [data, keyword]
   );
 
   return (

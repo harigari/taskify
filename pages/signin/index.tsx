@@ -54,11 +54,6 @@ const Signin = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    for (const input of Object.values(inputRef.current)) {
-      if (!input) continue;
-      input.focus();
-      input.blur();
-    }
 
     const signData = {
       email: emailInput.value,
@@ -70,7 +65,14 @@ const Signin = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
 
     const errorMessage = signinRes.message;
     if (signinRes.status > 300 && errorMessage) {
-      emailWrapper.setErrorText(errorMessage);
+      errorMessage.includes("비밀번호")
+        ? passwordWrapper.setErrorText(errorMessage)
+        : emailWrapper.setErrorText(errorMessage);
+
+      for (const input of Object.values(inputRef.current)) {
+        if (!input) continue;
+        input.blur();
+      }
       return;
     }
 
@@ -87,13 +89,7 @@ const Signin = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
         <title>Taskify - 로그인</title>
       </Head>
       <div className={styles.container}>
-        <Image
-          priority
-          width={200}
-          height={279}
-          src="/images/logo-purple-vertical.png"
-          alt="이전 페이지로 돌아갑니다."
-        />
+        <Image priority width={200} height={279} src="/images/logo-purple-vertical.png" alt="이전 페이지로 돌아갑니다." />
         <p className={styles.title}>오늘도 만나서 반가워요!</p>
         <form className={styles.form} onSubmit={handleSubmit}>
           {inputs.map(([wrapper, input], index) => {

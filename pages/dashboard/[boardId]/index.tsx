@@ -24,16 +24,13 @@ import Head from "next/head";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
+  const boardId = Number(context.query["boardId"]);
 
-  const {
-    data: { dashboards },
-  } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
-
-  const boardId = context.query["boardId"];
+  const { data: dashboard } = await sender.get({ path: "dashboard", id: boardId, accessToken });
 
   const {
     data: { data: columnData },
-  } = await sender.get({ path: "columns", id: Number(boardId), accessToken });
+  } = await sender.get({ path: "columns", id: boardId, accessToken });
 
   const entireData: EntireData = {
     cards: {},
@@ -48,7 +45,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const {
     data: { members: assigneeList },
-  } = await sender.get({ path: "members", id: Number(boardId), accessToken });
+  } = await sender.get({ path: "members", id: boardId, accessToken });
 
   if (!accessToken) {
     return {
@@ -60,7 +57,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { accessToken, assigneeList, boardId, entireData, dashboards },
+    props: { accessToken, assigneeList, boardId, dashboard, entireData },
   };
 };
 
@@ -111,11 +108,9 @@ const Dashboard = ({
     }
   };
 
-  const [mount, setMount] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    setMount(true);
     //boardId 바뀔 때, 화면에 보이는 데이터 전환
     setEntireList(entireData);
   }, [router.query.boardId]);
@@ -158,6 +153,7 @@ const Dashboard = ({
     },
     [entireList]
   );
+
 
   if (!mount) return null;
 

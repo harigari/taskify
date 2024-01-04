@@ -22,9 +22,10 @@ import Head from "next/head";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
+  const boardId = Number(context.query["boardId"]);
 
   const boardId = context.params?.boardId;
-
+  
   if (!accessToken) {
     return {
       redirect: {
@@ -69,12 +70,13 @@ const DashboardEdit = ({
   const dashboardData = dashboardList.find((v) => v.id === Number(boardId));
 
   const [prevColor, setPrevColor] = useState(dashboardData?.color ?? "#760dde");
+  
   const [color, setColor] = useState<ColorType>(prevColor);
 
   const [memberList, setMemberList] = useState<(Member | InvitationData)[]>(members);
 
   const [invitationList, setInvitationList] = useState<(Member | InvitationData)[]>(invitations);
-  const [boardName, setBoardName] = useState(dashboardData?.title);
+  const [boardName, setBoardName] = useState(dashboard?.title);
 
   const [isOpenDashboardDeleteModal, setIsOpenDashboardDeleteModal] = useState(false);
   const { pending, wrappedFunction } = useApi("delete");
@@ -118,6 +120,7 @@ const DashboardEdit = ({
       setPrevColor(color);
       input.setValue("");
       setBoardName(res.data.title);
+      router.push(`/dashboard/${boardId}/edit`);
     }
   };
 
@@ -126,6 +129,7 @@ const DashboardEdit = ({
       <Head>
         <title>Taskify - 대시보드 수정</title>
       </Head>
+      
       <MenuLayout>
         <div className={styles.body}>
           <Link href={`/dashboard/${boardId}`} className={styles.back_button}>
