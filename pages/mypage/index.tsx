@@ -1,13 +1,12 @@
+import sender from "@/apis/sender";
+import RedoButton from "@/components/Buttons/RedoButton/RedoButton";
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
 import SettingPassword from "@/pages/mypage/components/SettingPassword";
 import SettingProfile from "@/pages/mypage/components/SettingProfile";
-import Image from "next/image";
-import styles from "./mypage.module.css";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
-import sender from "@/apis/sender";
-import Link from "next/link";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
+import styles from "./mypage.module.css";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -38,12 +37,7 @@ const MyPage = ({ dashboards, userData }: InferGetServerSidePropsType<typeof get
   return (
     <MenuLayout dashboardList={dashboards}>
       <main className={styles.main}>
-        <button onClick={() => router.back()} className={styles.backbutton}>
-          <div className={styles.backbutton__img}>
-            <Image fill src="/icons/icon-arrowleft.svg" alt="이전 페이지로 돌아가기" />
-          </div>
-          <span>돌아가기</span>
-        </button>
+        <RedoButton />
         <section className={styles.section}>
           <SettingProfile userData={userData} />
           <SettingPassword />

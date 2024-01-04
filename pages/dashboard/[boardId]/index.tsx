@@ -1,5 +1,6 @@
 import sender from "@/apis/sender";
 import Button from "@/components/Buttons/Button/Button";
+import RedoButton from "@/components/Buttons/RedoButton/RedoButton";
 import ChipPlus from "@/components/Chips/ChipPlus/ChipPlus";
 import { Column } from "@/components/Column/Column";
 import Input from "@/components/Input/Input";
@@ -10,14 +11,13 @@ import useInputController from "@/hooks/useInputController";
 import stylesFromSingle from "@/modals/Modal.module.css";
 import ModalWrapper from "@/modals/ModalWrapper";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
-import { CardData, ColumnData, EntireData } from "@/types/api.type";
+import { EntireData } from "@/types/api.type";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
-import style from "./dashboard.module.css";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
-import useDragScroll from "@/hooks/useDragScroll";
+import { FormEvent, useCallback, useEffect, useState } from "react";
+import style from "./dashboard.module.css";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -156,6 +156,9 @@ const Dashboard = ({
     <>
       {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}
       <MenuLayout dashboardList={dashboards}>
+        <div className={style.redobutton}>
+          <RedoButton />
+        </div>
         <div className={style.layoutContainer}>
           <div className={style.columnContainer}>
             <DragDropContext onDragEnd={onDragEnd}>
