@@ -7,7 +7,7 @@ import { InvitationData, Member } from "@/types/api.type";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import makeColorProfile from "@/utils/makeColorProfile";
 import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useState, FormEvent, RefObject } from "react";
+import { Dispatch, SetStateAction, useState, FormEvent, RefObject, Fragment } from "react";
 import styles from "./TableList.module.css";
 import Image from "next/image";
 import clsx from "clsx";
@@ -45,7 +45,7 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
             case v === "nickname":
               if (!(v in data)) continue;
               arr.push(
-                <div className={styles.row__item} key={v}>
+                <div className={styles.row__item} key={data.userId}>
                   <ProfileIcon member={data} tabIndex={-1} />
                   <p className={styles.row__item}>{data[v]}</p>
                 </div>
@@ -64,7 +64,7 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
             case v === "inviter":
               if (!(v in data)) continue;
               arr.push(
-                <p className={styles.row__item} key={v}>
+                <p className={styles.row__item} key={data.inviter.id}>
                   {isAccept && <span className={styles.row__text__mobile}>{key}</span>}
                   {data[v].nickname}
                 </p>
@@ -73,7 +73,7 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
             case v === "email":
               if ("inviter" in data) {
                 arr.push(
-                  <div className={styles.row__item} key={v}>
+                  <div className={styles.row__item} key={data.invitee.id}>
                     <p className={styles.row__item}>{data.invitee[v]}</p>
                   </div>
                 );
@@ -124,14 +124,14 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
 
                 if ("isOwner" in data && data.isOwner) {
                   arr.push(
-                    <div className={styles.crown}>
+                    <div className={styles.crown} key={data.profileImageUrl}>
                       <Image width={30} height={30} src="/icons/icon-crown.svg" alt="내가 만든 대시보드" />
                     </div>
                   );
                   continue;
                 }
                 arr.push(
-                  <>
+                  <Fragment key={data.id}>
                     <Button
                       disabled={"isOwner" in data ? data.isOwner : false}
                       onClick={handleMemberDeleteModalToggle}
@@ -148,7 +148,7 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
                         handleModalClose={handleMemberDeleteModalToggle}
                       />
                     )}
-                  </>
+                  </Fragment>
                 );
               }
               continue;
