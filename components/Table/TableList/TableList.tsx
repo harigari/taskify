@@ -13,6 +13,7 @@ import Image from "next/image";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { dashboardListAtom } from "@/atoms/atoms";
+import DeleteButton from "@/components/Table/TablePagination/DeleteButton";
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
 };
@@ -143,45 +144,8 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
               continue;
             case v === "deleteButton":
               {
-                // 구성원 삭제하기
-                const handleMemberDelete = async (e: FormEvent) => {
-                  e.preventDefault();
-                  const accessToken = getAccessTokenFromDocument("accessToken");
-                  const res = await deleteData({ path: "member", id: data.id, accessToken });
-                  if (res?.status === 204) {
-                    setData((prev) => prev.filter((member) => member.id !== data.id));
-                    handleMemberDeleteModalToggle();
-                  }
-                };
-
-                if ("isOwner" in data && data.isOwner) {
-                  arr.push(
-                    <div className={styles.crown} key={data.profileImageUrl}>
-                      <Image width={30} height={30} src="/icons/icon-crown.svg" alt="내가 만든 대시보드" />
-                    </div>
-                  );
-                  continue;
-                }
-                arr.push(
-                  <Fragment key={data.id}>
-                    <Button
-                      disabled={"isOwner" in data ? data.isOwner : false}
-                      onClick={handleMemberDeleteModalToggle}
-                      buttonType="delete"
-                      color="white"
-                      key={v}
-                    >
-                      삭제
-                    </Button>
-                    {isMemberDeleteModalOpen && (
-                      <AlertModal
-                        alertText="구성원을 삭제하시겠습니까?"
-                        handleSubmit={handleMemberDelete}
-                        handleModalClose={handleMemberDeleteModalToggle}
-                      />
-                    )}
-                  </Fragment>
-                );
+                if (!("nickname" in data)) return; // 구성원 삭제하기
+                arr.push(<DeleteButton data={data} setData={setData} />);
               }
               continue;
             case v === "cancelButton":

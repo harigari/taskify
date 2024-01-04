@@ -96,26 +96,26 @@ const TableScroll = ({ title, type, tableIndex, invite = false, search = false }
         {invite && <InviteButton setData={setData} boardId={Number(router.query.boardId)} usage="edit_page" />}
       </div>
 
-      {isOpen && (
-        <>
-          {search && <SearchInput setKeyword={setKeyword} />}
-          <TableIndex data={rowData} tableIndex={tableIndex} invite={invite} />
-          <TableList data={rowData} setData={setData} tableIndex={tableIndex} myRef={myRef} />
-        </>
-      )}
-      <HideButton isOpen={isOpen} setIsOpen={setIsOpen} />
-
-      {data.length === 0 ? (
-        <div className={styles.empty}>
-          <Image
-            width={100}
-            height={100}
-            priority
-            src="/icons/icon-noinvite-dashboard.svg"
-            alt="초대 내역이 없습니다."
-          />
-          <p>초대 내역이 없습니다.</p>
-        </div>
+      {isOpen ? (
+        data.length === 0 ? (
+          <div className={styles.empty}>
+            <Image
+              width={100}
+              height={100}
+              priority
+              src="/icons/icon-noinvite-dashboard.svg"
+              alt="초대 내역이 없습니다."
+            />
+            <p>초대 내역이 없습니다.</p>
+          </div>
+        ) : (
+          <>
+            {search && <SearchInput setKeyword={setKeyword} />}
+            <TableIndex data={rowData} tableIndex={tableIndex} invite={invite} />
+            <TableList data={rowData} setData={setData} tableIndex={tableIndex} myRef={myRef} />
+            <HideButton isOpen={isOpen} setIsOpen={setIsOpen} />
+          </>
+        )
       ) : null}
     </article>
   );
