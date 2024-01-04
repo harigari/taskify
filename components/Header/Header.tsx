@@ -9,6 +9,8 @@ import Members from "../Members/Members";
 import ProfileIcon from "../Members/ProfileIcon";
 import styles from "./Header.module.css";
 import HeaderButton from "./HeaderButton/HeaderButton";
+import { useAtom, useAtomValue } from "jotai";
+import { dashboardListAtom } from "@/atoms/atoms";
 
 const WELCOME_MESSAGE = [
   "우리가 하는 일은 큰 일이죠. 큰일나기 전까지는요.",
@@ -21,11 +23,14 @@ interface HeaderProps {
   dashboardList: DashBoardData[];
 }
 
-const Header = ({ dashboardList }: HeaderProps) => {
+const Header = () => {
   const router = useRouter();
   const boardId = router?.query.boardId;
   const [memberList, setMemberList] = useState<Member[]>([]);
   const [myData, setMyData] = useState<ExtendedUserType>();
+
+  const dashboardList = useAtomValue(dashboardListAtom);
+
   const isOwner = memberList?.find((v) => v.userId === myData?.id)?.isOwner;
   const title = dashboardList?.find((v) => v.id === Number(boardId))?.title;
 

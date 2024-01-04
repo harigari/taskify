@@ -15,55 +15,51 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "./Sidemenu.module.css";
-
-type Pagination = {
-  size: number;
-  page?: number;
-  cursorId?: number;
-};
+import { useAtom } from "jotai";
+import { dashboardListAtom } from "@/atoms/atoms";
 
 const Sidemenu = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState<ColorType>("#7ac555");
 
-  const [list, setList] = useState<DashBoardData[]>([]);
+  const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
 
-  const { isVisible, setIsVisible, myRef } = useInfScroll();
+  // const { isVisible, setIsVisible, myRef } = useInfScroll();
 
-  const [pagination, setPagination] = useState<Pagination>({
-    size: 100,
-  });
+  // const [pagination, setPagination] = useState<Pagination>({
+  //   size: 100,
+  // });
 
-  const getDashboardList = async () => {
-    const accessToken = getAccessTokenFromDocument("accessToken");
+  // const getDashboardList = async () => {
+  //   const accessToken = getAccessTokenFromDocument("accessToken");
 
-    const { size, cursorId } = pagination;
+  //   const { size, cursorId } = pagination;
 
-    let res;
-    if (cursorId) {
-      res = await sender.get({ path: "dashboards", method: "infiniteScroll", size, cursorId, accessToken });
-    } else {
-      res = await sender.get({ path: "dashboards", method: "infiniteScroll", size, accessToken });
-    }
-    if (res.status !== 200) return;
+  //   let res;
+  //   if (cursorId) {
+  //     res = await sender.get({ path: "dashboards", method: "infiniteScroll", size, cursorId, accessToken });
+  //   } else {
+  //     res = await sender.get({ path: "dashboards", method: "infiniteScroll", size, accessToken });
+  //   }
+  //   if (res.status !== 200) return;
 
-    const { dashboards, cursorId: cursor } = res.data;
+  //   const { dashboards, cursorId: cursor } = res.data;
 
-    setPagination((prev) => {
-      return { ...prev, cursorId: cursor };
-    });
+  //   setPagination((prev) => {
+  //     return { ...prev, cursorId: cursor };
+  //   });
 
-    setList((prev) => [...prev, ...dashboards]);
-    setIsVisible(false);
-  };
+  //   setList((prev) => [...prev, ...dashboards]);
+  //   setIsVisible(false);
+  // };
 
-  useEffect(() => {
-    if (pagination.cursorId === null) return;
-    if (isVisible) {
-      getDashboardList();
-    }
-  }, [isVisible]);
+  // useEffect(() => {
+  //   if (pagination.cursorId === null) return;
+  //   if (isVisible) {
+  //     getDashboardList();
+  //   }
+  // }, [isVisible]);
 
   const column = useInputController({
     inputConfig: {
@@ -125,7 +121,7 @@ const Sidemenu = () => {
         </button>
       </div>
       <ul className={styles.list}>
-        {list?.map((board) => (
+        {dashboardList?.map((board) => (
           <li key={board.id}>
             <Link
               href={`/dashboard/${board.id}`}
@@ -145,7 +141,7 @@ const Sidemenu = () => {
             </Link>
           </li>
         ))}
-        <p ref={myRef}></p>
+        {/* <p ref={myRef}></p> */}
       </ul>
 
       {isOpen && (

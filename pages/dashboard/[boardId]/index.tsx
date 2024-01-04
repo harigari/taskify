@@ -18,6 +18,8 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import style from "./dashboard.module.css";
+import { atom, useAtom } from "jotai";
+import { dashboardListAtom } from "@/atoms/atoms";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -57,19 +59,24 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { accessToken, assigneeList, boardId, dashboards, entireData },
+    props: { accessToken, assigneeList, boardId, entireData, dashboards },
   };
 };
 
 const Dashboard = ({
   accessToken,
   assigneeList,
-  boardId,
   dashboards,
+  boardId,
   entireData,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [entireList, setEntireList] = useState(entireData);
   const [isCreateModal, setIsCreateModal] = useState(false);
+
+  const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
+  if (!dashboardList.length) {
+    setDashboardList(dashboards);
+  }
 
   const handleCreateNewColumnModalToggle = () => {
     setIsCreateModal((prevValue) => !prevValue);
@@ -155,7 +162,7 @@ const Dashboard = ({
   return (
     <>
       {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}
-      <MenuLayout dashboardList={dashboards}>
+      <MenuLayout>
         <div className={style.redobutton}>
           <RedoButton />
         </div>

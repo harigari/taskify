@@ -16,13 +16,11 @@ import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import styles from "./DashboardEdit.module.css";
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
+import { useAtom } from "jotai";
+import { dashboardListAtom } from "@/atoms/atoms";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
-
-  const {
-    data: { dashboards },
-  } = await sender.get({ path: "dashboards", method: "infiniteScroll", size: 5, accessToken });
 
   const boardId = context.params?.boardId;
 
@@ -53,19 +51,22 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { dashboards, accessToken, members, invitations },
+    props: { accessToken, members, invitations },
   };
 };
 
 const DashboardEdit = ({
-  dashboards,
   members,
   accessToken,
   invitations,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
+
   const router = useRouter();
   const boardId = router?.query.boardId;
-  const dashboardData = dashboards.find((v) => v.id === Number(boardId));
+
+  const dashboardData = dashboardList.find((v) => v.id === Number(boardId));
+
   const [prevColor, setPrevColor] = useState(dashboardData?.color ?? "#760dde");
   const [color, setColor] = useState<ColorType>(prevColor);
 
@@ -106,6 +107,12 @@ const DashboardEdit = ({
     });
 
     if (res?.status === 200) {
+      setDashboardList((prevValue) => {
+        const index = prevValue.findIndex((dashboard) => dashboard.id === res.data.id);
+        prevValue.splice(index, 1, res.data);
+
+        return [...prevValue];
+      });
       setColor(color);
       setPrevColor(color);
       input.setValue("");
@@ -115,7 +122,7 @@ const DashboardEdit = ({
 
   return (
     <>
-      <MenuLayout dashboardList={dashboards}>
+      <MenuLayout>
         <div className={styles.body}>
           <Link href={`/dashboard/${boardId}`} className={styles.back_button}>
             <Image width={20} height={20} alt="왼쪽 화살표 아이콘 " src="/icons/icon-arrowleft.svg" />
