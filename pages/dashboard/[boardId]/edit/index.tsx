@@ -16,12 +16,13 @@ import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import styles from "./DashboardEdit.module.css";
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
+import { useAtom } from "jotai";
+import { dashboardListAtom } from "@/atoms/atoms";
+import Head from "next/head";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
   const boardId = Number(context.query["boardId"]);
-
-  const { data: dashboard } = await sender.get({ path: "dashboard", id: boardId, accessToken });
 
   if (!accessToken) {
     return {
@@ -31,6 +32,10 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       },
     };
   }
+
+  const {
+    data: { dashboards },
+  } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
 
   const {
     data: { members },
@@ -50,24 +55,38 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { dashboard, accessToken, members, invitations },
+    props: { accessToken, members, dashboards, invitations },
   };
 };
 
 const DashboardEdit = ({
-  dashboard,
   members,
   accessToken,
+  dashboards,
   invitations,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
+  if (!dashboardList.length) {
+    setDashboardList(dashboards);
+  }
+
   const router = useRouter();
   const boardId = router?.query.boardId;
-  const [prevColor, setPrevColor] = useState(dashboard?.color ?? "#760dde");
+
+  const dashboard = dashboardList.find((item) => {
+    return item.id === Number(boardId);
+  });
+
+  const dashboardData = dashboardList.find((v) => v.id === Number(boardId));
+
+  const [prevColor, setPrevColor] = useState(dashboardData?.color ?? "#760dde");
+
   const [color, setColor] = useState<ColorType>(prevColor);
 
   const [memberList, setMemberList] = useState<(Member | InvitationData)[]>(members);
 
   const [invitationList, setInvitationList] = useState<(Member | InvitationData)[]>(invitations);
+
   const [boardName, setBoardName] = useState(dashboard?.title);
 
   const [isOpenDashboardDeleteModal, setIsOpenDashboardDeleteModal] = useState(false);
@@ -102,6 +121,12 @@ const DashboardEdit = ({
     });
 
     if (res?.status === 200) {
+      setDashboardList((prevValue) => {
+        const index = prevValue.findIndex((dashboard) => dashboard.id === res.data.id);
+        prevValue.splice(index, 1, res.data);
+
+        return [...prevValue];
+      });
       setColor(color);
       setPrevColor(color);
       input.setValue("");
@@ -112,7 +137,11 @@ const DashboardEdit = ({
 
   return (
     <>
-      <MenuLayout dashboard={dashboard}>
+      <Head>
+        <title>Taskify - 대시보드 수정</title>
+      </Head>
+
+      <MenuLayout>
         <div className={styles.body}>
           <Link href={`/dashboard/${boardId}`} className={styles.back_button}>
             <Image width={20} height={20} alt="왼쪽 화살표 아이콘 " src="/icons/icon-arrowleft.svg" />

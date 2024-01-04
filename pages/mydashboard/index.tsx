@@ -10,7 +10,7 @@ import useInputController from "@/hooks/useInputController";
 import stylesFromSingle from "@/modals/Modal.module.css";
 import ModalWrapper from "@/modals/ModalWrapper";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
-import { ColorType } from "@/types/api.type";
+import { ColorType, DashBoardData } from "@/types/api.type";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import Image from "next/image";
@@ -18,6 +18,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import styles from "./index.module.css";
+import { atom, useAtom } from "jotai";
+import { dashboardListAtom } from "@/atoms/atoms";
+import Head from "next/head";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -48,6 +51,11 @@ export default function Mydashboard({
   const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
+
+  const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
+  if (!dashboardList.length) {
+    setDashboardList(dashboards);
+  }
   const handleModalToggle = () => {
     setIsOpen((prevValue) => !prevValue);
   };
@@ -77,6 +85,10 @@ export default function Mydashboard({
     const res = await postData({ path: "dashboard", accessToken, data });
 
     if (res?.status === 201) {
+      setDashboardList((prevValue) => {
+        return [res.data, ...prevValue];
+      });
+
       handleModalToggle();
       column.input.setValue("");
       setSelectedColor("#7ac555");
@@ -92,6 +104,9 @@ export default function Mydashboard({
 
   return (
     <>
+      <Head>
+        <title>Taskify - 나의 대시보드</title>
+      </Head>
       <MenuLayout>
         <main>
           <section className={styles.container}>
@@ -100,8 +115,8 @@ export default function Mydashboard({
                 <span>새로운 대시보드</span>
                 <Image width={22} height={22} src="/icons/icon-addbox-purple.png" alt="대시보드 추가하기" />
               </Button>
-              {dashboards.map((dashboard) => (
-                <Button key={dashboard.id} buttonType="dashboard" color="white">
+              {dashboardList.map((dashboard, i) => (
+                <Button key={i} buttonType="dashboard" color="white">
                   <Link href={`/dashboard/${dashboard.id}`}>
                     <div className={styles.dashboard__title}>
                       <div className={styles.dashboard__icon} style={{ backgroundColor: dashboard.color }} />

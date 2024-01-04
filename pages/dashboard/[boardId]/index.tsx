@@ -18,12 +18,13 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import style from "./dashboard.module.css";
+import { useAtom } from "jotai";
+import { dashboardListAtom } from "@/atoms/atoms";
+import Head from "next/head";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
   const boardId = Number(context.query["boardId"]);
-
-  const { data: dashboard } = await sender.get({ path: "dashboard", id: boardId, accessToken });
 
   const {
     data: { data: columnData },
@@ -34,6 +35,10 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     columns: {},
     columnOrder: [],
   };
+
+  const {
+    data: { dashboards },
+  } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
 
   for (const value of columnData) {
     entireData.columnOrder.push(value.id);
@@ -54,19 +59,24 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { accessToken, assigneeList, boardId, dashboard, entireData },
+    props: { accessToken, assigneeList, boardId, dashboards, entireData },
   };
 };
 
 const Dashboard = ({
   accessToken,
   assigneeList,
+  dashboards,
   boardId,
-  dashboard,
   entireData,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [entireList, setEntireList] = useState(entireData);
   const [isCreateModal, setIsCreateModal] = useState(false);
+
+  const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
+  if (!dashboardList.length) {
+    setDashboardList(dashboards);
+  }
 
   const handleCreateNewColumnModalToggle = () => {
     setIsCreateModal((prevValue) => !prevValue);
@@ -148,8 +158,10 @@ const Dashboard = ({
 
   return (
     <>
-      {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}
-      <MenuLayout dashboard={dashboard}>
+      <Head>
+        <title>{`Taskify - ${dashboardList?.find((v) => v.id === Number(boardId))?.title}`}</title>
+      </Head>
+      <MenuLayout>
         <div className={style.redobutton}>
           <RedoButton />
         </div>

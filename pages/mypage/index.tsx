@@ -6,12 +6,11 @@ import SettingProfile from "@/pages/mypage/components/SettingProfile";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import styles from "./mypage.module.css";
+import Head from "next/head";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
   const boardId = Number(context.query.boardId);
-
-  const { data: dashboard } = await sender.get({ path: "dashboard", id: boardId, accessToken });
 
   const { data: userData } = await sender.get({ path: "me", accessToken });
 
@@ -25,21 +24,26 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { dashboard, userData },
+    props: { userData },
   };
 };
 
-const MyPage = ({ dashboard, userData }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const MyPage = ({ userData }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <MenuLayout dashboard={dashboard}>
-      <main className={styles.main}>
-        <RedoButton />
-        <section className={styles.section}>
-          <SettingProfile userData={userData} />
-          <SettingPassword />
-        </section>
-      </main>
-    </MenuLayout>
+    <>
+      <Head>
+        <title>Taskify - 나의 정보 수정</title>
+      </Head>
+      <MenuLayout>
+        <main className={styles.main}>
+          <RedoButton />
+          <section className={styles.section}>
+            <SettingProfile userData={userData} />
+            <SettingPassword />
+          </section>
+        </main>
+      </MenuLayout>
+    </>
   );
 };
 

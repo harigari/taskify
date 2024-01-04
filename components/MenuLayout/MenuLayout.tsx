@@ -7,10 +7,9 @@ import useDragScroll from "@/hooks/useDragScroll";
 
 interface Props {
   children: ReactNode;
-  dashboard?: DashBoardData;
 }
 
-const MenuLayout = ({ dashboard, children }: Props) => {
+const MenuLayout = ({ children }: Props) => {
   const dragRef = useRef<HTMLDivElement>(null);
   useDragScroll(dragRef);
 
@@ -20,10 +19,10 @@ const MenuLayout = ({ dashboard, children }: Props) => {
         <Sidemenu />
       </div>
       <div className={styles.grid__header}>
-        <Header dashboard={dashboard} />
-      </div>
-      <div className={styles.grid__main} ref={dragRef}>
-        {children}
+        <Header />
+        <div className={styles.grid__main} ref={dragRef}>
+          {children}
+        </div>
       </div>
     </div>
   );

@@ -11,6 +11,8 @@ import { Dispatch, SetStateAction, useState, FormEvent, RefObject, Fragment } fr
 import styles from "./TableList.module.css";
 import Image from "next/image";
 import clsx from "clsx";
+import { useAtom } from "jotai";
+import { dashboardListAtom } from "@/atoms/atoms";
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
 };
@@ -34,6 +36,8 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
   const handleMemberDeleteModalToggle = () => {
     setIsMemberDeleteModalOpen((prev) => !prev);
   };
+
+  const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
 
   return (
     <ul className={clsx(styles.list, { [styles.list__mobile]: isAccept })}>
@@ -90,6 +94,34 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
                     data: { inviteAccepted: yesOrNo },
                     accessToken,
                   });
+
+                  if (res.status === 200 && res.data.inviteAccepted === true) {
+                    const { data } = await sender.get({ path: "dashboard", id: res.data.dashboard.id, accessToken });
+
+                    setDashboardList((prevList) => {
+                      prevList.push(data);
+                      prevList.sort((a, b) => {
+                        if (a.createdByMe !== b.createdByMe) {
+                          // createdByMe가 다른 경우 true를 우선하여 정렬
+                          return a.createdByMe ? -1 : 1;
+                        } else if (a.createdByMe && b.createdByMe) {
+                          // createdByMe가 둘 다 true인 경우 createdAt으로 최신 순으로 정렬
+                          return Number(b.createdAt) - Number(a.createdAt);
+                        } else if (!a.createdByMe && !b.createdByMe) {
+                          // createdByMe가 둘 다 false인 경우 userId로 정렬
+                          if (b.userId !== a.userId) {
+                            return b.userId - a.userId;
+                          } else {
+                            // userId가 같으면 createdAt으로 최신 순으로 정렬
+                            return Number(b.createdAt) - Number(a.createdAt);
+                          }
+                        }
+                        return 0;
+                      });
+
+                      return prevList;
+                    });
+                  }
 
                   if (res.status < 300) {
                     setData((prev) => prev.filter((v) => v.id !== data.id));
