@@ -19,12 +19,9 @@ import MenuLayout from "@/components/MenuLayout/MenuLayout";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
+  const boardId = Number(context.query["boardId"]);
 
-  const {
-    data: { dashboards },
-  } = await sender.get({ path: "dashboards", method: "infiniteScroll", size: 5, accessToken });
-
-  const boardId = context.params?.boardId;
+  const { data: dashboard } = await sender.get({ path: "dashboard", id: boardId, accessToken });
 
   if (!accessToken) {
     return {
@@ -53,26 +50,25 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { dashboards, accessToken, members, invitations },
+    props: { dashboard, accessToken, members, invitations },
   };
 };
 
 const DashboardEdit = ({
-  dashboards,
+  dashboard,
   members,
   accessToken,
   invitations,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const boardId = router?.query.boardId;
-  const dashboardData = dashboards.find((v) => v.id === Number(boardId));
-  const [prevColor, setPrevColor] = useState(dashboardData?.color ?? "#760dde");
+  const [prevColor, setPrevColor] = useState(dashboard?.color ?? "#760dde");
   const [color, setColor] = useState<ColorType>(prevColor);
 
   const [memberList, setMemberList] = useState<(Member | InvitationData)[]>(members);
 
   const [invitationList, setInvitationList] = useState<(Member | InvitationData)[]>(invitations);
-  const [boardName, setBoardName] = useState(dashboardData?.title);
+  const [boardName, setBoardName] = useState(dashboard?.title);
 
   const [isOpenDashboardDeleteModal, setIsOpenDashboardDeleteModal] = useState(false);
   const { pending, wrappedFunction } = useApi("delete");
@@ -115,7 +111,7 @@ const DashboardEdit = ({
 
   return (
     <>
-      <MenuLayout dashboardList={dashboards}>
+      <MenuLayout dashboard={dashboard}>
         <div className={styles.body}>
           <Link href={`/dashboard/${boardId}`} className={styles.back_button}>
             <Image width={20} height={20} alt="왼쪽 화살표 아이콘 " src="/icons/icon-arrowleft.svg" />

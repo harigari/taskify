@@ -69,7 +69,9 @@ const Signin = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
 
     const errorMessage = signinRes.message;
     if (signinRes.status > 300 && errorMessage) {
-      emailWrapper.setErrorText(errorMessage);
+      errorMessage.includes("비밀번호")
+        ? passwordWrapper.setErrorText(errorMessage)
+        : emailWrapper.setErrorText(errorMessage);
       return;
     }
 

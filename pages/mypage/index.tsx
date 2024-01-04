@@ -5,12 +5,11 @@ import SettingPassword from "@/pages/mypage/components/SettingPassword";
 import SettingProfile from "@/pages/mypage/components/SettingProfile";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import { useRouter } from "next/router";
 import styles from "./mypage.module.css";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
-  const boardId = Number(context.query["boardId"]);
+  const boardId = Number(context.query.boardId);
 
   const { data: dashboard } = await sender.get({ path: "dashboard", id: boardId, accessToken });
 
