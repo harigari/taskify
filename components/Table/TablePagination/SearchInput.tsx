@@ -30,7 +30,7 @@ const SearchInput = ({ setKeyword }: SearchInputProps) => {
       />
       {value && (
         <button className={styles.search__button} onClick={handleClick}>
-          <Image width={24} height={24} src="/icons/icon-close.svg" alt="검색어를 지웁니다." />
+          <Image width={24} height={24} src="/icons/icon-close-black.svg" alt="검색어를 지웁니다." />
         </button>
       )}
       <Image
