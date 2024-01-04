@@ -1,20 +1,14 @@
-import styles from "./Header.module.css";
-import HeaderButton from "./HeaderButton/HeaderButton";
-import Members from "../Members/Members";
-import ProfileIcon from "../Members/ProfileIcon";
-
 import sender from "@/apis/sender";
-import { DashBoardData } from "@/types/api.type";
-import { useRouter } from "next/router";
-import { useState, useEffect, useRef, FormEvent } from "react";
-import { Member, ExtendedUserType } from "@/types/api.type";
+import { DashBoardData, ExtendedUserType, Member } from "@/types/api.type";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import Link from "next/link";
-import useInputController from "@/hooks/useInputController";
-import SingleInputModal from "@/modals/SingleInputModal";
-import useApi from "@/hooks/useApi";
-import { signinEmail } from "@/constants/inputConfig";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import InviteButton from "../Buttons/InviteButton/InviteButton";
+import Members from "../Members/Members";
+import ProfileIcon from "../Members/ProfileIcon";
+import styles from "./Header.module.css";
+import HeaderButton from "./HeaderButton/HeaderButton";
 
 interface HeaderProps {
   dashboardList: DashBoardData[];

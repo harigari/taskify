@@ -184,7 +184,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
       </div>
 
       {isSettingModalOpen && (
-        <ModalWrapper size="md">
+        <ModalWrapper size="md" handleModalClose={handleSettingModalToggle}>
           <form className={stylesFromSingle.form} onSubmit={handleModifyColumn} noValidate>
             <div className={stylesFromSingle.modal}>
               <div className={stylesFromSingle.modalTitle}>컬럼 관리</div>
