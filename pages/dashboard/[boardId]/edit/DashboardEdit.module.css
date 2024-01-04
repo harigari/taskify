@@ -30,11 +30,11 @@
 }
 .name_edit_box {
   display: flex;
+  gap: 2rem;
   flex-direction: column;
   padding: 3.2rem 2.8rem;
   background-color: var(--white);
   border-radius: 0.8rem;
-  gap: 2rem;
 }
 
 .name_edit_header {
@@ -43,14 +43,14 @@
 }
 
 .dashboard_name {
-  color: var(--black1);
   font-size: 2rem;
   font-weight: 700;
+  color: var(--black1);
 }
 
 .dashboard_name:focus-within {
-  outline: none;
   border: 0.1rem solid var(--violet);
+  outline: none;
 }
 
 .edit_button {
@@ -79,12 +79,12 @@
 }
 @media (max-width: 767px) {
   .body {
-    min-width: 100% -28rem;
     padding: 2rem;
+    min-width: 100% -28rem;
   }
 
   .name_edit_header {
-    flex-direction: column;
     gap: 1rem;
+    flex-direction: column;
   }
 }

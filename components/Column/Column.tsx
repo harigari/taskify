@@ -1,34 +1,35 @@
+import sender from "@/apis/sender";
+import Card from "@/components/Card/Card";
+import useApi from "@/hooks/useApi";
+import useInfScroll from "@/hooks/useInfScroll";
+import useInputController from "@/hooks/useInputController";
+import AlertModal from "@/modals/AlertModal";
+import stylesFromSingle from "@/modals/Modal.module.css";
+import ModalWrapper from "@/modals/ModalWrapper";
+import MultiInputModal from "@/modals/MultiInputModal";
+import ModalButton from "@/modals/components/ModalButton/ModalButton";
+import { CardData, EntireData, Member } from "@/types/api.type";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import { Droppable } from "@hello-pangea/dnd";
+import clsx from "clsx";
+import Image from "next/image";
+import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react";
+import Button from "../Buttons/Button/Button";
 import ChipNum from "../Chips/ChipNum/ChipNum";
 import ChipPlus from "../Chips/ChipPlus/ChipPlus";
 import ChipTodo from "../Chips/ChipTodo/ChipTodo";
-import style from "./Column.module.css";
-import Card from "@/components/Card/Card";
-import stylesFromSingle from "@/modals/Modal.module.css";
-import Image from "next/image";
-import Button from "../Buttons/Button/Button";
-import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react";
-import MultiInputModal from "@/modals/MultiInputModal";
-import InputWrapper from "../Input/InputWrapper";
-import ModalWrapper from "@/modals/ModalWrapper";
-import clsx from "clsx";
 import Input from "../Input/Input";
-import useInputController from "@/hooks/useInputController";
-import AlertModal from "@/modals/AlertModal";
-import useApi from "@/hooks/useApi";
-import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
-import { CardData, ColumnData, Member } from "@/types/api.type";
-import ModalButton from "@/modals/components/ModalButton/ModalButton";
-import { useRouter } from "next/router";
-import useInfScroll from "@/hooks/useInfScroll";
-import sender from "@/apis/sender";
+import InputWrapper from "../Input/InputWrapper";
+import style from "./Column.module.css";
 
 interface ColumnProps {
   accessToken: string;
   title: string;
   dashboardId: number;
-  setColumnList: Dispatch<SetStateAction<ColumnData[]>>;
   assigneeList: Member[];
   columnId: number;
+  entireList: EntireData;
+  setEntireList: Dispatch<SetStateAction<EntireData>>;
 }
 
 type Pagination = {
@@ -43,7 +44,15 @@ type InfRes = {
   totalCount: number;
 };
 
-export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId, setColumnList }: ColumnProps) => {
+export const Column = ({
+  accessToken,
+  title,
+  dashboardId,
+  assigneeList,
+  columnId,
+  entireList,
+  setEntireList,
+}: ColumnProps) => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
@@ -63,9 +72,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
   });
 
   //  카드리스트 가져오기
-  const [cardList, setCardList] = useState<CardData[]>([]);
-
-  const getComments = async () => {
+  const getCards = async () => {
     const { id, size, cursorId } = pagination;
     let response;
     if (cursorId) {
@@ -81,7 +88,10 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
     setPagination((prevValue) => {
       return { ...prevValue, cursorId: cursor };
     });
-    setCardList((prevValue) => [...prevValue, ...cards]);
+    setEntireList((prev) => ({
+      ...prev,
+      cards: { ...prev.cards, [columnId]: [...(prev.cards[columnId] ?? []), ...cards] },
+    }));
     setIsVisible(false);
     setTotalCount(totalCount);
   };
@@ -89,7 +99,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
   useEffect(() => {
     if (pagination.cursorId === null) return;
     if (isVisible) {
-      getComments();
+      getCards();
     }
   }, [isVisible]);
 
@@ -122,19 +132,10 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
     });
 
     if (putRes?.status === 200) {
-      setColumnList((prevValue) => {
-        const newData = prevValue.map((column) => {
-          if (column.id !== columnId) return column;
-
-          const value = settingModal.input.value;
-
-          const changedColumn = { ...column, title: value };
-
-          return changedColumn;
-        });
-
-        return newData;
-      });
+      setEntireList((prev) => ({
+        ...prev,
+        columns: { ...prev.columns, [putRes.data.id]: putRes.data },
+      }));
       handleSettingModalToggle();
     }
   };
@@ -148,41 +149,51 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
     if (deleteRes?.status === 204) {
       handleSettingModalToggle();
       handleDeleteModalToggle();
-      setColumnList((prevValue) => {
-        const newValue = prevValue.filter((column) => column.id !== columnId);
-        return newValue;
-      });
+
+      setEntireList(
+        (prev) => (
+          delete prev.columns[columnId],
+          {
+            ...prev,
+            columnOrder: prev.columnOrder.filter((id) => id !== columnId),
+          }
+        )
+      );
     }
   };
 
   return (
     <>
-      <div className={style.totalContainer}>
-        {/* 칼럼 상단 */}
-        <div className={style.headerContainer}>
-          <div className={style.todoWrapper}>
-            <ChipTodo size="sm" color="white">
-              {title}
-            </ChipTodo>
-            <ChipNum>{totalCount}</ChipNum>
+      <Droppable droppableId={String(columnId)}>
+        {(provided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef} className={style.totalContainer}>
+            {/* 칼럼 상단 */}
+            <div className={style.headerContainer}>
+              <div className={style.todoWrapper}>
+                <ChipTodo size="sm" color="white">
+                  {title}
+                </ChipTodo>
+                <ChipNum>{totalCount}</ChipNum>
+              </div>
+              <button onClick={handleSettingModalToggle}>
+                <Image width={24} height={24} src="/icons/icon-settings.svg" alt="칼럼 설정하기" />
+              </button>
+            </div>
+
+            <div className={style.contentContainer}>
+              {/* 컴포넌트로 바꾸기 */}
+              <Button buttonType="plus_icon" color="white" onClick={handleCreateModalToggle}>
+                <ChipPlus size="lg" />
+              </Button>
+              {entireList.cards[columnId]?.map((card, index) => (
+                <Card key={card.id} columnTitle={title} data={card} index={index} setEntireList={setEntireList} />
+              ))}
+              <p ref={myRef}></p>
+            </div>
+            {provided.placeholder}
           </div>
-          <button onClick={handleSettingModalToggle}>
-            <Image width={24} height={24} src="/icons/icon-settings.svg" alt="칼럼 설정하기" />
-          </button>
-        </div>
-
-        <div className={style.contentContainer}>
-          {/* 컴포넌트로 바꾸기 */}
-          <Button buttonType="plus_icon" color="white" onClick={handleCreateModalToggle}>
-            <ChipPlus size="lg" />
-          </Button>
-          {cardList.map((card) => (
-            <Card key={card.id} columnTitle={title} data={card} setCardList={setCardList} />
-          ))}
-          <p ref={myRef}></p>
-        </div>
-      </div>
-
+        )}
+      </Droppable>
       {isSettingModalOpen && (
         <ModalWrapper size="md" handleModalClose={handleSettingModalToggle}>
           <form className={stylesFromSingle.form} onSubmit={handleModifyColumn} noValidate>
@@ -218,7 +229,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
       )}
       {isCreateModalOpen && (
         <MultiInputModal
-          setCardList={setCardList}
+          setEntireList={setEntireList}
           title="할 일 생성"
           buttonText="생성"
           columnId={columnId}

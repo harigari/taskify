@@ -3,7 +3,7 @@ import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
 import useDropdownController from "@/hooks/useDropdownController";
 import useInputController from "@/hooks/useInputController";
-import { CardData, ColumnData, Member } from "@/types/api.type";
+import { CardData, ColumnData, EntireData, Member } from "@/types/api.type";
 import formatDateString from "@/utils/formatDateString";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import Image from "next/image";
@@ -49,7 +49,7 @@ const findColumnId = (columnList: ColumnData[], value: string | undefined) => {
 interface EditInputModalProp {
   title: string;
   buttonText: string;
-  setCardList: Dispatch<SetStateAction<CardData[]>>;
+  setEntireList: Dispatch<SetStateAction<EntireData>>;
   handleModalClose: () => void;
   initialvalue: CardData;
   columnTitle: string;
@@ -59,7 +59,7 @@ const EditInputModal = ({
   title,
   buttonText,
   handleModalClose,
-  setCardList,
+  setEntireList,
   initialvalue,
   columnTitle,
 }: EditInputModalProp) => {
@@ -134,11 +134,36 @@ const EditInputModal = ({
     e.preventDefault();
 
     if (imageFile === null) {
-      const cardUpdateRes = await putData({ path: "card", id: initialvalue.id, data, accessToken });
+      const cardNoImageRes = await putData({ path: "card", id: initialvalue.id, data, accessToken });
 
-      if (cardUpdateRes?.status === 200) {
+      if (cardNoImageRes?.status === 200) {
         handleModalClose();
-        setCardList((prev) => prev.map((v) => (v.id === cardUpdateRes.data.id ? cardUpdateRes.data : v)));
+
+        const editedCard = cardNoImageRes.data;
+        const newColumnId = editedCard.columnId;
+        const prevColumnId = initialvalue.columnId;
+
+        if (prevColumnId === newColumnId) {
+          setEntireList((prev) => ({
+            ...prev,
+            cards: {
+              ...prev.cards,
+              [newColumnId]: prev.cards[newColumnId].map((v) => (v.id === editedCard.id ? editedCard : v)),
+            },
+          }));
+          return;
+        }
+
+        setEntireList((prev) => ({
+          ...prev,
+          cards: {
+            ...prev.cards,
+            [prevColumnId]: prev.cards[prevColumnId].filter((v) => v.id !== editedCard.id),
+            [newColumnId]:
+              (prev.cards[newColumnId].push(editedCard),
+              prev.cards[newColumnId].sort((a, b) => Number(new Date(a.createdAt)) - Number(new Date(b.createdAt)))),
+          },
+        }));
       }
     }
 
@@ -147,11 +172,20 @@ const EditInputModal = ({
 
       const dataWithImage = { ...data, imageUrl };
 
-      const cardRes = await putData({ path: "card", id: initialvalue.id, data: dataWithImage, accessToken });
+      const cardWithImageRes = await putData({ path: "card", id: initialvalue.id, data: dataWithImage, accessToken });
 
-      if (cardRes?.status === 200) {
+      if (cardWithImageRes?.status === 200) {
         handleModalClose();
-        setCardList((prev) => prev.map((v) => (v.id === cardRes.data.id ? cardRes.data : v)));
+
+        const editedCard = cardWithImageRes.data;
+        const columnId = editedCard.columnId;
+        setEntireList((prev) => ({
+          ...prev,
+          cards: {
+            ...prev.cards,
+            [columnId]: prev.cards[columnId].map((v) => (v.id === editedCard.id ? editedCard : v)),
+          },
+        }));
       }
     }
   };

@@ -10,7 +10,7 @@ import TagInput from "./components/ModalInput/TagInput";
 import ImageInput from "@/components/ImageInput/ImageInput";
 import InputDropdown from "./components/InputDropdown/InputDropdown";
 import useDropdownController from "@/hooks/useDropdownController";
-import { CardData, Member } from "@/types/api.type";
+import { CardData, EntireData, Member } from "@/types/api.type";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import useApi from "@/hooks/useApi";
 import formatDateString from "@/utils/formatDateString";
@@ -22,7 +22,7 @@ interface MultiInputModalProp {
   buttonText: string;
   columnId: number;
   dashboardId: number;
-  setCardList: Dispatch<SetStateAction<CardData[]>>;
+  setEntireList: Dispatch<SetStateAction<EntireData>>;
   assigneeList: Member[];
   handleModalClose: () => void;
 }
@@ -32,7 +32,7 @@ const MultiInputModal = ({
   buttonText,
   handleModalClose,
   columnId,
-  setCardList,
+  setEntireList,
   dashboardId,
   assigneeList,
 }: MultiInputModalProp) => {
@@ -73,7 +73,13 @@ const MultiInputModal = ({
       const cardRes = await postData({ path: "card", data, accessToken });
 
       if (cardRes?.status === 201) {
-        setCardList((prevValue) => [...prevValue, cardRes.data]);
+        setEntireList((prev) => ({
+          ...prev,
+          cards: {
+            ...prev.cards,
+            [columnId]: (prev.cards[columnId].push(cardRes.data), prev.cards[columnId]),
+          },
+        }));
         handleModalClose();
       }
     }
@@ -86,7 +92,10 @@ const MultiInputModal = ({
       const cardRes = await postData({ path: "card", data: dataWithImage, accessToken });
 
       if (cardRes?.status === 201) {
-        setCardList((prevValue) => [...prevValue, cardRes.data]);
+        setEntireList((prev) => ({
+          ...prev,
+          cards: { ...prev.cards, [columnId]: (prev.cards[columnId].push(cardRes.data), prev.cards[columnId]) },
+        }));
         handleModalClose();
       }
     }

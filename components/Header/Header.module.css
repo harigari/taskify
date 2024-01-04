@@ -12,8 +12,9 @@
   font-size: 1.6rem;
 }
 
-.boardname {
-  padding-left: 2rem;
+.boardname,
+.welcome_message {
+  padding-left: 3rem;
   font-size: 2rem;
   font-weight: 600;
   white-space: nowrap;
@@ -57,8 +58,9 @@
     width: calc(100vw - 16rem);
   }
 
-  .boardname {
-    display: none;
+  .welcome_message {
+    margin-left: 2rem;
+    font-size: 1.8rem;
   }
 }
 
@@ -67,6 +69,11 @@
     gap: 0.8rem;
     padding-right: 0;
     width: calc(100vw - 7.2rem);
+  }
+
+  .welcome_message {
+    margin-left: 0;
+    font-size: 1.6rem;
   }
 
   .profile__name {
