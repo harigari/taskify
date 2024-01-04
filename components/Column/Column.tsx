@@ -56,6 +56,11 @@ export const Column = ({
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
+
+  useEffect(() => {
+    setTotalCount(entireList.cards[columnId]?.length);
+  }, [entireList]);
+
   const [isColumnDeleteModalOpen, setIsColumnDeleteModalOpen] = useState(false);
   const settingModal = useInputController({
     inputConfig: { id: "settingModal", initialvalue: title },
