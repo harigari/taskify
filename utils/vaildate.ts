@@ -15,7 +15,7 @@ const TEXT = {
     passwordCheck: "확인할 비밀번호를 입력해주세요.",
     nickname: "닉네임을 입력해주세요.",
   },
-  repete: "이미 사용중인 이메일입니다.",
+  repeat: "이미 사용중인 이메일입니다.",
   reg: {
     email: "올바른 이메일 주소가 아닙니다.",
     password: "비밀번호는 영문, 숫자 조합 8자 이상 입력해주세요.",
@@ -41,6 +41,7 @@ export const isReg: ValidateFunc = (obj) => {
 isReg.type = "validate";
 
 let temp = "";
+
 export const isSamePassword: ValidateFunc = (obj: Obj) => {
   if (obj.name === "password") {
     temp = obj.value;

@@ -7,7 +7,7 @@ import formatDateString from "@/utils/formatDateString";
 import { Dispatch, SetStateAction, useState } from "react";
 import TaskCardModal from "@/modals/TaskCardModal";
 import { Draggable } from "@hello-pangea/dnd";
-
+import clsx from "clsx";
 interface CardProps {
   data: CardData;
   index: number;
@@ -18,6 +18,9 @@ interface CardProps {
 const Card = ({ data, index, columnTitle, setEntireList }: CardProps) => {
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const { slicedTagList, etc } = tagSlicer(data.tags);
+
+  const tagContainerStyle = clsx(slicedTagList.length !== 0 ? styles.cardTagContainer : styles.none_display);
+  const tagWrapperStyle = clsx(slicedTagList.length !== 0 ? styles.cardTagsWrapper : styles.none_display);
 
   const handleCardModalToggle = () => {
     setIsCardModalOpen((prevValue) => !prevValue);
@@ -46,8 +49,8 @@ const Card = ({ data, index, columnTitle, setEntireList }: CardProps) => {
               <span className={styles.cardTitleWrapper}>{data.title}</span>
               <div className={styles.allContentContainer}>
                 {/* 카드 태그들 */}
-                <div className={styles.cardTagContainer}>
-                  <div className={styles.cardTagsWrapper}>
+                <div className={tagContainerStyle}>
+                  <div className={tagWrapperStyle}>
                     {slicedTagList.map((tag: string) => (
                       <ChipTag size="sm" key={tag}>
                         {tag}
