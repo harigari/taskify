@@ -120,6 +120,7 @@ const Signup = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
         이미 가입하셨나요? <Link href="/signin">로그인하기</Link>
       </p>
     </div>
+    </>
   );
 };
 
