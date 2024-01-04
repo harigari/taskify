@@ -1,27 +1,26 @@
+import sender from "@/apis/sender";
+import Card from "@/components/Card/Card";
+import useApi from "@/hooks/useApi";
+import useInfScroll from "@/hooks/useInfScroll";
+import useInputController from "@/hooks/useInputController";
+import AlertModal from "@/modals/AlertModal";
+import stylesFromSingle from "@/modals/Modal.module.css";
+import ModalWrapper from "@/modals/ModalWrapper";
+import MultiInputModal from "@/modals/MultiInputModal";
+import ModalButton from "@/modals/components/ModalButton/ModalButton";
+import { CardData, EntireData, Member } from "@/types/api.type";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import { Droppable } from "@hello-pangea/dnd";
+import clsx from "clsx";
+import Image from "next/image";
+import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react";
+import Button from "../Buttons/Button/Button";
 import ChipNum from "../Chips/ChipNum/ChipNum";
 import ChipPlus from "../Chips/ChipPlus/ChipPlus";
 import ChipTodo from "../Chips/ChipTodo/ChipTodo";
-import style from "./Column.module.css";
-import Card from "@/components/Card/Card";
-import stylesFromSingle from "@/modals/Modal.module.css";
-import Image from "next/image";
-import Button from "../Buttons/Button/Button";
-import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react";
-import MultiInputModal from "@/modals/MultiInputModal";
-import InputWrapper from "../Input/InputWrapper";
-import ModalWrapper from "@/modals/ModalWrapper";
-import clsx from "clsx";
 import Input from "../Input/Input";
-import useInputController from "@/hooks/useInputController";
-import AlertModal from "@/modals/AlertModal";
-import useApi from "@/hooks/useApi";
-import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
-import { CardData, ColumnData, EntireData, Member } from "@/types/api.type";
-import ModalButton from "@/modals/components/ModalButton/ModalButton";
-import { useRouter } from "next/router";
-import useInfScroll from "@/hooks/useInfScroll";
-import sender from "@/apis/sender";
-import { Droppable } from "@hello-pangea/dnd";
+import InputWrapper from "../Input/InputWrapper";
+import style from "./Column.module.css";
 
 interface ColumnProps {
   accessToken: string;
@@ -73,7 +72,7 @@ export const Column = ({
   });
 
   //  카드리스트 가져오기
-  const getComments = async () => {
+  const getCards = async () => {
     const { id, size, cursorId } = pagination;
     let response;
     if (cursorId) {
@@ -100,7 +99,7 @@ export const Column = ({
   useEffect(() => {
     if (pagination.cursorId === null) return;
     if (isVisible) {
-      getComments();
+      getCards();
     }
   }, [isVisible]);
 

@@ -57,13 +57,12 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { accessToken, columnData, assigneeList, boardId, dashboards, entireData },
+    props: { accessToken, assigneeList, boardId, dashboards, entireData },
   };
 };
 
 const Dashboard = ({
   accessToken,
-  columnData,
   assigneeList,
   boardId,
   dashboards,
@@ -152,6 +151,7 @@ const Dashboard = ({
     [entireList]
   );
 
+  if (!mount) return null;
   return (
     <>
       {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}
@@ -195,7 +195,6 @@ const Dashboard = ({
           <form className={stylesFromSingle.form} onSubmit={handleSubmit} noValidate>
             <div className={stylesFromSingle.modal}>
               <div className={stylesFromSingle.modalTitle}>새 컬럼 생성</div>
-
               <InputWrapper {...createModal.wrapper}>
                 <Input {...createModal.input} />
               </InputWrapper>

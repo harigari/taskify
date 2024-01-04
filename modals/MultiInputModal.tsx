@@ -73,10 +73,12 @@ const MultiInputModal = ({
       const cardRes = await postData({ path: "card", data, accessToken });
 
       if (cardRes?.status === 201) {
-        // setCardList((prevValue) => [...prevValue, cardRes.data]);
         setEntireList((prev) => ({
           ...prev,
-          cards: { ...prev.cards, [columnId]: prev.cards[columnId].splice(cardRes.data.id, 1, cardRes.data) },
+          cards: {
+            ...prev.cards,
+            [columnId]: (prev.cards[columnId].push(cardRes.data), prev.cards[columnId]),
+          },
         }));
         handleModalClose();
       }
@@ -90,10 +92,9 @@ const MultiInputModal = ({
       const cardRes = await postData({ path: "card", data: dataWithImage, accessToken });
 
       if (cardRes?.status === 201) {
-        // setCardList((prevValue) => [...prevValue, cardRes.data]);
         setEntireList((prev) => ({
           ...prev,
-          cards: { ...prev.cards, [columnId]: prev.cards[columnId].splice(cardRes.data.id, 1, cardRes.data) },
+          cards: { ...prev.cards, [columnId]: (prev.cards[columnId].push(cardRes.data), prev.cards[columnId]) },
         }));
         handleModalClose();
       }
