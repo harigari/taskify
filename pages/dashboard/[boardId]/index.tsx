@@ -4,7 +4,6 @@ import ChipPlus from "@/components/Chips/ChipPlus/ChipPlus";
 import { Column } from "@/components/Column/Column";
 import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
-import MenuLayout from "@/components/menulayout/MenuLayout";
 import useApi from "@/hooks/useApi";
 import useInputController from "@/hooks/useInputController";
 import stylesFromSingle from "@/modals/Modal.module.css";
@@ -15,6 +14,7 @@ import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { FormEvent, useEffect, useState } from "react";
 import style from "./dashboard.module.css";
+import MenuLayout from "@/components/MenuLayout/MenuLayout";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
