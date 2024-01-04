@@ -106,6 +106,7 @@ const DashboardEdit = ({
       setPrevColor(color);
       input.setValue("");
       setBoardName(res.data.title);
+      router.push(`/dashboard/${boardId}/edit`);
     }
   };
 
