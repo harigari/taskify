@@ -100,11 +100,9 @@ const Dashboard = ({
     }
   };
 
-  const [mount, setMount] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    setMount(true);
     //boardId 바뀔 때, 화면에 보이는 데이터 전환
     setEntireList(entireData);
   }, [router.query.boardId]);
@@ -148,7 +146,6 @@ const Dashboard = ({
     [entireList]
   );
 
-  if (!mount) return null;
   return (
     <>
       {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}

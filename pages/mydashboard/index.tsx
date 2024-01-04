@@ -16,7 +16,7 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import styles from "./index.module.css";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
@@ -95,17 +95,9 @@ export default function Mydashboard({
     }
   };
 
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
   return (
     <>
-      <MenuLayout dashboardList={dashboards}>
+      <MenuLayout dashboard={dashboards[0]}>
         <main>
           <section className={styles.container}>
             <article className={styles.dashboard}>
@@ -132,13 +124,6 @@ export default function Mydashboard({
                 </Button>
               ))}
             </article>
-            {/* <TablePagination
-              title="초대받은 대시보드"
-              row={5}
-              data={invitations}
-              tableIndex={{ 이름: "dashboard", 초대자: "inviter", "수락 여부": "acceptButton" }}
-              search
-            /> */}
             <TableScroll
               title="초대받은 대시보드"
               type="invitations"
