@@ -18,16 +18,16 @@ const WELCOME_MESSAGE = [
 ];
 
 interface HeaderProps {
-  dashboardList: DashBoardData[];
+  dashboard: DashBoardData;
 }
 
-const Header = ({ dashboardList }: HeaderProps) => {
+const Header = ({ dashboard }: HeaderProps) => {
   const router = useRouter();
   const boardId = router?.query.boardId;
   const [memberList, setMemberList] = useState<Member[]>([]);
   const [myData, setMyData] = useState<ExtendedUserType>();
   const isOwner = memberList?.find((v) => v.userId === myData?.id)?.isOwner;
-  const title = dashboardList?.find((v) => v.id === Number(boardId))?.title;
+  const title = dashboard?.title;
 
   useEffect(() => {
     (async () => {
@@ -47,7 +47,7 @@ const Header = ({ dashboardList }: HeaderProps) => {
         }
       }
     })();
-  }, [dashboardList]);
+  }, [dashboard]);
 
   return (
     <header className={styles.header}>

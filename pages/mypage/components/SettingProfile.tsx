@@ -62,6 +62,7 @@ const SettingProfile = ({ userData }: ProfileProps) => {
       if (res?.status === 200) {
         setPrevNickname(input.value);
         handleModalToggle();
+        router.push("/mypage");
       }
     }
 
@@ -76,6 +77,7 @@ const SettingProfile = ({ userData }: ProfileProps) => {
         setPreview(profileImageUrl);
         setPrevNickname(input.value);
         handleModalToggle();
+        router.push("/mypage");
       }
     }
   };

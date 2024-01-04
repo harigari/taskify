@@ -10,10 +10,9 @@ import styles from "./mypage.module.css";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
+  const boardId = Number(context.query["boardId"]);
 
-  const {
-    data: { dashboards },
-  } = await sender.get({ path: "dashboards", method: "pagination", accessToken });
+  const { data: dashboard } = await sender.get({ path: "dashboard", id: boardId, accessToken });
 
   const { data: userData } = await sender.get({ path: "me", accessToken });
 
@@ -27,15 +26,13 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { dashboards, userData },
+    props: { dashboard, userData },
   };
 };
 
-const MyPage = ({ dashboards, userData }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const router = useRouter();
-
+const MyPage = ({ dashboard, userData }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <MenuLayout dashboardList={dashboards}>
+    <MenuLayout dashboard={dashboard}>
       <main className={styles.main}>
         <RedoButton />
         <section className={styles.section}>

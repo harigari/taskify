@@ -21,16 +21,13 @@ import style from "./dashboard.module.css";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
+  const boardId = Number(context.query["boardId"]);
 
-  const {
-    data: { dashboards },
-  } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
-
-  const boardId = context.query["boardId"];
+  const { data: dashboard } = await sender.get({ path: "dashboard", id: boardId, accessToken });
 
   const {
     data: { data: columnData },
-  } = await sender.get({ path: "columns", id: Number(boardId), accessToken });
+  } = await sender.get({ path: "columns", id: boardId, accessToken });
 
   const entireData: EntireData = {
     cards: {},
@@ -45,7 +42,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const {
     data: { members: assigneeList },
-  } = await sender.get({ path: "members", id: Number(boardId), accessToken });
+  } = await sender.get({ path: "members", id: boardId, accessToken });
 
   if (!accessToken) {
     return {
@@ -57,7 +54,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { accessToken, assigneeList, boardId, dashboards, entireData },
+    props: { accessToken, assigneeList, boardId, dashboard, entireData },
   };
 };
 
@@ -65,7 +62,7 @@ const Dashboard = ({
   accessToken,
   assigneeList,
   boardId,
-  dashboards,
+  dashboard,
   entireData,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [entireList, setEntireList] = useState(entireData);
@@ -155,7 +152,7 @@ const Dashboard = ({
   return (
     <>
       {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}
-      <MenuLayout dashboardList={dashboards}>
+      <MenuLayout dashboard={dashboard}>
         <div className={style.redobutton}>
           <RedoButton />
         </div>
