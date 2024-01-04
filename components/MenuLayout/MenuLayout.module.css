@@ -22,7 +22,7 @@
 .grid__main::-webkit-scrollbar {
   display: block;
   width: 0.8rem;
-  height: 0.8em;
+  height: 0.8rem;
 }
 
 .grid__main::-webkit-scrollbar-thumb {

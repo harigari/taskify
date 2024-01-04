@@ -18,7 +18,7 @@ const WELCOME_MESSAGE = [
 ];
 
 interface HeaderProps {
-  dashboard: DashBoardData;
+  dashboard?: DashBoardData;
 }
 
 const Header = ({ dashboard }: HeaderProps) => {
@@ -27,9 +27,10 @@ const Header = ({ dashboard }: HeaderProps) => {
   const [memberList, setMemberList] = useState<Member[]>([]);
   const [myData, setMyData] = useState<ExtendedUserType>();
   const isOwner = memberList?.find((v) => v.userId === myData?.id)?.isOwner;
-  const title = dashboard?.title;
+  const [title, setTitle] = useState(dashboard?.title);
 
   useEffect(() => {
+    setTitle(dashboard?.title);
     (async () => {
       const accessToken = getAccessTokenFromDocument("accessToken");
 

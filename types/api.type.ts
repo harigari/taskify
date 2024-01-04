@@ -236,7 +236,10 @@ type Return_get_dashboardInvitations = InvitationListData;
 
 type Return_get_dashboard = DashBoardData;
 
-type Return_get_dashboards = DashBoardListData;
+type Return_get_dashboards = DashBoardListData & {
+  cursorId: number;
+  totalCount: number;
+};
 
 type Req_post_dashboard = {
   title: string;

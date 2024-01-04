@@ -26,10 +26,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     data: { dashboards },
   } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
 
-  const {
-    data: { invitations },
-  } = await sender.get({ path: "invitations", size: 5, accessToken });
-
   if (!accessToken) {
     return {
       redirect: {
@@ -40,7 +36,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { accessToken, dashboards, invitations },
+    props: { accessToken, dashboards },
   };
 };
 
@@ -48,11 +44,10 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 export default function Mydashboard({
   accessToken,
   dashboards,
-  invitations,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
+  const router = useRouter();
   const handleModalToggle = () => {
     setIsOpen((prevValue) => !prevValue);
   };
@@ -97,7 +92,7 @@ export default function Mydashboard({
 
   return (
     <>
-      <MenuLayout dashboard={dashboards[0]}>
+      <MenuLayout>
         <main>
           <section className={styles.container}>
             <article className={styles.dashboard}>
@@ -124,6 +119,7 @@ export default function Mydashboard({
                 </Button>
               ))}
             </article>
+
             <TableScroll
               title="초대받은 대시보드"
               type="invitations"

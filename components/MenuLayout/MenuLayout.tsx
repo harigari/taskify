@@ -7,7 +7,7 @@ import useDragScroll from "@/hooks/useDragScroll";
 
 interface Props {
   children: ReactNode;
-  dashboard: DashBoardData;
+  dashboard?: DashBoardData;
 }
 
 const MenuLayout = ({ dashboard, children }: Props) => {
