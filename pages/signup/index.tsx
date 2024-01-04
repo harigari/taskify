@@ -74,8 +74,8 @@ const Signup = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
     const res = await sender.post({ path: "signup", data: signupData });
     if (!res) return;
 
-    if (res.status === 409 && "message" in res.data) {
-      emailWrapper.setErrorText(res.data.message as string);
+    if (res.status === 409 && res.message) {
+      emailWrapper.setErrorText(res.message);
       return;
     }
     if (res.status > 201) return;
@@ -97,7 +97,15 @@ const Signup = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
 
   return (
     <div className={styles.container}>
-      <Image priority width={200} height={279} src="/images/logo-purple-vertical.png" alt="이전 페이지로 돌아갑니다." />
+      <Link href="/">
+        <Image
+          priority
+          width={200}
+          height={279}
+          src="/images/logo-purple-vertical.png"
+          alt="이전 페이지로 돌아갑니다."
+        />
+      </Link>
       <p className={styles.title}>첫 방문을 환영합니다!</p>
       <form className={styles.form} onSubmit={handleSubmit}>
         {inputs.map(([wrapper, input], index) => {

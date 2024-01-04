@@ -53,11 +53,6 @@ const Signin = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    for (const input of Object.values(inputRef.current)) {
-      if (!input) continue;
-      input.focus();
-      input.blur();
-    }
 
     const signData = {
       email: emailInput.value,
@@ -72,6 +67,11 @@ const Signin = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
       errorMessage.includes("비밀번호")
         ? passwordWrapper.setErrorText(errorMessage)
         : emailWrapper.setErrorText(errorMessage);
+
+      for (const input of Object.values(inputRef.current)) {
+        if (!input) continue;
+        input.blur();
+      }
       return;
     }
 
@@ -84,7 +84,15 @@ const Signin = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
 
   return (
     <div className={styles.container}>
-      <Image priority width={200} height={279} src="/images/logo-purple-vertical.png" alt="이전 페이지로 돌아갑니다." />
+      <Link href="/">
+        <Image
+          priority
+          width={200}
+          height={279}
+          src="/images/logo-purple-vertical.png"
+          alt="이전 페이지로 돌아갑니다."
+        />
+      </Link>
       <p className={styles.title}>오늘도 만나서 반가워요!</p>
       <form className={styles.form} onSubmit={handleSubmit}>
         {inputs.map(([wrapper, input], index) => {
