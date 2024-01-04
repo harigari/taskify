@@ -10,6 +10,10 @@
   border-radius: 0.6rem;
 }
 
+.none_display {
+  display: none;
+}
+
 .imageContent {
   border-radius: 0.6rem;
 }
@@ -99,7 +103,6 @@
   }
 
   .imageWrapper {
-    width: 100%;
     height: auto;
   }
 

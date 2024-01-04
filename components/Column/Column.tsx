@@ -186,7 +186,6 @@ export const Column = ({
             </div>
 
             <div className={style.contentContainer}>
-              {/* 컴포넌트로 바꾸기 */}
               <Button buttonType="plus_icon" color="white" onClick={handleCreateModalToggle}>
                 <ChipPlus size="lg" />
               </Button>
