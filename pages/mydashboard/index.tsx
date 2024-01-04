@@ -50,6 +50,8 @@ export default function Mydashboard({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const router = useRouter();
+
   const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
   if (!dashboardList.length) {
     setDashboardList(dashboards);

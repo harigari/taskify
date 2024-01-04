@@ -30,6 +30,9 @@ const Header = () => {
   const [myData, setMyData] = useState<ExtendedUserType>();
 
   const dashboardList = useAtomValue(dashboardListAtom);
+  const dashboard = dashboardList.find((item) => {
+    return item.id === Number(boardId);
+  });
 
   const isOwner = memberList?.find((v) => v.userId === myData?.id)?.isOwner;
   const [title, setTitle] = useState(dashboard?.title);

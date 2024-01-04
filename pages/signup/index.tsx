@@ -102,24 +102,30 @@ const Signup = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
         <title>Taskify - 회원가입</title>
       </Head>
       <div className={styles.container}>
-      <Image priority width={200} height={279} src="/images/logo-purple-vertical.png" alt="이전 페이지로 돌아갑니다." />
-      <p className={styles.title}>첫 방문을 환영합니다!</p>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        {inputs.map(([wrapper, input], index) => {
-          return (
-            <InputWrapper {...wrapper} key={index}>
-              <Input inputRef={inputRef} {...input} />
-            </InputWrapper>
-          );
-        })}
-        <Button buttonType="login" color="violet" disabled={isError()}>
-          가입하기
-        </Button>
-      </form>
-      <p className={styles.link__text}>
-        이미 가입하셨나요? <Link href="/signin">로그인하기</Link>
-      </p>
-    </div>
+        <Image
+          priority
+          width={200}
+          height={279}
+          src="/images/logo-purple-vertical.png"
+          alt="이전 페이지로 돌아갑니다."
+        />
+        <p className={styles.title}>첫 방문을 환영합니다!</p>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          {inputs.map(([wrapper, input], index) => {
+            return (
+              <InputWrapper {...wrapper} key={index}>
+                <Input inputRef={inputRef} {...input} />
+              </InputWrapper>
+            );
+          })}
+          <Button buttonType="login" color="violet" disabled={isError()}>
+            가입하기
+          </Button>
+        </form>
+        <p className={styles.link__text}>
+          이미 가입하셨나요? <Link href="/signin">로그인하기</Link>
+        </p>
+      </div>
     </>
   );
 };

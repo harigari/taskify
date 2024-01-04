@@ -24,8 +24,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const accessToken = getAccessTokenFromCookie(context) as string;
   const boardId = Number(context.query["boardId"]);
 
-  const boardId = context.params?.boardId;
-  
   if (!accessToken) {
     return {
       redirect: {
@@ -34,6 +32,10 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       },
     };
   }
+
+  const {
+    data: { dashboards },
+  } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
 
   const {
     data: { members },
@@ -53,29 +55,38 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { accessToken, members, invitations },
+    props: { accessToken, members, dashboards, invitations },
   };
 };
 
 const DashboardEdit = ({
   members,
   accessToken,
+  dashboards,
   invitations,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
+  if (!dashboardList.length) {
+    setDashboardList(dashboards);
+  }
 
   const router = useRouter();
   const boardId = router?.query.boardId;
 
+  const dashboard = dashboardList.find((item) => {
+    return item.id === Number(boardId);
+  });
+
   const dashboardData = dashboardList.find((v) => v.id === Number(boardId));
 
   const [prevColor, setPrevColor] = useState(dashboardData?.color ?? "#760dde");
-  
+
   const [color, setColor] = useState<ColorType>(prevColor);
 
   const [memberList, setMemberList] = useState<(Member | InvitationData)[]>(members);
 
   const [invitationList, setInvitationList] = useState<(Member | InvitationData)[]>(invitations);
+
   const [boardName, setBoardName] = useState(dashboard?.title);
 
   const [isOpenDashboardDeleteModal, setIsOpenDashboardDeleteModal] = useState(false);
@@ -129,7 +140,7 @@ const DashboardEdit = ({
       <Head>
         <title>Taskify - 대시보드 수정</title>
       </Head>
-      
+
       <MenuLayout>
         <div className={styles.body}>
           <Link href={`/dashboard/${boardId}`} className={styles.back_button}>

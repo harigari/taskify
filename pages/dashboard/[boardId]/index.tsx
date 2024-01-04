@@ -26,8 +26,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const accessToken = getAccessTokenFromCookie(context) as string;
   const boardId = Number(context.query["boardId"]);
 
-  const { data: dashboard } = await sender.get({ path: "dashboard", id: boardId, accessToken });
-
   const {
     data: { data: columnData },
   } = await sender.get({ path: "columns", id: boardId, accessToken });
@@ -37,6 +35,10 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     columns: {},
     columnOrder: [],
   };
+
+  const {
+    data: { dashboards },
+  } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
 
   for (const value of columnData) {
     entireData.columnOrder.push(value.id);
@@ -57,7 +59,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { accessToken, assigneeList, boardId, dashboard, entireData },
+    props: { accessToken, assigneeList, boardId, dashboards, entireData },
   };
 };
 
@@ -153,9 +155,6 @@ const Dashboard = ({
     },
     [entireList]
   );
-
-
-  if (!mount) return null;
 
   return (
     <>
