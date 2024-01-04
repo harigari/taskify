@@ -15,7 +15,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "./Sidemenu.module.css";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { dashboardListAtom } from "@/atoms/atoms";
 
 const Sidemenu = () => {
@@ -23,7 +23,7 @@ const Sidemenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState<ColorType>("#7ac555");
 
-  const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
+  const dashboardList = useAtomValue(dashboardListAtom);
 
   // const { isVisible, setIsVisible, myRef } = useInfScroll();
 
@@ -121,8 +121,8 @@ const Sidemenu = () => {
         </button>
       </div>
       <ul className={styles.list}>
-        {dashboardList?.map((board) => (
-          <li key={board.id}>
+        {dashboardList?.map((board, i) => (
+          <li key={i}>
             <Link
               href={`/dashboard/${board.id}`}
               className={clsx(styles.item__button, { [styles.selected]: board.id === Number(router.query.boardId) })}

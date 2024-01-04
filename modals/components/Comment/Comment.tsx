@@ -20,7 +20,6 @@ interface CommentProps {
 }
 
 const Comment = ({ data, setCommentList, setEditingId, usage, handleEditCancel }: CommentProps) => {
-  // console.log(data);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const accessToken = getAccessTokenFromDocument("accessToken");
 

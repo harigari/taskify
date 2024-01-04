@@ -127,8 +127,8 @@ export default function Mydashboard({
                 <span>새로운 대시보드</span>
                 <Image width={22} height={22} src="/icons/icon-addbox-purple.png" alt="대시보드 추가하기" />
               </Button>
-              {dashboardList.map((dashboard) => (
-                <Button key={dashboard.id} buttonType="dashboard" color="white">
+              {dashboardList.map((dashboard, i) => (
+                <Button key={i} buttonType="dashboard" color="white">
                   <Link href={`/dashboard/${dashboard.id}`}>
                     <div className={styles.dashboard__title}>
                       <div className={styles.dashboard__icon} style={{ backgroundColor: dashboard.color }} />

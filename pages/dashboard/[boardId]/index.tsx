@@ -18,7 +18,7 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import style from "./dashboard.module.css";
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 import { dashboardListAtom } from "@/atoms/atoms";
 import Head from "next/head";
 
@@ -160,6 +160,7 @@ const Dashboard = ({
   );
 
   if (!mount) return null;
+
   return (
     <>
       <Head>
