@@ -27,7 +27,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
   const accessToken = getAccessTokenFromDocument("accessToken");
 
   // 케밥 열고 닫기
-  const handleKebab = () => {
+  const handleKebabToggle = () => {
     setIsKebabOpen((prevValue) => !prevValue);
   };
 
@@ -69,47 +69,41 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
     }
   };
 
-  const handleAllModalClose = () => {
-    handleModalClose();
-    setCardModifyModalOpen(false);
-  };
-
   return (
-    <ModalWrapper size="lg">
+    <ModalWrapper size="lg" handleModalClose={handleModalClose}>
       <div className={styles.modal_wrapper}>
         <div className={styles.header}>
           <h1 className={styles.title}>{data.title}</h1>
           <div className={styles.icons}>
-            <button className={styles.icon} onClick={handleKebab} onBlur={handleKebabClose}>
+            <button className={styles.icon} onClick={handleKebabToggle} onBlur={handleKebabClose}>
               <Image src="/icons/icon-kebab.svg" alt="케밥 아이콘" width={28} height={28} />
             </button>
             {isKebabOpen && (
               <div className={styles.options} ref={optionsRef}>
-                <button className={styles.option} onClick={handleModifyModalToggle}>
+                <button className={styles.option} onClick={() => (handleModifyModalToggle(), setIsKebabOpen(false))}>
                   수정하기
                 </button>
-                {isCardModifyModalOpen && (
-                  <EditInputModal
-                    initialvalue={data}
-                    title="할 일 수정"
-                    columnTitle={columnTitle}
-                    buttonText="수정"
-                    setCardList={setCardList}
-                    handleModalClose={handleModifyModalToggle}
-                    handleAllModalClose={handleAllModalClose}
-                  />
-                )}
-                <button className={styles.option} onClick={handleDeleteModalToggle}>
+                <button className={styles.option} onClick={() => (handleDeleteModalToggle(), setIsKebabOpen(false))}>
                   삭제하기
                 </button>
-                {isCardDeleteModalOpen && (
-                  <AlertModal
-                    handleSubmit={handleCardDelete}
-                    alertText="카드를 삭제하시겠습니까?"
-                    handleModalClose={handleDeleteModalToggle}
-                  />
-                )}
               </div>
+            )}
+            {isCardModifyModalOpen && (
+              <EditInputModal
+                initialvalue={data}
+                title="할 일 수정"
+                columnTitle={columnTitle}
+                buttonText="수정"
+                setCardList={setCardList}
+                handleModalClose={handleModifyModalToggle}
+              />
+            )}
+            {isCardDeleteModalOpen && (
+              <AlertModal
+                handleSubmit={handleCardDelete}
+                alertText="카드를 삭제하시겠습니까?"
+                handleModalClose={handleDeleteModalToggle}
+              />
             )}
             <button type="button" className={styles.icon} onClick={handleModalClose}>
               <Image src="/icons/icon-close-black.svg" alt="창닫기 아이콘" width={32} height={32} />
@@ -126,7 +120,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
               </ChipTodo>
               <div className={styles.separator}></div>
               <div className={styles.tags}>
-                {data.tags.map((tag) => (
+                {data?.tags.map((tag) => (
                   <ChipTag size="lg" key={tag}>
                     {tag}
                   </ChipTag>
@@ -136,7 +130,7 @@ const TaskCardModal = ({ data, columnTitle, setCardList, handleModalClose }: Tas
 
             {/* 설명 및 사진 */}
             <p className={styles.description}>{data.description}</p>
-            {data.imageUrl && (
+            {data?.imageUrl && (
               <div className={styles.image_wrapper}>
                 <Image priority fill src={data.imageUrl} alt="할 일 카드 이미지" />
               </div>

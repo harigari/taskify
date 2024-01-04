@@ -9,6 +9,8 @@ import styles from "./signup.module.css";
 import { FormEvent, useRef } from "react";
 import sender from "@/apis/sender";
 import { useRouter } from "next/router";
+import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 
 type RefProps = "email" | "nickname" | "password" | "passwordCheck";
 type RefValue = HTMLElement | null;
@@ -16,7 +18,24 @@ type Ref = {
   [key in RefProps]: RefValue;
 };
 
-const Signup = () => {
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const accessToken = getAccessTokenFromCookie(context) as string;
+
+  if (accessToken) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/mydashboard",
+      },
+    };
+  }
+
+  return {
+    props: { accessToken },
+  };
+};
+
+const Signup = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const inputRef = useRef<Ref>({ email: null, nickname: null, password: null, passwordCheck: null });
   const { wrapper: emailWrapper, input: emailInput } = useInputController(signupEmail);
   const { wrapper: nicknameWrapper, input: nicknameInput } = useInputController(signupNickname);

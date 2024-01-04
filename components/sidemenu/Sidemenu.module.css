@@ -39,6 +39,8 @@
   flex-direction: column;
   padding: 0 1rem;
   width: 100%;
+  height: calc(100vh - 20rem);
+  overflow-y: auto;
 }
 
 .title__button {
@@ -120,4 +122,23 @@
   .list {
     align-items: center;
   }
+}
+
+.list::-webkit-scrollbar {
+  display: block;
+  width: 0.1rem;
+  height: 0.1rem;
+  padding: 0;
+}
+
+.list::-webkit-scrollbar-thumb {
+  width: 1rem;
+  height: 1rem;
+  background: var(--violet);
+
+  border-radius: 10px;
+}
+
+.list::-webkit-scrollbar-corner {
+  background: var(--gray10);
 }

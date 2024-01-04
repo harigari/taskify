@@ -1,3 +1,9 @@
+.list {
+  height: 28rem;
+  overflow-y: scroll;
+  padding-right: 1rem;
+}
+
 .button {
   border: 0.1rem solid var(--gray30);
   width: 8rem;
@@ -42,6 +48,9 @@
 
 .row__text__mobile {
   display: none;
+}
+.crown {
+  margin-left: 2rem;
 }
 
 @media screen and (max-width: 767px) {
@@ -88,4 +97,25 @@
     display: block;
     color: var(--gray40);
   }
+  .crown {
+    margin-left: 4rem;
+  }
+}
+
+.list::-webkit-scrollbar {
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.list::-webkit-scrollbar-thumb {
+  width: 10%;
+  height: 10%;
+  background: var(--violet);
+
+  border-radius: 10px;
+}
+
+.list::-webkit-scrollbar-corner {
+  background: var(--gray10);
 }

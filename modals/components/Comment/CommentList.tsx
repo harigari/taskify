@@ -6,12 +6,25 @@ import { CardData, CommentData } from "@/types/api.type";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "./CommentList.module.css";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
-import sender from "@/apis/sender";
 import CommentTextArea from "../ModalInput/CommentTextArea";
+import useInfScroll from "@/hooks/useInfScroll";
+import sender from "@/apis/sender";
+import SENDER_CONFIG from "@/constants/senderConfig";
 
 interface CommentListProps {
   cardData: CardData;
 }
+
+type Pagination = {
+  id: number;
+  size: number;
+  cursorId?: number;
+};
+
+type InfRes = {
+  comments: CommentData[];
+  cursorId: number;
+};
 
 const CommentList = ({ cardData }: CommentListProps) => {
   const comment = useInputController({
@@ -19,23 +32,43 @@ const CommentList = ({ cardData }: CommentListProps) => {
     labelConfig: { labelName: "댓글", mobile: true },
   });
 
+  const { isVisible, setIsVisible, myRef } = useInfScroll();
+  const [pagination, setPagination] = useState<Pagination>({
+    id: cardData.id,
+    size: 5,
+  });
+
   // 댓글 가져오기
   const accessToken = getAccessTokenFromDocument("accessToken");
   const [commentList, setCommentList] = useState<CommentData[]>([]);
 
-  useEffect(() => {
-    (async () => {
-      const res = await sender.get({
-        path: "comments",
-        id: cardData.id,
-        accessToken: accessToken,
-      });
+  const getComments = async () => {
+    const { id, size, cursorId } = pagination;
+    let response;
 
-      if (res.status < 300) {
-        setCommentList(res.data.comments);
-      }
-    })();
-  }, []);
+    if (cursorId) {
+      response = await sender.get({ path: "comments", id, size, cursorId, accessToken });
+    } else {
+      response = await sender.get({ path: "comments", id, size, accessToken });
+    }
+
+    if (response.status !== 200) return;
+
+    const { comments, cursorId: cursor } = response.data;
+
+    setPagination((prevValue) => {
+      return { ...prevValue, cursorId: cursor };
+    });
+    setCommentList((prevValue) => [...prevValue, ...comments]);
+    setIsVisible(false);
+  };
+
+  useEffect(() => {
+    if (pagination.cursorId === null) return;
+    if (isVisible) {
+      getComments();
+    }
+  }, [isVisible]);
 
   // 댓글 추가하기
   const { pending: postPending, wrappedFunction: postData } = useApi("post");
@@ -76,7 +109,7 @@ const CommentList = ({ cardData }: CommentListProps) => {
         </InputWrapper>
       </form>
       <div className={styles.comments}>
-        {commentList?.map((comment) => (
+        {commentList.map((comment) => (
           <Comment
             key={comment.id}
             usage={editingId === comment.id ? "edit" : "show"}
@@ -86,6 +119,7 @@ const CommentList = ({ cardData }: CommentListProps) => {
             handleEditCancel={handleEditCancel}
           />
         ))}
+        <p ref={myRef}></p>
       </div>
     </>
   );

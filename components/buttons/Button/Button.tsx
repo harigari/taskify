@@ -1,7 +1,10 @@
 import clsx from "clsx";
 import { MouseEvent, ReactNode } from "react";
 import styles from "./Button.module.css";
-
+import { BasicUserType, InvitationData } from "@/types/api.type";
+import { useRouter } from "next/router";
+import useApi from "@/hooks/useApi";
+import { Dispatch, SetStateAction } from "react";
 export type ButtonType =
   | "login"
   | "delete"
@@ -15,7 +18,6 @@ type Color = "violet" | "white" | "gray";
 
 interface Props {
   children: ReactNode;
-  icon?: boolean;
   disabled?: boolean;
   onClick?: (e: MouseEvent) => void;
   buttonType: ButtonType;

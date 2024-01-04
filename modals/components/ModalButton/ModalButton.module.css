@@ -15,6 +15,11 @@
   border-radius: 4px;
 }
 
+.single:disabled {
+  background-color: var(--gray40);
+  color: #d9d9d9;
+}
+
 .buttonContainer {
   display: flex;
   gap: 1.2rem;
@@ -36,6 +41,10 @@
 .accept {
   background: var(--violet, #5534da);
   color: var(--white, #fff);
+}
+
+.accept:disabled {
+  background: var(--gray-gray_9FA6B2, #9fa6b2);
 }
 
 @media (max-width: 767px) {

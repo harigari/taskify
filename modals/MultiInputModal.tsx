@@ -60,18 +60,14 @@ const MultiInputModal = ({
     tags: [...tagList].reverse(),
   };
 
-  const { pending, error, wrappedFunction: postData } = useApi("post");
+  const { pending, wrappedFunction: postData } = useApi("post");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    for (const value of Object.values(data)) {
-      if (!value) return;
-    }
-
     const accessToken = getAccessTokenFromDocument("accessToken");
 
-    if (pending) return;
+    if (pending || !modalTitle.input.value || !modalExplain.textarea.value || !modalDate.dateTime.date) return;
 
     if (imageFile === null) {
       const cardRes = await postData({ path: "card", data, accessToken });
@@ -97,7 +93,7 @@ const MultiInputModal = ({
   };
 
   return (
-    <ModalWrapper size="sm">
+    <ModalWrapper size="sm" handleModalClose={handleModalClose}>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <div className={styles.modal}>
           <div className={styles.modalTitle}>{title}</div>
@@ -126,7 +122,12 @@ const MultiInputModal = ({
           </div>
         </div>
 
-        <ModalButton.DoubleButton onClick={handleModalClose}>{buttonText}</ModalButton.DoubleButton>
+        <ModalButton.DoubleButton
+          disabled={pending || !modalTitle.input.value || !modalExplain.textarea.value || !modalDate.dateTime.date}
+          onClick={handleModalClose}
+        >
+          {buttonText}
+        </ModalButton.DoubleButton>
       </form>
     </ModalWrapper>
   );

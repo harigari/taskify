@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, KeyboardEvent } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./DateTime.module.css";
@@ -13,8 +13,13 @@ interface DateTime {
 
 function DateTime({ date, setDate, id }: DateTime) {
   const minDate = new Date();
-
   const imageStyle = clsx(styles.image, date || styles.imageOpacity);
+
+  const handleEnter = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
 
   return (
     <div className={styles.root}>
@@ -27,11 +32,20 @@ function DateTime({ date, setDate, id }: DateTime) {
         selected={date}
         onChange={(date: Date) => setDate(date)}
         timeInputLabel="Time:"
-        dateFormat="yyyy-MM-dd h:mm aa"
+        dateFormat="yyyy-MM-dd HH:mm"
         placeholderText="날짜를 입력해 주세요"
         minDate={minDate}
-        showTimeInput
+        onKeyDown={handleEnter}
+        timeIntervals={10}
+        showTimeSelect
       />
+      <button
+        onClick={() => {
+          setDate(null);
+        }}
+      >
+        {date && <Image src="/icons/icon-close-gray.svg" width={20} height={20} alt="" />}
+      </button>
     </div>
   );
 }

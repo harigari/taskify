@@ -12,7 +12,7 @@ interface AlertModalProp {
 
 const AlertModal = ({ isDoubleButton = true, alertText, handleModalClose, handleSubmit }: AlertModalProp) => {
   return (
-    <ModalWrapper size="md">
+    <ModalWrapper size="md" handleModalClose={handleModalClose}>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <div className={styles.modal}>
           <p className={styles.info}>{alertText}</p>

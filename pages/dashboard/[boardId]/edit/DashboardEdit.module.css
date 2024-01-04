@@ -3,6 +3,11 @@
   gap: 1.2rem;
   flex-direction: column;
   padding: 2rem;
+  width: 62rem;
+}
+
+.body > :last-child {
+  margin-top: 4rem;
 }
 
 .back_button {
@@ -10,16 +15,23 @@
   gap: 0.6rem;
   align-items: center;
   margin-bottom: 1.3rem;
+  cursor: pointer;
+}
+
+.back_button span {
   font-size: 1.6rem;
   font-weight: 500;
   color: var(--black1);
 }
 
+.button_box {
+  display: flex;
+  justify-content: flex-end;
+}
 .name_edit_box {
   display: flex;
   flex-direction: column;
   padding: 3.2rem 2.8rem;
-  width: 62rem;
   background-color: var(--white);
   border-radius: 0.8rem;
   gap: 2rem;
@@ -31,9 +43,6 @@
 }
 
 .dashboard_name {
-  padding: 0 1rem;
-  border: 0.1rem solid var(--gray30);
-  border-radius: 0.8rem;
   color: var(--black1);
   font-size: 2rem;
   font-weight: 700;
@@ -57,4 +66,25 @@
   font-weight: 500;
   color: var(--white);
   border-radius: 0.4rem;
+}
+
+.edit_button:disabled {
+  background-color: var(--gray40);
+}
+
+@media (max-width: 1200px) {
+  .body {
+    width: 54rem;
+  }
+}
+@media (max-width: 767px) {
+  .body {
+    min-width: 100% -28rem;
+    padding: 2rem;
+  }
+
+  .name_edit_header {
+    flex-direction: column;
+    gap: 1rem;
+  }
 }

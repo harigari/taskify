@@ -9,6 +9,8 @@ import styles from "./signin.module.css";
 import { FormEvent, useRef } from "react";
 import sender from "@/apis/sender";
 import { useRouter } from "next/router";
+import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 
 type RefProps = "email" | "nickname" | "password" | "passwordCheck";
 type RefValue = HTMLElement | null;
@@ -16,7 +18,24 @@ type Ref = {
   [key in RefProps]: RefValue;
 };
 
-const Signin = () => {
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const accessToken = getAccessTokenFromCookie(context) as string;
+
+  if (accessToken) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/mydashboard",
+      },
+    };
+  }
+
+  return {
+    props: { accessToken },
+  };
+};
+
+const Signin = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const inputRef = useRef<Ref>({ email: null, nickname: null, password: null, passwordCheck: null });
   const { wrapper: emailWrapper, input: emailInput } = useInputController(signinEmail);
   const { wrapper: passwordWrapper, input: passwordInput } = useInputController(signinPassword);
@@ -45,18 +64,17 @@ const Signin = () => {
       password: passwordInput.value,
     };
 
-    const login = await sender.post({ path: "signin", data: signData });
-    if (!login) return;
-    if (login.status === 404 && "message" in login.data) {
-      emailWrapper.setErrorText(login.data.message);
+    const signinRes = await sender.post({ path: "signin", data: signData });
+    if (!signinRes) return;
+
+    const errorMessage = signinRes.message;
+    if (signinRes.status > 300 && errorMessage) {
+      emailWrapper.setErrorText(errorMessage);
       return;
     }
-    if (login.status === 400 && "message" in login.data) {
-      passwordWrapper.setErrorText(login.data.message);
-      return;
-    }
-    if (login.status === 201 && !("message" in login.data)) {
-      document.cookie = `accessToken=${login.data.accessToken}`;
+
+    if (signinRes.status === 201) {
+      document.cookie = `accessToken=${signinRes.data.accessToken}`;
       router.push("/mydashboard");
       return;
     }

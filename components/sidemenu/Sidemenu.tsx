@@ -14,16 +14,56 @@ import { ColorType, DashBoardData } from "@/types/api.type";
 import { useRouter } from "next/router";
 import sender from "@/apis/sender";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import useInfScroll from "@/hooks/useInfScroll";
 
-interface SidemenuProps {
-  dashboardList: DashBoardData[];
-}
+type Pagination = {
+  size: number;
+  page?: number;
+  cursorId?: number;
+};
 
-const Sidemenu = ({ dashboardList }: SidemenuProps) => {
-  const [dashboards, setDashboards] = useState(dashboardList);
+const Sidemenu = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState<ColorType>("#7ac555");
+
+  const [list, setList] = useState<DashBoardData[]>([]);
+
+  const { isVisible, setIsVisible, myRef } = useInfScroll();
+
+  const [pagination, setPagination] = useState<Pagination>({
+    size: 100,
+  });
+
+  const getDashboardList = async () => {
+    const accessToken = getAccessTokenFromDocument("accessToken");
+
+    const { size, cursorId } = pagination;
+
+    let res;
+    if (cursorId) {
+      res = await sender.get({ path: "dashboards", method: "infiniteScroll", size, cursorId, accessToken });
+    } else {
+      res = await sender.get({ path: "dashboards", method: "infiniteScroll", size, accessToken });
+    }
+    if (res.status !== 200) return;
+
+    const { dashboards, cursorId: cursor } = res.data;
+
+    setPagination((prev) => {
+      return { ...prev, cursorId: cursor };
+    });
+
+    setList((prev) => [...prev, ...dashboards]);
+    setIsVisible(false);
+  };
+
+  useEffect(() => {
+    if (pagination.cursorId === null) return;
+    if (isVisible) {
+      getDashboardList();
+    }
+  }, [isVisible]);
 
   const column = useInputController({
     inputConfig: {
@@ -32,6 +72,7 @@ const Sidemenu = ({ dashboardList }: SidemenuProps) => {
     },
     labelConfig: { labelName: "대시보드 이름" },
   });
+
   const handleModalToggle = () => {
     setIsOpen((prevValue) => !prevValue);
   };
@@ -49,9 +90,15 @@ const Sidemenu = ({ dashboardList }: SidemenuProps) => {
 
     if (res?.status === 201) {
       handleModalToggle();
-      setDashboards((prevValue) => [res.data, ...prevValue]);
       column.input.setValue("");
       setSelectedColor("#7ac555");
+
+      const boardId = router.query.boardId;
+      if (boardId) {
+        router.push(`/dashboard/${boardId}`);
+        return;
+      }
+      router.push(router.pathname);
     }
   };
 
@@ -78,7 +125,7 @@ const Sidemenu = ({ dashboardList }: SidemenuProps) => {
         </button>
       </div>
       <ul className={styles.list}>
-        {dashboards?.map((board) => (
+        {list?.map((board) => (
           <li key={board.id}>
             <Link
               href={`/dashboard/${board.id}`}
@@ -98,9 +145,11 @@ const Sidemenu = ({ dashboardList }: SidemenuProps) => {
             </Link>
           </li>
         ))}
+        <p ref={myRef}></p>
       </ul>
+
       {isOpen && (
-        <ModalWrapper size="md">
+        <ModalWrapper handleModalClose={handleModalToggle} size="md">
           <form className={stylesFromSingle.form} onSubmit={handleSubmit} noValidate>
             <div className={stylesFromSingle.modal}>
               <div className={stylesFromSingle.modalTitle}>새로운 대시보드</div>

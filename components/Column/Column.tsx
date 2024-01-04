@@ -18,8 +18,9 @@ import useApi from "@/hooks/useApi";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import { CardData, ColumnData, Member } from "@/types/api.type";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
-import sender from "@/apis/sender";
 import { useRouter } from "next/router";
+import useInfScroll from "@/hooks/useInfScroll";
+import sender from "@/apis/sender";
 
 interface ColumnProps {
   accessToken: string;
@@ -30,10 +31,22 @@ interface ColumnProps {
   columnId: number;
 }
 
+type Pagination = {
+  id: number;
+  size: number;
+  cursorId?: number;
+};
+
+type InfRes = {
+  cards: CardData[];
+  cursorId: number;
+  totalCount: number;
+};
+
 export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId, setColumnList }: ColumnProps) => {
-  const [cardList, setCardList] = useState<CardData[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
   const [isColumnDeleteModalOpen, setIsColumnDeleteModalOpen] = useState(false);
   const settingModal = useInputController({
     inputConfig: { id: "settingModal", initialvalue: title },
@@ -42,15 +55,43 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
 
   const { pending: deletePending, wrappedFunction: deleteData } = useApi("delete");
 
-  const router = useRouter();
+  const { isVisible, setIsVisible, myRef } = useInfScroll();
+
+  const [pagination, setPagination] = useState<Pagination>({
+    id: columnId,
+    size: 5,
+  });
+
+  //  카드리스트 가져오기
+  const [cardList, setCardList] = useState<CardData[]>([]);
+
+  const getComments = async () => {
+    const { id, size, cursorId } = pagination;
+    let response;
+    if (cursorId) {
+      response = await sender.get({ path: "cards", id, size, cursorId, accessToken });
+    } else {
+      response = await sender.get({ path: "cards", id, size, accessToken });
+    }
+
+    if (response.status !== 200) return;
+
+    const { cards, cursorId: cursor, totalCount } = response.data;
+
+    setPagination((prevValue) => {
+      return { ...prevValue, cursorId: cursor };
+    });
+    setCardList((prevValue) => [...prevValue, ...cards]);
+    setIsVisible(false);
+    setTotalCount(totalCount);
+  };
+
   useEffect(() => {
-    (async function () {
-      const {
-        data: { cards },
-      } = await sender.get({ path: "cards", id: columnId, accessToken });
-      setCardList(cards);
-    })();
-  }, [router.query]);
+    if (pagination.cursorId === null) return;
+    if (isVisible) {
+      getComments();
+    }
+  }, [isVisible]);
 
   const handleCreateModalToggle = () => {
     setIsCreateModalOpen((prevValue) => !prevValue);
@@ -101,6 +142,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
   const handleColumnDelete = async (e: FormEvent) => {
     e.preventDefault();
 
+    if (deletePending) return;
     const deleteRes = await deleteData({ path: "column", id: columnId, accessToken });
 
     if (deleteRes?.status === 204) {
@@ -122,7 +164,7 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
             <ChipTodo size="sm" color="white">
               {title}
             </ChipTodo>
-            <ChipNum>{cardList.length}</ChipNum>
+            <ChipNum>{totalCount}</ChipNum>
           </div>
           <button onClick={handleSettingModalToggle}>
             <Image width={24} height={24} src="/icons/icon-settings.svg" alt="칼럼 설정하기" />
@@ -137,20 +179,9 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
           {cardList.map((card) => (
             <Card key={card.id} columnTitle={title} data={card} setCardList={setCardList} />
           ))}
+          <p ref={myRef}></p>
         </div>
       </div>
-
-      {isCreateModalOpen && (
-        <MultiInputModal
-          setCardList={setCardList}
-          title="할 일 생성"
-          buttonText="생성"
-          columnId={columnId}
-          assigneeList={assigneeList}
-          dashboardId={dashboardId}
-          handleModalClose={handleCreateModalToggle}
-        />
-      )}
 
       {isSettingModalOpen && (
         <ModalWrapper size="md">
@@ -168,17 +199,32 @@ export const Column = ({ accessToken, title, dashboardId, assigneeList, columnId
                 삭제하기
               </button>
 
-              <ModalButton.DoubleButton onClick={handleSettingModalToggle}>변경</ModalButton.DoubleButton>
+              <ModalButton.DoubleButton
+                disabled={pending || !settingModal.input.value}
+                onClick={handleSettingModalToggle}
+              >
+                변경
+              </ModalButton.DoubleButton>
             </div>
           </form>
         </ModalWrapper>
       )}
-
       {isColumnDeleteModalOpen && (
         <AlertModal
           handleModalClose={handleDeleteModalToggle}
           alertText="컬럼의 모든 카드가 삭제됩니다."
           handleSubmit={handleColumnDelete}
+        />
+      )}
+      {isCreateModalOpen && (
+        <MultiInputModal
+          setCardList={setCardList}
+          title="할 일 생성"
+          buttonText="생성"
+          columnId={columnId}
+          assigneeList={assigneeList}
+          dashboardId={dashboardId}
+          handleModalClose={handleCreateModalToggle}
         />
       )}
     </>

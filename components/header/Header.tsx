@@ -2,7 +2,7 @@ import styles from "./Header.module.css";
 import HeaderButton from "./HeaderButton/HeaderButton";
 import Members from "../Members/Members";
 import ProfileIcon from "../Members/ProfileIcon";
-import { BasicUserType } from "@/types/api.type";
+
 import sender from "@/apis/sender";
 import { DashBoardData } from "@/types/api.type";
 import { useRouter } from "next/router";
@@ -13,6 +13,8 @@ import Link from "next/link";
 import useInputController from "@/hooks/useInputController";
 import SingleInputModal from "@/modals/SingleInputModal";
 import useApi from "@/hooks/useApi";
+import { signinEmail } from "@/constants/inputConfig";
+import InviteButton from "../Buttons/InviteButton/InviteButton";
 
 interface HeaderProps {
   dashboardList: DashBoardData[];
@@ -23,37 +25,8 @@ const Header = ({ dashboardList }: HeaderProps) => {
   const boardId = router?.query.boardId;
   const [memberList, setMemberList] = useState<Member[]>([]);
   const [myData, setMyData] = useState<ExtendedUserType>();
-  const isOwner = memberList?.some((v) => v.userId === myData?.id);
+  const isOwner = memberList?.find((v) => v.userId === myData?.id)?.isOwner;
   const title = dashboardList?.find((v) => v.id === Number(boardId))?.title;
-
-  const inviteInput = useInputController({
-    inputConfig: { id: "" },
-    labelConfig: { labelName: "이메일", mobile: true },
-  });
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleModalToggle = () => {
-    setIsModalOpen((prev) => !prev);
-  };
-
-  const { wrappedFunction: postData } = useApi("post");
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    const accessToken = getAccessTokenFromDocument("accessToken");
-    const res = await postData({
-      path: "invitation",
-      id: Number(boardId),
-      data: {
-        email: inviteInput.input.value,
-      },
-      accessToken,
-    });
-
-    // 이상하게 같은 이메일로 요청을 여러 번 보내도 서버에서 에러 안남..
-    if (res?.status === 201) {
-      handleModalToggle();
-    }
-  };
 
   useEffect(() => {
     (async () => {
@@ -73,7 +46,7 @@ const Header = ({ dashboardList }: HeaderProps) => {
         }
       }
     })();
-  }, []);
+  }, [dashboardList]);
 
   return (
     <header className={styles.header}>
@@ -89,21 +62,7 @@ const Header = ({ dashboardList }: HeaderProps) => {
               </HeaderButton>
             </Link>
           </div>
-          <div className={styles.grid__invite}>
-            <HeaderButton onClick={handleModalToggle} src="/icons/icon-addbox.svg" alt="대시보드로 초대하기">
-              초대하기
-            </HeaderButton>
-          </div>
-          {isModalOpen && (
-            // 진호님은 singleInputModal 사용 안하시는 듯..?
-            <SingleInputModal
-              handleModalClose={handleModalToggle}
-              buttonText="초대"
-              onSubmit={handleSubmit}
-              inputController={inviteInput}
-              title="초대하기"
-            />
-          )}
+          <InviteButton usage="header" />
         </>
       )}
       <div className={styles.grid__members}>
@@ -111,7 +70,7 @@ const Header = ({ dashboardList }: HeaderProps) => {
       </div>
       {boardId && <div className={styles.splitline} />}
       <Link href="/mypage" className={styles.profile}>
-        <ProfileIcon member={myData} tabIndex={-1} />
+        <ProfileIcon member={myData} />
         <span className={styles.profile__name}>{myData?.nickname}</span>
       </Link>
     </header>

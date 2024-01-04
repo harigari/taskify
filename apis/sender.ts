@@ -13,14 +13,8 @@ class Api {
     if (typeof result === "string") {
       return result;
     }
-    if (typeof result === "function" && "dashboardId" in obj) {
-      return result(obj.dashboardId, obj.invitationId);
-    }
-    if (typeof result === "function" && "id" in obj) {
-      return result(obj.id);
-    }
-    if (typeof result === "function" && "method" in obj) {
-      return result(obj.method);
+    if (typeof result === "function") {
+      return result(obj);
     }
   };
 
@@ -47,7 +41,7 @@ class Api {
       },
     });
     const data = await res.json();
-    return { status: res.status, data };
+    return { status: res.status, data, message: data.message };
   };
 
   put: HTTP<"put"> = async (obj) => {
@@ -59,11 +53,11 @@ class Api {
     });
 
     if (res.status === 204) {
-      return { status: res.status, data: null };
+      return { status: res.status, data: null as any };
     }
-
     const data = await res.json();
-    return { status: res.status, data };
+
+    return { status: res.status, data, message: data.message };
   };
 
   delete: HTTP<"delete"> = async (obj) => {

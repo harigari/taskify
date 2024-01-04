@@ -51,7 +51,6 @@ interface EditInputModalProp {
   buttonText: string;
   setCardList: Dispatch<SetStateAction<CardData[]>>;
   handleModalClose: () => void;
-  handleAllModalClose: () => void;
   initialvalue: CardData;
   columnTitle: string;
 }
@@ -60,7 +59,6 @@ const EditInputModal = ({
   title,
   buttonText,
   handleModalClose,
-  handleAllModalClose,
   setCardList,
   initialvalue,
   columnTitle,
@@ -70,7 +68,9 @@ const EditInputModal = ({
   const dashboardId = Number(router.query.boardId);
   const accessToken = getAccessTokenFromDocument("accessToken");
 
-  const [assigneeList, setAssigneeList] = useState<Member[]>();
+  const [assigneeList, setAssigneeList] = useState<Member[]>([]);
+  const [assignee, setAssignee] = useState<Member>();
+
   useEffect(() => {
     (async () => {
       const res = await sender.get({ path: "members", id: dashboardId, accessToken });
@@ -109,7 +109,7 @@ const EditInputModal = ({
 
   useEffect(() => {
     if (assigneeList) {
-      modalAssigneeDropdown.setValue(assigneeList.find((v) => v.userId === initialvalue.assignee.id));
+      setAssignee(assigneeList.find((v) => v.userId === initialvalue?.assignee?.id));
     }
   }, [assigneeList]);
 
@@ -120,7 +120,7 @@ const EditInputModal = ({
   const data = {
     columnId: findColumnId(columnList, modalColumnDropdown.value) as number,
     dashboardId,
-    assigneeUserId: modalAssigneeDropdown.value?.userId as number,
+    assigneeUserId: assignee?.userId!,
     title: modalTitle.input.value,
     description: modalExplain.input.value,
     dueDate: formatDateString(String(modalDate.dateTime.date), "KOREA", "yyyy-MM-dd HH:mm"),
@@ -128,8 +128,7 @@ const EditInputModal = ({
     imageUrl: initialvalue.imageUrl,
   };
 
-  const { pending: putPending, wrappedFunction: putData } = useApi("put");
-  const { pending: postPending, wrappedFunction: postData } = useApi("post");
+  const { pending, wrappedFunction: putData } = useApi("put");
 
   const handleEditSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -139,7 +138,7 @@ const EditInputModal = ({
 
       if (cardUpdateRes?.status === 200) {
         handleModalClose();
-        router.push(`/dashboard/${initialvalue.dashboardId}`);
+        setCardList((prev) => prev.map((v) => (v.id === cardUpdateRes.data.id ? cardUpdateRes.data : v)));
       }
     }
 
@@ -151,20 +150,22 @@ const EditInputModal = ({
       const cardRes = await putData({ path: "card", id: initialvalue.id, data: dataWithImage, accessToken });
 
       if (cardRes?.status === 200) {
-        router.push(`/dashboard/${initialvalue.dashboardId}`);
         handleModalClose();
+        setCardList((prev) => prev.map((v) => (v.id === cardRes.data.id ? cardRes.data : v)));
       }
     }
   };
 
   return (
-    <ModalWrapper size="sm">
+    <ModalWrapper handleModalClose={handleModalClose} size="sm">
       <form className={styles.form} onSubmit={handleEditSubmit} noValidate>
         <div className={styles.modal}>
           <div className={styles.modalTitle}>{title}</div>
           <div className={styles.dropdownContainer}>
             <Dropdown {...modalColumnDropdown}>상태</Dropdown>
-            <InputDropdown {...modalAssigneeDropdown}>담당자</InputDropdown>
+            <InputDropdown options={assigneeList} value={assignee} setValue={setAssignee}>
+              담당자
+            </InputDropdown>
           </div>
           <InputWrapper {...modalTitle.wrapper}>
             <Input {...modalTitle.input} />
@@ -190,7 +191,12 @@ const EditInputModal = ({
           </div>
         </div>
 
-        <ModalButton.DoubleButton onClick={handleModalClose}>{buttonText}</ModalButton.DoubleButton>
+        <ModalButton.DoubleButton
+          disabled={pending || !modalTitle.input.value || !modalExplain.textarea.value || !modalDate.dateTime.date}
+          onClick={handleModalClose}
+        >
+          {buttonText}
+        </ModalButton.DoubleButton>
       </form>
     </ModalWrapper>
   );

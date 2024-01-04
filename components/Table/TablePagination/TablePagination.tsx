@@ -2,13 +2,15 @@ import ArrowButton from "@/components/Buttons/ArrowButton/ArrowButton";
 import TableIndex from "@/components/Table/TableIndex/TableIndex";
 import TableList from "@/components/Table/TableList/TableList";
 import HideButton from "@/components/Table/TablePagination/HideButton";
-import InviteButton from "@/components/Table/TablePagination/InviteButton";
 import SearchInput from "@/components/Table/TablePagination/SearchInput";
-import { BasicUserType, InvitationData } from "@/types/api.type";
+import { BasicUserType, InvitationData, Member } from "@/types/api.type";
 import { clsx } from "clsx";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import styles from "./TablePagination.module.css";
+import InviteButton from "@/components/Buttons/InviteButton/InviteButton";
+
+import { useRouter } from "next/router";
 
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
@@ -16,21 +18,26 @@ type TableIndexType = {
 
 interface TableProps {
   title: string;
-  data: BasicUserType[] | InvitationData[];
+  data: (Member | InvitationData)[];
   row?: number;
   tableIndex: TableIndexType;
   invite?: boolean;
   search?: boolean;
+  setData: Dispatch<SetStateAction<(Member | InvitationData)[]>>;
 }
 
-const TablePagenation = ({
+const TablePagination = ({
   title,
   data = [],
   row = Infinity,
   tableIndex,
   invite = false,
   search = false,
+  setData,
 }: TableProps) => {
+  const router = useRouter();
+  const boardId = Number(router.query.boardId);
+
   const entirePageNum = Math.ceil(data.length / row);
   const [pageCount, setPageCount] = useState(1);
   const [rowNum, setRowNum] = useState(row);
@@ -56,9 +63,11 @@ const TablePagenation = ({
     <article className={styles.container}>
       <div className={styles.title}>
         <h2 className={styles.title__text}>{title}</h2>
+
         {entirePageNum > 1 && (
           <div className={clsx(styles.pagecount, isAccept && styles.pagecount__mobile)}>
             <span className={styles.pagecount__text}>{`${pageCount} 페이지 중 ${entirePageNum}`}</span>
+
             <ArrowButton
               disabled={pageCount === 1}
               onClick={() => {
@@ -76,15 +85,16 @@ const TablePagenation = ({
             />
           </div>
         )}
-        {invite && <InviteButton />}
+        {invite && <InviteButton setData={setData} boardId={boardId} usage="edit_page" />}
       </div>
+
       {data.length > 0 ? (
         <>
           {isOpen && (
             <>
               {search && <SearchInput setKeyword={setKeyword} />}
-              <TableIndex data={rowData} tableIndex={tableIndex} invite={invite} />
-              <TableList data={rowData} tableIndex={tableIndex} row={row} />
+              <TableIndex data={rowData} setData={setData} tableIndex={tableIndex} invite={invite} />
+              <TableList data={rowData} setData={setData} tableIndex={tableIndex} />
             </>
           )}
           <HideButton isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -96,13 +106,13 @@ const TablePagenation = ({
             height={100}
             priority
             src="/icons/icon-noinvite-dashboard.svg"
-            alt="초대받은 대시보드가 없습니다."
+            alt="초대 내역이 없습니다."
           />
-          <p>아직 초대받은 대시보드가 없어요</p>
+          <p>초대 내역이 없습니다.</p>
         </div>
       )}
     </article>
   );
 };
 
-export default TablePagenation;
+export default TablePagination;

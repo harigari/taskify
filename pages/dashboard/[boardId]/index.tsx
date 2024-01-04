@@ -13,15 +13,16 @@ import useInputController from "@/hooks/useInputController";
 import InputWrapper from "@/components/Input/InputWrapper";
 import Input from "@/components/Input/Input";
 import useApi from "@/hooks/useApi";
-import { ColumnData, DashBoardData } from "@/types/api.type";
+import { ColumnData } from "@/types/api.type";
 import { Column } from "@/components/Column/Column";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
 
   const {
     data: { dashboards },
-  } = await sender.get({ path: "dashboards", method: "pagination", accessToken: accessToken });
+  } = await sender.get({ path: "dashboards", method: "pagination", size: 13, accessToken: accessToken });
 
   const boardId = context.query["boardId"];
 
@@ -32,6 +33,15 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const {
     data: { members: assigneeList },
   } = await sender.get({ path: "members", id: Number(boardId), accessToken });
+
+  if (!accessToken) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/signin",
+      },
+    };
+  }
 
   return {
     props: { accessToken, columnData, assigneeList, boardId, dashboards },
@@ -76,9 +86,14 @@ const Dashboard = ({
     }
   };
 
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
     setColumnList(columnData);
   }, [columnData]);
+
+  if (!mounted) return null;
 
   return (
     <>
@@ -110,7 +125,7 @@ const Dashboard = ({
       </MenuLayout>
 
       {isCreateModal && (
-        <ModalWrapper size="md">
+        <ModalWrapper handleModalClose={handleCreateNewColumnModalToggle} size="md">
           <form className={stylesFromSingle.form} onSubmit={handleSubmit} noValidate>
             <div className={stylesFromSingle.modal}>
               <div className={stylesFromSingle.modalTitle}>새 컬럼 생성</div>
@@ -120,7 +135,10 @@ const Dashboard = ({
               </InputWrapper>
             </div>
 
-            <ModalButton.DoubleButton disabled={pending} onClick={handleCreateNewColumnModalToggle}>
+            <ModalButton.DoubleButton
+              disabled={pending || !createModal.input.value}
+              onClick={handleCreateNewColumnModalToggle}
+            >
               생성
             </ModalButton.DoubleButton>
           </form>

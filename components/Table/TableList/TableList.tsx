@@ -1,25 +1,42 @@
+import sender from "@/apis/sender";
 import Button from "@/components/Buttons/Button/Button";
 import ProfileIcon from "@/components/Members/ProfileIcon";
-import { BasicUserType, InvitationData } from "@/types/api.type";
+import useApi from "@/hooks/useApi";
+import AlertModal from "@/modals/AlertModal";
+import { InvitationData, Member } from "@/types/api.type";
+import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import makeColorProfile from "@/utils/makeColorProfile";
+import { useRouter } from "next/router";
+import { Dispatch, SetStateAction, useState, FormEvent, RefObject, Fragment } from "react";
 import styles from "./TableList.module.css";
-
+import Image from "next/image";
+import clsx from "clsx";
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
 };
 
 interface TableListProps {
-  data: (BasicUserType | InvitationData)[];
+  data: (Member | InvitationData)[];
+  setData: Dispatch<SetStateAction<(Member | InvitationData)[]>>;
   tableIndex: TableIndexType;
-  row: number;
+  myRef?: RefObject<HTMLParagraphElement>;
 }
 
-const TableList = ({ data, tableIndex, row }: TableListProps) => {
+const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
   const column = Object.keys(tableIndex).length;
   const isAccept = Object.values(tableIndex).includes("acceptButton");
+  const router = useRouter();
+
+  const boardId = Number(router.query.boardId);
+
+  const { wrappedFunction: deleteData } = useApi("delete");
+  const [isMemberDeleteModalOpen, setIsMemberDeleteModalOpen] = useState(false);
+  const handleMemberDeleteModalToggle = () => {
+    setIsMemberDeleteModalOpen((prev) => !prev);
+  };
 
   return (
-    <ul className={isAccept ? styles.list__mobile : ""}>
+    <ul className={clsx(styles.list, { [styles.list__mobile]: isAccept })}>
       {data.map((data, idx) => {
         const arr = [];
         for (const key of Object.keys(tableIndex)) {
@@ -28,7 +45,7 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
             case v === "nickname":
               if (!(v in data)) continue;
               arr.push(
-                <div className={styles.row__item} key={data[v]}>
+                <div className={styles.row__item} key={data.userId}>
                   <ProfileIcon member={data} tabIndex={-1} />
                   <p className={styles.row__item}>{data[v]}</p>
                 </div>
@@ -37,7 +54,7 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
             case v === "dashboard":
               if (!(v in data)) continue;
               arr.push(
-                <div className={styles.row__item} key={data[v].title}>
+                <div className={styles.row__item} key={data.dashboard.id}>
                   {isAccept && <span className={styles.row__text__mobile}>{key}</span>}
                   <div className={styles.row__icon} style={{ backgroundColor: makeColorProfile(data[v].title) }} />
                   <p>{data[v].title}</p>
@@ -47,7 +64,7 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
             case v === "inviter":
               if (!(v in data)) continue;
               arr.push(
-                <p className={styles.row__item} key={data[v].nickname}>
+                <p className={styles.row__item} key={data.inviter.id}>
                   {isAccept && <span className={styles.row__text__mobile}>{key}</span>}
                   {data[v].nickname}
                 </p>
@@ -56,41 +73,108 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
             case v === "email":
               if ("inviter" in data) {
                 arr.push(
-                  <div className={styles.row__item} key={data.inviter[v]}>
-                    <p className={styles.row__item}>{data.inviter[v]}</p>
+                  <div className={styles.row__item} key={data.invitee.id}>
+                    <p className={styles.row__item}>{data.invitee[v]}</p>
                   </div>
-                );
-              }
-              continue;
-            case v === "deleteButton":
-              {
-                arr.push(
-                  <Button buttonType="delete" color="white" key={v}>
-                    삭제
-                  </Button>
                 );
               }
               continue;
             case v === "acceptButton":
               {
+                if (!("dashboard" in data)) return;
+                const handleReject = (yesOrNo: boolean) => async () => {
+                  const accessToken = getAccessTokenFromDocument("accessToken");
+                  const res = await sender.put({
+                    path: "invitation",
+                    id: data.id,
+                    data: { inviteAccepted: yesOrNo },
+                    accessToken,
+                  });
+
+                  if (res.status < 300) {
+                    setData((prev) => prev.filter((v) => v.id !== data.id));
+                    router.push("/mydashboard");
+                  }
+                };
+
                 arr.push(
-                  <div className={styles.acceptbutton__wrapper} key={v}>
-                    <Button buttonType="accept_reject" color="violet">
+                  <div className={styles.acceptbutton__wrapper} key={data.id}>
+                    <Button onClick={handleReject(true)} buttonType="accept_reject" color="violet">
                       수락
                     </Button>
-                    <Button buttonType="accept_reject" color="white">
+                    <Button onClick={handleReject(false)} buttonType="accept_reject" color="white">
                       거절
                     </Button>
                   </div>
                 );
               }
               continue;
+            case v === "deleteButton":
+              {
+                // 구성원 삭제하기
+                const handleMemberDelete = async (e: FormEvent) => {
+                  e.preventDefault();
+                  const accessToken = getAccessTokenFromDocument("accessToken");
+                  const res = await deleteData({ path: "member", id: data.id, accessToken });
+                  if (res?.status === 204) {
+                    setData((prev) => prev.filter((member) => member.id !== data.id));
+                    handleMemberDeleteModalToggle();
+                  }
+                };
+
+                if ("isOwner" in data && data.isOwner) {
+                  arr.push(
+                    <div className={styles.crown} key={data.profileImageUrl}>
+                      <Image width={30} height={30} src="/icons/icon-crown.svg" alt="내가 만든 대시보드" />
+                    </div>
+                  );
+                  continue;
+                }
+                arr.push(
+                  <Fragment key={data.id}>
+                    <Button
+                      disabled={"isOwner" in data ? data.isOwner : false}
+                      onClick={handleMemberDeleteModalToggle}
+                      buttonType="delete"
+                      color="white"
+                      key={v}
+                    >
+                      삭제
+                    </Button>
+                    {isMemberDeleteModalOpen && (
+                      <AlertModal
+                        alertText="구성원을 삭제하시겠습니까?"
+                        handleSubmit={handleMemberDelete}
+                        handleModalClose={handleMemberDeleteModalToggle}
+                      />
+                    )}
+                  </Fragment>
+                );
+              }
+              continue;
             case v === "cancelButton":
-              arr.push(
-                <Button buttonType="delete" color="white" key={v}>
-                  취소
-                </Button>
-              );
+              {
+                // 보낸 초대 요청 취소하기
+                const handleInviteCancel = async (e: FormEvent) => {
+                  e.preventDefault();
+                  const accessToken = getAccessTokenFromDocument("accessToken");
+                  const res = await deleteData({
+                    path: "dashboardInvitations",
+                    dashboardId: boardId,
+                    invitationId: data.id,
+                    accessToken,
+                  });
+                  if (res?.status === 204) {
+                    setData((prev) => prev.filter((invitation) => invitation.id !== data.id));
+                  }
+                };
+
+                arr.push(
+                  <Button onClick={handleInviteCancel} buttonType="delete" color="white" key={v}>
+                    취소
+                  </Button>
+                );
+              }
               continue;
             default:
               arr.push(null);
@@ -109,11 +193,12 @@ const TableList = ({ data, tableIndex, row }: TableListProps) => {
           </li>
         );
       })}
-      {row !== Infinity &&
+      {/* {row !== Infinity &&
         data.length < row &&
         Array(row - data.length)
           .fill("")
-          .map((v, i) => <li className={styles.row} key={i}></li>)}
+          .map((v, i) => <li className={styles.row} key={i}></li>)} */}
+      <p ref={myRef}></p>
     </ul>
   );
 };

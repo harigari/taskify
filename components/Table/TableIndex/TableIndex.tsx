@@ -1,19 +1,22 @@
-import InviteButton from "@/components/Table/TablePagination/InviteButton";
-import { BasicUserType, InvitationData } from "@/types/api.type";
+import { InvitationData, Member } from "@/types/api.type";
 import clsx from "clsx";
 import styles from "./TableIndex.module.css";
+import InviteButton from "@/components/Buttons/InviteButton/InviteButton";
+import { Dispatch, SetStateAction } from "react";
+import { useRouter } from "next/router";
 
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
 };
 
 interface TableIndexProps {
-  data: (BasicUserType | InvitationData)[];
+  data: (Member | InvitationData)[];
   tableIndex: TableIndexType;
   invite?: boolean;
+  setData?: Dispatch<SetStateAction<(Member | InvitationData)[]>>;
 }
 
-const TableIndex = ({ tableIndex, invite = false }: TableIndexProps) => {
+const TableIndex = ({ tableIndex, invite = false, setData }: TableIndexProps) => {
   const column = Object.keys(tableIndex).length;
   const isAccept = Object.values(tableIndex).includes("acceptButton");
 
@@ -38,7 +41,7 @@ const TableIndex = ({ tableIndex, invite = false }: TableIndexProps) => {
             </p>
           )
       )}
-      {invite && <InviteButton className="tableindex" />}
+      {invite && <InviteButton usage="edit_page" setData={setData} className="tableindex" />}
     </div>
   );
 };

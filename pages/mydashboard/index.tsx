@@ -1,40 +1,56 @@
-import Button from "@/components/Buttons/Button/Button";
-import TablePagenation from "@/components/Table/TablePagination/TablePagination";
-import Image from "next/image";
-import styles from "./index.module.css";
-import stylesFromSingle from "@/modals/Modal.module.css";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import { FormEvent, useState } from "react";
-import useInputController from "@/hooks/useInputController";
-import ModalWrapper from "@/modals/ModalWrapper";
-import InputWrapper from "@/components/Input/InputWrapper";
-import Input from "@/components/Input/Input";
-import ChipColors from "@/components/Chips/ChipColors/ChipColors";
-import ModalButton from "@/modals/components/ModalButton/ModalButton";
 import sender from "@/apis/sender";
-import { ColorType, DashBoardData } from "@/types/api.type";
-import Link from "next/link";
-import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
-import useApi from "@/hooks/useApi";
+import Button from "@/components/Buttons/Button/Button";
+import ChipColors from "@/components/Chips/ChipColors/ChipColors";
+import Input from "@/components/Input/Input";
+import InputWrapper from "@/components/Input/InputWrapper";
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
+import TableScroll from "@/components/Table/TableScroll/TableScroll";
+import useApi from "@/hooks/useApi";
+import useInputController from "@/hooks/useInputController";
+import stylesFromSingle from "@/modals/Modal.module.css";
+import ModalWrapper from "@/modals/ModalWrapper";
+import ModalButton from "@/modals/components/ModalButton/ModalButton";
+import { ColorType } from "@/types/api.type";
+import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { FormEvent, useEffect, useState } from "react";
+import styles from "./index.module.css";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
 
-  const res = await sender.get({ path: "dashboards", method: "pagination", accessToken: accessToken });
+  const {
+    data: { dashboards },
+  } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
 
-  const { dashboards } = res.data;
+  const {
+    data: { invitations },
+  } = await sender.get({ path: "invitations", size: 5, accessToken });
+
+  if (!accessToken) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/signin",
+      },
+    };
+  }
 
   return {
-    props: { accessToken, dashboards },
+    props: { accessToken, dashboards, invitations },
   };
 };
 
+// 엑세스토큰
 export default function Mydashboard({
   accessToken,
   dashboards,
+  invitations,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [dashboardList, setDashboardList] = useState<DashBoardData[]>(dashboards);
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleModalToggle = () => {
@@ -67,15 +83,29 @@ export default function Mydashboard({
 
     if (res?.status === 201) {
       handleModalToggle();
-      setDashboardList((prevValue) => [res.data, ...prevValue]);
       column.input.setValue("");
       setSelectedColor("#7ac555");
+
+      const boardId = router.query.boardId;
+      if (boardId) {
+        router.push(`/dashboard/${boardId}`);
+        return;
+      }
+      router.push(router.pathname);
     }
   };
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <>
-      <MenuLayout dashboardList={dashboardList}>
+      <MenuLayout dashboardList={dashboards}>
         <main>
           <section className={styles.container}>
             <article className={styles.dashboard}>
@@ -83,7 +113,7 @@ export default function Mydashboard({
                 <span>새로운 대시보드</span>
                 <Image width={22} height={22} src="/icons/icon-addbox-purple.png" alt="대시보드 추가하기" />
               </Button>
-              {dashboardList.map((dashboard) => (
+              {dashboards.map((dashboard) => (
                 <Button key={dashboard.id} buttonType="dashboard" color="white">
                   <Link href={`/dashboard/${dashboard.id}`}>
                     <div className={styles.dashboard__title}>
@@ -102,11 +132,17 @@ export default function Mydashboard({
                 </Button>
               ))}
             </article>
-            <TablePagenation
+            {/* <TablePagination
               title="초대받은 대시보드"
-              row={3}
-              data={[]}
-              tableIndex={{ 이름: "dashboard", 초대자: "inviter", "수락 여부": "deleteButton" }}
+              row={5}
+              data={invitations}
+              tableIndex={{ 이름: "dashboard", 초대자: "inviter", "수락 여부": "acceptButton" }}
+              search
+            /> */}
+            <TableScroll
+              title="초대받은 대시보드"
+              type="invitations"
+              tableIndex={{ 대시보드: "dashboard", "수락 여부": "acceptButton" }}
               search
             />
           </section>
@@ -124,7 +160,9 @@ export default function Mydashboard({
             </div>
             <ChipColors selectedColor={selectedColor} setSelectedColor={setSelectedColor} size="lg" />
             <div className={stylesFromSingle.buttonContainer}>
-              <ModalButton.DoubleButton onClick={handleModalToggle}>생성</ModalButton.DoubleButton>
+              <ModalButton.DoubleButton disabled={pending || !column.input.value} onClick={handleModalToggle}>
+                생성
+              </ModalButton.DoubleButton>
             </div>
           </form>
         </ModalWrapper>

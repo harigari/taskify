@@ -29,6 +29,11 @@
   border-radius: 10rem;
 }
 
+.member__image__small {
+  height: 2.4rem;
+  width: 2.4rem;
+}
+
 .member__name {
   position: absolute;
   font-size: 1.6rem;
@@ -39,12 +44,5 @@
   .member[data-index="2"],
   .member[data-index="3"] {
     display: none;
-  }
-
-  .member,
-  .member__image,
-  .member__defaultimage {
-    width: 2.4rem;
-    height: 2.4rem;
   }
 }

@@ -18,18 +18,6 @@
   justify-content: flex-start;
 }
 
-.popup__list[data-index="0"],
-.popup__list[data-index="1"] {
-  display: none;
-}
-
 .popup__name {
   margin-left: 0.4rem;
-}
-
-@media screen and (max-width: 767px) {
-  .popup__list[data-index="0"],
-  .popup__list[data-index="1"] {
-    display: flex;
-  }
 }

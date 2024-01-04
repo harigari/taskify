@@ -30,6 +30,7 @@
 .comment {
   font-size: 1.4rem;
   color: var(--black1);
+  white-space: pre-line;
 }
 
 .buttons {

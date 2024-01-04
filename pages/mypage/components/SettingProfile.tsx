@@ -12,12 +12,14 @@ import { FormEvent } from "react";
 import { changeImageFileToURLForUserProfile } from "@/utils/changeImageFileToURL";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import AlertModal from "@/modals/AlertModal";
+import { useRouter } from "next/router";
 
 interface ProfileProps {
   userData: ExtendedUserType;
 }
 
 const SettingProfile = ({ userData }: ProfileProps) => {
+  const router = useRouter();
   const [preview, setPreview] = useState<string | null | undefined>(userData.profileImageUrl);
   const [prevNickname, setPrevNickname] = useState(userData.nickname);
 
@@ -49,8 +51,6 @@ const SettingProfile = ({ userData }: ProfileProps) => {
     const data: { nickname: string; imageUrl?: string } = {
       nickname: input.value,
     };
-
-    if (prevNickname === input.value && !imageFile) return;
 
     if (imageFile === null) {
       const res = await putData({
@@ -102,7 +102,7 @@ const SettingProfile = ({ userData }: ProfileProps) => {
           buttonType="accept_reject"
           onClick={handleSubmit}
           color="violet"
-          disabled={!!wrapper.errorText || !input.value}
+          disabled={prevNickname === input.value && !imageFile}
         >
           저장
         </Button>
@@ -110,7 +110,10 @@ const SettingProfile = ({ userData }: ProfileProps) => {
           <AlertModal
             alertText="프로필 정보가 성공적으로 변경되었습니다."
             isDoubleButton={false}
-            handleModalClose={handleModalToggle}
+            handleModalClose={() => {
+              router.push("/mypage");
+              handleModalToggle();
+            }}
           />
         )}
       </div>

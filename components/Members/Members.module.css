@@ -1,10 +1,52 @@
 .container {
   display: flex;
+  margin-right: 2rem;
   margin-left: 2rem;
   position: relative;
 }
 
-.container button {
+.container > div {
   margin-left: -1rem;
-  border: 0.2rem solid var(--white);
+}
+
+.container > div > div > div {
+  border: 0.1rem solid var(--white);
+}
+
+.count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  width: 4rem;
+  height: 4rem;
+  color: var(--white);
+  border-radius: 10rem;
+  background-color: var(--gray50);
+}
+
+.hidecount__desktop {
+  display: none;
+}
+
+.count::after {
+  z-index: 1;
+  font-weight: 600;
+  content: "+" attr(data-desktop-count);
+}
+
+@media screen and (max-width: 767px) {
+  .count::after {
+    content: "+" attr(data-mobile-count);
+  }
+
+  .hidecount__desktop {
+    display: flex;
+  }
+
+  .hidecount__mobile {
+    display: none;
+  }
 }

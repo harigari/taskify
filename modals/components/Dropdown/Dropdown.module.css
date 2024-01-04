@@ -88,6 +88,9 @@
 }
 
 @media (max-width: 767px) {
+  .root {
+    width: 100%;
+  }
   .input {
     font-size: 1.4rem;
   }

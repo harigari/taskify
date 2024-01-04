@@ -14,10 +14,6 @@ import { useState } from "react";
 import AlertModal from "@/modals/AlertModal";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 const SettingPassword = () => {
-  const [isWrongPasswordModalOpen, setIsWrongPasswordModalOpen] = useState(false);
-  const handleWrongPasswordModalToggle = () => {
-    setIsWrongPasswordModalOpen((prev) => !prev);
-  };
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const handleSuccessModalToggle = () => {
@@ -48,13 +44,11 @@ const SettingPassword = () => {
       accessToken,
     });
     if (res?.status === 400) {
-      console.log("비밀번호 틀림"); // 확인용
-      handleWrongPasswordModalToggle();
+      currentWrapper.setErrorText(res?.message as string);
       return;
     }
 
     if (res?.status === 204) {
-      console.log("Success modal should open"); // 확인용
       currentInput.setValue("");
       passwordInput.setValue("");
       passwordCheckInput.setValue("");
@@ -83,13 +77,7 @@ const SettingPassword = () => {
         >
           변경
         </Button>
-        {isWrongPasswordModalOpen && (
-          <AlertModal
-            alertText="현재 비밀번호가 틀렸습니다."
-            isDoubleButton={false}
-            handleModalClose={handleWrongPasswordModalToggle}
-          />
-        )}
+
         {isSuccessModalOpen && (
           <AlertModal
             alertText="비밀번호가 성공적으로 변경되었습니다."
