@@ -18,6 +18,7 @@ import styles from "./DashboardEdit.module.css";
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
 import { useAtom } from "jotai";
 import { dashboardListAtom } from "@/atoms/atoms";
+import Head from "next/head";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -122,6 +123,9 @@ const DashboardEdit = ({
 
   return (
     <>
+      <Head>
+        <title>Taskify - 대시보드 수정</title>
+      </Head>
       <MenuLayout>
         <div className={styles.body}>
           <Link href={`/dashboard/${boardId}`} className={styles.back_button}>

@@ -41,6 +41,7 @@ const TableScroll = ({ title, type, tableIndex, invite = false, search = false }
     size: 5,
   });
   const [data, setData] = useState<(Member | InvitationData)[]>([]);
+
   const getScrollData = async () => {
     const accessToken = getAccessTokenFromDocument("accessToken");
     const { id, size, cursorId } = pagination;

@@ -20,6 +20,7 @@ import { FormEvent, useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { atom, useAtom } from "jotai";
 import { dashboardListAtom } from "@/atoms/atoms";
+import Head from "next/head";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -115,6 +116,9 @@ export default function Mydashboard({
 
   return (
     <>
+      <Head>
+        <title>Taskify - 나의 대시보드</title>
+      </Head>
       <MenuLayout>
         <main>
           <section className={styles.container}>

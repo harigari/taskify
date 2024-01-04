@@ -20,6 +20,7 @@ import { FormEvent, useCallback, useEffect, useState } from "react";
 import style from "./dashboard.module.css";
 import { atom, useAtom } from "jotai";
 import { dashboardListAtom } from "@/atoms/atoms";
+import Head from "next/head";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -161,7 +162,9 @@ const Dashboard = ({
   if (!mount) return null;
   return (
     <>
-      {/* 대시보드에 맞는 레이아웃으로 설정-헤더 수정 */}
+      <Head>
+        <title>{`Taskify - ${dashboardList?.find((v) => v.id === Number(boardId))?.title}`}</title>
+      </Head>
       <MenuLayout>
         <div className={style.redobutton}>
           <RedoButton />

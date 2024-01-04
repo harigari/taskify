@@ -9,6 +9,7 @@ import HeaderButton from "@/components/Header/HeaderButton/HeaderButton";
 import headerButtonStyles from "@/components/Header/Header.module.css";
 import { Member, InvitationData } from "@/types/api.type";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 type Usage = "header" | "edit_page";
 
