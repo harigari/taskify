@@ -20,8 +20,8 @@ interface ProfileProps {
 
 const SettingProfile = ({ userData }: ProfileProps) => {
   const router = useRouter();
-  const [preview, setPreview] = useState<string | null | undefined>(userData.profileImageUrl);
-  const [prevNickname, setPrevNickname] = useState(userData.nickname);
+  const [preview, setPreview] = useState<string | null | undefined>(userData?.profileImageUrl);
+  const [prevNickname, setPrevNickname] = useState(userData?.nickname);
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
@@ -36,7 +36,7 @@ const SettingProfile = ({ userData }: ProfileProps) => {
       id: "nickname",
       type: "text",
       name: "nickname",
-      initialvalue: userData.nickname,
+      initialvalue: userData?.nickname,
       placeholder: "닉네임을 입력해 주세요.",
     },
     labelConfig: { labelName: "닉네임" },
@@ -90,7 +90,7 @@ const SettingProfile = ({ userData }: ProfileProps) => {
         <div className={styles.info__nickname}>
           <label>
             <p>이메일</p>
-            <input disabled placeholder={userData.email}></input>
+            <input disabled placeholder={userData?.email}></input>
           </label>
           <InputWrapper {...wrapper}>
             <Input {...input} />
