@@ -13,7 +13,7 @@ interface SingleInputModalProp {
   onSubmit: (e: FormEvent) => void;
   chip?: boolean;
   deleteButton?: boolean;
-  handleModalClose: (e: MouseEvent) => void;
+  handleModalClose: () => void;
   inputController: any;
   disabled?: boolean;
 }
@@ -29,17 +29,14 @@ const SingleInputModal = ({
   disabled,
 }: SingleInputModalProp) => {
   return (
-    <ModalWrapper size="md">
+    <ModalWrapper size="md" handleModalClose={handleModalClose}>
       <form className={styles.form} onSubmit={onSubmit} noValidate>
         <div className={styles.modal}>
           <div className={styles.modalTitle}>{title}</div>
-
           <InputWrapper {...inputController.wrapper}>
             <Input {...inputController.input} />
           </InputWrapper>
         </div>
-
-        {chip && <ChipColors size="lg" />}
 
         <div className={clsx(styles.buttonContainer, deleteButton && styles.deleteButton)}>
           <button className={clsx(styles.button, deleteButton || styles.deleteButton)} type="button">

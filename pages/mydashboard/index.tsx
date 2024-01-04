@@ -149,7 +149,7 @@ export default function Mydashboard({
         </main>
       </MenuLayout>
       {isOpen && (
-        <ModalWrapper size="md">
+        <ModalWrapper size="md" handleModalClose={handleModalToggle}>
           <form className={stylesFromSingle.form} onSubmit={handleMakeDashboard} noValidate>
             <div className={stylesFromSingle.modal}>
               <div className={stylesFromSingle.modalTitle}>새로운 대시보드</div>

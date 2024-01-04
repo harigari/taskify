@@ -6,7 +6,7 @@ import ModalButton from "./components/ModalButton/ModalButton";
 interface AlertModalProp {
   isDoubleButton?: boolean;
   alertText: string;
-  handleModalClose: (e: MouseEvent) => void;
+  handleModalClose: () => void;
   handleSubmit?: (e: FormEvent) => void;
 }
 

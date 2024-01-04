@@ -86,7 +86,6 @@ type Req_post_cardImage = FormData;
 type Return_post_cardImage = ImageUrlType;
 
 type Req_post_card = {
-  assigneeUserId: number;
   dashboardId: number;
   columnId: number;
   title: string;
@@ -100,7 +99,6 @@ type Return_post_card = CardData;
 
 type Req_put_card = {
   columnId: number;
-  assigneeUserId: number;
   title: string;
   description: string;
   dueDate: string;
@@ -130,22 +128,13 @@ type Req_post_column = {
   dashboardId: number;
 };
 
-type Return_post_column = {
-  id: number;
-  title: string;
-  teamId: string;
-  dashboardId: number;
-} & TimeStamp;
+type Return_post_column = ColumnData;
 
 type Req_put_column = {
   title: string;
 };
 
-type Return_put_column = {
-  id: number;
-  title: string;
-  teamId: string;
-} & TimeStamp;
+type Return_put_column = ColumnData;
 
 // 댓글 관련 타입
 export type CommentData = {
@@ -441,3 +430,9 @@ export type PathFinder = <T extends Method, U extends PathProps<T>>(
   method: T,
   obj: RequireId<T, U>
 ) => string | Promise<string | any>;
+
+export interface EntireData {
+  cards: { [columnId: number]: CardData[] };
+  columns: { [columnid: number]: ColumnData };
+  columnOrder: number[];
+}

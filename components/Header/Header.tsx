@@ -1,20 +1,21 @@
-import styles from "./Header.module.css";
-import HeaderButton from "./HeaderButton/HeaderButton";
-import Members from "../Members/Members";
-import ProfileIcon from "../Members/ProfileIcon";
-
 import sender from "@/apis/sender";
-import { DashBoardData } from "@/types/api.type";
-import { useRouter } from "next/router";
-import { useState, useEffect, useRef, FormEvent } from "react";
-import { Member, ExtendedUserType } from "@/types/api.type";
+import { DashBoardData, ExtendedUserType, Member } from "@/types/api.type";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import Link from "next/link";
-import useInputController from "@/hooks/useInputController";
-import SingleInputModal from "@/modals/SingleInputModal";
-import useApi from "@/hooks/useApi";
-import { signinEmail } from "@/constants/inputConfig";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import InviteButton from "../Buttons/InviteButton/InviteButton";
+import Members from "../Members/Members";
+import ProfileIcon from "../Members/ProfileIcon";
+import styles from "./Header.module.css";
+import HeaderButton from "./HeaderButton/HeaderButton";
+
+const WELCOME_MESSAGE = [
+  "우리가 하는 일은 큰 일이죠. 큰일나기 전까지는요.",
+  "바라는 일이 되기를 바라.",
+  "오늘도 좋은 하루 되세요!",
+  "할 수 있는 만큼만 하기.",
+];
 
 interface HeaderProps {
   dashboardList: DashBoardData[];
@@ -51,7 +52,13 @@ const Header = ({ dashboardList }: HeaderProps) => {
   return (
     <header className={styles.header}>
       <div className={styles.grid__title}>
-        {title && <h1 className={styles.boardname}>{title.length > 20 ? title.slice(0, 20) + "..." : title}</h1>}
+        {title ? (
+          <h1 className={styles.boardname}>{title.length > 20 ? title.slice(0, 20) + "..." : title}</h1>
+        ) : (
+          <h1 className={styles.welcome_message}>
+            {WELCOME_MESSAGE[Math.floor(Math.random() * WELCOME_MESSAGE.length)]}
+          </h1>
+        )}
       </div>
       {isOwner && (
         <>
@@ -65,10 +72,14 @@ const Header = ({ dashboardList }: HeaderProps) => {
           <InviteButton usage="header" />
         </>
       )}
-      <div className={styles.grid__members}>
-        <Members members={memberList} />
-      </div>
-      {boardId && <div className={styles.splitline} />}
+      {boardId && (
+        <>
+          <div className={styles.grid__members}>
+            <Members members={memberList} />
+          </div>
+          <div className={styles.splitline} />
+        </>
+      )}
       <Link href="/mypage" className={styles.profile}>
         <ProfileIcon member={myData} />
         <span className={styles.profile__name}>{myData?.nickname}</span>
