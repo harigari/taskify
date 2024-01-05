@@ -2,7 +2,6 @@ import sender from "@/apis/sender";
 import Button from "@/components/Buttons/Button/Button";
 import ProfileIcon from "@/components/Members/ProfileIcon";
 import useApi from "@/hooks/useApi";
-import AlertModal from "@/modals/AlertModal";
 import { InvitationData, Member } from "@/types/api.type";
 import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import makeColorProfile from "@/utils/makeColorProfile";

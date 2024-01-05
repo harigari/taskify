@@ -30,6 +30,12 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     data: { data: columnData },
   } = await sender.get({ path: "columns", id: boardId, accessToken });
 
+  if (!columnData) {
+    return {
+      notFound: true,
+    };
+  }
+
   const entireData: EntireData = {
     cards: {},
     columns: {},
