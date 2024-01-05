@@ -194,6 +194,18 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
         Array(row - data.length)
           .fill("")
           .map((v, i) => <li className={styles.row} key={i}></li>)} */}
+      {data.length === 0 ? (
+        <div className={styles.empty}>
+          <Image
+            width={100}
+            height={100}
+            priority
+            src="/icons/icon-noinvite-dashboard.svg"
+            alt="초대 내역이 없습니다."
+          />
+          <p>초대 내역이 없습니다.</p>
+        </div>
+      ) : null}
       <p ref={myRef}></p>
     </ul>
   );
