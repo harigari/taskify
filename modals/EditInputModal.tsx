@@ -20,6 +20,9 @@ import Dropdown from "./components/Dropdown/Dropdown";
 import { multiModalDate, multiModalExplain, multiModalTag, multiModalTitle } from "@/constants/inputConfig";
 import useApi from "@/hooks/useApi";
 import changeImageFileToURL from "@/utils/changeImageFileToURL";
+import { useAtomValue } from "jotai";
+import { accessTokenAtom } from "@/atoms/atoms";
+import { useQuery } from "@tanstack/react-query";
 
 const sortColumnTitle = (columnList: ColumnData[]) => {
   if (columnList) {
@@ -63,23 +66,19 @@ const EditInputModal = ({
   initialvalue,
   columnTitle,
 }: EditInputModalProp) => {
+  const [assignee, setAssignee] = useState<Member>();
   const columnId = initialvalue.columnId;
   const router = useRouter();
   const dashboardId = Number(router.query.boardId);
-  const accessToken = getAccessTokenFromDocument("accessToken");
 
-  const [assigneeList, setAssigneeList] = useState<Member[]>([]);
-  const [assignee, setAssignee] = useState<Member>();
+  const accessToken = useAtomValue(accessTokenAtom);
 
-  useEffect(() => {
-    (async () => {
-      const res = await sender.get({ path: "members", id: dashboardId, accessToken });
+  const assignees = useQuery({
+    queryKey: ["member", dashboardId],
+    queryFn: () => sender.get({ path: "members", id: dashboardId, accessToken }),
+  });
 
-      if (res.status < 300) {
-        setAssigneeList(res.data.members);
-      }
-    })();
-  }, []);
+  const assigneeList = assignees.data?.data.members ?? [];
 
   const [columnList, setColumnList] = useState<ColumnData[]>([]);
 

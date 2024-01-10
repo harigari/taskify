@@ -1,16 +1,14 @@
 import sender from "@/apis/sender";
-import { DashBoardData, ExtendedUserType, Member } from "@/types/api.type";
-import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import InviteButton from "../Buttons/InviteButton/InviteButton";
 import Members from "../Members/Members";
 import ProfileIcon from "../Members/ProfileIcon";
 import styles from "./Header.module.css";
 import HeaderButton from "./HeaderButton/HeaderButton";
-import { useAtom, useAtomValue } from "jotai";
-import { accessTokenAtom, dashboardListAtom } from "@/atoms/atoms";
+import { useAtomValue } from "jotai";
+import { accessTokenAtom } from "@/atoms/atoms";
 import { useQuery } from "@tanstack/react-query";
 
 const WELCOME_MESSAGE = [
@@ -22,52 +20,46 @@ const WELCOME_MESSAGE = [
 
 const Header = () => {
   const router = useRouter();
-  const boardId = router?.query.boardId;
-  const [memberList, setMemberList] = useState<Member[]>([]);
-  const [myData, setMyData] = useState<ExtendedUserType>();
+  const boardId = Number(router?.query.boardId);
 
   const accessToken = useAtomValue(accessTokenAtom);
 
+  // 대시보드 관련
   const dashboards = useQuery({
     queryKey: ["dashboards"],
     queryFn: () => sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken }),
-    enabled: !!accessToken,
   });
-
   const dashboardList = dashboards.data?.data.dashboards ?? [];
 
   const dashboard = dashboardList.find((item) => {
     return item.id === Number(boardId);
   });
+  const dashboardTitle = dashboard?.title;
 
-  const isOwner = memberList?.find((v) => v.userId === myData?.id)?.isOwner;
-  const [title, setTitle] = useState(dashboard?.title);
+  // 유저 데이터 관련
+  const userData = useQuery({
+    queryKey: ["user"],
+    queryFn: () => sender.get({ path: "me", accessToken: accessToken }),
+  });
+  const myData = userData.data?.data;
 
-  useEffect(() => {
-    setTitle(dashboard?.title);
-    (async () => {
-      const accessToken = getAccessTokenFromDocument("accessToken");
+  // 대시보드에 초대된 닝겐들
+  const assignee = useQuery({
+    queryKey: ["member", boardId],
+    queryFn: () => sender.get({ path: "members", id: boardId, accessToken }),
+  });
+  const assigneeList = assignee.data?.data.members ?? [];
 
-      const myRes = await sender.get({ path: "me", accessToken });
-
-      if (myRes?.status < 300) {
-        setMyData(myRes.data);
-      }
-
-      if (router.pathname === "/dashboard/[boardId]") {
-        const res = await sender.get({ path: "members", id: Number(boardId), accessToken });
-
-        if (res?.status < 300) {
-          setMemberList(res.data.members);
-        }
-      }
-    })();
-  }, [dashboard, router.query]);
+  const isOwner = assigneeList?.find((v) => v.userId === myData?.id)?.isOwner;
 
   return (
     <header className={styles.header}>
       <div className={styles.grid__title}>
-        {title ? <h1 className={styles.boardname}>{title.length > 20 ? title.slice(0, 20) + "..." : title}</h1> : null}
+        {dashboardTitle ? (
+          <h1 className={styles.boardname}>
+            {dashboardTitle.length > 20 ? dashboardTitle.slice(0, 20) + "..." : dashboardTitle}
+          </h1>
+        ) : null}
       </div>
       {isOwner && (
         <>
@@ -81,10 +73,10 @@ const Header = () => {
           <InviteButton usage="header" />
         </>
       )}
-      {boardId && (
+      {!!boardId && (
         <>
           <div className={styles.grid__members}>
-            <Members members={memberList} />
+            <Members members={assigneeList} />
           </div>
           <div className={styles.splitline} />
         </>

@@ -18,9 +18,9 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import style from "./dashboard.module.css";
-import { useAtom } from "jotai";
-import { dashboardListAtom } from "@/atoms/atoms";
 import Head from "next/head";
+import { dehydrate, useQuery } from "@tanstack/react-query";
+import { clientProvider } from "@/apis/clientProvider";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -42,18 +42,12 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     columnOrder: [],
   };
 
-  const {
-    data: { dashboards },
-  } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
+  const queryClient = await clientProvider(context);
 
   for (const value of columnData) {
     entireData.columnOrder.push(value.id);
     entireData.columns[value.id] = value;
   }
-
-  const {
-    data: { members: assigneeList },
-  } = await sender.get({ path: "members", id: boardId, accessToken });
 
   if (!accessToken) {
     return {
@@ -65,24 +59,31 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { accessToken, assigneeList, boardId, dashboards, entireData },
+    props: { accessToken, boardId, entireData, dehydratedState: dehydrate(queryClient) },
   };
 };
 
-const Dashboard = ({
-  accessToken,
-  assigneeList,
-  dashboards,
-  boardId,
-  entireData,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Dashboard = ({ accessToken, boardId, entireData }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [entireList, setEntireList] = useState(entireData);
   const [isCreateModal, setIsCreateModal] = useState(false);
 
-  const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
-  if (!dashboardList.length) {
-    setDashboardList(dashboards);
-  }
+  // const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
+  // if (!dashboardList.length) {
+  //   setDashboardList(dashboards);
+  // }
+
+  const dashboards = useQuery({
+    queryKey: ["dashboards"],
+    queryFn: () =>
+      sender.get({
+        path: "dashboards",
+        method: "pagination",
+        size: 999,
+        accessToken,
+      }),
+  });
+
+  const dashboardList = dashboards?.data?.data.dashboards ?? [];
 
   const handleCreateNewColumnModalToggle = () => {
     setIsCreateModal((prevValue) => !prevValue);
@@ -183,7 +184,6 @@ const Dashboard = ({
                     columnId={column.id}
                     dashboardId={column.dashboardId}
                     accessToken={accessToken}
-                    assigneeList={assigneeList}
                     entireList={entireList}
                     setEntireList={setEntireList}
                   />

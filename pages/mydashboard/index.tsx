@@ -10,7 +10,7 @@ import useInputController from "@/hooks/useInputController";
 import stylesFromSingle from "@/modals/Modal.module.css";
 import ModalWrapper from "@/modals/ModalWrapper";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
-import { ColorType, DashBoardData } from "@/types/api.type";
+import { ColorType } from "@/types/api.type";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import Image from "next/image";
@@ -18,20 +18,16 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import styles from "./index.module.css";
-import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
-import { accessTokenAtom, dashboardListAtom } from "@/atoms/atoms";
+import { useAtomValue } from "jotai";
+import { accessTokenAtom } from "@/atoms/atoms";
 import Head from "next/head";
-import { QueryClient, dehydrate, useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { dehydrate, useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { clientProvider } from "@/apis/clientProvider";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
 
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: ["dashboards"],
-    queryFn: () => sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken }),
-  });
+  const queryClient = await clientProvider(context);
 
   if (!accessToken) {
     return {

@@ -46,7 +46,7 @@ type Req_post_signup = {
 
 type Return_post_signup = ExtendedUserType;
 
-type Req_put_me = {
+export type Req_put_me = {
   nickname: string;
   profileImageUrl?: string;
 };

@@ -7,12 +7,13 @@ import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import styles from "./mypage.module.css";
 import Head from "next/head";
+import { QueryClient, dehydrate } from "@tanstack/react-query";
+import { clientProvider } from "@/apis/clientProvider";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
-  const boardId = Number(context.query.boardId);
 
-  const { data: userData } = await sender.get({ path: "me", accessToken });
+  const queryClient = await clientProvider(context);
 
   if (!accessToken) {
     return {
@@ -24,11 +25,11 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { userData },
+    props: { dehydratedState: dehydrate(queryClient) },
   };
 };
 
-const MyPage = ({ userData }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const MyPage = () => {
   return (
     <>
       <Head>
@@ -38,7 +39,7 @@ const MyPage = ({ userData }: InferGetServerSidePropsType<typeof getServerSidePr
         <main className={styles.main}>
           <RedoButton />
           <section className={styles.section}>
-            <SettingProfile userData={userData} />
+            <SettingProfile />
             <SettingPassword />
           </section>
         </main>

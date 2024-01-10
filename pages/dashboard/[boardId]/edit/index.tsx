@@ -16,9 +16,9 @@ import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import styles from "./DashboardEdit.module.css";
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
-import { useAtom } from "jotai";
-import { dashboardListAtom } from "@/atoms/atoms";
 import Head from "next/head";
+import { dehydrate, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { clientProvider } from "@/apis/clientProvider";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
@@ -33,9 +33,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     };
   }
 
-  const {
-    data: { dashboards },
-  } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
+  const queryClient = await clientProvider(context);
 
   const {
     data: { members },
@@ -55,20 +53,47 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { accessToken, members, dashboards, invitations },
+    props: { accessToken, members, dehydratedState: dehydrate(queryClient), invitations },
   };
 };
 
 const DashboardEdit = ({
   members,
   accessToken,
-  dashboards,
   invitations,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
-  if (!dashboardList.length) {
-    setDashboardList(dashboards);
-  }
+  const dashboards = useQuery({
+    queryKey: ["dashboards"],
+    queryFn: () =>
+      sender.get({
+        path: "dashboards",
+        method: "pagination",
+        size: 999,
+        accessToken,
+      }),
+  });
+
+  const queryClient = useQueryClient();
+
+  const dashboardsMutation = useMutation({
+    mutationFn: () =>
+      putData({
+        path: "dashboard",
+        id: Number(boardId),
+        data: { title: input.value, color },
+        accessToken,
+      }),
+    onSuccess: (data) => {
+      setColor(color);
+      setPrevColor(color);
+      input.setValue("");
+      setBoardName(data?.data.title);
+      router.push(`/dashboard/${boardId}/edit`);
+      queryClient.invalidateQueries({ queryKey: ["dashboards"] });
+    },
+  });
+
+  const dashboardList = dashboards?.data?.data.dashboards ?? [];
 
   const router = useRouter();
   const boardId = router?.query.boardId;
@@ -113,26 +138,7 @@ const DashboardEdit = ({
   const { wrappedFunction: putData } = useApi("put");
 
   const handleDashboardEditClick = async () => {
-    const res = await putData({
-      path: "dashboard",
-      id: Number(boardId),
-      data: { title: input.value, color },
-      accessToken,
-    });
-
-    if (res?.status === 200) {
-      setDashboardList((prevValue) => {
-        const index = prevValue.findIndex((dashboard) => dashboard.id === res.data.id);
-        prevValue.splice(index, 1, res.data);
-
-        return [...prevValue];
-      });
-      setColor(color);
-      setPrevColor(color);
-      input.setValue("");
-      setBoardName(res.data.title);
-      router.push(`/dashboard/${boardId}/edit`);
-    }
+    dashboardsMutation.mutate();
   };
 
   return (

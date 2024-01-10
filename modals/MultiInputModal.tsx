@@ -16,6 +16,10 @@ import useApi from "@/hooks/useApi";
 import formatDateString from "@/utils/formatDateString";
 import { multiModalDate, multiModalExplain, multiModalTag, multiModalTitle } from "@/constants/inputConfig";
 import changeImageFileToURL from "@/utils/changeImageFileToURL";
+import { useQuery } from "@tanstack/react-query";
+import sender from "@/apis/sender";
+import { useAtomValue } from "jotai";
+import { accessTokenAtom } from "@/atoms/atoms";
 
 interface MultiInputModalProp {
   title: string;
@@ -23,7 +27,6 @@ interface MultiInputModalProp {
   columnId: number;
   dashboardId: number;
   setEntireList: Dispatch<SetStateAction<EntireData>>;
-  assigneeList: Member[];
   handleModalClose: () => void;
 }
 
@@ -34,8 +37,16 @@ const MultiInputModal = ({
   columnId,
   setEntireList,
   dashboardId,
-  assigneeList,
 }: MultiInputModalProp) => {
+  const accessToken = useAtomValue(accessTokenAtom);
+
+  const assignee = useQuery({
+    queryKey: ["member", dashboardId],
+    queryFn: () => sender.get({ path: "members", id: dashboardId, accessToken }),
+  });
+
+  const assigneeList = assignee.data?.data.members ?? [];
+
   const modalTitle = useInputController(multiModalTitle());
 
   const modalExplain = useInputController(multiModalExplain());

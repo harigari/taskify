@@ -26,7 +26,6 @@ interface ColumnProps {
   accessToken: string;
   title: string;
   dashboardId: number;
-  assigneeList: Member[];
   columnId: number;
   entireList: EntireData;
   setEntireList: Dispatch<SetStateAction<EntireData>>;
@@ -44,15 +43,7 @@ type InfRes = {
   totalCount: number;
 };
 
-export const Column = ({
-  accessToken,
-  title,
-  dashboardId,
-  assigneeList,
-  columnId,
-  entireList,
-  setEntireList,
-}: ColumnProps) => {
+export const Column = ({ accessToken, title, dashboardId, columnId, entireList, setEntireList }: ColumnProps) => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
@@ -237,7 +228,6 @@ export const Column = ({
           title="할 일 생성"
           buttonText="생성"
           columnId={columnId}
-          assigneeList={assigneeList}
           dashboardId={dashboardId}
           handleModalClose={handleCreateModalToggle}
         />

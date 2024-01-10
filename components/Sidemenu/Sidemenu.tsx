@@ -35,7 +35,6 @@ const Sidemenu = () => {
         size: 999,
         accessToken,
       }),
-    enabled: accessToken !== "",
   });
 
   const dashboardList = dashboards?.data?.data.dashboards ?? [];
