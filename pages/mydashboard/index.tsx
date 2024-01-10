@@ -18,16 +18,20 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import styles from "./index.module.css";
-import { atom, useAtom } from "jotai";
-import { dashboardListAtom } from "@/atoms/atoms";
+import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
+import { accessTokenAtom, dashboardListAtom } from "@/atoms/atoms";
 import Head from "next/head";
+import { QueryClient, dehydrate, useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
 
-  const {
-    data: { dashboards },
-  } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["dashboards"],
+    queryFn: () => sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken }),
+  });
 
   if (!accessToken) {
     return {
@@ -39,23 +43,34 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { accessToken, dashboards },
+    props: { dehydratedState: dehydrate(queryClient) },
   };
 };
 
 // 엑세스토큰
-export default function Mydashboard({
-  accessToken,
-  dashboards,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Mydashboard({}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const accessToken = useAtomValue(accessTokenAtom);
 
   const router = useRouter();
 
-  const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
-  if (!dashboardList.length) {
-    setDashboardList(dashboards);
-  }
+  const dashboards = useQuery({
+    queryKey: ["dashboards"],
+    queryFn: () => sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken }),
+  });
+
+  const dashboardList = dashboards?.data?.data.dashboards ?? [];
+
+  const queryClient = useQueryClient();
+
+  const dashboardsMutation = useMutation({
+    mutationFn: () => sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["dashboards"] });
+    },
+  });
+
   const handleModalToggle = () => {
     setIsOpen((prevValue) => !prevValue);
   };
@@ -85,9 +100,7 @@ export default function Mydashboard({
     const res = await postData({ path: "dashboard", accessToken, data });
 
     if (res?.status === 201) {
-      setDashboardList((prevValue) => {
-        return [res.data, ...prevValue];
-      });
+      dashboardsMutation.mutate();
 
       handleModalToggle();
       column.input.setValue("");

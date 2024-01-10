@@ -12,6 +12,8 @@ import { useRouter } from "next/router";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
+import { accessTokenAtom } from "@/atoms/atoms";
+import { useSetAtom } from "jotai";
 
 type RefProps = "email" | "nickname" | "password" | "passwordCheck";
 type RefValue = HTMLElement | null;
@@ -46,6 +48,8 @@ const Signin = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
   ];
   const router = useRouter();
 
+  const setAccessToken = useSetAtom(accessTokenAtom);
+
   const isError = () => {
     return inputs.some(([wrapper, input]) => {
       return !!wrapper.errorText || !input.value;
@@ -78,6 +82,7 @@ const Signin = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
 
     if (signinRes.status === 201) {
       document.cookie = `accessToken=${signinRes.data.accessToken}`;
+      setAccessToken(signinRes.data.accessToken);
       router.push("/mydashboard");
       return;
     }
@@ -89,7 +94,13 @@ const Signin = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSid
         <title>Taskify - 로그인</title>
       </Head>
       <div className={styles.container}>
-        <Image priority width={200} height={279} src="/images/logo-purple-vertical.png" alt="이전 페이지로 돌아갑니다." />
+        <Image
+          priority
+          width={200}
+          height={279}
+          src="/images/logo-purple-vertical.png"
+          alt="이전 페이지로 돌아갑니다."
+        />
         <p className={styles.title}>오늘도 만나서 반가워요!</p>
         <form className={styles.form} onSubmit={handleSubmit}>
           {inputs.map(([wrapper, input], index) => {

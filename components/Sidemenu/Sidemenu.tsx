@@ -15,51 +15,30 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "./Sidemenu.module.css";
-import { useAtomValue } from "jotai";
-import { dashboardListAtom } from "@/atoms/atoms";
+import { atom, useAtomValue } from "jotai";
+import { accessTokenAtom } from "@/atoms/atoms";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 const Sidemenu = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState<ColorType>("#7ac555");
 
-  const dashboardList = useAtomValue(dashboardListAtom);
+  const accessToken = useAtomValue(accessTokenAtom);
 
-  // const { isVisible, setIsVisible, myRef } = useInfScroll();
+  const dashboards = useQuery({
+    queryKey: ["dashboards"],
+    queryFn: () =>
+      sender.get({
+        path: "dashboards",
+        method: "pagination",
+        size: 999,
+        accessToken,
+      }),
+    enabled: accessToken !== "",
+  });
 
-  // const [pagination, setPagination] = useState<Pagination>({
-  //   size: 100,
-  // });
-
-  // const getDashboardList = async () => {
-  //   const accessToken = getAccessTokenFromDocument("accessToken");
-
-  //   const { size, cursorId } = pagination;
-
-  //   let res;
-  //   if (cursorId) {
-  //     res = await sender.get({ path: "dashboards", method: "infiniteScroll", size, cursorId, accessToken });
-  //   } else {
-  //     res = await sender.get({ path: "dashboards", method: "infiniteScroll", size, accessToken });
-  //   }
-  //   if (res.status !== 200) return;
-
-  //   const { dashboards, cursorId: cursor } = res.data;
-
-  //   setPagination((prev) => {
-  //     return { ...prev, cursorId: cursor };
-  //   });
-
-  //   setList((prev) => [...prev, ...dashboards]);
-  //   setIsVisible(false);
-  // };
-
-  // useEffect(() => {
-  //   if (pagination.cursorId === null) return;
-  //   if (isVisible) {
-  //     getDashboardList();
-  //   }
-  // }, [isVisible]);
+  const dashboardList = dashboards?.data?.data.dashboards ?? [];
 
   const column = useInputController({
     inputConfig: {
@@ -80,8 +59,6 @@ const Sidemenu = () => {
       title: column.input.value,
       color: selectedColor,
     };
-
-    const accessToken = getAccessTokenFromDocument("accessToken");
     const res = await sender.post({ path: "dashboard", accessToken, data });
 
     if (res?.status === 201) {
@@ -141,7 +118,6 @@ const Sidemenu = () => {
             </Link>
           </li>
         ))}
-        {/* <p ref={myRef}></p> */}
       </ul>
 
       {isOpen && (

@@ -10,7 +10,8 @@ import ProfileIcon from "../Members/ProfileIcon";
 import styles from "./Header.module.css";
 import HeaderButton from "./HeaderButton/HeaderButton";
 import { useAtom, useAtomValue } from "jotai";
-import { dashboardListAtom } from "@/atoms/atoms";
+import { accessTokenAtom, dashboardListAtom } from "@/atoms/atoms";
+import { useQuery } from "@tanstack/react-query";
 
 const WELCOME_MESSAGE = [
   "우리가 하는 일은 큰 일이죠. 큰일나기 전까지는요.",
@@ -19,17 +20,22 @@ const WELCOME_MESSAGE = [
   "할 수 있는 만큼만 하기.",
 ];
 
-interface HeaderProps {
-  dashboard?: DashBoardData;
-}
-
 const Header = () => {
   const router = useRouter();
   const boardId = router?.query.boardId;
   const [memberList, setMemberList] = useState<Member[]>([]);
   const [myData, setMyData] = useState<ExtendedUserType>();
 
-  const dashboardList = useAtomValue(dashboardListAtom);
+  const accessToken = useAtomValue(accessTokenAtom);
+
+  const dashboards = useQuery({
+    queryKey: ["dashboards"],
+    queryFn: () => sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken }),
+    enabled: !!accessToken,
+  });
+
+  const dashboardList = dashboards.data?.data.dashboards ?? [];
+
   const dashboard = dashboardList.find((item) => {
     return item.id === Number(boardId);
   });
