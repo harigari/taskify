@@ -45,7 +45,7 @@ const Header = () => {
 
   // 대시보드에 초대된 닝겐들
   const assignee = useQuery({
-    queryKey: ["member", boardId],
+    queryKey: ["members", boardId],
     queryFn: () => sender.get({ path: "members", id: boardId, accessToken }),
   });
   const assigneeList = assignee.data?.data.members ?? [];

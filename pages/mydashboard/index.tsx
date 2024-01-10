@@ -10,7 +10,7 @@ import useInputController from "@/hooks/useInputController";
 import stylesFromSingle from "@/modals/Modal.module.css";
 import ModalWrapper from "@/modals/ModalWrapper";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
-import { ColorType } from "@/types/api.type";
+import { ColorType, Req_post_dashboard } from "@/types/api.type";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import Image from "next/image";
@@ -61,9 +61,13 @@ export default function Mydashboard({}: InferGetServerSidePropsType<typeof getSe
   const queryClient = useQueryClient();
 
   const dashboardsMutation = useMutation({
-    mutationFn: () => sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken }),
+    mutationFn: (data: Req_post_dashboard) => sender.post({ path: "dashboard", accessToken, data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["dashboards"] });
+
+      handleModalToggle();
+      column.input.setValue("");
+      setSelectedColor("#7ac555");
     },
   });
 
@@ -93,22 +97,7 @@ export default function Mydashboard({}: InferGetServerSidePropsType<typeof getSe
       color: selectedColor,
     };
 
-    const res = await postData({ path: "dashboard", accessToken, data });
-
-    if (res?.status === 201) {
-      dashboardsMutation.mutate();
-
-      handleModalToggle();
-      column.input.setValue("");
-      setSelectedColor("#7ac555");
-
-      const boardId = router.query.boardId;
-      if (boardId) {
-        router.push(`/dashboard/${boardId}`);
-        return;
-      }
-      router.push(router.pathname);
-    }
+    dashboardsMutation.mutate(data);
   };
 
   return (

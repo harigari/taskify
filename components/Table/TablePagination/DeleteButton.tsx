@@ -6,26 +6,43 @@ import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
 import { SetStateAction } from "jotai";
 import Image from "next/image";
 import { Dispatch, FormEvent, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
+import { accessTokenAtom } from "@/atoms/atoms";
+import { useRouter } from "next/router";
 
 interface DeleteButtonProps {
   data: Member;
-  setData: Dispatch<SetStateAction<(Member | InvitationData)[]>>;
 }
 
-const DeleteButton = ({ data, setData }: DeleteButtonProps) => {
+const DeleteButton = ({ data }: DeleteButtonProps) => {
   const [isMemberDeleteModalOpen, setIsMemberDeleteModalOpen] = useState(false);
   const handleMemberDeleteModalToggle = () => {
     setIsMemberDeleteModalOpen((prev) => !prev);
   };
 
+  const router = useRouter();
+
+  const boardId = Number(router.query.boardId);
+
+  const accessToken = useAtomValue(accessTokenAtom);
+
+  const queryClient = useQueryClient();
+
+  const memberMutation = useMutation({
+    mutationFn: () =>
+      sender.delete({
+        path: "member",
+        id: data.id,
+        accessToken,
+      }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["members", boardId] }),
+  });
+
   const handleMemberDelete = async (e: FormEvent) => {
     e.preventDefault();
-    const accessToken = getAccessTokenFromDocument("accessToken");
-    const res = await sender.delete({ path: "member", id: data.id, accessToken });
-    if (res?.status === 204) {
-      setData((prev) => prev.filter((member) => member.id !== data.id));
-      handleMemberDeleteModalToggle();
-    }
+    const res = await memberMutation.mutate();
+    handleMemberDeleteModalToggle();
   };
 
   if ("isOwner" in data && data.isOwner) {

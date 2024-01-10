@@ -10,6 +10,10 @@ import headerButtonStyles from "@/components/Header/Header.module.css";
 import { Member, InvitationData } from "@/types/api.type";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
+import { accessTokenAtom } from "@/atoms/atoms";
+import sender from "@/apis/sender";
 
 type Usage = "header" | "edit_page";
 
@@ -17,9 +21,8 @@ interface InviteButtonProps {
   boardId?: number;
   usage: Usage;
   className?: string;
-  setData?: Dispatch<SetStateAction<(Member | InvitationData)[]>> | undefined;
 }
-const InviteButton = ({ usage, className, setData }: InviteButtonProps) => {
+const InviteButton = ({ usage, className }: InviteButtonProps) => {
   const inviteInput = useInputController(signinEmail);
 
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
@@ -33,35 +36,35 @@ const InviteButton = ({ usage, className, setData }: InviteButtonProps) => {
     inviteInput.input.setValue("");
   };
 
-  const { wrappedFunction: postData } = useApi("post");
+  const accessToken = useAtomValue(accessTokenAtom);
+
+  const queryClient = useQueryClient();
+
+  const invitationMutation = useMutation({
+    mutationFn: () =>
+      sender.post({
+        path: "invitation",
+        id: boardId,
+        data: {
+          email: inviteInput.input.value,
+        },
+        accessToken,
+      }),
+    onSuccess: (res) => {
+      if (res.message) {
+        inviteInput.input.setValue("");
+        inviteInput.wrapper.setErrorText(res.message);
+        return;
+      }
+      handleInviteModalToggle();
+      inviteInput.input.setValue("");
+      queryClient.invalidateQueries({ queryKey: ["dashboardInvitations", boardId] });
+    },
+  });
 
   const handleInviteUserSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    const accessToken = getAccessTokenFromDocument("accessToken");
-    const res = await postData({
-      path: "invitation",
-      id: Number(boardId),
-      data: {
-        email: inviteInput.input.value,
-      },
-      accessToken,
-    });
-
-    if (!res) return;
-
-    if (res.status === 201) {
-      handleInviteModalToggle();
-      inviteInput.input.setValue("");
-      if (setData) {
-        setData((prev) => [res.data, ...prev]);
-      }
-    }
-
-    if (res.status > 400 && res.message) {
-      inviteInput.input.setValue("");
-      inviteInput.wrapper.setErrorText(res.message);
-    }
+    await invitationMutation.mutate();
   };
 
   return (
@@ -76,7 +79,7 @@ const InviteButton = ({ usage, className, setData }: InviteButtonProps) => {
       {usage === "edit_page" && <InnerInviteButton className={className} onClick={handleInviteModalToggle} />}
       {isInviteModalOpen && (
         <SingleInputModal
-          disabled={!inviteInput.input.value}
+          disabled={!inviteInput.input.value || !!inviteInput.wrapper.errorText}
           handleModalClose={handleInviteModalToggle}
           buttonText="초대"
           onSubmit={handleInviteUserSubmit}

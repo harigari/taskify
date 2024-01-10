@@ -22,13 +22,13 @@ export const clientProvider = async (context: GetServerSidePropsContext) => {
 
   if (boardId) {
     await queryClient.prefetchQuery({
-      queryKey: ["member", boardId],
+      queryKey: ["members", boardId],
       queryFn: () => sender.get({ path: "members", id: boardId, accessToken }),
     });
 
     await queryClient.prefetchQuery({
-      queryKey: ["columns", boardId],
-      queryFn: () => sender.get({ path: "columns", id: boardId, accessToken }),
+      queryKey: ["dashboardInvitations", boardId],
+      queryFn: () => sender.get({ path: "dashboardInvitations", id: boardId, accessToken }),
     });
   }
 

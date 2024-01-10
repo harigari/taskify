@@ -41,7 +41,7 @@ const MultiInputModal = ({
   const accessToken = useAtomValue(accessTokenAtom);
 
   const assignee = useQuery({
-    queryKey: ["member", dashboardId],
+    queryKey: ["members", dashboardId],
     queryFn: () => sender.get({ path: "members", id: dashboardId, accessToken }),
   });
 

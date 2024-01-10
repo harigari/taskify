@@ -8,20 +8,51 @@ import AlertModal from "@/modals/AlertModal";
 import styles from "./Comment.module.css";
 import { MouseEvent, ChangeEvent } from "react";
 import clsx from "clsx";
+import sender from "@/apis/sender";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 type Usage = "edit" | "show";
 
 interface CommentProps {
   data: CommentData;
-  setCommentList: Dispatch<SetStateAction<CommentData[]>>;
   setEditingId: Dispatch<SetStateAction<number | undefined>>;
   usage: Usage;
-  handleEditCancel: (e: MouseEvent) => void;
+  cardId: number;
 }
 
-const Comment = ({ data, setCommentList, setEditingId, usage, handleEditCancel }: CommentProps) => {
+const Comment = ({ data, setEditingId, cardId, usage }: CommentProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const accessToken = getAccessTokenFromDocument("accessToken");
+
+  // 댓글 수정 인풋
+  const initialValue = data.content;
+  const [editValue, setEditValue] = useState(initialValue);
+
+  const queryClient = useQueryClient();
+
+  const commentMutation = useMutation({
+    mutationFn: (mutateType: string) => {
+      if (mutateType === "delete") {
+        return sender.delete({ path: "comment", id: data.id, accessToken });
+      } else {
+        return sender.put({
+          path: "comment",
+          data: {
+            content: editValue,
+          },
+          id: data.id as number,
+          accessToken,
+        });
+      }
+    },
+    onSuccess: (data, mutateType) => {
+      queryClient.invalidateQueries({ queryKey: ["comments", cardId] });
+
+      if (mutateType === "put") {
+        setEditingId(undefined);
+      }
+    },
+  });
 
   // 댓글 삭제 모달 토글
   const handleDeleteModalToggle = () => {
@@ -33,51 +64,29 @@ const Comment = ({ data, setCommentList, setEditingId, usage, handleEditCancel }
 
   const handleDeleteSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await deleteData({
-      path: "comment",
-      id: data.id,
-      accessToken,
-    });
-
-    if (res?.status === 204) {
-      setIsDeleteModalOpen(false);
-      setCommentList((prev) => prev?.filter((v) => v.id !== data.id));
-    }
+    commentMutation.mutate("delete");
   };
 
   const handleEditClick = () => {
     setEditingId(data.id);
   };
 
-  // 댓글 수정 인풋
-  const initialValue = data.content;
-  const [editValue, setEditValue] = useState(initialValue);
-
   const handleEditInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setEditValue(e.target.value);
   };
 
   // 댓글 수정하기
-  const { wrappedFunction: putData } = useApi("put");
-
   const handleEditSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await putData({
-      path: "comment",
-      data: {
-        content: editValue,
-      },
-      id: data.id as number,
-      accessToken,
-    });
-    if (res?.status === 200) {
-      setCommentList((prev) => prev?.map((comment) => (comment.id === data.id ? res.data : comment)));
-      setEditingId(undefined);
-    }
+    commentMutation.mutate("put");
   };
 
-  // 내 정보 가져오기
-  const { data: myData } = useApi("get", { path: "me", accessToken });
+  const userData = useQuery({
+    queryKey: ["user"],
+    queryFn: () => sender.get({ path: "me", accessToken: accessToken }),
+  });
+
+  const myData = userData?.data?.data;
 
   return (
     <div className={styles.wrapper}>
@@ -98,7 +107,13 @@ const Comment = ({ data, setCommentList, setEditingId, usage, handleEditCancel }
               <button className={styles.button} disabled={!editValue.trim()} onClick={handleEditSubmit}>
                 수정
               </button>
-              <button className={styles.button} type="button" onClick={handleEditCancel}>
+              <button
+                className={styles.button}
+                type="button"
+                onClick={() => {
+                  setEditingId(undefined);
+                }}
+              >
                 취소
               </button>
             </div>

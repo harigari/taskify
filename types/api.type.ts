@@ -241,7 +241,7 @@ type Return_get_dashboards = DashBoardListData & {
   totalCount: number;
 };
 
-type Req_post_dashboard = {
+export type Req_post_dashboard = {
   title: string;
   color: ColorType;
 };

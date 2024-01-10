@@ -22,7 +22,6 @@ import { clientProvider } from "@/apis/clientProvider";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
-  const boardId = Number(context.query["boardId"]);
 
   if (!accessToken) {
     return {
@@ -35,33 +34,12 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const queryClient = await clientProvider(context);
 
-  const {
-    data: { members },
-  } = await sender.get({ path: "members", id: Number(boardId), accessToken });
-
-  const {
-    data: { invitations },
-  } = await sender.get({ path: "dashboardInvitations", id: Number(boardId), accessToken });
-
-  if (!accessToken) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/signin",
-      },
-    };
-  }
-
   return {
-    props: { accessToken, members, dehydratedState: dehydrate(queryClient), invitations },
+    props: { accessToken, dehydratedState: dehydrate(queryClient) },
   };
 };
 
-const DashboardEdit = ({
-  members,
-  accessToken,
-  invitations,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const DashboardEdit = ({ accessToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const dashboards = useQuery({
     queryKey: ["dashboards"],
     queryFn: () =>
@@ -107,10 +85,6 @@ const DashboardEdit = ({
   const [prevColor, setPrevColor] = useState(dashboardData?.color ?? "#760dde");
 
   const [color, setColor] = useState<ColorType>(prevColor);
-
-  const [memberList, setMemberList] = useState<(Member | InvitationData)[]>(members);
-
-  const [invitationList, setInvitationList] = useState<(Member | InvitationData)[]>(invitations);
 
   const [boardName, setBoardName] = useState(dashboard?.title);
 
@@ -178,8 +152,8 @@ const DashboardEdit = ({
 
           <TablePagination
             row={4}
-            data={memberList}
-            setData={setMemberList}
+            // data={memberList}
+            // setData={setMemberList}
             title="구성원"
             tableIndex={{ 이름: "nickname", "": "deleteButton" }}
           />
@@ -188,8 +162,8 @@ const DashboardEdit = ({
 
           <TablePagination
             row={4}
-            data={invitationList}
-            setData={setInvitationList}
+            // data={invitationList}
+            // setData={setInvitationList}
             invite
             title="초대 내역"
             tableIndex={{ 이메일: "email", "": "cancelButton" }}

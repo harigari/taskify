@@ -74,7 +74,7 @@ const EditInputModal = ({
   const accessToken = useAtomValue(accessTokenAtom);
 
   const assignees = useQuery({
-    queryKey: ["member", dashboardId],
+    queryKey: ["members", dashboardId],
     queryFn: () => sender.get({ path: "members", id: dashboardId, accessToken }),
   });
 

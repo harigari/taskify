@@ -13,31 +13,48 @@ import clsx from "clsx";
 import { useAtom } from "jotai";
 import { dashboardListAtom } from "@/atoms/atoms";
 import DeleteButton from "@/components/Table/TablePagination/DeleteButton";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
+import { accessTokenAtom } from "@/atoms/atoms";
+
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
 };
 
 interface TableListProps {
   data: (Member | InvitationData)[];
-  setData: Dispatch<SetStateAction<(Member | InvitationData)[]>>;
   tableIndex: TableIndexType;
   myRef?: RefObject<HTMLParagraphElement>;
 }
 
-const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
+const TableList = ({ data, tableIndex, myRef }: TableListProps) => {
   const column = Object.keys(tableIndex).length;
   const isAccept = Object.values(tableIndex).includes("acceptButton");
   const router = useRouter();
 
   const boardId = Number(router.query.boardId);
 
-  const { wrappedFunction: deleteData } = useApi("delete");
   const [isMemberDeleteModalOpen, setIsMemberDeleteModalOpen] = useState(false);
-  const handleMemberDeleteModalToggle = () => {
-    setIsMemberDeleteModalOpen((prev) => !prev);
-  };
 
-  const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
+  const dashboardMutation = useMutation({
+    mutationFn: () => sender.get({ path: "dashboard", id: boardId, accessToken }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["dashboard", boardId] }),
+  });
+
+  const accessToken = useAtomValue(accessTokenAtom);
+
+  const queryClient = useQueryClient();
+
+  const invitationMutation = useMutation({
+    mutationFn: (data: InvitationData) =>
+      sender.delete({
+        path: "dashboardInvitations",
+        dashboardId: boardId,
+        invitationId: data.id,
+        accessToken,
+      }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["dashboardInvitations", boardId] }),
+  });
 
   return (
     <ul className={clsx(styles.list, { [styles.list__mobile]: isAccept })}>
@@ -96,36 +113,7 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
                   });
 
                   if (res.status === 200 && res.data.inviteAccepted === true) {
-                    const { data } = await sender.get({ path: "dashboard", id: res.data.dashboard.id, accessToken });
-
-                    setDashboardList((prevList) => {
-                      prevList.push(data);
-                      prevList.sort((a, b) => {
-                        if (a.createdByMe !== b.createdByMe) {
-                          // createdByMe가 다른 경우 true를 우선하여 정렬
-                          return a.createdByMe ? -1 : 1;
-                        } else if (a.createdByMe && b.createdByMe) {
-                          // createdByMe가 둘 다 true인 경우 createdAt으로 최신 순으로 정렬
-                          return Number(b.createdAt) - Number(a.createdAt);
-                        } else if (!a.createdByMe && !b.createdByMe) {
-                          // createdByMe가 둘 다 false인 경우 userId로 정렬
-                          if (b.userId !== a.userId) {
-                            return b.userId - a.userId;
-                          } else {
-                            // userId가 같으면 createdAt으로 최신 순으로 정렬
-                            return Number(b.createdAt) - Number(a.createdAt);
-                          }
-                        }
-                        return 0;
-                      });
-
-                      return prevList;
-                    });
-                  }
-
-                  if (res.status < 300) {
-                    setData((prev) => prev.filter((v) => v.id !== data.id));
-                    router.push("/mydashboard");
+                    dashboardMutation.mutate();
                   }
                 };
 
@@ -144,7 +132,11 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
             case v === "deleteButton":
               {
                 if (!("nickname" in data)) return; // 구성원 삭제하기
-                arr.push(<DeleteButton data={data} setData={setData} />);
+                arr.push(
+                  <Fragment key={data.id}>
+                    <DeleteButton data={data} />
+                  </Fragment>
+                );
               }
               continue;
             case v === "cancelButton":
@@ -152,15 +144,8 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
                 // 보낸 초대 요청 취소하기
                 const handleInviteCancel = async (e: FormEvent) => {
                   e.preventDefault();
-                  const accessToken = getAccessTokenFromDocument("accessToken");
-                  const res = await deleteData({
-                    path: "dashboardInvitations",
-                    dashboardId: boardId,
-                    invitationId: data.id,
-                    accessToken,
-                  });
-                  if (res?.status === 204) {
-                    setData((prev) => prev.filter((invitation) => invitation.id !== data.id));
+                  if ("invitee" in data) {
+                    await invitationMutation.mutate(data);
                   }
                 };
 
@@ -188,11 +173,6 @@ const TableList = ({ data, tableIndex, setData, myRef }: TableListProps) => {
           </li>
         );
       })}
-      {/* {row !== Infinity &&
-        data.length < row &&
-        Array(row - data.length)
-          .fill("")
-          .map((v, i) => <li className={styles.row} key={i}></li>)} */}
       {data.length === 0 ? (
         <div className={styles.empty}>
           <Image

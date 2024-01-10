@@ -3,14 +3,17 @@ import TableIndex from "@/components/Table/TableIndex/TableIndex";
 import TableList from "@/components/Table/TableList/TableList";
 import HideButton from "@/components/Table/TablePagination/HideButton";
 import SearchInput from "@/components/Table/TablePagination/SearchInput";
-import { BasicUserType, InvitationData, Member } from "@/types/api.type";
 import { clsx } from "clsx";
 import Image from "next/image";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import styles from "./TablePagination.module.css";
 import InviteButton from "@/components/Buttons/InviteButton/InviteButton";
 
 import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
+import sender from "@/apis/sender";
+import { useAtomValue } from "jotai";
+import { accessTokenAtom } from "@/atoms/atoms";
 
 type TableIndexType = {
   [a: string]: "nickname" | "dashboard" | "inviter" | "email" | "deleteButton" | "acceptButton" | "cancelButton";
@@ -18,25 +21,31 @@ type TableIndexType = {
 
 interface TableProps {
   title: string;
-  data: (Member | InvitationData)[];
   row?: number;
   tableIndex: TableIndexType;
   invite?: boolean;
   search?: boolean;
-  setData: Dispatch<SetStateAction<(Member | InvitationData)[]>>;
 }
 
-const TablePagination = ({
-  title,
-  data = [],
-  row = Infinity,
-  tableIndex,
-  invite = false,
-  search = false,
-  setData,
-}: TableProps) => {
+const TablePagination = ({ title, row = Infinity, tableIndex, invite = false, search = false }: TableProps) => {
   const router = useRouter();
   const boardId = Number(router.query.boardId);
+
+  const accessToken = useAtomValue(accessTokenAtom);
+
+  const invitations = useQuery({
+    queryKey: ["dashboardInvitations", boardId],
+    queryFn: () => sender.get({ path: "dashboardInvitations", id: boardId, accessToken }),
+  });
+
+  const members = useQuery({
+    queryKey: ["members", boardId],
+    queryFn: () => sender.get({ path: "members", id: boardId, accessToken }),
+  });
+
+  const invitationsData = invitations?.data?.data.invitations ?? [];
+  const membersData = members?.data?.data.members ?? [];
+  const data = invite ? invitationsData : membersData;
 
   const entirePageNum = Math.ceil(data.length / row);
   const [pageCount, setPageCount] = useState(1);
@@ -85,7 +94,7 @@ const TablePagination = ({
             />
           </div>
         )}
-        {invite && <InviteButton setData={setData} boardId={boardId} usage="edit_page" />}
+        {invite && <InviteButton boardId={boardId} usage="edit_page" />}
       </div>
 
       {data.length > 0 ? (
@@ -93,8 +102,8 @@ const TablePagination = ({
           {isOpen && (
             <>
               {search && <SearchInput setKeyword={setKeyword} />}
-              <TableIndex data={rowData} setData={setData} tableIndex={tableIndex} invite={invite} />
-              <TableList data={rowData} setData={setData} tableIndex={tableIndex} />
+              <TableIndex data={rowData} tableIndex={tableIndex} invite={invite} />
+              <TableList data={rowData} tableIndex={tableIndex} />
             </>
           )}
           <HideButton isOpen={isOpen} setIsOpen={setIsOpen} />

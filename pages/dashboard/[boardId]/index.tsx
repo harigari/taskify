@@ -67,11 +67,6 @@ const Dashboard = ({ accessToken, boardId, entireData }: InferGetServerSideProps
   const [entireList, setEntireList] = useState(entireData);
   const [isCreateModal, setIsCreateModal] = useState(false);
 
-  // const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
-  // if (!dashboardList.length) {
-  //   setDashboardList(dashboards);
-  // }
-
   const dashboards = useQuery({
     queryKey: ["dashboards"],
     queryFn: () =>
