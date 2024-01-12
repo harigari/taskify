@@ -7,59 +7,21 @@ import useInputController from "@/hooks/useInputController";
 import stylesFromSingle from "@/modals/Modal.module.css";
 import ModalWrapper from "@/modals/ModalWrapper";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
-import { ColorType, DashBoardData } from "@/types/api.type";
-import { getAccessTokenFromDocument } from "@/utils/getAccessToken";
+import { ColorType, Req_post_dashboard } from "@/types/api.type";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import styles from "./Sidemenu.module.css";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
-import { dashboardListAtom } from "@/atoms/atoms";
+import { accessTokenAtom } from "@/atoms/atoms";
 
 const Sidemenu = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState<ColorType>("#7ac555");
-
-  const dashboardList = useAtomValue(dashboardListAtom);
-
-  // const { isVisible, setIsVisible, myRef } = useInfScroll();
-
-  // const [pagination, setPagination] = useState<Pagination>({
-  //   size: 100,
-  // });
-
-  // const getDashboardList = async () => {
-  //   const accessToken = getAccessTokenFromDocument("accessToken");
-
-  //   const { size, cursorId } = pagination;
-
-  //   let res;
-  //   if (cursorId) {
-  //     res = await sender.get({ path: "dashboards", method: "infiniteScroll", size, cursorId, accessToken });
-  //   } else {
-  //     res = await sender.get({ path: "dashboards", method: "infiniteScroll", size, accessToken });
-  //   }
-  //   if (res.status !== 200) return;
-
-  //   const { dashboards, cursorId: cursor } = res.data;
-
-  //   setPagination((prev) => {
-  //     return { ...prev, cursorId: cursor };
-  //   });
-
-  //   setList((prev) => [...prev, ...dashboards]);
-  //   setIsVisible(false);
-  // };
-
-  // useEffect(() => {
-  //   if (pagination.cursorId === null) return;
-  //   if (isVisible) {
-  //     getDashboardList();
-  //   }
-  // }, [isVisible]);
 
   const column = useInputController({
     inputConfig: {
@@ -69,9 +31,36 @@ const Sidemenu = () => {
     labelConfig: { labelName: "대시보드 이름" },
   });
 
+  const accessToken = useAtomValue(accessTokenAtom);
+
+  const dashboards = useQuery({
+    queryKey: ["dashboards"],
+    queryFn: () =>
+      sender.get({
+        path: "dashboards",
+        method: "pagination",
+        size: 999,
+        accessToken,
+      }),
+  });
+
+  const dashboardList = dashboards?.data?.data.dashboards ?? [];
+
   const handleModalToggle = () => {
     setIsOpen((prevValue) => !prevValue);
   };
+
+  const queryClient = useQueryClient();
+
+  const dashboardMutation = useMutation({
+    mutationFn: (data: Req_post_dashboard) => sender.post({ path: "dashboard", accessToken, data }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["dashboards"] });
+      handleModalToggle();
+      column.input.setValue("");
+      setSelectedColor("#7ac555");
+    },
+  });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -81,21 +70,7 @@ const Sidemenu = () => {
       color: selectedColor,
     };
 
-    const accessToken = getAccessTokenFromDocument("accessToken");
-    const res = await sender.post({ path: "dashboard", accessToken, data });
-
-    if (res?.status === 201) {
-      handleModalToggle();
-      column.input.setValue("");
-      setSelectedColor("#7ac555");
-
-      const boardId = router.query.boardId;
-      if (boardId) {
-        router.push(`/dashboard/${boardId}`);
-        return;
-      }
-      router.push(router.pathname);
-    }
+    dashboardMutation.mutate(data);
   };
 
   return (
@@ -141,7 +116,6 @@ const Sidemenu = () => {
             </Link>
           </li>
         ))}
-        {/* <p ref={myRef}></p> */}
       </ul>
 
       {isOpen && (

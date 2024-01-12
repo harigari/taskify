@@ -10,7 +10,8 @@ import ProfileIcon from "../Members/ProfileIcon";
 import styles from "./Header.module.css";
 import HeaderButton from "./HeaderButton/HeaderButton";
 import { useAtom, useAtomValue } from "jotai";
-import { dashboardListAtom } from "@/atoms/atoms";
+import { accessTokenAtom, dashboardListAtom } from "@/atoms/atoms";
+import { useQuery } from "@tanstack/react-query";
 
 const WELCOME_MESSAGE = [
   "우리가 하는 일은 큰 일이죠. 큰일나기 전까지는요.",
@@ -18,45 +19,34 @@ const WELCOME_MESSAGE = [
   "오늘도 좋은 하루 되세요!",
   "할 수 있는 만큼만 하기.",
 ];
-
-interface HeaderProps {
-  dashboard?: DashBoardData;
-}
-
 const Header = () => {
   const router = useRouter();
   const boardId = router?.query.boardId;
-  const [memberList, setMemberList] = useState<Member[]>([]);
-  const [myData, setMyData] = useState<ExtendedUserType>();
 
-  const dashboardList = useAtomValue(dashboardListAtom);
+  const accessToken = useAtomValue(accessTokenAtom);
+
+  const user = useQuery({ queryKey: ["user"], queryFn: () => sender.get({ path: "me", accessToken }) });
+  const myData = user.data?.data;
+
+  const members = useQuery({
+    queryKey: ["members", boardId],
+    queryFn: () => sender.get({ path: "members", id: Number(boardId), accessToken }),
+  });
+
+  const memberList = members?.data?.data.members ?? [];
+
+  const dashboards = useQuery({
+    queryKey: ["dashboards"],
+    queryFn: () => sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken }),
+  });
+  const dashboardList = dashboards.data?.data.dashboards ?? [];
+
   const dashboard = dashboardList.find((item) => {
     return item.id === Number(boardId);
   });
 
+  const title = dashboard?.title;
   const isOwner = memberList?.find((v) => v.userId === myData?.id)?.isOwner;
-  const [title, setTitle] = useState(dashboard?.title);
-
-  useEffect(() => {
-    setTitle(dashboard?.title);
-    (async () => {
-      const accessToken = getAccessTokenFromDocument("accessToken");
-
-      const myRes = await sender.get({ path: "me", accessToken });
-
-      if (myRes?.status < 300) {
-        setMyData(myRes.data);
-      }
-
-      if (router.pathname === "/dashboard/[boardId]") {
-        const res = await sender.get({ path: "members", id: Number(boardId), accessToken });
-
-        if (res?.status < 300) {
-          setMemberList(res.data.members);
-        }
-      }
-    })();
-  }, [dashboard, router.query]);
 
   return (
     <header className={styles.header}>

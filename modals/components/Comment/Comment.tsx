@@ -8,6 +8,8 @@ import AlertModal from "@/modals/AlertModal";
 import styles from "./Comment.module.css";
 import { MouseEvent, ChangeEvent } from "react";
 import clsx from "clsx";
+import { useQuery } from "@tanstack/react-query";
+import sender from "@/apis/sender";
 
 type Usage = "edit" | "show";
 
@@ -77,7 +79,9 @@ const Comment = ({ data, setCommentList, setEditingId, usage, handleEditCancel }
   };
 
   // 내 정보 가져오기
-  const { data: myData } = useApi("get", { path: "me", accessToken });
+  // const { data: myData } = useApi("get", { path: "me", accessToken });
+  const user = useQuery({ queryKey: ["user"], queryFn: () => sender.get({ path: "me", accessToken }) });
+  const myData = user?.data?.data;
 
   return (
     <div className={styles.wrapper}>

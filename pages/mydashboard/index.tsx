@@ -5,29 +5,29 @@ import Input from "@/components/Input/Input";
 import InputWrapper from "@/components/Input/InputWrapper";
 import MenuLayout from "@/components/MenuLayout/MenuLayout";
 import TableScroll from "@/components/Table/TableScroll/TableScroll";
-import useApi from "@/hooks/useApi";
 import useInputController from "@/hooks/useInputController";
 import stylesFromSingle from "@/modals/Modal.module.css";
 import ModalWrapper from "@/modals/ModalWrapper";
 import ModalButton from "@/modals/components/ModalButton/ModalButton";
-import { ColorType, DashBoardData } from "@/types/api.type";
+import { ColorType, Req_post_dashboard } from "@/types/api.type";
 import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import styles from "./index.module.css";
-import { atom, useAtom } from "jotai";
-import { dashboardListAtom } from "@/atoms/atoms";
 import Head from "next/head";
+import { QueryClient, dehydrate, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
 
-  const {
-    data: { dashboards },
-  } = await sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken });
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["dashboards"],
+    queryFn: () => sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken }),
+  });
 
   if (!accessToken) {
     return {
@@ -39,23 +39,33 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { accessToken, dashboards },
+    props: { accessToken, dehydratedState: dehydrate(queryClient) },
   };
 };
 
 // 엑세스토큰
-export default function Mydashboard({
-  accessToken,
-  dashboards,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Mydashboard({ accessToken }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const router = useRouter();
+  const dashboards = useQuery({
+    queryKey: ["dashboards"],
+    queryFn: () => sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken }),
+  });
 
-  const [dashboardList, setDashboardList] = useAtom(dashboardListAtom);
-  if (!dashboardList.length) {
-    setDashboardList(dashboards);
-  }
+  const queryClient = useQueryClient();
+
+  const dashboardsMutation = useMutation({
+    mutationFn: (data: Req_post_dashboard) => sender.post({ path: "dashboard", accessToken, data }),
+    onSuccess: () => {
+      handleModalToggle();
+      column.input.setValue("");
+      setSelectedColor("#7ac555");
+      queryClient.invalidateQueries({ queryKey: ["dashboards"] });
+    },
+  });
+
+  const dashboardList = dashboards?.data?.data.dashboards ?? [];
+
   const handleModalToggle = () => {
     setIsOpen((prevValue) => !prevValue);
   };
@@ -70,36 +80,14 @@ export default function Mydashboard({
 
   const [selectedColor, setSelectedColor] = useState<ColorType>("#7ac555");
 
-  const { pending, wrappedFunction: postData } = useApi("post");
-
   const handleMakeDashboard = async (e: FormEvent) => {
     e.preventDefault();
-
-    if (pending) return;
 
     const data = {
       title: column.input.value,
       color: selectedColor,
     };
-
-    const res = await postData({ path: "dashboard", accessToken, data });
-
-    if (res?.status === 201) {
-      setDashboardList((prevValue) => {
-        return [res.data, ...prevValue];
-      });
-
-      handleModalToggle();
-      column.input.setValue("");
-      setSelectedColor("#7ac555");
-
-      const boardId = router.query.boardId;
-      if (boardId) {
-        router.push(`/dashboard/${boardId}`);
-        return;
-      }
-      router.push(router.pathname);
-    }
+    dashboardsMutation.mutate(data);
   };
 
   return (
@@ -156,7 +144,7 @@ export default function Mydashboard({
             </div>
             <ChipColors selectedColor={selectedColor} setSelectedColor={setSelectedColor} size="lg" />
             <div className={stylesFromSingle.buttonContainer}>
-              <ModalButton.DoubleButton disabled={pending || !column.input.value} onClick={handleModalToggle}>
+              <ModalButton.DoubleButton disabled={!column.input.value} onClick={handleModalToggle}>
                 생성
               </ModalButton.DoubleButton>
             </div>

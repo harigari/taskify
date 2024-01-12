@@ -46,7 +46,7 @@ type Req_post_signup = {
 
 type Return_post_signup = ExtendedUserType;
 
-type Req_put_me = {
+export type Req_put_me = {
   nickname: string;
   profileImageUrl?: string;
 };
@@ -241,7 +241,7 @@ type Return_get_dashboards = DashBoardListData & {
   totalCount: number;
 };
 
-type Req_post_dashboard = {
+export type Req_post_dashboard = {
   title: string;
   color: ColorType;
 };
@@ -254,7 +254,7 @@ type Return_post_dashboard = {
   userId: number;
 } & TimeStamp;
 
-type Req_put_dashboard = Req_post_dashboard;
+export type Req_put_dashboard = Req_post_dashboard;
 
 type Return_put_dashboard = Return_post_dashboard;
 

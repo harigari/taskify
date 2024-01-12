@@ -7,12 +7,19 @@ import { getAccessTokenFromCookie } from "@/utils/getAccessToken";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import styles from "./mypage.module.css";
 import Head from "next/head";
+import { QueryClient, dehydrate } from "@tanstack/react-query";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const accessToken = getAccessTokenFromCookie(context) as string;
-  const boardId = Number(context.query.boardId);
 
-  const { data: userData } = await sender.get({ path: "me", accessToken });
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["dashboards"],
+    queryFn: () => sender.get({ path: "dashboards", method: "pagination", size: 999, accessToken: accessToken }),
+  });
+
+  await queryClient.prefetchQuery({ queryKey: ["user"], queryFn: () => sender.get({ path: "me", accessToken }) });
 
   if (!accessToken) {
     return {
@@ -24,11 +31,11 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   return {
-    props: { userData },
+    props: { dehydratedState: dehydrate(queryClient), accessToken },
   };
 };
 
-const MyPage = ({ userData }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const MyPage = () => {
   return (
     <>
       <Head>
@@ -38,7 +45,7 @@ const MyPage = ({ userData }: InferGetServerSidePropsType<typeof getServerSidePr
         <main className={styles.main}>
           <RedoButton />
           <section className={styles.section}>
-            <SettingProfile userData={userData} />
+            <SettingProfile />
             <SettingPassword />
           </section>
         </main>
