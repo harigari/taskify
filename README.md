@@ -17,15 +17,15 @@
 
 ## 기능 소개
 
-- **CRUD**
+### CRUD
   REST API를 이용하여 대시보드, 칼럼, 할 일에 대한 데이터를 다룰 수 있습니다.
 ![crud](https://github.com/harigari/taskify/assets/78120157/17e45398-f905-435d-b84b-8a4106361e53)
 
-- **무한 스크롤**
+### 무한 스크롤
   초기 진입 속도를 높이고, 오버페칭 문제를 해결할 수 있습니다.
 ![infinity](https://github.com/harigari/taskify/assets/78120157/7e4e84c8-cf3f-46f1-ba23-e2aba0f8c559)
 
-- **드래그 앤 드롭**
+### 드래그 앤 드롭
   할 일 카드를 드래그 앤 드롭을 이용하여 다른 칼럼으로 이동시킬 수 있습니다.
 ![dnd](https://github.com/harigari/taskify/assets/78120157/c1d8e010-ecb4-413d-a3df-65932a35f4c0)
 
