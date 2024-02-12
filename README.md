@@ -1,40 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Taskify
 
-## Getting Started
+나만의 대시보드를 관리하고, 주제 별 칼럼으로 할 일을 분류하고, 할 일을 카드로 만들어 간편하게 관리해 보세요! 일정 관리 서비스 Taskify.
+<br/>
 
-First, run the development server:
+## 기술 스택
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<div> 
+<img src="https://img.shields.io/badge/react-61dafb?style=for-the-badge&logo=react&logoColor=white"> 
+<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+<img src="https://img.shields.io/badge/nextjs-000000?style=for-the-badge&logo=nextdotjs&logoColor=white">
+<img src="https://img.shields.io/badge/eslint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white">
+<img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white">
+<img src="https://img.shields.io/badge/git-f05032?style=for-the-badge&logo=git&logoColor=white">
+<img src="https://img.shields.io/badge/reactquery-FF4154?style=for-the-badge&logo=reactquery&logoColor=white">
+</div>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 기능 소개
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- **CRUD**
+  REST API를 이용하여 대시보드, 칼럼, 할 일에 대한 데이터를 다룰 수 있습니다.
+  ![alt text](crud-1.gif)
+- **무한 스크롤**
+  초기 진입 속도를 높이고, 오버페칭 문제를 해결할 수 있습니다.
+  ![alt text](infinity-1.gif)
+- **드래그 앤 드롭**
+  할 일 카드를 드래그 앤 드롭을 이용하여 다른 칼럼으로 이동시킬 수 있습니다.
+  ![alt text](dnd-1.gif)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## 배포 주소
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+[일정 관리, 필요해? Taskify](https://taskify-harigari.vercel.app/)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 멤버 소개
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+| [김하늘](https://github.com/han-kimm)                             | [정진호](https://github.com/ayden94)                               | [조유담](https://github.com/youdame)                               | [안지수](https://github.com/An-jisu)                              |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| <img src="https://avatars.githubusercontent.com/u/78120157?v=4" width=150/> | <img src="https://avatars.githubusercontent.com/u/144667387?v=4" width=150 /> | <img src="https://avatars.githubusercontent.com/u/112458620?v=4" width=150 /> | <img src="https://avatars.githubusercontent.com/u/70849122?v=4" width=150 /> |
+| - Header 컴포넌트 <br/> - 타입스크립트 설계 <br/> - API 함수   | - Modal 컴포넌트 <br/> - Input 컴포넌트 <br/> - 무한 스크롤 | - Button 컴포넌트 <br/> - Modal 컴포넌트 <br/> - 랜딩 페이지 | - Chips 컴포넌트 <br/> - Cards 컴포넌트 <br/> - dashboard 페이지 
